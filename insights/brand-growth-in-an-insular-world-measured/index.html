@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Growth in an Insular World — Measured | TrustOS</title>
+  <meta name="description" content="Edelman’s 2026 Trust Barometer tells brands to use trust as a leading growth indicator, not a reputation issue. TrustOS measures exactly that — across whole stakeholder ecosystems. The launch briefing, with twelve sectors of published reads.">
+  <meta property="og:title" content="Brand Growth in an Insular World — Measured" />
+  <meta property="og:description" content="88% say trust decides what they buy. £841bn of FTSE 350 value is attributable to trust. And Edelman now tells brands to track trust as a leading growth indicator — not a reputation issue. The TrustOS launch briefing." />
+  <meta property="og:image" content="https://trustos.missionctrl.agency/og-image.png" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://trustos.missionctrl.agency/insights/brand-growth-in-an-insular-world-measured/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Brand Growth in an Insular World — Measured" />
+  <meta name="twitter:description" content="88% say trust decides what they buy. £841bn of FTSE 350 value is attributable to trust. And Edelman now tells brands to track trust as a leading growth indicator — not a reputation issue. The TrustOS launch briefing." />
+  <meta name="twitter:image" content="https://trustos.missionctrl.agency/og-image.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --trust-slate: #2d3a4a;
+      --trust-cool:  #5a8a9a;
+      --trust-ice:   #6da0b8;
+      --trust-mid:   #8fb5c0;
+      --system-grey: #f4f4f6;
+      --deep:        #0a0f1a;
+      --white:       #ffffff;
+
+      /* Driver colours — match site dashboard */
+      --clarity:     #5a8a9a;
+      --connection:  #7cc4a8;
+      --confidence:  #a78bdb;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Sora', system-ui, sans-serif;
+      color: rgba(255,255,255,0.78);
+      background: var(--deep);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.65;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* NAV (matches main TrustOS nav) */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 72px;
+      background: rgba(10,15,26,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .nav-left { display: flex; align-items: center; }
+    .nav-wordmark {
+      font-size: 1.3rem; font-weight: 800; letter-spacing: -0.03em;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-wordmark .trust { color: #8fb5c0; }
+    .nav-wordmark .os { color: var(--trust-cool); }
+    .nav-product-link {
+      font-size: 0.62rem; font-weight: 500;
+      color: rgba(255,255,255,0.35);
+      margin-left: 16px;
+      transition: color 0.2s;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .nav-product-link:hover { color: var(--trust-cool); }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      font-size: 0.88rem; font-weight: 600;
+      padding: 10px 22px;
+      background: var(--trust-cool); color: var(--white);
+      border-radius: 6px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: #4a7a8a; transform: translateY(-1px); }
+
+    /* ARTICLE HERO */
+    .article-hero {
+      padding: 130px 5% 50px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .article-hero .grid-bg { opacity: 0.6; }
+    .article-hero-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      position: relative; z-index: 2;
+    }
+    .breadcrumb {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .breadcrumb a {
+      color: rgba(255,255,255,0.55);
+      transition: color 0.2s;
+    }
+    .breadcrumb a:hover { color: var(--trust-cool); }
+    .breadcrumb .sep { color: rgba(255,255,255,0.25); }
+    .breadcrumb .here { color: var(--trust-cool); }
+    .article-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.63rem; font-weight: 700;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--trust-cool); margin-bottom: 22px;
+    }
+    .article-eyebrow::before { content: ''; width: 24px; height: 2px; background: var(--trust-cool); display: block; }
+    .article-hero h1 {
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
+      font-weight: 800; line-height: 1.04;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      margin-bottom: 22px;
+    }
+    .article-hero h1 .gradient {
+      background: linear-gradient(95deg, var(--trust-cool) 0%, var(--trust-ice) 50%, var(--trust-mid) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .article-hero-sub {
+      font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+      font-weight: 300; line-height: 1.55;
+      color: rgba(255,255,255,0.55);
+      max-width: 760px;
+      margin-bottom: 40px;
+    }
+    .article-meta {
+      display: flex; flex-wrap: wrap; gap: 24px 48px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.74rem; color: rgba(255,255,255,0.45);
+    }
+    .article-meta-item strong {
+      display: block;
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      font-size: 0.66rem;
+      margin-bottom: 6px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .article-meta-item a {
+      color: var(--trust-cool);
+      transition: color 0.2s;
+    }
+    .article-meta-item a:hover { color: var(--trust-ice); }
+
+    /* BANNER IMAGE */
+    .article-banner-wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+    .article-banner {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+      margin-top: -20px;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* ARTICLE BODY */
+    .article-body {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 80px 5% 60px;
+      font-size: 1.05rem;
+      line-height: 1.78;
+      color: rgba(255,255,255,0.78);
+      font-weight: 300;
+    }
+    .article-body p { margin-bottom: 1.4em; }
+    .article-body strong { color: var(--white); font-weight: 600; }
+    .article-body em { color: var(--trust-cool); font-style: italic; }
+    .article-body a {
+      color: var(--trust-cool);
+      border-bottom: 1px solid rgba(90,138,154,0.4);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .article-body a:hover { color: var(--trust-ice); border-color: var(--trust-ice); }
+
+    /* Lede */
+    .lede { margin-bottom: 2.4em; }
+    .lede p {
+      font-size: clamp(1.3rem, 2vw, 1.7rem);
+      line-height: 1.32;
+      color: var(--white);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.6em;
+    }
+    .lede p.sub {
+      font-weight: 400;
+      font-style: italic;
+      color: var(--trust-cool);
+    }
+
+    /* Headings */
+    .article-body h2 {
+      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      font-weight: 800;
+      line-height: 1.18;
+      color: var(--white);
+      letter-spacing: -0.025em;
+      margin: 2.6em 0 0.8em;
+      padding-top: 1.2em;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .article-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--trust-cool);
+      margin: 2em 0 0.6em;
+      letter-spacing: -0.01em;
+    }
+
+    /* Pull quote */
+    .pullquote {
+      margin: 2.6em 0;
+      padding: 28px 32px;
+      background: rgba(90,138,154,0.06);
+      border-left: 3px solid var(--trust-cool);
+      border-radius: 0 8px 8px 0;
+    }
+    .pullquote p {
+      font-size: 1.15rem;
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--white);
+      margin: 0;
+    }
+
+    /* Diagnostic strip */
+    .diagnostic-strip {
+      margin: 2.4em 0 2em;
+      padding: 28px 32px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+    }
+    .diagnostic-strip .ds-label {
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 18px;
+    }
+    .ds-row {
+      display: grid;
+      grid-template-columns: 110px 1fr 36px;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .ds-row:last-child { margin-bottom: 0; }
+    .ds-name {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .ds-row.clarity    .ds-name { color: var(--clarity); }
+    .ds-row.connection .ds-name { color: var(--connection); }
+    .ds-row.confidence .ds-name { color: var(--confidence); }
+    .ds-row.composite  .ds-name { color: rgba(255,255,255,0.7); }
+    .ds-bar-bg {
+      height: 6px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .ds-bar {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+    .ds-row.clarity    .ds-bar { background: var(--clarity);    width: 58%; }
+    .ds-row.connection .ds-bar { background: var(--connection); width: 44%; }
+    .ds-row.confidence .ds-bar { background: var(--confidence); width: 50%; }
+    .ds-row.composite  .ds-bar { background: rgba(255,255,255,0.5); width: 51%; }
+    .ds-score {
+      font-size: 0.86rem; font-weight: 800;
+      text-align: right;
+    }
+    .ds-row.clarity    .ds-score { color: var(--clarity); }
+    .ds-row.connection .ds-score { color: var(--connection); }
+    .ds-row.confidence .ds-score { color: var(--confidence); }
+    .ds-row.composite  .ds-score { color: rgba(255,255,255,0.85); }
+    .ds-row.composite {
+      padding-top: 14px;
+      margin-top: 6px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Inline question (closing emphasis) */
+    .key-question {
+      font-size: 1.2rem;
+      color: var(--white);
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1.4;
+      margin-bottom: 1.4em;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      background: var(--trust-slate);
+      padding: 90px 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section .grid-bg { opacity: 0.5; }
+    .cta-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .cta-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.63rem; font-weight: 700;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--trust-cool); margin-bottom: 22px;
+    }
+    .cta-eyebrow::before { content: ''; width: 24px; height: 2px; background: var(--trust-cool); display: block; }
+    .cta-section h2 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+      line-height: 1.18;
+    }
+    .cta-section p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 36px;
+    }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      font-size: 0.88rem; font-weight: 600;
+      padding: 14px 32px;
+      background: var(--trust-cool); color: var(--white);
+      border-radius: 6px; border: 2px solid var(--trust-cool);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: #4a7a8a; border-color: #4a7a8a; transform: translateY(-2px); }
+    .btn-ghost {
+      font-size: 0.88rem; font-weight: 600;
+      padding: 14px 32px;
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.5); }
+
+    /* RELATED POVS */
+    .related-povs {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 5% 40px;
+    }
+    .related-povs-label {
+      font-size: 0.63rem; font-weight: 700;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--trust-cool); margin-bottom: 26px;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .related-povs-label::before { content: ''; width: 24px; height: 2px; background: var(--trust-cool); display: block; }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .related-card {
+      display: block;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 24px 28px;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+    .related-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(90,138,154,0.4);
+      transform: translateY(-2px);
+    }
+    .related-card-eyebrow {
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--trust-cool); margin-bottom: 10px;
+    }
+    .related-card h3 {
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--white); letter-spacing: -0.015em;
+      margin-bottom: 8px;
+    }
+    .related-card p {
+      font-size: 0.85rem; color: rgba(255,255,255,0.5);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* SOURCES */
+    .sources {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 40px 5% 80px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-top: 40px;
+    }
+    .sources-label {
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 22px;
+      padding-top: 40px;
+    }
+    .sources ul { list-style: none; }
+    .sources li {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 10px;
+      padding-left: 18px;
+      position: relative;
+    }
+    .sources li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 12px;
+      width: 8px;
+      height: 1px;
+      background: var(--trust-cool);
+    }
+    .sources li em {
+      color: rgba(255,255,255,0.78);
+      font-style: italic;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--deep);
+      padding: 48px 5% 36px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 36px;
+    }
+    .footer-wordmark { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.03em; }
+    .footer-wordmark .trust { color: #8fb5c0; }
+    .footer-wordmark .os { color: var(--trust-cool); }
+    .footer-brand-tagline { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin: 8px 0 14px; }
+    .footer-brand-desc { font-size: 0.76rem; color: rgba(255,255,255,0.3); line-height: 1.65; max-width: 360px; }
+    .footer-brand-desc a { color: var(--trust-cool); border-bottom: 1px solid rgba(90,138,154,0.4); }
+    .footer-col h4 {
+      font-size: 0.66rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.7); margin-bottom: 16px;
+    }
+    .footer-nav-list { list-style: none; }
+    .footer-nav-list li { margin-bottom: 10px; }
+    .footer-nav-list a { font-size: 0.82rem; color: rgba(255,255,255,0.45); transition: color 0.2s; }
+    .footer-nav-list a:hover { color: var(--white); }
+    .footer-connect-item { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: rgba(255,255,255,0.45); margin-bottom: 12px; }
+    .footer-connect-item a { color: rgba(255,255,255,0.45); transition: color 0.2s; }
+    .footer-connect-item a:hover { color: var(--trust-cool); }
+    .footer-legal {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.65;
+    }
+    .footer-legal a {
+      color: rgba(255,255,255,0.4);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-legal a:hover { color: var(--trust-cool); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      nav { padding: 0 5%; }
+      .article-hero { padding: 110px 5% 50px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+      .article-banner { margin-top: 0; }
+      .article-body { padding: 60px 6% 40px; }
+      .pullquote { padding: 22px 24px; }
+      .diagnostic-strip { padding: 22px 24px; }
+      .related-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-cta { font-size: 0.8rem; padding: 8px 16px; }
+      .article-meta { gap: 20px 32px; }
+      .cta-buttons { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-ghost { text-align: center; }
+    }
+  
+    /* Live sector banner (replaces static banner image) */
+    .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
+    .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
+    .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
+    .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
+    .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
+    .lb-fill{height:100%;border-radius:3px;}
+    .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
+    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
+    .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
+    .lb-tri{display:flex;justify-content:center;}
+    .lb-tri svg{overflow:visible;}
+    .lb-lbl{font-family:'Sora',sans-serif;font-size:7px;font-weight:800;letter-spacing:0.11em;}
+    .lb-lbl.cl{fill:#8fb5c0;}.lb-lbl.cn{fill:#7cc4a8;}.lb-lbl.cf{fill:#a78bdb;}
+    .lb-comp{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
+    .lb-cap{font-family:'Sora',sans-serif;font-size:6.5px;font-weight:700;letter-spacing:0.16em;fill:rgba(255,255,255,0.75);text-anchor:middle;dominant-baseline:middle;}
+    @media(max-width:760px){.live-banner{grid-template-columns:1fr;gap:26px;padding:26px 22px;}.lb-tri svg{width:200px;height:auto;}}
+
+  </style>
+<!-- seo-ai:start -->
+<link rel="canonical" href="https://trustos.missionctrl.agency/insights/brand-growth-in-an-insular-world-measured/" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://trustos.missionctrl.agency/#org",
+      "name": "TrustOS",
+      "url": "https://trustos.missionctrl.agency/",
+      "description": "TrustOS is a trust-measurement intelligence product for UK mission-driven sectors, measuring stakeholder trust as a driver of resilience and growth.",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "MissionCTRL",
+        "url": "https://missionctrl.agency"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/showcase/trust-os/"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://missionctrl.agency/#dustin",
+      "name": "Dustin Lawrence",
+      "jobTitle": "Founder",
+      "worksFor": {
+        "@id": "https://trustos.missionctrl.agency/#org"
+      },
+      "url": "https://missionctrl.agency/"
+    },
+    {
+      "@type": "Article",
+      "image": "https://trustos.missionctrl.agency/og-image.png",
+      "headline": "Brand Growth in an Insular World — Measured",
+      "author": {
+        "@id": "https://missionctrl.agency/#dustin"
+      },
+      "publisher": {
+        "@id": "https://trustos.missionctrl.agency/#org"
+      },
+      "datePublished": "2026-07-07",
+      "dateModified": "2026-07-07",
+      "mainEntityOfPage": "https://trustos.missionctrl.agency/insights/brand-growth-in-an-insular-world-measured/",
+      "isPartOf": {
+        "@id": "https://trustos.missionctrl.agency/#website"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "TrustOS",
+          "item": "https://trustos.missionctrl.agency/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Sector Insights",
+          "item": "https://trustos.missionctrl.agency/insights/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Brand Growth in an Insular World — Measured",
+          "item": "https://trustos.missionctrl.agency/insights/brand-growth-in-an-insular-world-measured/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- seo-ai:end -->
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="/" class="nav-wordmark">
+      <svg width="22" height="27" viewBox="0 0 120 148" fill="none" style="flex-shrink:0;">
+        <defs>
+          <linearGradient id="nav-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient>
+          <filter id="nav-glow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/>
+        <polygon points="30,12 90,12 60,88" fill="url(#nav-tg)" filter="url(#nav-glow)"/>
+      </svg>
+      <span><span class="trust">Trust</span><span class="os">OS</span></span>
+    </a>
+    <a href="https://missionctrl.agency" class="nav-product-link" target="_blank" rel="noopener">
+      <svg width="10" height="12" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="nav-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="nav-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#nav-mg)" clip-path="url(#nav-mlc)"/></svg>
+      A MissionCTRL product &rarr;
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/?request=navigator">Request a Navigator</a></li>
+
+    <li><a href="/methodology/">How it works</a></li>
+    <li><a href="/insights/">Sector Insights</a></li>
+    <li><a href="/faq/">FAQ</a></li>
+  </ul>
+  <a href="/?book=demo" class="nav-cta">Book a Demo</a>
+</nav>
+
+<!-- ARTICLE HERO -->
+<section class="article-hero">
+  <div class="grid-bg"></div>
+  <div class="article-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">TrustOS</a>
+      <span class="sep">/</span>
+      <a href="/insights/">Sector Insights</a>
+      <span class="sep">/</span>
+      <span class="here">Launch Briefing</span>
+    </div>
+    <div class="article-eyebrow">Launch Briefing  &middot;  Trust Intelligence</div>
+    <h1>Brand growth in an insular world &mdash;<br/><span class="gradient">measured.</span></h1>
+    <p class="article-hero-sub">The 2026 Edelman Trust Barometer tells brands to treat trust as a leading growth indicator &mdash; not a reputation issue. TrustOS was built to measure exactly that, across whole stakeholder ecosystems: Clarity, Connection and Confidence on a foundation of Integrity. The launch briefing &mdash; what the market&rsquo;s most authoritative trust study just validated, and what twelve sectors of measurement already show.</p>
+    <div class="article-meta">
+      <div class="article-meta-item">
+        <strong>Published</strong>
+        7 July 2026
+      </div>
+      <div class="article-meta-item">
+        <strong>Read time</strong>
+        7 minutes
+      </div>
+      <div class="article-meta-item">
+        <strong>Scope</strong>
+        Cross-sector  &middot;  Twelve published POVs
+      </div>
+      <div class="article-meta-item">
+        <strong>Author</strong>
+        <a href="https://www.linkedin.com/in/dustinlawrence/" target="_blank" rel="noopener">Dustin Lawrence</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER IMAGE -->
+<div class="article-banner-wrap">
+  <div class="live-banner">
+    <div class="lb-left">
+      <p class="lb-kicker">Launch briefing &middot; July 2026</p>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Deal-breaker</span><div class="lb-track"><div class="lb-fill cl" style="width:88%"></div></div><span class="lb-bar-v">88%</span></div><div class="lb-bar"><span class="lb-bar-l cn">FTSE value</span><div class="lb-track"><div class="lb-fill cn" style="width:28%"></div></div><span class="lb-bar-v">28%</span></div><div class="lb-bar"><span class="lb-bar-l cf">Connection</span><div class="lb-track"><div class="lb-fill cf" style="width:92%"></div></div><span class="lb-bar-v">11/12</span></div></div>
+      <p class="lb-hook"><strong>Trust is now a leading growth indicator</strong> &mdash; Edelman&rsquo;s words. Measuring it is what TrustOS does.</p>
+    </div>
+    <div class="lb-tri"><svg width="240" height="224" viewBox="73.2 65.5 137.7 128.4" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="99.2,91.5 145.0,168.0 184.9,95.0"/><text class="lb-lbl cl" x="110.9" y="136.4" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.1,110.9,136.4)">CLARITY</text><text class="lb-lbl cn" x="176.4" y="137.7" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.3,176.4,137.7)">CONNECTION</text><text class="lb-lbl cf" x="142.5" y="80.3" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.3,142.5,80.3)">CONFIDENCE</text><text class="lb-comp" x="143.0" y="114.2">18</text><text class="lb-cap" x="143.0" y="126.2">POINT SAY-DO GAP</text></svg></div>
+  </div>
+</div>
+
+<!-- ARTICLE BODY -->
+<article class="article-body">
+
+  <p class="pov-frame" style="font-size:1.02rem;line-height:1.72;color:rgba(255,255,255,0.6);font-style:italic;border-left:3px solid var(--trust-cool);padding-left:20px;margin:0 0 2.4em;">TrustOS launches into a market that has just been told, by its most authoritative voice, to treat trust as a growth asset. <strong>Trust is brand made measurable</strong> &mdash; the one signal every stakeholder reads. This is the launch briefing: the evidence, the pattern across twelve sectors, and what measuring it makes possible.</p>
+
+  <div class="lede">
+    <p>The world&rsquo;s most authoritative trust study has just published our category thesis. Each year the Edelman Trust Barometer reads the state of trust across markets. The 2026 special report, <em>Brand Growth in an Insular World</em>, describes a landscape pulling apart &mdash; people retreating into smaller circles, buying from brands that feel closer, and trusting fewer of them.</p>
+    <p>Buried in its recommendations is a sentence that changes what brand measurement is for.</p>
+    <p class="sub">Trust has stopped being a reputation topic. It is, in Edelman&rsquo;s own words, a leading growth indicator &mdash; and that makes it a measurement question.</p>
+  </div>
+
+  <h2>Not a reputation issue. A leading growth indicator.</h2>
+
+  <div class="pullquote">
+    <p>&ldquo;Use trust as a leading growth indicator. Do not wait for trust to show up as a reputation issue. Track where trust is creating or constraining premium, loyalty, adoption, advocacy, forgiveness, and permission to stretch.&rdquo; &mdash; 2026 Edelman Trust Barometer, <em>Brand Growth in an Insular World</em></p>
+  </div>
+
+  <p>Read it again. Not a reputation issue &mdash; a <strong>leading growth indicator</strong>. Not something to monitor after the fact &mdash; something to <strong>track</strong>, before the numbers move.</p>
+
+  <p>That is the difference between reputation management and Trust Intelligence. Reputation monitoring tells you what happened &mdash; after the story has run, after the damage is priced. A leading indicator tells you what&rsquo;s coming, while you can still act on it. The tools most organisations already run &mdash; NPS, brand trackers, employee surveys, ESG ratings, reputation monitoring &mdash; each see a slice, and all of them report after the fact. None was built to read trust specifically, across every stakeholder, ahead of the numbers. That instrument is what TrustOS is.</p>
+
+  <h2>Priced in &mdash; and purchase-decisive</h2>
+
+  <p>Two independent 2026 authorities make the same case from different directions.</p>
+
+  <p><strong>Echo Research priced it.</strong> &pound;841bn of FTSE 350 value &mdash; 28% of total market capitalisation &mdash; is attributable to trust. It is not a comms line. It is on the balance sheet, whether or not anyone in the building is accountable for it.</p>
+
+  <p><strong>Edelman made it behavioural.</strong> 88% of consumers say trust is a deal-breaker or deciding factor in what they buy &mdash; on a par with quality and value. Trust has stopped being the soft material around the edges of a buying decision. It <em>is</em> the buying decision.</p>
+
+  <p>A sourcing note we hold ourselves to: Edelman&rsquo;s report is consumer research, run across fifteen markets. We cite it as category validation &mdash; the principle that trust leads growth &mdash; not as a claim about any one organisation&rsquo;s stakeholders. Measuring <em>your</em> stakeholders is a different job. It&rsquo;s ours.</p>
+
+  <h2>What twelve sectors of measurement show</h2>
+
+  <p>TrustOS reads trust across an organisation&rsquo;s whole stakeholder ecosystem &mdash; customers, employees, investors, regulators, communities &mdash; as three drivers, Clarity, Connection and Confidence, on a foundation of Integrity.</p>
+
+  <p>We have published trust reads across twelve sectors, from <a href="/energy-integrity-test/">Energy</a> to <a href="/council-trust-test/">local government</a> to <a href="/membership-bodies-trust-test/">the professional bodies</a>. One pattern dominates: <strong>in eleven of the twelve, Connection is the weakest layer</strong> &mdash; trailing Clarity by around eighteen points.</p>
+
+  <p>Clarity is what an organisation says. Connection is what its stakeholders actually experience. The distance between them is the say-do gap &mdash; and no single function owns it, which is exactly why it leaks.</p>
+
+  <p>Edelman describes the same shift in consumer language: trust has moved from <em>&ldquo;how I feel about a brand&rdquo;</em> to <em>&ldquo;how I think a brand feels about me&rdquo;</em> &mdash; earned through experience, not asserted in messaging. That is Connection. It is the most consistent finding in our data &mdash; and now the most consequential one in theirs.</p>
+
+  <h2>The growth question, in every sector</h2>
+
+  <p>In an insular world, the growth question is the same everywhere: can you earn permission to grow across the divides &mdash; between you and your customers, your employees, your regulators, the communities you operate in? Trust is what grants that permission. And where it is granted or withheld differs by stakeholder &mdash; which is why an average score hides more than it shows.</p>
+
+  <p>That is what a trust read is for. Not a vanity number &mdash; a map of where permission exists, and where it is being quietly withdrawn.</p>
+
+  <h2>The question</h2>
+
+  <p>For every leader who carries trust &mdash; in the C-suite, in brand, in comms, in sustainability:</p>
+
+  <p class="key-question">Can you show your board where trust is creating &mdash; or constraining &mdash; premium, loyalty, adoption and permission to stretch, by stakeholder group, before it shows up in the numbers?</p>
+
+  <p>If the answer is yes, you are already running Trust Intelligence. If the answer is not yet, there are three ways in, increasing in depth: the <a href="/explorer/">TrustOS Explorer</a> &mdash; free, self-serve, 60 seconds; a <a href="/?request=navigator">TrustOS Navigator</a> &mdash; a free directional read prepared from your public signals; and a <a href="/?book=demo">Snapshot demo</a> &mdash; the board-grade read, validated with primary research across your own stakeholders.</p>
+
+  <p>Edelman told brands to track trust as a leading growth indicator. TrustOS is how.</p>
+
+  <p style="margin-top: 2.4em; font-size: 0.95rem; color: rgba(255,255,255,0.55);">&mdash; Dustin Lawrence, Founder, MissionCTRL</p>
+
+</article>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="grid-bg"></div>
+  <div class="cta-inner">
+    <div class="cta-eyebrow">TrustOS is live</div>
+    <h2>Make trust your North Star.</h2>
+    <p>Your most valuable asset is the one nobody measures. See your trust shape in the next 60 seconds &mdash; free, self-serve, no form &mdash; or request a free Navigator read of your organisation, prepared from public signals alone.</p>
+    <div class="cta-buttons">
+      <a href="/explorer/" class="btn-primary">Try the Explorer &mdash; free</a>
+      <a href="/?request=navigator" class="btn-ghost">Request a Navigator</a>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED POVS -->
+<section class="related-povs">
+  <div class="related-povs-label">Related Sector POVs</div>
+  <div class="related-grid">
+    <a href="/professional-services-trust-test/" class="related-card">
+      <div class="related-card-eyebrow">2026 Buyer-Hero POV  &middot;  Professional Services</div>
+      <h3>When the auditors are outnumbered. The brand leader's trust test.</h3>
+      <p>Clarity 70. Connection 44. Confidence 50. The sector whose product is trust, hollowing its own assurance layer &mdash; the pattern in this briefing, live in one sector.</p>
+    </a>
+    <a href="/private-capital-trust-test/" class="related-card">
+      <div class="related-card-eyebrow">2026 Sector POV  &middot;  Private Capital</div>
+      <h3>Twelve is the new five. Private capital's trust test.</h3>
+      <p>Clarity 64. Connection 46. Confidence 50. Growth at 12% is earned from stakeholders &mdash; the growth-permission argument of this briefing, priced into the deal.</p>
+    </a>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section class="sources">
+  <div class="sources-label">Sources &amp; references</div>
+  <ul>
+    <li>Edelman &mdash; <em>2026 Edelman Trust Barometer special report: Brand Growth in an Insular World</em> (consumer research across 15 markets). Cited here as category validation &mdash; the principle that trust functions as a leading growth indicator &mdash; not as stakeholder-specific evidence for any single organisation.</li>
+    <li>Echo Research &mdash; trust accounts for &pound;841bn of FTSE 350 market value, 28% of total market capitalisation (2026)</li>
+    <li>TrustOS sector POV series &mdash; twelve published sector reads, 2026: <a href="/insights/">Sector Insights</a></li>
+    <li><a href="/methodology/">TrustOS methodology</a> &mdash; the three trust enablers (Clarity, Connection, Confidence) on a foundation of Integrity. <a href="/methodology/">How we score &rarr;</a></li>
+  </ul>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <svg width="24" height="30" viewBox="0 0 120 148" fill="none">
+          <defs>
+            <linearGradient id="ft-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient>
+            <filter id="ft-glow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/>
+          <polygon points="30,12 90,12 60,88" fill="url(#ft-tg)" filter="url(#ft-glow)"/>
+        </svg>
+        <span class="footer-wordmark"><span class="trust">Trust</span><span class="os">OS</span></span>
+      </div>
+      <p class="footer-brand-tagline" style="display:flex;align-items:center;gap:6px;">
+        <svg width="10" height="12" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="ft-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="ft-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ft-mg)" clip-path="url(#ft-mlc)"/></svg>
+        A MissionCTRL product
+      </p>
+      <p class="footer-brand-desc">TrustOS is the trust-intelligence layer of the Brand Effect &mdash; MissionCTRL's methodology for turning purpose-led brands into movements. <a href="https://missionctrl.agency" target="_blank" rel="noopener">Learn about the Brand Effect at missionctrl.agency</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul class="footer-nav-list">
+        <li><a href="/explorer/">What it measures</a></li>
+
+        <li><a href="/methodology/">How it works</a></li>
+        <li><a href="https://missionctrl.agency" target="_blank" rel="noopener">MissionCTRL Solutions</a></li>
+        <li><a href="/insights/">Sector Insights</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="/?request=navigator">Request a Navigator</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <div class="footer-connect-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        <a href="https://www.linkedin.com/showcase/trust-os/" target="_blank" rel="noopener">Follow TrustOS on LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    &copy; 2026 TrustOS &middot; A MissionCTRL product &middot; MissionCTRL Ltd &middot; Company No. 17018199 &middot; Registered in England &amp; Wales &middot; <a href="/privacy-policy/">Privacy Policy</a> &middot; <a href="/cookie-policy/">Cookie Policy</a> &middot; <a href="/terms/">Terms &amp; Conditions</a>
+  </div>
+</footer>
+
+</body>
+</html>
