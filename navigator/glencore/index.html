@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrustOS Navigator — Glencore</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0a0f1a;
+    --slate: #2d3a4a;
+    --cool: #5a8a9a;
+    --cool-dark: #4a7a8a;
+    --pale: #8fb5c0;
+    --green: #7cc4a8;
+    --purple: #a78bdb;
+    --warning: #f87171;
+    --amber: #f0b855;
+    --orange: #ff6b2b;
+    --orange-soft: #ffad3b;
+    --line: rgba(255,255,255,0.06);
+    --line-soft: rgba(255,255,255,0.04);
+    --surface: rgba(255,255,255,0.025);
+    --surface-2: rgba(255,255,255,0.045);
+    --text-primary: rgba(255,255,255,0.92);
+    --text-body: rgba(255,255,255,0.62);
+    --text-muted: rgba(255,255,255,0.42);
+    --text-faint: rgba(255,255,255,0.22);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--deep); color: var(--text-primary); font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  .app { max-width: 1180px; margin: 0 auto; padding: 0 5%; }
+
+  /* NAV */
+  .navbar { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; gap: 16px; }
+  .nav-left { display: flex; align-items: center; }
+  .nav-wordmark { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.03em; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-wordmark .trust { color: var(--pale); }
+  .nav-wordmark .os { color: var(--cool); }
+  .nav-product-link { font-size: 0.62rem; font-weight: 500; color: rgba(255,255,255,0.35); margin-left: 16px; display: inline-flex; align-items: center; gap: 5px; text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.55); text-decoration: none; }
+  .nav-cta { font-size: 0.88rem; font-weight: 600; padding: 10px 22px; background: #5a8a9a; color: #ffffff; border-radius: 6px; display: inline-flex; align-items: center; text-decoration: none; transition: background 0.2s, transform 0.15s; } .nav-cta:hover { background: #4a7a8a; transform: translateY(-1px); }
+  .nav-cta .avatar { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--cool), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; }
+
+  .breadcrumb { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 14px 0; font-size: 0.7rem; color: var(--text-muted); border-bottom: 1px solid var(--line); }
+  .bc-section { color: var(--purple); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.62rem; }
+  .bc-sep { color: var(--text-faint); }
+  .bc-item.current { color: var(--text-primary); font-weight: 500; }
+  .bc-spacer { flex: 1; }
+  .bc-run { display: inline-flex; gap: 12px; align-items: center; font-size: 0.65rem; color: var(--text-faint); }
+  .bc-run .stage-tag { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: rgba(167,139,219,0.10); color: var(--purple); border: 1px solid rgba(167,139,219,0.22); font-weight: 700; }
+
+  .run-header { padding: 36px 0 28px; border-bottom: 1px solid var(--line); }
+  .run-header .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cool); margin-bottom: 14px; }
+  .run-header .eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--cool); display: block; }
+  .run-header h1 { font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; color: white; letter-spacing: -0.035em; line-height: 1.1; }
+  .run-header h1 em { font-style: normal; color: var(--cool); }
+
+  /* HERO TRIANGLE */
+  .hero-row { display: grid; grid-template-columns: 400px 1fr; gap: 40px; padding: 48px 0; align-items: center; border-bottom: 1px solid var(--line); }
+  .triangle-wrap { width: 100%; height: 380px; position: relative; }
+  .triangle-wrap svg { width: 100%; height: 100%; }
+  .vertex-label { position: absolute; text-align: center; }
+  .vertex-label .name { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin-bottom: 2px; }
+  .vertex-label .role { font-size: 0.6rem; color: var(--text-faint); font-style: italic; }
+  .vl-intent { top: 12px; left: 50%; transform: translateX(-50%); }
+  .vl-expectation { bottom: 56px; left: 6px; text-align: center; }
+  .vl-reality { bottom: 56px; right: 6px; text-align: center; }
+  .side-label { position: absolute; display: flex; flex-direction: column; align-items: center; }
+  .side-label .name { font-size: 0.58rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+  .side-label .score { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1; margin-top: 2px; color: white; }
+  .side-label .alignment { font-size: 0.52rem; color: var(--text-faint); margin-top: 3px; letter-spacing: 0.06em; }
+  .sl-clarity { top: 95px; left: -8px; }
+  .sl-clarity .name { color: var(--cool); }
+  .sl-confidence { top: 95px; right: -8px; }
+  .sl-confidence .name { color: var(--purple); }
+  .sl-connection { bottom: 30px; left: 50%; transform: translateX(-50%); }
+  .sl-connection .name { color: var(--green); }
+
+  .hero-read .read-line { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 700; color: white; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 12px; }
+  .hero-read .read-line em { font-style: normal; color: var(--cool); }
+  .hero-read .read-sub { font-size: 0.92rem; color: var(--text-body); line-height: 1.6; max-width: 520px; margin-bottom: 22px; }
+  .classify-strip { display: flex; gap: 6px; align-items: center; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+  .classify-strip .chip { padding: 4px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); color: var(--text-body); font-weight: 700; }
+  .classify-strip .chip.hook { background: rgba(124,196,168,0.12); color: var(--green); border-color: rgba(124,196,168,0.25); }
+  .classify-strip .arr { color: var(--text-faint); }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cool); margin-bottom: 14px; }
+  .section-label::before { content: ''; width: 20px; height: 2px; background: var(--cool); display: block; }
+  .section-title { font-size: clamp(1.4rem, 2.4vw, 1.85rem); font-weight: 800; color: white; letter-spacing: -0.03em; line-height: 1.15; max-width: 720px; margin-bottom: 32px; }
+  .section-title em { font-style: normal; color: var(--cool); }
+
+  /* POV */
+  .pov-block { background: var(--surface); border-left: 3px solid var(--cool); padding: 26px 30px; border-radius: 0 6px 6px 0; }
+  .pov-headline { font-size: clamp(1.3rem, 2.2vw, 1.65rem); font-weight: 700; color: white; letter-spacing: -0.025em; line-height: 1.3; margin-bottom: 14px; }
+  .pov-headline em { font-style: normal; color: var(--cool); }
+  .pov-body { font-size: 0.95rem; color: var(--text-body); line-height: 1.65; max-width: 720px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 12px 22px; border-radius: 4px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; text-decoration: none; transition: transform 0.15s; }
+  .btn-mctrl { background: linear-gradient(135deg, var(--orange), var(--orange-soft)); color: white; }
+  .btn-mctrl:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--cool); color: var(--deep); }
+  .btn-ghost { background: transparent; color: white; border: 1px solid var(--line); }
+
+  /* SOURCES */
+  .sources-block { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 28px 32px; }
+  .sources-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 22px; flex-wrap: wrap; gap: 12px; }
+  .sources-head h2 { font-size: 1.5rem; font-weight: 800; color: white; letter-spacing: -0.025em; }
+  .sources-head .meta { font-size: 0.66rem; color: var(--text-faint); letter-spacing: 0.04em; }
+  .sources-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .source-col { padding: 18px 20px; background: rgba(255,255,255,0.025); border: 1px solid var(--line); border-radius: 6px; }
+  .source-col.intent { border-top: 3px solid var(--cool); }
+  .source-col.expectation { border-top: 3px solid var(--green); }
+  .source-col.reality { border-top: 3px solid var(--purple); }
+  .source-col .lbl { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px; }
+  .source-col.intent .lbl { color: var(--cool); }
+  .source-col.expectation .lbl { color: var(--green); }
+  .source-col.reality .lbl { color: var(--purple); }
+  .source-col h3 { font-size: 0.92rem; font-weight: 700; color: white; line-height: 1.35; margin-bottom: 6px; }
+  .source-col .what { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--line-soft); }
+  .source-list { list-style: none; padding: 0; margin: 0; }
+  .source-list li { padding: 7px 0; border-bottom: 1px dotted var(--line); font-size: 0.74rem; line-height: 1.5; color: var(--text-body); }
+  .source-list li:last-child { border-bottom: none; }
+  .source-list a { color: var(--pale); text-decoration: none; border-bottom: 1px dotted var(--cool-dark); }
+  .source-list a:hover { color: var(--cool); }
+  .source-list .src-name { display: block; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; font-size: 0.76rem; }
+  .source-list .src-meta { font-size: 0.66rem; color: var(--text-faint); }
+
+  footer { padding: 28px 0 36px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--text-muted); }
+  footer a { color: var(--pale); text-decoration: none; }
+  footer .left { display: flex; align-items: center; gap: 16px; }
+
+  @media (max-width: 980px) {
+    .hero-row { grid-template-columns: 1fr; }
+    .sources-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .nav-product-link { display: none; }
+  }
+  @media (max-width: 600px) {
+    .sources-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---- architecture additions ---- */
+  .layer-tag{display:inline-flex;align-items:center;gap:6px;font-size:0.55rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;padding:3px 9px;border-radius:99px;}
+  .layer-tag.sense{background:rgba(90,138,154,0.14);color:var(--cool);border:1px solid rgba(90,138,154,0.30);}
+  .layer-tag.measure{background:rgba(167,139,219,0.14);color:var(--purple);border:1px solid rgba(167,139,219,0.30);}
+  .layer-tag.activate{background:rgba(255,107,43,0.10);color:var(--orange-soft);border:1px solid rgba(255,173,59,0.30);}
+  .sense-note{margin-top:16px;font-size:0.74rem;line-height:1.55;color:var(--text-muted);border-left:2px solid rgba(90,138,154,0.45);padding-left:13px;max-width:540px;}
+  .sense-note strong{font-weight:700;}
+  .terrain-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .terrain-card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 18px;display:flex;flex-direction:column;gap:9px;}
+  .terrain-card .sub{font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--cool);font-weight:700;}
+  .terrain-card .grp{font-size:0.95rem;font-weight:700;color:white;letter-spacing:-0.015em;line-height:1.2;}
+  .terrain-card .state{align-self:flex-start;font-size:0.52rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;border-radius:99px;}
+  .terrain-card .state.strong{background:rgba(124,196,168,0.12);color:var(--green);border:1px solid rgba(124,196,168,0.25);}
+  .terrain-card .state.thin{background:rgba(240,184,85,0.12);color:var(--amber);border:1px solid rgba(240,184,85,0.25);}
+  .terrain-card .state.leak{background:rgba(248,113,113,0.12);color:var(--warning);border:1px solid rgba(248,113,113,0.25);}
+  .terrain-card .state.untested{background:rgba(255,255,255,0.05);color:var(--text-muted);border:1px dashed rgba(255,255,255,0.20);}
+  .terrain-card .read{font-size:0.76rem;color:var(--text-body);line-height:1.5;}
+  .terrain-card .kpi{margin-top:auto;padding-top:9px;border-top:1px solid var(--line-soft);font-size:0.6rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-faint);font-weight:700;}
+  .terrain-card .kpi b{color:var(--pale);font-weight:700;}
+  .terrain-note{margin-top:16px;font-size:0.74rem;color:var(--text-muted);line-height:1.55;}
+  .terrain-note em{font-style:normal;color:var(--orange-soft);font-weight:600;}
+  .mc-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.5rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-soft);background:rgba(255,107,43,0.08);border:1px solid rgba(255,173,59,0.28);padding:3px 9px;border-radius:99px;vertical-align:middle;margin-left:8px;}
+  @media(max-width:980px){.terrain-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.terrain-grid{grid-template-columns:1fr;}}
+
+  /* ---- UX ---- */
+  html{scroll-behavior:smooth;} section[id]{scroll-margin-top:78px;}
+  .subnav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;padding:11px 0;background:rgba(10,15,26,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .subnav .sn-brand{font-size:0.62rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint);}
+  .subnav .sn-sp{flex:1;}
+  .subnav .sn{font-size:0.68rem;font-weight:700;color:var(--text-muted);text-decoration:none;padding:6px 12px;border-radius:99px;border:1px solid transparent;display:inline-flex;align-items:center;gap:6px;}
+  .subnav .sn::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;opacity:0.5;}
+  .subnav .sn.sense{color:var(--cool);} .subnav .sn.measure{color:var(--purple);} .subnav .sn.activate{color:var(--orange-soft);}
+  .subnav .sn.active{background:var(--surface-2);border-color:var(--line);} .subnav .sn.active::before{opacity:1;}
+  .subnav .sn-cta{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--deep);background:var(--purple);padding:7px 14px;border-radius:6px;text-decoration:none;}
+  .btn-measure{background:var(--purple);color:var(--deep);} .btn-measure:hover{transform:translateY(-1px);}
+  .cta-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .cta-col{border-radius:10px;padding:24px 26px;display:flex;flex-direction:column;gap:6px;}
+  .cta-col.measure{background:linear-gradient(135deg, rgba(167,139,219,0.10), rgba(167,139,219,0.03));border:1px solid rgba(167,139,219,0.28);}
+  .cta-col.activate{background:linear-gradient(135deg, rgba(255,107,43,0.08), rgba(255,107,43,0.02));border:1px solid rgba(255,173,59,0.26);}
+  .cta-col .cta-k{font-size:0.56rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:4px;}
+  .cta-col.measure .cta-k{color:var(--purple);} .cta-col.activate .cta-k{color:var(--orange-soft);}
+  .cta-col .cta-h2{font-size:1.15rem;font-weight:700;color:white;letter-spacing:-0.02em;line-height:1.25;}
+  .cta-col .cta-d{font-size:0.8rem;color:var(--text-body);line-height:1.5;margin-bottom:6px;}
+  .cta-col .btn{align-self:flex-start;margin-top:auto;}
+  .sticky-cta{position:fixed;right:24px;bottom:24px;z-index:60;display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:var(--deep);font-size:0.74rem;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;padding:13px 20px;border-radius:99px;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,0.45);opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity 0.3s, transform 0.3s;}
+  .sticky-cta.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .pageb-sub{font-size:0.95rem;color:var(--text-body);line-height:1.6;max-width:720px;margin-top:14px;}
+  .run-header .hero-sub{font-size:1.08rem;color:var(--text-body);line-height:1.6;max-width:700px;margin-top:16px;font-weight:400;}
+  /* benefits */
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .why-card{background:var(--surface);border:1px solid var(--line);border-top-width:3px;border-radius:10px;padding:22px 24px;display:flex;flex-direction:column;gap:9px;}
+  .why-card.c1{border-top-color:var(--amber);} .why-card.c2{border-top-color:var(--purple);} .why-card.c3{border-top-color:var(--cool);}
+  .why-card .wc-n{font-size:0.6rem;font-weight:800;letter-spacing:0.14em;color:var(--text-faint);}
+  .why-card h3{font-size:1.05rem;font-weight:700;color:white;letter-spacing:-0.02em;line-height:1.25;}
+  .why-card p{font-size:0.83rem;color:var(--text-body);line-height:1.5;}
+  .why-connector{margin-top:20px;font-size:0.9rem;color:var(--text-muted);font-style:italic;max-width:760px;}
+  .beat-frame{font-size:1.02rem;color:var(--text-body);line-height:1.6;max-width:780px;}
+  .beat-frame strong{color:white;font-weight:600;}
+  /* in brief */
+  .inbrief{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:24px 28px;}
+  .inbrief .ib-k{font-size:0.6rem;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:var(--cool);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .inbrief .ib-k::before{content:'';width:18px;height:2px;background:var(--cool);}
+  .inbrief ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .inbrief li{font-size:0.9rem;color:var(--text-body);line-height:1.5;padding-left:20px;position:relative;}
+  .inbrief li::before{content:'';position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:2px;background:var(--cool);}
+  .inbrief li strong{color:white;font-weight:700;}
+  /* opportunity cards */
+  .opp-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  .opp-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 26px;}
+  .opp-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .opp-n{font-size:0.7rem;font-weight:800;color:var(--purple);letter-spacing:0.08em;}
+  .opp-card h3{font-size:1.12rem;font-weight:700;color:white;letter-spacing:-0.02em;}
+  .opp-validate{font-size:0.84rem;color:var(--text-body);line-height:1.5;margin:10px 0 12px;}
+  .opp-validate b{color:var(--pale);font-weight:600;}
+  .opp-proof{display:flex;gap:10px;background:rgba(124,196,168,0.06);border-left:2px solid var(--green);border-radius:0 6px 6px 0;padding:11px 14px;font-size:0.82rem;color:var(--text-primary);line-height:1.5;}
+  .opp-proof .pf-co{font-weight:700;color:var(--green);}
+  details.opp-more{margin-top:12px;}
+  details.opp-more>summary{list-style:none;cursor:pointer;font-size:0.72rem;font-weight:700;color:var(--cool);letter-spacing:0.04em;text-transform:uppercase;}
+  details.opp-more>summary::-webkit-details-marker{display:none;}
+  details.opp-more>summary::after{content:' \203A';}
+  details.opp-more[open]>summary::after{content:'';}
+  .opp-detail{margin-top:10px;font-size:0.8rem;color:var(--text-muted);line-height:1.55;padding-top:10px;border-top:1px solid var(--line-soft);}
+  .opp-detail a{color:var(--pale);border-bottom:1px dotted var(--cool-dark);text-decoration:none;}
+  /* accordions */
+  details.acc{border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-bottom:10px;}
+  details.acc>summary{list-style:none;cursor:pointer;padding:16px 20px;font-size:0.92rem;font-weight:600;color:var(--text-primary);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  details.acc>summary::-webkit-details-marker{display:none;}
+  details.acc>summary::after{content:'+';font-size:1.25rem;color:var(--text-muted);font-weight:400;line-height:1;}
+  details.acc[open]>summary::after{content:'\2013';}
+  details.acc>summary:hover{color:white;}
+  .acc-body{padding:2px 20px 20px;font-size:0.85rem;color:var(--text-body);line-height:1.6;}
+  .acc-body ul{margin:8px 0 0;padding-left:18px;} .acc-body li{margin-bottom:6px;}
+  .acc-body .sources-block{margin-top:6px;}
+  @media(max-width:860px){.why-grid{grid-template-columns:1fr;}}
+  @media(max-width:760px){.cta-split{grid-template-columns:1fr;} .subnav .sn-brand{display:none;}}
+  /* ---- snapshot cost estimator modal ---- */
+  .modal-ov{position:fixed;inset:0;z-index:200;background:rgba(5,8,15,0.72);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;}
+  .modal-ov.open{display:flex;}
+  .modal{background:#0e1422;border:1px solid var(--line);border-radius:14px;max-width:680px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,0.6);overflow:hidden;}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--line);}
+  .modal-head .mh-k{font-size:0.58rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple);margin-bottom:8px;}
+  .modal-head h2{font-size:1.3rem;font-weight:800;color:white;letter-spacing:-0.02em;line-height:1.2;}
+  .modal-head p{font-size:0.8rem;color:var(--text-muted);margin-top:6px;line-height:1.5;max-width:480px;}
+  .modal-x{background:none;border:none;color:var(--text-muted);font-size:1.5rem;cursor:pointer;line-height:1;padding:2px 8px;border-radius:6px;}
+  .modal-x:hover{color:white;background:var(--surface-2);}
+  .modal-body{padding:20px 28px 8px;}
+  .modal-row{margin-bottom:20px;}
+  .modal-row .mr-lbl{font-size:0.6rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:9px;}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .seg button{background:transparent;border:none;color:var(--text-body);font-family:inherit;font-size:0.82rem;font-weight:600;padding:9px 18px;cursor:pointer;}
+  .seg button.on{background:var(--purple);color:var(--deep);font-weight:700;}
+  .cur-row{display:flex;flex-wrap:wrap;gap:6px;}
+  .cur-row button{background:var(--surface);border:1px solid var(--line);color:var(--text-body);font-family:inherit;font-size:0.78rem;font-weight:700;padding:7px 12px;border-radius:6px;cursor:pointer;}
+  .cur-row button.on{background:var(--surface-2);border-color:var(--cool);color:white;}
+  .chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .chk{display:flex;align-items:flex-start;gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 13px;cursor:pointer;font-size:0.82rem;color:var(--text-body);line-height:1.35;}
+  .chk input{margin-top:1px;accent-color:var(--cool);width:15px;height:15px;flex-shrink:0;}
+  .chk.on{border-color:var(--cool);background:rgba(90,138,154,0.08);color:var(--text-primary);}
+  .chk-other{grid-column:1 / -1;display:flex;align-items:center;gap:9px;cursor:default;}
+  .chk-other input[type=text]{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:9px 11px;color:var(--text-primary);font-family:inherit;font-size:0.82rem;}
+  .chk-other input[type=text]::placeholder{color:var(--text-faint);}
+  .other-note{font-size:0.72rem;color:var(--text-muted);line-height:1.5;margin-top:10px;border-left:2px solid var(--cool);padding-left:11px;}
+  .est{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin:4px 0 4px;}
+  .est-tier{font-size:0.6rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--cool);margin-bottom:8px;}
+  .est-range{font-size:1.85rem;font-weight:800;color:white;letter-spacing:-0.03em;line-height:1.05;}
+  .est-sub{font-size:0.74rem;color:var(--text-muted);margin-top:5px;}
+  .est-bd{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:7px;}
+  .est-bd .bd{display:flex;justify-content:space-between;gap:12px;font-size:0.8rem;color:var(--text-body);}
+  .est-bd .bd b{color:var(--text-primary);font-weight:600;}
+  .est-bd .bd.tot{padding-top:8px;border-top:1px dashed var(--line);color:white;}
+  .est-bd .bd.tot b{color:white;font-weight:800;}
+  .modal-foot{padding:16px 28px 24px;border-top:1px solid var(--line);}
+  .modal-foot .caveat{font-size:0.7rem;color:var(--text-faint);line-height:1.55;margin-bottom:14px;}
+  .modal-foot .btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .dim-lbl{font-size:0.58rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;}
+  .back-est{display:inline-block;font-size:0.74rem;font-weight:600;color:var(--cool);text-decoration:none;cursor:pointer;margin-bottom:16px;}
+  .book-h{font-size:1.2rem;font-weight:800;color:white;letter-spacing:-0.02em;margin-bottom:6px;}
+  .book-d{font-size:0.82rem;color:var(--text-muted);line-height:1.5;margin-bottom:18px;}
+  .hp{position:absolute;left:-9999px;}
+  .fld{margin-bottom:13px;display:flex;flex-direction:column;gap:5px;}
+  .fld label{font-size:0.7rem;font-weight:700;letter-spacing:0.04em;color:var(--text-body);}
+  .fld label span{color:var(--text-faint);font-weight:500;}
+  .fld input,.fld textarea{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:10px 12px;color:var(--text-primary);font-family:inherit;font-size:0.88rem;}
+  .fld input:focus,.fld textarea:focus{outline:none;border-color:var(--cool);}
+  #navSubmit{margin-top:6px;border:none;cursor:pointer;}
+  .book-thanks{font-size:0.92rem;color:var(--text-primary);line-height:1.5;margin-bottom:14px;border-left:2px solid var(--green);padding-left:12px;}
+  #calMount{border-radius:8px;overflow:hidden;}
+  @media(max-width:560px){.chk-grid{grid-template-columns:1fr;}}
+
+  /* logo ambient breathing */
+  .lg-amb .lg-glow{animation:lgAmb 4s ease-in-out infinite;}
+  .lg-amb .lg-mlight{animation:lgAmbM 4s ease-in-out infinite;}
+  @keyframes lgAmb{0%,100%{opacity:.95}50%{opacity:.55}}
+  @keyframes lgAmbM{0%,100%{opacity:.8}50%{opacity:.45}}
+  @media (prefers-reduced-motion: reduce){.lg-amb *{animation:none!important}}
+
+  /* four-arrow benefit icons */
+  .wc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+  .wc-ic{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:rgba(90,138,154,0.08);border:1px solid rgba(90,138,154,0.18);}
+  .wc-ic .tri-solid{fill:#5a8a9a;}
+  .wc-ic .tri-glow{fill:#6da0b8;animation:icGlow 4s ease-in-out infinite;}
+  .why-card.c2 .tri-glow{animation-delay:.5s;} .why-card.c3 .tri-glow{animation-delay:1s;}
+  .why-card:hover .tri-glow{animation:none;opacity:1;}
+  @keyframes icGlow{0%,100%{opacity:.3}50%{opacity:1}}
+  @media (prefers-reduced-motion: reduce){.wc-ic .tri-glow{animation:none!important;opacity:.55;}}
+</style>
+<!-- seo-ai:start -->
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href="https://trustos.missionctrl.agency/navigator/glencore/" />
+<meta property="og:title" content="TrustOS Navigator — Glencore" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://trustos.missionctrl.agency/navigator/glencore/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="TrustOS Navigator — Glencore" />
+<meta name="twitter:description" content="" />
+<!-- seo-ai:end -->
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="https://trustos.missionctrl.agency" class="nav-wordmark">
+        <svg width="22" height="27" viewBox="0 0 120 148" fill="none" class="lg-amb" style="flex-shrink:0;"><defs><linearGradient id="nav-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient><linearGradient id="nav-ml" x1="60" y1="12" x2="60" y2="140"><stop offset="0%" stop-color="#5a8a9a" stop-opacity="0.5"/><stop offset="100%" stop-color="#5a8a9a" stop-opacity="0.03"/></linearGradient><filter id="nav-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter></defs><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/><path class="lg-mlight" d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="url(#nav-ml)"/><polygon class="lg-glow" points="30,12 90,12 60,88" fill="#6da0b8" filter="url(#nav-glow)"/><polygon points="30,12 90,12 60,88" fill="url(#nav-tg)"/></svg>
+        <span><span class="trust">Trust</span><span class="os">OS</span></span>
+      </a>
+      <a href="https://missionctrl.agency" class="nav-product-link" target="_blank" rel="noopener">
+        <svg width="10" height="12" viewBox="0 0 120 148" fill="none">
+          <defs><linearGradient id="nav-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="nav-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs>
+          <rect width="120" height="148" fill="url(#nav-mg)" clip-path="url(#nav-mlc)"/>
+        </svg>
+        A MissionCTRL product →
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="https://trustos.missionctrl.agency/explorer/">TrustOS Explorer</a></li>
+      <li><a href="https://trustos.missionctrl.agency/methodology/">How it works</a></li>
+      <li><a href="https://trustos.missionctrl.agency/#sector-insights">Sector Insights</a></li>
+    </ul>
+    <a href="https://meetings-eu1.hubspot.com/dustin-lawrence" target="_blank" rel="noopener" class="nav-cta">Book a Call</a>
+  </nav>
+
+  <div class="breadcrumb">
+    <span class="bc-section">Navigator</span>
+    <span class="bc-sep">›</span>
+    <span class="bc-item">Reports</span>
+    <span class="bc-sep">›</span>
+    <span class="bc-item current">Glencore plc · LSE: GLEN</span>
+    <span class="bc-spacer"></span>
+    <span class="bc-run">
+      <span class="stage-tag">● Sense · Public signal</span>
+      <span>Run · 29 June 2026</span>
+    </span>
+  </div>
+
+  <nav class="subnav" id="subnav">
+    <span class="sn-brand">Glencore &#183; Trust position</span>
+    <span class="sn-sp"></span>
+    <a href="#sense" class="sn sense active">Sense</a>
+    <a href="#measure" class="sn measure">Measure</a>
+    <a href="https://missionctrl.agency" class="sn activate" target="_blank" rel="noopener">Activate &middot; MissionCTRL &#8599;</a>
+    <a href="#measure" class="sn-cta">Get the Snapshot</a>
+  </nav>
+
+  <!-- WHY HERO -->
+  <div class="run-header why-hero">
+    <div class="eyebrow"><span class="layer-tag sense">Sense</span> &nbsp;TrustOS Navigator &#183; a free read</div>
+    <h1>Lead the social-licence conversation &#8212;<br/><em>with data, not defence.</em></h1>
+    <p class="hero-sub">TrustOS gives brand and comms leaders a measured view of community trust, asset by asset &#8212; so the social-licence story is led with evidence, not written by the next blockade or court ruling.</p>
+  </div>
+
+  <style>
+  .bench{margin-top:8px;}
+  .bench-comp{container-type:inline-size;width:100%;}
+  .bench-cross{display:grid;grid-template-columns:1fr 150px 1fr;grid-template-rows:auto 150px auto;gap:10px 28px;align-items:center;justify-items:center;max-width:740px;margin:0 auto;}
+  .bench-ctrl-cell{grid-column:2;grid-row:2;}
+  .bench-ben{max-width:230px;transition:opacity .45s ease;}
+  .bench-ben.n{grid-column:2;grid-row:1;text-align:center;}
+  .bench-ben.s{grid-column:2;grid-row:3;text-align:center;}
+  .bench-ben.w{grid-column:1;grid-row:2;text-align:right;}
+  .bench-ben.e{grid-column:3;grid-row:2;text-align:left;}
+  .bench-h{font-size:0.9rem;font-weight:700;color:rgba(255,255,255,0.5);margin:0 0 6px;transition:color .4s;}
+  .bench-b{font-size:0.74rem;line-height:1.65;color:rgba(255,255,255,0.3);margin:0;transition:color .4s;}
+  .bench-ben.on,.bench-cap.on{opacity:1;}
+  .bench-ben.on .bench-h,.bench-cap.on .bench-h{color:var(--cool);}
+  .bench-ben.on .bench-b,.bench-cap.on .bench-b{color:rgba(255,255,255,0.6);}
+  .bench-ben:not(.on){opacity:0.42;}
+  .bench-ctrl{position:relative;width:150px;height:150px;border:0;background:none;padding:0;cursor:pointer;display:block;}
+  .bench-ctrl:focus-visible{outline:2px solid var(--cool);outline-offset:6px;border-radius:30px;}
+  .bench-pad{position:absolute;inset:0;border-radius:30px;background:radial-gradient(circle at 50% 50%,rgba(90,138,154,0.10),rgba(90,138,154,0.015));border:1px solid rgba(90,138,154,0.16);}
+  .bench-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+  .bench-rot{transform-box:view-box;transform-origin:50% 50%;transition:transform .8s cubic-bezier(.22,1,.36,1);}
+  .bench-cast{opacity:0;transition:opacity .55s ease;}
+  .bench-ctrl.lit .bench-cast{opacity:.9;}
+  .bench-tri{transition:filter .4s ease;}
+  .bench-ctrl.lit .bench-tri{filter:drop-shadow(0 0 5px rgba(109,160,184,0.55));}
+  .bench-cap{display:none;}
+  @container (max-width:520px){
+    .bench-cross{grid-template-columns:1fr;grid-template-rows:auto auto;gap:6px;max-width:340px;}
+    .bench-ctrl-cell{grid-column:1;grid-row:1;}
+    .bench-ben{display:none;}
+    .bench-cap{display:block;grid-column:1;grid-row:2;text-align:center;min-height:92px;}
+    .bench-cap .bench-h{font-size:1rem;}.bench-cap .bench-b{font-size:0.78rem;}
+  }
+  @media (prefers-reduced-motion: reduce){.bench-rot{transition:none;}.bench-ben{opacity:1!important;}}
+  </style>
+  <!-- BENEFITS -->
+  <section id="sense" style="border-bottom:none;padding:30px 0 6px;">
+    <div class="bench">
+      <div class="bench-comp">
+        <div class="bench-cross">
+          <div class="bench-ben n" data-i="0"><p class="bench-h">Prove impact</p><p class="bench-b">Show the board, investors and host governments exactly where community trust is strengthening, asset by asset &#8212; with evidence, not defence.</p></div>
+          <div class="bench-ben w" data-i="3"><p class="bench-h">Learn from every move</p><p class="bench-b">Track community trust each quarter, asset by asset &#8212; so consent becomes a managed, anticipatable variable instead of a recurring flashpoint.</p></div>
+          <div class="bench-ctrl-cell">
+            <button class="bench-ctrl lit" type="button" aria-label="Show next benefit">
+              <span class="bench-pad"></span>
+              <svg class="bench-svg" viewBox="0 0 240 240" aria-hidden="true">
+                <defs>
+                  <linearGradient id="bc-tf" x1="120" y1="120" x2="120" y2="196" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6da0b8"/><stop offset="1" stop-color="#5a8a9a"/></linearGradient>
+                  <linearGradient id="bc-mc" x1="120" y1="120" x2="120" y2="248" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7fb4cc" stop-opacity="0.78"/><stop offset="0.55" stop-color="#6da0b8" stop-opacity="0.28"/><stop offset="1" stop-color="#6da0b8" stop-opacity="0"/></linearGradient>
+                  <filter id="bc-gb" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="5.5"/></filter>
+                </defs>
+                <g class="bench-rot">
+                  <path class="bench-cast" d="M64,248 L90,120 L120,196 L150,120 L176,248 Z" fill="url(#bc-mc)" filter="url(#bc-gb)"/>
+                  <polygon class="bench-tri" points="90,120 150,120 120,196" fill="url(#bc-tf)"/>
+                </g>
+              </svg>
+            </button>
+          </div>
+          <div class="bench-ben e" data-i="1"><p class="bench-h">Make the next move</p><p class="bench-b">Know which story to lead with &#8212; copper growth, the coal transition, or consent done right &#8212; backed by what stakeholders actually reward.</p></div>
+          <div class="bench-ben s" data-i="2"><p class="bench-h">Spot the leaks</p><p class="bench-b">Find where lived community experience is outrunning the stated engagement &#8212; before it becomes the next blockade, court ruling or AGM-day protest.</p></div>
+          <div class="bench-cap"><p class="bench-h"></p><p class="bench-b"></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="why-connector">Whatever you are leading through &#8212; copper-led growth, a coal-position transition, or a contested licence to operate &#8212; it starts with seeing where trust stands today, asset by asset.</div>
+  </section>
+
+  <!-- IN BRIEF -->
+  <section style="border-bottom:none;padding:14px 0 18px;">
+    <div class="inbrief">
+      <div class="ib-k">In brief</div>
+      <ul>
+        <li><strong>What this is</strong> &#8212; a free read of Glencore's trust, inferred from public signals.</li>
+        <li><strong>The read</strong> &#8212; 59 out of 100: corporate, investor and operational delivery is strong; what host communities, courts and investors cannot yet see is consent handled as a measured, managed commitment at the asset.</li>
+        <li><strong>Where it leaks</strong> &#8212; Connection: the lived community experience diverges sharply from stated engagement &#8212; roughly 80 blockades at Cerrej&#243;n alone this year is the clearest possible signal of an Expectation&#8596;Reality gap.</li>
+        <li><strong>The opportunity</strong> &#8212; three moves a Snapshot would validate: baseline community trust asset by asset, make community value a provable asset, and benchmark social-licence trust across the portfolio and against peers.</li>
+        <li><strong>The next step</strong> &#8212; a TrustOS Snapshot turns this estimate into validated trust, by community and stakeholder group, tracked every quarter.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section style="border-bottom:none;padding-bottom:0;">
+    <div class="section-label">The problem</div>
+    <h2 class="section-title">Trust is what every leader assumes &#8212; and almost no one measures. <em>So the gaps stay invisible.</em></h2>
+    <div class="beat-frame">They stay invisible until they show up as a rail blockade, a suspended permit, or a protest on AGM day. Here is Glencore's trust, read from public signal alone.</div>
+  <div style="margin-top:14px;padding:14px 18px;background:rgba(124,196,168,0.06);border-left:2px solid #7cc4a8;border-radius:0 6px 6px 0;"><p style="margin:0;font-size:0.82rem;line-height:1.6;color:#9fb4c4;">Across every sector we read, the same layer is thinnest: <strong style="color:#7cc4a8;font-weight:700;">Connection</strong> &#8212; the work of making one promise land the same way for every stakeholder. It rarely shows up in any single team&#8217;s numbers, because no single team owns it. That&#8217;s the gap this read makes visible.</p></div>
+  </section>
+
+<style>
+  .nv-wrap{height:auto!important;display:flex;flex-direction:column;align-items:center;gap:16px;padding:8px 0;}
+  .nv-tri{display:flex;justify-content:center;}
+  .nv-tri svg{width:290px;height:260px;overflow:visible;}
+  .nv-lbl{font-family:'Sora',sans-serif;font-size:7px;font-weight:800;letter-spacing:0.11em;}
+  .nv-lbl.lc{fill:#8fb5c0;}.nv-lbl.ln{fill:#7cc4a8;}.nv-lbl.lf{fill:#a78bdb;}
+  .nv-comp{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
+  .nv-cap{font-family:'Sora',sans-serif;font-size:6px;font-weight:700;letter-spacing:0.16em;fill:rgba(255,255,255,0.75);text-anchor:middle;dominant-baseline:middle;}
+  .nv-bars{display:flex;flex-direction:column;gap:9px;width:100%;max-width:290px;}
+  .nv-bar{display:grid;grid-template-columns:74px 1fr 26px;align-items:center;gap:12px;}
+  .nv-bar-l{font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;}
+  .nv-bar-l.cl{color:#8fb5c0;}.nv-bar-l.cn{color:#7cc4a8;}.nv-bar-l.cf{color:#a78bdb;}
+  .nv-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
+  .nv-fill{display:block;height:100%;border-radius:3px;}
+  .nv-fill.cl{background:#5a8a9a;}.nv-fill.cn{background:#7cc4a8;}.nv-fill.cf{background:#a78bdb;}
+  .nv-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.8);text-align:right;font-variant-numeric:tabular-nums;}
+  .nv-foundation{font-size:0.56rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-faint);}
+  .nv-foundation strong{color:var(--pale);font-weight:800;}
+</style>
+  <!-- HERO -->
+  <div class="hero-row">
+    <div class="triangle-wrap nv-wrap">
+      <div class="nv-tri">
+        <svg viewBox="0 0 290 260" width="290" height="260" overflow="visible" aria-label="Trust shape: Clarity 74, Connection 48, Confidence 55, Trust Index 59">
+          <defs>
+            <linearGradient id="nv-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient>
+            <filter id="nv-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tb"/><feMerge><feMergeNode in="tb"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <polygon id="nv-ideal" points="" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.2" stroke-dasharray="4 5"/>
+          <polygon id="nv-poly" fill="url(#nv-grad)" filter="url(#nv-glow)"/>
+          <text id="nv-lc" class="nv-lbl lc"></text>
+          <text id="nv-ln" class="nv-lbl ln"></text>
+          <text id="nv-lf" class="nv-lbl lf"></text>
+          <text id="nv-comp" class="nv-comp"></text>
+          <text id="nv-comp-l" class="nv-cap">TRUST INDEX</text>
+        </svg>
+      </div>
+      <div class="nv-bars">
+        <div class="nv-bar"><span class="nv-bar-l cl">Clarity</span><span class="nv-track"><span class="nv-fill cl" style="width:74%"></span></span><span class="nv-bar-v">74</span></div>
+        <div class="nv-bar"><span class="nv-bar-l cn">Connection</span><span class="nv-track"><span class="nv-fill cn" style="width:48%"></span></span><span class="nv-bar-v">48</span></div>
+        <div class="nv-bar"><span class="nv-bar-l cf">Confidence</span><span class="nv-track"><span class="nv-fill cf" style="width:55%"></span></span><span class="nv-bar-v">55</span></div>
+      </div>
+      <div class="nv-foundation">On a foundation of <strong>Integrity</strong></div>
+    </div>
+
+    <div class="hero-read">
+      <div class="read-line">Pressured, not in crisis. <em>The delivery is proven. What's unproven is whether consent is caught and resolved before it becomes the next stoppage.</em></div>
+      <div class="read-sub">FY2025 was a return to form &#8212; revenue ~$247.5bn (up 7%), adjusted EBITDA ~$13.5bn, back to a net profit of ~$363m after a $1.6bn loss in 2024, and a copper-led strategy targeting ~1.6Mt by 2035. Set against that: simultaneous social-licence pressure &#8212; Cerrej&#243;n force majeure, the Collahuasi permit setback, and coordinated AGM-day protests across six countries.</div>
+      <div class="classify-strip">
+        <span class="chip">Pressured</span>
+        <span class="arr">×</span>
+        <span class="chip">Established buyer</span>
+        <span class="arr">→</span>
+        <span class="chip hook">Proof hook</span>
+      </div>
+      <div class="sense-note"><strong>The 59 is a public-signal estimate (0&#8211;100), not a measured score.</strong> It is read from the public footprint only &#8212; no stakeholder survey data &#8212; and anchored on the TrustOS Mining sector baseline, adjusted down for the current multi-asset social-licence pressure. A TrustOS Snapshot replaces it with a validated figure from primary research.</div>
+    </div>
+  </div>
+
+  <!-- SENSE: FOUR-GROUP TERRAIN -->
+  <section>
+    <div class="section-label"><span class="layer-tag sense">Sense</span> &nbsp;Where trust stands today</div>
+    <h2 class="section-title">Corporate and operational delivery is solid. <em>The live test is social licence and the host community.</em></h2>
+
+    <div class="terrain-grid">
+      <div class="terrain-card">
+        <div class="sub">Host communities &amp; Indigenous groups</div>
+        <div class="grp">Way&#250;u &amp; host communities (Colombia, Chile, DRC&#8230;)</div>
+        <span class="state leak">Leaking</span>
+        <div class="read">The highest-centrality node. Prior-consultation, water and royalty grievances are the live leak. The recurring pattern &#8212; nearly 80 blockades at Cerrej&#243;n alone this year &#8212; signals the systems meant to surface and resolve grievances aren't catching them early.</div>
+        <div class="kpi">TrustOS tracks &middot; <b>community consent &amp; NPS</b></div>
+      </div>
+      <div class="terrain-card">
+        <div class="sub">Employees &amp; contractors</div>
+        <div class="grp">On-site workforce &amp; contractors</div>
+        <span class="state thin">Thin</span>
+        <div class="read">Contracts were suspended during the Cerrej&#243;n force majeure. The workforce sits between community action and operational continuity &#8212; the human face of every stoppage.</div>
+        <div class="kpi">TrustOS tracks &middot; <b>retention</b></div>
+      </div>
+      <div class="terrain-card">
+        <div class="sub">Governments &amp; courts / regulators</div>
+        <div class="grp">Host-nation regulators &amp; courts</div>
+        <span class="state thin">Thin</span>
+        <div class="read">Host-nation regulators and courts can suspend authorisations &#8212; Chile's Second Environmental Tribunal set aside the Collahuasi continuity permit. Permitting predictability is contested.</div>
+        <div class="kpi">TrustOS tracks &middot; <b>permitting sentiment</b></div>
+      </div>
+      <div class="terrain-card">
+        <div class="sub">Investors &amp; ESG holders</div>
+        <div class="grp">LSE shareholders &amp; ESG investors</div>
+        <span class="state thin">Thin</span>
+        <div class="read">AGM-day protests and ESG scrutiny. Coal exposure and the community record shape the cost and availability of capital &#8212; the price of getting consent wrong shows up here.</div>
+        <div class="kpi">TrustOS tracks &middot; <b>confidence signals</b></div>
+      </div>
+    </div>
+
+    <div class="terrain-note">These are the four highest-acuity stakeholder groups in this read (labels are configurable per client). Public signal also surfaced <em>NGOs &amp; activist networks</em> &#8212; the London Mining Network and the Resist Glencore Network actively shape the public narrative across assets (leaking) &#8212; alongside <em>JV partners</em> (Anglo American co-owns Collahuasi and shares the exposure &#8212; aligned but strong) and <em>Customers / offtake</em> (the Marketing arm's counterparties &#8212; stable, increasingly attentive to provenance). All expand into the full stakeholder ecosystem in MissionCTRL Solutions.</div>
+  </section>
+
+  <!-- OPPORTUNITY -->
+  <section id="measure" style="border-bottom:none;padding-bottom:14px;">
+    <div class="section-label"><span class="layer-tag measure">Opportunity</span> &nbsp;Go deeper</div>
+    <h2 class="section-title">Three moves a Snapshot would validate. <em>Each one, proven elsewhere.</em></h2>
+    <div class="beat-frame">This read shows the shape. A Snapshot tells you which of these your stakeholders would actually reward &#8212; before you commit.</div>
+    <div class="opp-grid" style="margin-top:22px;">
+      <div class="opp-card">
+        <div class="opp-h"><span class="opp-n">01</span><h3>Build a community-trust baseline, asset by asset &#8212; before the next blockade</h3></div>
+        <div class="opp-validate"><b>A Snapshot validates:</b> where each host community's trust actually sits, so Glencore can locate and act on a leak early instead of reacting to a stoppage or a court ruling. A live community-trust signal turns recurring disruption into a managed, anticipatable variable.</div>
+        <div class="opp-proof"><span><span class="pf-co">Rio Tinto</span> &#8212; Juukan Gorge showed the cost of legal compliance without a real-time read on community trust. The reform that followed is the playbook for measuring and managing consent proactively.</span></div>
+        <details class="opp-more"><summary>See the case</summary><div class="opp-detail">In May 2020 Rio Tinto destroyed the 46,000-year-old rock shelters at Juukan Gorge &#8212; legally permitted, but catastrophic for trust, costing the CEO and chairman their roles. The reforms that followed &#8212; modernised agreements with Traditional Owners, a co-management model, independent advisory groups and heritage audits &#8212; show what proactively measuring and managing consent looks like, rather than relying on legal compliance alone. <a href="https://www.riotinto.com/en/news/stories/juukan-gorge-learning-from-the-past" target="_blank" rel="noopener">Rio Tinto &#8212; Juukan Gorge: learning from the past</a></div></details>
+      </div>
+      <div class="opp-card">
+        <div class="opp-h"><span class="opp-n">02</span><h3>Make community value a provable asset, not philanthropy</h3></div>
+        <div class="opp-validate"><b>A Snapshot validates:</b> whether a trust signal can evidence how investment in host communities lowers operational risk and closure liabilities and strengthens the licence to operate &#8212; reframing community spend as measurable value the board and investors can see.</div>
+        <div class="opp-proof"><span><span class="pf-co">Anglo American</span> &#8212; its Sustainable Mining Plan treats thriving communities and social licence as a core, measured value driver, not a discretionary add-on.</span></div>
+        <details class="opp-more"><summary>See the case</summary><div class="opp-detail">Anglo American's Sustainable Mining Plan sets out "thriving communities" as a measured pillar &#8212; with stretch goals on livelihoods, education and health, governed through its Social Way 3.0 social-performance system &#8212; treating community outcomes as a value driver that reduces operational risk and long-term liabilities. The same partner already co-owns Collahuasi, making the framework directly legible to Glencore. <a href="https://www.angloamerican.com/sustainable-mining-plan/thriving-communities" target="_blank" rel="noopener">Anglo American &#8212; Sustainable Mining Plan: Thriving Communities</a></div></details>
+      </div>
+      <div class="opp-card">
+        <div class="opp-h"><span class="opp-n">03</span><h3>Benchmark social-licence trust across the portfolio and against peers</h3></div>
+        <div class="opp-validate"><b>A Snapshot validates:</b> where Glencore leads and where to close gaps, by asset, stakeholder and driver &#8212; and against the sector &#8212; turning a defensive narrative into measurable standing with investors and governments.</div>
+        <div class="opp-proof"><span><span class="pf-co">Interface</span> built durable leadership on transparent, evidenced performance rather than narrative &#8212; the template for converting proof into benchmarked standing.</span></div>
+        <details class="opp-more"><summary>See the case</summary><div class="opp-detail">Interface set a public, measurable sustainability goal (Mission Zero) in 1994 and reported progress transparently against it for 25 years &#8212; reaching the goal in 2019 and cutting its product carbon footprint by roughly three-quarters. Evidence-led positioning, benchmarked over time, built durable category leadership and trust that competitors could not claim by narrative alone. <a href="https://unfccc.int/climate-action/momentum-for-change/climate-neutral-now/interface" target="_blank" rel="noopener">UNFCCC &#8212; Interface, Mission Zero to Climate Take Back</a></div></details>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      <a class="btn btn-measure" href="#contact">Get the TrustOS Snapshot &#8594;</a>
+      <span style="font-size:0.78rem;color:var(--text-muted);">Validate which move is real &#8212; and where each stakeholder&#8217;s bar now sits. You can&#8217;t measure a moving target from the outside; a Snapshot can.</span>
+    </div>
+  </section>
+
+  <!-- DETAIL ON DEMAND -->
+  <section style="border-bottom:none;padding:34px 0 8px;">
+    <div class="section-label">If you want the detail</div>
+    <h2 class="section-title">See how the read works &#8212; and what it is built on.</h2>
+    <details class="acc"><summary>See how the read works</summary><div class="acc-body">TrustOS works in three layers. <strong>Sense</strong> &#8212; this read &#8212; infers trust from public signal. <strong>Measure</strong> &#8212; a TrustOS Snapshot &#8212; validates it with primary research across your stakeholders, tracked quarterly. <strong>Activate</strong> &#8212; MissionCTRL &#8212; turns the picture into action: the full stakeholder ecosystem, trust synergies and the recommended moves. <a href="https://missionctrl.agency" target="_blank" rel="noopener" style="color:var(--orange-soft);border-bottom:1px dotted var(--orange-soft);text-decoration:none;">See MissionCTRL &#8594;</a> &nbsp;&middot;&nbsp; <a href="https://trustos.missionctrl.agency/methodology/" style="color:var(--cool);border-bottom:1px dotted var(--cool);text-decoration:none;">How we score &#8594;</a></div></details>
+    <details class="acc"><summary>See what a Snapshot adds</summary><div class="acc-body">A Snapshot replaces this estimate with validated data:
+      <ul>
+        <li>Validated trust across every stakeholder group &#8212; host communities, workforce, government, investors and beyond</li>
+        <li>Community NPS, consent, retention and sentiment, by group and by asset</li>
+        <li>Intent / Expectation / Reality, scored &#8212; plus the Operating Architecture foundation</li>
+        <li>Brand AI Chat &#8212; ask your trust data directly</li>
+        <li>Tracked quarter over quarter, asset by asset, for your whole team</li>
+      </ul></div></details>
+    <details class="acc"><summary>Check the 15 sources behind this read</summary><div class="acc-body"><div class="sources-block">
+      <div class="sources-head">
+        <div>
+          <div class="section-label" style="margin-bottom: 8px;">Sources Consulted</div>
+          <h2>What this read is built on.</h2>
+        </div>
+        <div class="meta">15 sources · public footprint + market coverage · accessed 29 June 2026</div>
+      </div>
+
+      <div class="sources-grid">
+
+        <!-- INTENT -->
+        <div class="source-col intent">
+          <div class="lbl">◆ Intent</div>
+          <h3>What Glencore says it is</h3>
+          <div class="what">Strategy, results, purpose, and the stated direction of the business.</div>
+          <ul class="source-list">
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/media-and-insights/news/preliminary-results-2025" target="_blank" rel="noopener">Glencore &#183; Preliminary Results 2025</a></span>
+              <span class="src-meta">Revenue ~$247.5bn (up 7%) · adjusted EBITDA ~$13.5bn · net profit ~$363m vs $1.6bn loss in 2024</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/.rest/api/v1/documents/static/9b103e11-72e7-40bf-ae7c-eabe57361522/GLEN-2025-Annual-Report.pdf" target="_blank" rel="noopener">Glencore &#183; 2025 Annual Report (PDF)</a></span>
+              <span class="src-meta">Two engines &#8212; Marketing (adjusted EBIT ~$2.9bn) &amp; Industrial assets (adjusted EBITDA ~$9.9bn, down on lower coal prices)</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/media-and-insights/news/glencore-capital-markets-day-2025" target="_blank" rel="noopener">Glencore &#183; Capital Markets Day 2025</a></span>
+              <span class="src-meta">Copper-led growth strategy &#8212; targeting c.1.6 million tonnes of copper by 2035; &gt;1Mt by 2028</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/who-we-are" target="_blank" rel="noopener">Glencore &#183; Who we are</a></span>
+              <span class="src-meta">Self-description &#8212; a leading diversified producer and marketer of metals, minerals and energy; HQ Baar, CEO Gary Nagle</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/sustainability" target="_blank" rel="noopener">Glencore &#183; Sustainability</a></span>
+              <span class="src-meta">Stated approach to communities, human rights and the energy transition &#8212; the intended social-licence narrative</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- EXPECTATION -->
+        <div class="source-col expectation">
+          <div class="lbl">◈ Expectation</div>
+          <h3>What Glencore designs</h3>
+          <div class="what">Positioning, the designed community story, the consent offer, leadership.</div>
+          <ul class="source-list">
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/sustainability/communities" target="_blank" rel="noopener">Glencore &#183; Communities</a></span>
+              <span class="src-meta">The designed community promise &#8212; against which prior-consultation, water and royalty grievances are now being read</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/what-we-do/metals-and-minerals/copper" target="_blank" rel="noopener">Glencore &#183; Copper</a></span>
+              <span class="src-meta">The designed transition story &#8212; copper for electrification, the growth engine set against the thermal-coal position</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/sustainability/our-approach-to-human-rights" target="_blank" rel="noopener">Glencore &#183; Approach to human rights</a></span>
+              <span class="src-meta">Stated commitment to FPIC, grievance mechanisms and consultation &#8212; the designed consent architecture</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/who-we-are/board-and-management" target="_blank" rel="noopener">Glencore &#183; Board &amp; management</a></span>
+              <span class="src-meta">CEO Gary Nagle · Charles Watenphul, Head of Corporate Communications since 2011 &#8212; the established function shaping the narrative</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.glencore.com/media-and-insights/news/results-of-2026-agm" target="_blank" rel="noopener">Glencore &#183; Results of 2026 AGM</a></span>
+              <span class="src-meta">The designed investor-facing position &#8212; how the board frames the year and the resolutions put to shareholders</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- REALITY -->
+        <div class="source-col reality">
+          <div class="lbl">△ Reality</div>
+          <h3>What the market sees</h3>
+          <div class="what">Third-party coverage, the social-licence narrative, court rulings, protests.</div>
+          <ul class="source-list">
+            <li>
+              <span class="src-name"><a href="https://www.mining.com/glencores-cerrejon-shutdown-deepens-pressure-on-colombia-coal/" target="_blank" rel="noopener">MINING.COM &#183; Cerrej&#243;n shutdown</a></span>
+              <span class="src-meta">Force majeure declared 1 June 2026 after a community rail blockade (begun 23 May) halted coal transport to Puerto Bol&#237;var</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.mining.com/glencore-restarts-cerrejon-after-rail-blockade/" target="_blank" rel="noopener">MINING.COM &#183; Cerrej&#243;n restart</a></span>
+              <span class="src-meta">Operations restarted 2 June once supplies restored · nearly 80 blockades at the asset this year &#8212; the clearest Expectation&#8596;Reality gap</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.mining.com/collahuasi-permit-setback-jolts-chile-copper-sector/" target="_blank" rel="noopener">MINING.COM &#183; Collahuasi permit setback</a></span>
+              <span class="src-meta">Chile's Second Environmental Tribunal set aside the authorisation for the ~$3.2bn continuity project (incl. desalination), May 2026</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://www.angloamerican.com/media/press-releases/2026/18-05-2026a" target="_blank" rel="noopener">Anglo American &#183; Collahuasi permit note</a></span>
+              <span class="src-meta">JV co-owner's statement on the tribunal ruling &#8212; shared asset, shared exposure; ruling returns specific elements for re-examination</span>
+            </li>
+            <li>
+              <span class="src-name"><a href="https://londonminingnetwork.org/2026/05/glencore-kills-mining-giant-to-meet-global-protests-on-the-day-of-its-agm/" target="_blank" rel="noopener">London Mining Network &#183; AGM-day protests</a></span>
+              <span class="src-meta">Coordinated protests on 28 May 2026 (AGM day) across London, the DRC, South Africa, Colombia, Argentina &amp; Switzerland</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <p style="font-size:0.72rem; color: var(--text-faint); margin-top: 20px; line-height: 1.5;">Figures are public-signal as read on 29 June 2026 and are directional hypotheses, not validated measurements. Scores are anchored on the TrustOS Mining sector baseline (Clarity ~81 / Connection ~58 / Confidence ~62 / Composite ~67) and adjusted down for the current multi-asset social-licence pressure. Collahuasi is a joint venture (Glencore and Anglo American, with a Japanese consortium); the tribunal ruling returns specific elements of the environmental review for re-examination rather than cancelling the project. A TrustOS Snapshot validates the read with primary stakeholder research.</p>
+    </div></div></details>
+  </section>
+
+  <!-- CLOSING CTAs -->
+  <section style="border-bottom:none;padding:10px 0 8px;">
+    <div class="cta-split">
+      <div class="cta-col measure"><div class="cta-k">Measure &#183; TrustOS</div><div class="cta-h2">Get the TrustOS Snapshot</div><div class="cta-d">The bar is moving: what host communities, courts and investors expect on consent, water and shared value has risen, and a record of engagement measured against that rising bar is already slipping. Validate the read by community and stakeholder group and track it quarterly.</div><a class="btn btn-measure" href="#contact">Start a Snapshot &#8594;</a></div>
+      <div class="cta-col activate"><div class="cta-k">Activate &#183; MissionCTRL</div><div class="cta-h2">See what activation delivers</div><div class="cta-d">The full stakeholder ecosystem, the trust synergies and the recommended moves that turn a measured position into a credible, data-led social-licence story.</div><a class="btn btn-mctrl" href="https://missionctrl.agency" target="_blank" rel="noopener">Explore MissionCTRL &#8594;</a></div>
+    </div>
+  </section>
+
+  <a class="sticky-cta" id="stickyCta" href="#measure">Get the TrustOS Snapshot &#8594;</a>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="left">
+      <span style="font-size:0.85rem;font-weight:800;letter-spacing:-0.02em;"><span style="color:var(--pale);">Trust</span><span style="color:var(--cool);">OS</span></span>
+      <span>The Sense layer · A MissionCTRL product</span>
+    </div>
+    <a href="https://trustos.missionctrl.agency">trustos.missionctrl.agency →</a>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var sticky=document.getElementById('stickyCta');
+  var links={sense:document.querySelector('.subnav .sn.sense'),measure:document.querySelector('.subnav .sn.measure')};
+  var secs=[{id:'sense',el:document.getElementById('sense')},{id:'measure',el:document.getElementById('measure')}];
+  function onScroll(){var y=window.scrollY+150,cur='sense';secs.forEach(function(s){if(s.el&&s.el.offsetTop<=y)cur=s.id;});Object.keys(links).forEach(function(k){if(links[k])links[k].classList.toggle('active',k===cur);});if(sticky)sticky.classList.toggle('show',window.scrollY>300);}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+})();
+</script>
+
+<!-- SNAPSHOT COST ESTIMATOR -->
+<div class="modal-ov" id="snapModal" role="dialog" aria-modal="true" aria-label="Estimate your TrustOS Snapshot">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div class="mh-k">Measure &#183; Indicative estimate</div>
+        <h2>Estimate your TrustOS Snapshot</h2>
+        <p>Tailor it below. This is an indicative range, not a quote &#8212; final scope and price follow a full data assessment.</p>
+      </div>
+      <button class="modal-x" id="snapClose" aria-label="Close">&#215;</button>
+    </div>
+    <div class="modal-body modal-step" id="stepEstimate">
+      <div class="modal-row">
+        <div class="mr-lbl">Currency</div>
+        <div class="cur-row" id="curRow"></div>
+      </div>
+      <div class="modal-row">
+        <div class="mr-lbl">Engagement</div>
+        <div class="seg" id="modeSeg">
+          <button data-mode="annual" class="on">Annual &#183; 4 waves</button>
+          <button data-mode="once">Once-off &#183; 1 wave</button>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="mr-lbl">Data that reduces survey cost <span style="color:var(--text-faint);font-weight:500;text-transform:none;letter-spacing:0;">&#8212; the Reality layer; the more you hold, the fewer surveys</span></div>
+        <div class="chk-grid" id="realityGrid"></div>
+        <details class="acc" style="margin-top:12px;"><summary>Also part of the data assessment &#8212; doesn't change the price</summary><div class="acc-body"><div class="dim-lbl">Intent</div><div class="chk-grid" id="intentGrid"></div><div class="dim-lbl" style="margin-top:14px;">Expectation</div><div class="chk-grid" id="expectGrid"></div></div></details>
+        <div class="chk chk-other" style="margin-top:10px;"><span style="white-space:nowrap;color:var(--text-muted);">Other</span><input type="text" placeholder="e.g. community grievance logs, consultation records"></div>
+        <div class="other-note">Listing other data does not change this estimate. Only a full data assessment can confirm whether your existing data covers the read &#8212; or whether extra surveys are needed.</div>
+      </div>
+      <div class="est" id="estBox"></div>
+    </div>
+    <div class="modal-foot" id="stepFoot">
+      <div class="caveat">Indicative only &#8212; excludes bespoke programming and add-ons. Final scope and price are confirmed after a full data assessment. Non-&pound; values are converted at indicative rates; confirm before quoting.</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="goBook">Book a 30-min call &#8594;</button>
+        <button class="btn btn-ghost" id="snapClose2">Close</button>
+      </div>
+    </div>
+    <div class="modal-body modal-step" id="stepBook" style="display:none;">
+      <a class="back-est" id="backToEst">&#8592; Back to estimate</a>
+      <div id="bookForm">
+        <div class="book-h">Book a 30-minute call</div>
+        <div class="book-d">Tell us where to reach you. We'll be alerted and bring your estimate to the call.</div>
+        <form name="navigator-booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" id="navForm">
+          <input type="hidden" name="form-name" value="navigator-booking">
+          <p class="hp"><label>Leave blank <input name="bot-field"></label></p>
+          <div class="fld"><label>Name</label><input type="text" name="name" required></div>
+          <div class="fld"><label>Work email</label><input type="email" name="email" required></div>
+          <div class="fld"><label>Company</label><input type="text" name="company" required></div>
+          <div class="fld"><label>Role <span>(optional)</span></label><input type="text" name="role"></div>
+          <div class="fld"><label>Anything to flag? <span>(optional)</span></label><textarea name="message" rows="2"></textarea></div>
+          <input type="hidden" name="estimate-currency" id="hfCur">
+          <input type="hidden" name="estimate-engagement" id="hfMode">
+          <input type="hidden" name="estimate-readiness" id="hfTier">
+          <input type="hidden" name="estimate-range" id="hfRange">
+          <input type="hidden" name="page" value="Glencore Navigator">
+          <button type="submit" class="btn btn-measure" id="navSubmit">Request my 30-min call &#8594;</button>
+        </form>
+      </div>
+      <div id="bookCal" style="display:none;">
+        <div class="book-thanks">Thanks &#8212; we've been alerted and have your estimate. Pick a time that suits you:</div>
+        <div id="calMount"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var WAVES_ANNUAL=4, FIXED=11250, FIELD=7500; // GBP per wave
+  var RATES={GBP:{s:'£',r:1,rnd:500},USD:{s:'$',r:1.27,rnd:500},EUR:{s:'€',r:1.17,rnd:500},CAD:{s:'C$',r:1.73,rnd:500},AUD:{s:'A$',r:1.92,rnd:500},ZAR:{s:'R',r:23.5,rnd:5000}};
+  var REALITY=['Stakeholder / trust survey outputs','Community engagement &amp; consultation data','Grievance / complaint logs','Community NPS','Workforce engagement data','Media &amp; social sentiment','Royalty / shared-value distribution records'];
+  var INTENT=['Corporate strategy &amp; leadership priorities','Strategic bets / growth plans','Stakeholder value framework','ESG &amp; human-rights commitments','Annual report / investor materials'];
+  var EXPECT=['Brand positioning &amp; messaging','Communications archive (press, case studies, sustainability, social)','Tone &amp; voice guidelines','Brand &amp; visual identity guidelines','Regulatory submissions &amp; disclosures'];
+  var state={cur:'GBP',mode:'annual',reality:new Set()};
+  var curRow=document.getElementById('curRow');
+  Object.keys(RATES).forEach(function(c){var b=document.createElement('button');b.textContent=c;b.dataset.cur=c;if(c==='GBP')b.classList.add('on');b.onclick=function(){state.cur=c;curRow.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x.dataset.cur===c);});render();};curRow.appendChild(b);});
+  var modeSeg=document.getElementById('modeSeg');
+  modeSeg.querySelectorAll('button').forEach(function(b){b.onclick=function(){state.mode=b.dataset.mode;modeSeg.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});render();};});
+  function buildGrid(arr,gridId,priced){var g=document.getElementById(gridId);arr.forEach(function(d,i){var l=document.createElement('label');l.className='chk';l.innerHTML='<input type="checkbox"><span>'+d+'</span>';var cb=l.querySelector('input');cb.onchange=function(){l.classList.toggle('on',cb.checked);if(priced){if(cb.checked)state.reality.add(i);else state.reality.delete(i);render();}};g.appendChild(l);});}
+  buildGrid(REALITY,'realityGrid',true); buildGrid(INTENT,'intentGrid',false); buildGrid(EXPECT,'expectGrid',false);
+  function tier(frac){ if(frac<0.34) return {name:'Low data readiness',f:1.0,off:'−0%'}; if(frac<0.67) return {name:'Medium data readiness',f:0.8,off:'−20%'}; return {name:'High data readiness',f:0.6,off:'−40%'}; }
+  function roundTo(v,step){ return Math.round(v/step)*step; }
+  function fmt(gbp){ var c=RATES[state.cur]; var v=roundTo(gbp*c.r,c.rnd); return c.s+v.toLocaleString('en-GB'); }
+  function render(){
+    var waves=state.mode==='annual'?WAVES_ANNUAL:1;
+    var t=tier(state.reality.size/REALITY.length);
+    var fixed=FIXED*waves, field=FIELD*waves*t.f, total=fixed+field;
+    var lo=total*0.92, hi=total*1.08;
+    document.getElementById('estBox').innerHTML=
+      '<div class="est-tier">'+t.name+' &#183; fieldwork '+t.off+'</div>'+
+      '<div class="est-range">'+fmt(lo)+' &#8211; '+fmt(hi)+'</div>'+
+      '<div class="est-sub">'+(state.mode==='annual'?'Annual programme &#8212; 4 quarterly Snapshots':'Single Snapshot &#8212; one wave')+'</div>'+
+      '<div class="est-bd">'+
+        '<div class="bd"><span>Platform, analysis &amp; reporting</span><b>'+fmt(fixed)+'</b></div>'+
+        '<div class="bd"><span>Survey fieldwork ('+t.off+')</span><b>'+fmt(field)+'</b></div>'+
+        '<div class="bd tot"><span>Estimated total</span><b>'+fmt(total)+'</b></div>'+
+      '</div>';
+  }
+  var ov=document.getElementById('snapModal');
+  function openM(e){if(e)e.preventDefault();ov.classList.add('open');showEst();render();}
+  function closeM(){ov.classList.remove('open');}
+  document.getElementById('snapClose').onclick=closeM;
+  document.getElementById('snapClose2').onclick=closeM;
+  ov.addEventListener('click',function(e){if(e.target===ov)closeM();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM();});
+  document.querySelectorAll('.btn-measure, .sn-cta, #stickyCta').forEach(function(el){if(ov.contains(el))return;el.addEventListener('click',openM);});
+  var stepEst=document.getElementById('stepEstimate'),stepFoot=document.getElementById('stepFoot'),stepBook=document.getElementById('stepBook');
+  function showEst(){if(stepBook)stepBook.style.display='none';if(stepEst)stepEst.style.display='block';if(stepFoot)stepFoot.style.display='flex';}
+  function showBook(){var t=tier(state.reality.size/REALITY.length),waves=state.mode==='annual'?WAVES_ANNUAL:1,fixed=FIXED*waves,field=FIELD*waves*t.f,total=fixed+field;
+    document.getElementById('hfCur').value=state.cur;
+    document.getElementById('hfMode').value=(state.mode==='annual'?'Annual (4 waves)':'Once-off (1 wave)');
+    document.getElementById('hfTier').value=t.name;
+    document.getElementById('hfRange').value=fmt(total*0.92)+' - '+fmt(total*1.08);
+    document.getElementById('bookForm').style.display='block';document.getElementById('bookCal').style.display='none';
+    stepEst.style.display='none';stepFoot.style.display='none';stepBook.style.display='block';}
+  var goBook=document.getElementById('goBook');if(goBook)goBook.addEventListener('click',showBook);
+  var backToEst=document.getElementById('backToEst');if(backToEst)backToEst.addEventListener('click',showEst);
+  function revealCal(name,email){document.getElementById('bookForm').style.display='none';document.getElementById('bookCal').style.display='block';var mount=document.getElementById('calMount');
+    mount.style.minHeight='auto';
+    mount.innerHTML='<div style="text-align:center;padding:14px 0;"><p style="margin:0 0 16px;font-size:0.9rem;">Your details are saved &mdash; pick a time that suits you:</p><a class="btn btn-measure" target="_blank" rel="noopener" href="'+'https://meetings-eu1.hubspot.com/dustin-lawrence?firstName='+encodeURIComponent(name||'')+'&email='+encodeURIComponent(email||'')+'" style="display:inline-block;">Open the scheduler &#8594;</a></div>';}
+  var navForm=document.getElementById('navForm');
+  if(navForm)navForm.addEventListener('submit',function(e){e.preventDefault();var btn=document.getElementById('navSubmit');if(btn){btn.textContent='Sending…';btn.disabled=true;}var data=new FormData(navForm);
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()})
+      .then(function(){revealCal(data.get('name'),data.get('email'));})
+      .catch(function(){revealCal(data.get('name'),data.get('email'));});});
+  render();
+})();
+</script>
+<script>
+(function(){
+  var comp=document.querySelector('.bench-comp'); if(!comp) return;
+  var B=[
+    {h:'Prove impact',b:'Show the board, investors and host governments exactly where community trust is strengthening, asset by asset — with evidence, not defence.'},
+    {h:'Make the next move',b:'Know which story to lead with — copper growth, the coal transition, or consent done right — backed by what stakeholders actually reward.'},
+    {h:'Spot the leaks',b:'Find where lived community experience is outrunning the stated engagement — before it becomes the next blockade, court ruling or AGM-day protest.'},
+    {h:'Learn from every move',b:'Track community trust each quarter, asset by asset — so consent becomes a managed, anticipatable variable instead of a recurring flashpoint.'}
+  ];
+  var DEG=[180,270,0,90];
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rotEl=comp.querySelector('.bench-rot'),ctrl=comp.querySelector('.bench-ctrl');
+  var bens=[].slice.call(comp.querySelectorAll('.bench-ben'));
+  var cap=comp.querySelector('.bench-cap'),ch=cap.querySelector('.bench-h'),cb=cap.querySelector('.bench-b');
+  var rot=0,idx=2,timer=null,held=false;
+  function shortTo(c,tg){return c+(((tg-(c%360))+540)%360-180);}
+  function paint(i){bens.forEach(function(b){b.classList.toggle('on',+b.dataset.i===i);});ch.textContent=B[i].h;cb.textContent=B[i].b;cap.classList.add('on');ctrl.classList.remove('lit');void ctrl.offsetWidth;ctrl.classList.add('lit');}
+  function go(i){idx=i;rot=shortTo(rot,DEG[i]);rotEl.style.transform='rotate('+rot+'deg)';paint(i);}
+  function next(){go((idx+1)%4);}
+  function start(){if(reduce)return;stop();timer=setInterval(function(){if(!held)next();},2500);}
+  function stop(){if(timer)clearInterval(timer);}
+  bens.forEach(function(el){el.addEventListener('mouseenter',function(){held=true;go(+el.dataset.i);});el.addEventListener('mouseleave',function(){held=false;});});
+  ctrl.addEventListener('click',function(){held=true;next();setTimeout(function(){held=false;},3000);});
+  go(2);start();
+})();
+</script>
+<script>
+(function(){
+  var C={x:145,y:118},R=98,a30=Math.PI/6;
+  var EQ={i:{x:C.x+R*Math.cos(Math.PI+a30),y:C.y+R*Math.sin(Math.PI+a30)},e:{x:C.x,y:C.y+R},r:{x:C.x+R*Math.cos(-a30),y:C.y+R*Math.sin(-a30)}};
+  function verts(cl,cn,cf){var fi=(cl+cf)/2/100,fe=(cl+cn)/2/100,fr=(cn+cf)/2/100;
+    return {i:{x:C.x+(EQ.i.x-C.x)*fi,y:C.y+(EQ.i.y-C.y)*fi},e:{x:C.x+(EQ.e.x-C.x)*fe,y:C.y+(EQ.e.y-C.y)*fe},r:{x:C.x+(EQ.r.x-C.x)*fr,y:C.y+(EQ.r.y-C.y)*fr}};}
+  function f1(n){return n.toFixed(1);}
+  function lbl(id,a,b,cen,txt){var el=document.getElementById(id);if(!el)return;
+    var mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y,len=Math.sqrt(dx*dx+dy*dy);if(len<4)return;
+    var ang=Math.atan2(dy,dx)*180/Math.PI;if(ang>90)ang-=180;if(ang<-90)ang+=180;
+    var px=-dy/len,py=dx/len;if(px*(cen.x-mx)+py*(cen.y-my)>0){px=-px;py=-py;}
+    var lx=mx+px*13,ly=my+py*13;
+    el.setAttribute('x',f1(lx));el.setAttribute('y',f1(ly));el.setAttribute('text-anchor','middle');el.setAttribute('dominant-baseline','middle');
+    el.setAttribute('transform','rotate('+ang.toFixed(1)+','+f1(lx)+','+f1(ly)+')');el.textContent=txt;}
+  var IV=verts(100,100,100),ideal=document.getElementById('nv-ideal');
+  if(ideal)ideal.setAttribute('points',f1(IV.i.x)+','+f1(IV.i.y)+' '+f1(IV.e.x)+','+f1(IV.e.y)+' '+f1(IV.r.x)+','+f1(IV.r.y));
+  var cl=74,cn=48,cf=55,v=verts(cl,cn,cf),cen={x:(v.i.x+v.e.x+v.r.x)/3,y:(v.i.y+v.e.y+v.r.y)/3};
+  var poly=document.getElementById('nv-poly');if(poly)poly.setAttribute('points',f1(v.i.x)+','+f1(v.i.y)+' '+f1(v.e.x)+','+f1(v.e.y)+' '+f1(v.r.x)+','+f1(v.r.y));
+  lbl('nv-lc',v.i,v.e,cen,'CLARITY');lbl('nv-ln',v.e,v.r,cen,'CONNECTION');lbl('nv-lf',v.r,v.i,cen,'CONFIDENCE');
+  var comp=document.getElementById('nv-comp');if(comp){comp.setAttribute('x',f1(cen.x));comp.setAttribute('y',f1(cen.y-4));comp.textContent=59;}
+  var cap=document.getElementById('nv-comp-l');if(cap){cap.setAttribute('x',f1(cen.x));cap.setAttribute('y',f1(cen.y+8));}
+})();
+</script>
+</body>
+</html>
