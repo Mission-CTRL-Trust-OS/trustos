@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MissionCTRL Solutions — Diploma PLC</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0a0f1a;
+    --slate: #2d3a4a;
+    --cool: #5a8a9a;
+    --cool-dark: #4a7a8a;
+    --pale: #8fb5c0;
+    --green: #7cc4a8;
+    --purple: #a78bdb;
+    --warning: #f87171;
+    --amber: #f0b855;
+    --orange: #ff6b2b;
+    --orange-soft: #ffad3b;
+    --line: rgba(255,255,255,0.06);
+    --line-soft: rgba(255,255,255,0.04);
+    --surface: rgba(255,255,255,0.025);
+    --surface-2: rgba(255,255,255,0.045);
+    --text-primary: rgba(255,255,255,0.92);
+    --text-body: rgba(255,255,255,0.62);
+    --text-muted: rgba(255,255,255,0.42);
+    --text-faint: rgba(255,255,255,0.22);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--deep); color: var(--text-primary); font-family: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  .app { max-width: 1180px; margin: 0 auto; padding: 0 5%; }
+
+  /* NAV */
+  .navbar { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; gap: 16px; }
+  .nav-left { display: flex; align-items: center; }
+  .nav-wordmark { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.03em; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-wordmark .trust { color: var(--pale); }
+  .nav-wordmark .os { color: var(--cool); }
+  .nav-product-link { font-size: 0.62rem; font-weight: 500; color: rgba(255,255,255,0.35); margin-left: 16px; display: inline-flex; align-items: center; gap: 5px; text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.55); text-decoration: none; }
+  .nav-cta { font-size: 0.88rem; font-weight: 600; padding: 10px 22px; background: #5a8a9a; color: #ffffff; border-radius: 6px; display: inline-flex; align-items: center; text-decoration: none; transition: background 0.2s, transform 0.15s; } .nav-cta:hover { background: #4a7a8a; transform: translateY(-1px); }
+  .nav-cta .avatar { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, var(--cool), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 800; color: white; }
+
+  /* logo ambient breathing */
+  .lg-amb .lg-glow{animation:lgAmb 4s ease-in-out infinite;}
+  .lg-amb .lg-mlight{animation:lgAmbM 4s ease-in-out infinite;}
+  @keyframes lgAmb{0%,100%{opacity:.95}50%{opacity:.55}}
+  @keyframes lgAmbM{0%,100%{opacity:.8}50%{opacity:.45}}
+  @media (prefers-reduced-motion: reduce){.lg-amb *{animation:none!important}}
+
+  .breadcrumb { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 14px 0; font-size: 0.7rem; color: var(--text-muted); border-bottom: 1px solid var(--line); }
+  .bc-section { color: var(--purple); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.62rem; }
+  .bc-sep { color: var(--text-faint); }
+  .bc-item.current { color: var(--text-primary); font-weight: 500; }
+  .bc-spacer { flex: 1; }
+  .bc-run { display: inline-flex; gap: 12px; align-items: center; font-size: 0.65rem; color: var(--text-faint); }
+  .bc-run .stage-tag { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; background: rgba(167,139,219,0.10); color: var(--purple); border: 1px solid rgba(167,139,219,0.22); font-weight: 700; }
+
+  .run-header { padding: 36px 0 28px; border-bottom: 1px solid var(--line); }
+  .run-header .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cool); margin-bottom: 14px; }
+  .run-header .eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--cool); display: block; }
+  .run-header h1 { font-size: clamp(1.8rem, 3.2vw, 2.4rem); font-weight: 800; color: white; letter-spacing: -0.035em; line-height: 1.1; }
+  .run-header h1 em { font-style: normal; color: var(--cool); }
+
+  .side-label .name { font-size: 0.58rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cool); margin-bottom: 14px; }
+  .section-label::before { content: ''; width: 20px; height: 2px; background: var(--cool); display: block; }
+  .section-title { font-size: clamp(1.4rem, 2.4vw, 1.85rem); font-weight: 800; color: white; letter-spacing: -0.03em; line-height: 1.15; max-width: 720px; margin-bottom: 32px; }
+  .section-title em { font-style: normal; color: var(--cool); }
+
+  /* ECOSYSTEM */
+  .ecosystem-canvas { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px; position: relative; }
+  .canvas-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; flex-wrap: wrap; gap: 12px; }
+  .ch-label { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
+  .ch-hint { font-size: 0.66rem; color: var(--text-faint); }
+  .ch-hint::before { content: '⟶ '; color: var(--cool); }
+  .ecosystem-svg-wrap { width: 100%; }
+  .ecosystem-svg-wrap svg { width: 100%; height: auto; display: block; }
+  .eco-svg text { font-family: 'Sora', sans-serif; }
+  .eco-svg .node-label { font-size: 11px; font-weight: 700; fill: rgba(255,255,255,0.85); letter-spacing: 0.06em; text-transform: uppercase; pointer-events: none; }
+  .eco-svg .node-sub-label { font-size: 9px; font-weight: 500; fill: rgba(255,255,255,0.55); letter-spacing: 0.02em; pointer-events: none; }
+  .eco-svg .node-center-label { font-size: 11px; font-weight: 800; fill: white; letter-spacing: 0.1em; text-transform: uppercase; pointer-events: none; }
+  .eco-svg .node-center-sub { font-size: 9px; font-weight: 500; fill: rgba(255,255,255,0.75); letter-spacing: 0.04em; pointer-events: none; }
+  .eco-svg [data-node] { cursor: pointer; transition: opacity 0.25s; }
+  .eco-svg [data-edge] { transition: opacity 0.25s, stroke-width 0.2s; }
+  .eco-svg.has-focus [data-node]:not(.focused):not(.connected) { opacity: 0.22; }
+  .eco-svg.has-focus [data-edge]:not(.connected) { opacity: 0.12; }
+  .eco-svg [data-node].focused .focus-ring { opacity: 1; }
+  .eco-svg [data-node].selected .focus-ring { opacity: 1; stroke-dasharray: 0; }
+  .eco-svg [data-edge].connected { stroke-width: 4; opacity: 1; }
+  .focus-ring { opacity: 0; transition: opacity 0.2s; }
+
+  .eco-detail { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 22px 24px; margin-top: 14px; min-height: 130px; }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+  .detail-name { font-size: 1.15rem; font-weight: 700; color: white; letter-spacing: -0.02em; line-height: 1.2; }
+  .detail-meta { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--text-faint); margin-bottom: 4px; }
+  .detail-role { font-size: 0.82rem; color: var(--text-body); line-height: 1.5; margin-top: 4px; }
+  .detail-state { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; padding: 4px 10px; border-radius: 99px; white-space: nowrap; }
+  .detail-state.composite { background: rgba(90,138,154,0.12); color: var(--cool); border: 1px solid rgba(90,138,154,0.22); }
+  .detail-state.strong { background: rgba(124,196,168,0.12); color: var(--green); border: 1px solid rgba(124,196,168,0.22); }
+  .detail-state.thin { background: rgba(240,184,85,0.12); color: var(--amber); border: 1px solid rgba(240,184,85,0.22); }
+  .detail-state.leak { background: rgba(248,113,113,0.12); color: var(--warning); border: 1px solid rgba(248,113,113,0.22); }
+  .detail-state.untested { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px dashed rgba(255,255,255,0.20); }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .detail-cell .lbl { font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--text-faint); margin-bottom: 5px; }
+  .detail-cell .val { font-size: 0.84rem; color: var(--text-body); line-height: 1.55; }
+  .detail-tag { display: inline-block; font-size: 0.62rem; font-weight: 600; padding: 3px 9px; border-radius: 99px; background: rgba(167,139,219,0.12); color: var(--purple); border: 1px solid rgba(167,139,219,0.22); margin-top: 6px; }
+
+  .eco-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin-top: 16px; }
+  .eco-metric { padding: 14px 16px; border-right: 1px solid var(--line); background: var(--surface); }
+  .eco-metric:last-child { border-right: none; }
+  .eco-metric .lbl { font-size: 0.55rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
+  .eco-metric .val { font-size: 1.05rem; font-weight: 700; color: white; letter-spacing: -0.02em; line-height: 1.1; }
+  .eco-metric .val em { font-style: normal; color: var(--cool); }
+  .eco-metric .val.warn em { color: var(--amber); }
+  .eco-metric .sub { font-size: 0.62rem; color: var(--text-faint); margin-top: 4px; }
+
+  .ecosystem-legend { display: flex; gap: 18px; flex-wrap: wrap; padding-top: 14px; margin-top: 12px; border-top: 1px solid var(--line); font-size: 0.66rem; color: var(--text-muted); }
+  .legend-item { display: flex; align-items: center; gap: 7px; }
+  .legend-swatch { width: 22px; height: 2px; }
+  .legend-swatch.strong { background: var(--green); }
+  .legend-swatch.thin { background: var(--amber); }
+  .legend-swatch.leak { background: var(--warning); }
+  .legend-swatch.untested { background: linear-gradient(to right, rgba(255,255,255,0.3) 0 4px, transparent 4px 8px, rgba(255,255,255,0.3) 8px 12px, transparent 12px 16px, rgba(255,255,255,0.3) 16px); }
+  .legend-swatch.synergy { background: transparent; height: 8px; position: relative; }
+  .legend-swatch.synergy::before { content: ''; position: absolute; top: 3px; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, var(--purple) 0 6px, transparent 6px 10px, var(--purple) 10px 16px, transparent 16px 20px, var(--purple) 20px); }
+
+  /* SYNERGIES */
+  .synergy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .synergy-card { background: var(--surface); border: 1px solid rgba(167,139,219,0.18); border-radius: 8px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .synergy-num { display: inline-block; align-self: flex-start; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 99px; background: rgba(167,139,219,0.15); color: var(--purple); border: 1px solid rgba(167,139,219,0.30); }
+  .synergy-edge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--pale); }
+  .synergy-card h4 { font-size: 1rem; font-weight: 700; color: white; letter-spacing: -0.015em; line-height: 1.3; }
+  .synergy-state { display: flex; align-items: center; gap: 10px; }
+  .state-bar { display: flex; gap: 3px; }
+  .state-bar .bar { width: 22px; height: 4px; border-radius: 2px; }
+  .state-bar .bar.strong { background: var(--green); }
+  .state-bar .bar.thin { background: var(--amber); }
+  .state-bar .bar.leak { background: var(--warning); }
+  .state-bar .bar.untested { background: linear-gradient(to right, rgba(255,255,255,0.3) 0 4px, transparent 4px 8px, rgba(255,255,255,0.3) 8px); }
+  .state-text { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.04em; }
+  .synergy-move { padding-top: 8px; border-top: 1px solid var(--line-soft); }
+  .synergy-move .lbl { font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--purple); margin-bottom: 4px; }
+  .synergy-move .val { font-size: 0.84rem; color: var(--text-primary); line-height: 1.45; font-weight: 500; }
+  .synergy-solutions { display: flex; flex-wrap: wrap; gap: 4px; padding-top: 10px; border-top: 1px solid var(--line-soft); }
+  .sol-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 0.62rem; font-weight: 600; padding: 3px 8px; border-radius: 4px; background: rgba(255,107,43,0.08); color: var(--orange-soft); border: 1px solid rgba(255,173,59,0.22); }
+  .sol-chip .glyph { font-weight: 700; color: var(--orange); }
+  .synergy-lift { font-size: 0.7rem; color: var(--green); line-height: 1.4; padding-top: 10px; border-top: 1px solid var(--line-soft); }
+  .synergy-lift::before { content: '↑ Lifts '; font-size: 0.55rem; font-weight: 800; letter-spacing: 0.12em; color: var(--green); opacity: 0.7; margin-right: 4px; }
+
+  /* EXPLORATION */
+  .explore-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .explore-card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .explore-num { font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--text-faint); }
+  .explore-card h3 { font-size: 1.05rem; font-weight: 700; color: white; letter-spacing: -0.02em; line-height: 1.25; }
+  .explore-target { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cool); font-weight: 700; }
+  .explore-target::before { content: '↳ '; opacity: 0.7; }
+  .explore-what { font-size: 0.82rem; color: var(--text-body); line-height: 1.55; padding-bottom: 12px; border-bottom: 1px solid var(--line-soft); }
+  .explore-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.78rem; }
+  .explore-rows .lbl { font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--text-faint); margin-bottom: 3px; }
+  .explore-rows .val { color: var(--text-body); line-height: 1.5; }
+  .shared-value { padding-top: 12px; border-top: 1px solid var(--line-soft); font-size: 0.8rem; color: var(--green); line-height: 1.5; font-weight: 500; }
+  .shared-value::before { content: 'SHARED VALUE'; display: block; font-size: 0.52rem; letter-spacing: 0.16em; font-weight: 800; color: var(--green); opacity: 0.65; margin-bottom: 5px; }
+
+  /* BRIDGE */
+  .bridge { background: linear-gradient(135deg, var(--deep) 0%, rgba(45,58,74,0.4) 100%); border: 1px solid var(--line); border-radius: 8px; padding: 36px 40px; }
+  .bridge-head h2 { font-size: clamp(1.3rem, 2.2vw, 1.75rem); font-weight: 800; color: white; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 16px; }
+  .bridge-head h2 em { font-style: normal; color: var(--orange-soft); }
+  .bridge-intro { font-size: 0.92rem; color: var(--text-body); line-height: 1.6; max-width: 720px; margin-bottom: 24px; }
+  .bridge-intro em { font-style: normal; color: var(--pale); font-weight: 500; }
+
+  .brand-effect-block { padding: 24px 26px; background: rgba(255,107,43,0.04); border: 1px solid rgba(255,173,59,0.20); border-radius: 8px; margin-bottom: 22px; }
+  .be-block-head { margin-bottom: 18px; }
+  .be-block-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange-soft); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .be-block-label::before { content: ''; width: 20px; height: 2px; background: var(--orange-soft); display: block; }
+  .be-block-h { font-size: 1.1rem; font-weight: 700; color: white; letter-spacing: -0.02em; line-height: 1.3; }
+  .be-block-h em { font-style: normal; color: var(--orange-soft); }
+  .be-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .be-stage { padding: 14px 14px 12px; background: rgba(255,255,255,0.025); border: 1px solid var(--line); border-radius: 6px; display: flex; flex-direction: column; gap: 6px; }
+  .be-stage.active { background: rgba(255,107,43,0.10); border-color: rgba(255,173,59,0.30); }
+  .be-stage-num { font-size: 0.58rem; letter-spacing: 0.14em; font-weight: 800; color: var(--text-faint); }
+  .be-stage.active .be-stage-num { color: var(--orange-soft); }
+  .be-stage-name { font-size: 1rem; font-weight: 800; color: white; letter-spacing: -0.02em; }
+  .be-stage-driver { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 7px; border-radius: 99px; display: inline-block; align-self: flex-start; }
+  .be-stage-driver.clarity { background: rgba(90,138,154,0.12); color: var(--cool); }
+  .be-stage-driver.connection { background: rgba(124,196,168,0.12); color: var(--green); }
+  .be-stage-driver.confidence { background: rgba(167,139,219,0.12); color: var(--purple); }
+  .be-stage-driver.compound { background: rgba(255,173,59,0.12); color: var(--orange-soft); }
+  .be-sols { font-size: 0.68rem; line-height: 1.5; color: var(--text-body); }
+  .be-sols .sol-line { display: block; margin-bottom: 2px; }
+  .be-activation { margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(255,173,59,0.18); font-size: 0.58rem; font-weight: 800; color: var(--orange-soft); letter-spacing: 0.08em; }
+  .be-activation.dim { color: var(--text-faint); border-top-color: var(--line-soft); }
+
+  .bridge-cta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 12px 22px; border-radius: 4px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; text-decoration: none; transition: transform 0.15s; }
+  .btn-mctrl { background: linear-gradient(135deg, var(--orange), var(--orange-soft)); color: white; }
+  .btn-mctrl:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--cool); color: var(--deep); }
+  .btn-ghost { background: transparent; color: white; border: 1px solid var(--line); }
+
+  footer { padding: 28px 0 36px; display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--text-muted); }
+  footer a { color: var(--pale); text-decoration: none; }
+  footer .left { display: flex; align-items: center; gap: 16px; }
+
+  @media (max-width: 980px) {
+    .synergy-grid, .explore-grid, .be-stages, .eco-metrics, .detail-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .nav-product-link { display: none; }
+  }
+  @media (max-width: 600px) {
+    .synergy-grid, .explore-grid, .be-stages, .eco-metrics, .detail-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---- architecture additions ---- */
+  .layer-tag{display:inline-flex;align-items:center;gap:6px;font-size:0.55rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;padding:3px 9px;border-radius:99px;}
+  .layer-tag.sense{background:rgba(90,138,154,0.14);color:var(--cool);border:1px solid rgba(90,138,154,0.30);}
+  .layer-tag.measure{background:rgba(167,139,219,0.14);color:var(--purple);border:1px solid rgba(167,139,219,0.30);}
+  .layer-tag.activate{background:rgba(255,107,43,0.10);color:var(--orange-soft);border:1px solid rgba(255,173,59,0.30);}
+  .mc-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.5rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-soft);background:rgba(255,107,43,0.08);border:1px solid rgba(255,173,59,0.28);padding:3px 9px;border-radius:99px;vertical-align:middle;margin-left:8px;}
+
+  /* ---- UX ---- */
+  html{scroll-behavior:smooth;} section[id]{scroll-margin-top:78px;}
+  .subnav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:8px;padding:11px 0;background:rgba(10,15,26,0.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .subnav .sn-brand{font-size:0.62rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint);}
+  .subnav .sn-sp{flex:1;}
+  .subnav .sn{font-size:0.68rem;font-weight:700;color:var(--text-muted);text-decoration:none;padding:6px 12px;border-radius:99px;border:1px solid transparent;display:inline-flex;align-items:center;gap:6px;}
+  .subnav .sn::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;opacity:0.5;}
+  .subnav .sn.sense{color:var(--cool);} .subnav .sn.measure{color:var(--purple);} .subnav .sn.activate{color:var(--orange-soft);}
+  .subnav .sn.active{background:var(--surface-2);border-color:var(--line);} .subnav .sn.active::before{opacity:1;}
+  .subnav .sn-cta{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--deep);background:var(--purple);padding:7px 14px;border-radius:6px;text-decoration:none;}
+  .pageb-sub{font-size:0.95rem;color:var(--text-body);line-height:1.6;max-width:720px;margin-top:14px;}
+  .back-link{display:inline-block;margin-top:18px;font-size:0.78rem;font-weight:600;color:var(--pale);text-decoration:none;border-bottom:1px dotted var(--cool-dark);}
+  @media(max-width:760px){.subnav .sn-brand{display:none;}}
+</style>
+<!-- seo-ai:start -->
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href="https://trustos.missionctrl.agency/navigator/diploma/solutions/" />
+<meta property="og:title" content="MissionCTRL Solutions — Diploma PLC" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://trustos.missionctrl.agency/navigator/diploma/solutions/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="MissionCTRL Solutions — Diploma PLC" />
+<meta name="twitter:description" content="" />
+<!-- seo-ai:end -->
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="https://trustos.missionctrl.agency" class="nav-wordmark">
+        <svg width="22" height="27" viewBox="0 0 120 148" fill="none" class="lg-amb" style="flex-shrink:0;"><defs><linearGradient id="nav-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient><linearGradient id="nav-ml" x1="60" y1="12" x2="60" y2="140"><stop offset="0%" stop-color="#5a8a9a" stop-opacity="0.5"/><stop offset="100%" stop-color="#5a8a9a" stop-opacity="0.03"/></linearGradient><filter id="nav-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter></defs><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/><path class="lg-mlight" d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="url(#nav-ml)"/><polygon class="lg-glow" points="30,12 90,12 60,88" fill="#6da0b8" filter="url(#nav-glow)"/><polygon points="30,12 90,12 60,88" fill="url(#nav-tg)"/></svg>
+        <span><span class="trust">Trust</span><span class="os">OS</span></span>
+      </a>
+      <a href="https://missionctrl.agency" class="nav-product-link" target="_blank" rel="noopener">
+        <svg width="10" height="12" viewBox="0 0 120 148" fill="none">
+          <defs><linearGradient id="nav-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="nav-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs>
+          <rect width="120" height="148" fill="url(#nav-mg)" clip-path="url(#nav-mlc)"/>
+        </svg>
+        A MissionCTRL product →
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="https://trustos.missionctrl.agency/explorer/">TrustOS Explorer</a></li>
+      <li><a href="https://trustos.missionctrl.agency/methodology/">How it works</a></li>
+      <li><a href="https://trustos.missionctrl.agency/#sector-insights">Sector Insights</a></li>
+    </ul>
+    <a href="https://meetings-eu1.hubspot.com/dustin-lawrence" target="_blank" rel="noopener" class="nav-cta">Book a Call</a>
+  </nav>
+
+  <div class="breadcrumb">
+    <span class="bc-section" style="color:var(--orange-soft);">MissionCTRL Solutions</span>
+    <span class="bc-sep">&#8250;</span>
+    <span class="bc-item">Activate</span>
+    <span class="bc-sep">&#8250;</span>
+    <span class="bc-item current">Diploma PLC &#183; LSE: DPLM</span>
+    <span class="bc-spacer"></span>
+    <span class="bc-run"><span class="stage-tag" style="background:rgba(255,107,43,0.10);color:var(--orange-soft);border-color:rgba(255,173,59,0.28);">&#9679; Activate &#183; Signal-suggested</span></span>
+  </div>
+
+  <nav class="subnav" id="subnav">
+    <span class="sn-brand">Diploma PLC &#183; Trust position</span>
+    <span class="sn-sp"></span>
+    <a href="../#sense" class="sn sense">Sense</a>
+    <a href="../#measure" class="sn measure">Measure</a>
+    <a href="#" class="sn activate active">Activate &middot; MissionCTRL</a>
+    <a href="../#measure" class="sn-cta">Get the Snapshot</a>
+  </nav>
+
+  <div class="run-header">
+    <div class="eyebrow" style="color:var(--orange-soft);"><span class="layer-tag activate">Activate</span> &nbsp;MissionCTRL Solutions</div>
+    <h1>What activation delivers for <em style="color:var(--orange-soft);">Diploma PLC</em>.</h1>
+    <p class="pageb-sub">These are <strong style="color:var(--pale);">MissionCTRL outputs</strong> &#8212; the stakeholder ecosystem, the trust synergies, and the recommended moves that turn a measured trust position into a trust advantage across the deal funnel and the portfolio. Signal-suggested on this page; built and validated in engagement.</p>
+    <a class="back-link" href="../">&#8592; Back to the Diploma PLC Navigator read</a>
+  </div>
+
+  <!-- ECOSYSTEM -->
+  <section>
+    <div class="section-label"><span class="layer-tag activate">Activate</span> &nbsp;Stakeholder Ecosystem</div>
+    <h2 class="section-title">Diploma's trust network <span class="mc-badge">MissionCTRL output</span><br><em style="font-size:0.66em;color:var(--text-muted)">Signal-suggested, not validated &#183; click any node.</em></h2>
+
+    <div class="ecosystem-canvas">
+      <div class="canvas-head">
+        <div class="ch-label">19 nodes · 22 edges · 3 trust synergies</div>
+        <div class="ch-hint">Hover to explore. Click to pin a detail.</div>
+      </div>
+
+      <div class="ecosystem-svg-wrap">
+        <svg class="eco-svg" id="ecoSvg" viewBox="0 0 1140 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="centerGlow3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#5a8a9a" stop-opacity="0.4"/><stop offset="100%" stop-color="#5a8a9a" stop-opacity="0"/></radialGradient>
+            <filter id="softGlow3"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="synergyGlow3"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <circle cx="570" cy="300" r="120" fill="url(#centerGlow3)"/>
+          <g class="edges">
+            <line data-edge="nw-cust" x1="570" y1="300" x2="570" y2="115" stroke="#f0b855" stroke-width="2.6" stroke-opacity="0.72"/>
+            <line data-edge="nw-emp" x1="570" y1="300" x2="820" y2="210" stroke="#7cc4a8" stroke-width="3" stroke-opacity="0.85"/>
+            <line data-edge="nw-part" x1="570" y1="300" x2="820" y2="390" stroke="#f0b855" stroke-width="2.6" stroke-opacity="0.72"/>
+            <line data-edge="nw-com" x1="570" y1="300" x2="570" y2="490" stroke="#f0b855" stroke-width="2.6" stroke-opacity="0.72"/>
+            <line data-edge="nw-reg" x1="570" y1="300" x2="320" y2="390" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <line data-edge="nw-inv" x1="570" y1="300" x2="320" y2="210" stroke="#7cc4a8" stroke-width="3" stroke-opacity="0.85"/>
+            <line data-edge="cust-eng" x1="570" y1="100" x2="460" y2="55" stroke="#f0b855" stroke-width="2" stroke-opacity="0.7"/>
+            <line data-edge="cust-dot" x1="570" y1="100" x2="680" y2="55" stroke="#f0b855" stroke-width="1.6" stroke-opacity="0.6"/>
+            <line data-edge="emp-mfg" x1="830" y1="200" x2="950" y2="160" stroke="#7cc4a8" stroke-width="2" stroke-opacity="0.65"/>
+            <line data-edge="emp-pm" x1="830" y1="220" x2="950" y2="245" stroke="#7cc4a8" stroke-width="1.8" stroke-opacity="0.6"/>
+            <line data-edge="part-dist" x1="830" y1="385" x2="950" y2="360" stroke="#f0b855" stroke-width="2" stroke-opacity="0.65"/>
+            <line data-edge="part-inst" x1="830" y1="405" x2="950" y2="440" stroke="#f0b855" stroke-width="1.6" stroke-opacity="0.6"/>
+            <line data-edge="com-ia" x1="555" y1="510" x2="460" y2="555" stroke="#f0b855" stroke-width="2" stroke-opacity="0.65"/>
+            <line data-edge="com-tm" x1="585" y1="510" x2="690" y2="555" stroke="#f0b855" stroke-width="1.6" stroke-opacity="0.6"/>
+            <line data-edge="reg-fhwa" x1="305" y1="385" x2="190" y2="360" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="4 4"/>
+            <line data-edge="reg-csa" x1="305" y1="405" x2="190" y2="440" stroke="#7cc4a8" stroke-width="1.8" stroke-opacity="0.6"/>
+            <line data-edge="inv-cdpq" x1="305" y1="200" x2="190" y2="160" stroke="#7cc4a8" stroke-width="2.5" stroke-opacity="0.85"/>
+            <line data-edge="inv-ftq" x1="305" y1="220" x2="190" y2="245" stroke="#7cc4a8" stroke-width="2" stroke-opacity="0.75"/>
+            <path data-edge="eng-ia" d="M 460 55 Q 460 300 460 555" fill="none" stroke="#f0b855" stroke-width="1.5" stroke-opacity="0.30" stroke-dasharray="2 3"/>
+            <path data-edge="cdpq-com" d="M 190 160 Q 380 350 555 510" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="2 4"/>
+            <path data-edge="fhwa-eng" d="M 190 360 Q 320 200 460 55" fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="1.2" stroke-dasharray="2 3"/>
+            <path data-edge="pm-dist" d="M 950 245 Q 950 300 950 360" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1" stroke-dasharray="2 4"/>
+            <g filter="url(#synergyGlow3)">
+              <path data-edge="s1" d="M 588 128 Q 770 230 812 378" fill="none" stroke="#a78bdb" stroke-width="2.5" stroke-opacity="0.78" stroke-dasharray="8 4" stroke-linecap="round"/>
+              <path data-edge="s2" d="M 338 215 Q 570 120 808 215" fill="none" stroke="#a78bdb" stroke-width="2.5" stroke-opacity="0.78" stroke-dasharray="8 4" stroke-linecap="round"/>
+              <path data-edge="s3" d="M 805 412 Q 720 482 590 492" fill="none" stroke="#a78bdb" stroke-width="2.5" stroke-opacity="0.78" stroke-dasharray="8 4" stroke-linecap="round"/>
+            </g>
+          </g>
+          <g class="nodes-sub">
+            <g data-node="eng">
+              <circle class="focus-ring" cx="460" cy="55" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="460" cy="55" r="11" fill="rgba(240,184,85,0.10)" stroke="#f0b855" stroke-width="1.5"/>
+              <text x="455" y="32" class="node-sub-label" text-anchor="middle">Founder-owners</text>
+              <text x="455" y="20" class="node-sub-label" text-anchor="middle" opacity="0.5" style="font-size:8px;">WEIGHING A SALE NOW</text>
+            </g>
+            <g data-node="dot">
+              <circle class="focus-ring" cx="680" cy="55" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="680" cy="55" r="11" fill="rgba(240,184,85,0.10)" stroke="#f0b855" stroke-width="1.5"/>
+              <text x="685" y="32" class="node-sub-label" text-anchor="middle">Family &amp; mgmt teams</text>
+              <text x="685" y="20" class="node-sub-label" text-anchor="middle" opacity="0.5" style="font-size:8px;">THE PEOPLE BEHIND THE DEAL</text>
+            </g>
+            <g data-node="mfg">
+              <circle class="focus-ring" cx="950" cy="160" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="950" cy="160" r="11" fill="rgba(124,196,168,0.10)" stroke="#7cc4a8" stroke-width="1.5"/>
+              <text x="975" y="158" class="node-sub-label">OEMs &amp; specifiers</text>
+              <text x="975" y="170" class="node-sub-label" opacity="0.5" style="font-size:8px;">WHO DESIGN DIPLOMA PARTS IN</text>
+            </g>
+            <g data-node="pm">
+              <circle class="focus-ring" cx="950" cy="245" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="950" cy="245" r="11" fill="rgba(124,196,168,0.10)" stroke="#7cc4a8" stroke-width="1.5"/>
+              <text x="975" y="243" class="node-sub-label">Regulated end-markets</text>
+              <text x="975" y="255" class="node-sub-label" opacity="0.5" style="font-size:8px;">AERO &#183; IVD &#183; ENERGY &#183; WATER</text>
+            </g>
+            <g data-node="dist">
+              <circle class="focus-ring" cx="950" cy="360" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="950" cy="360" r="11" fill="rgba(240,184,85,0.10)" stroke="#f0b855" stroke-width="1.5"/>
+              <text x="975" y="358" class="node-sub-label">The operating businesses</text>
+              <text x="975" y="370" class="node-sub-label" opacity="0.5" style="font-size:8px;">ACQUIRED, RUN INDEPENDENTLY</text>
+            </g>
+            <g data-node="inst">
+              <circle class="focus-ring" cx="950" cy="440" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="950" cy="440" r="11" fill="rgba(240,184,85,0.10)" stroke="#f0b855" stroke-width="1.5"/>
+              <text x="975" y="438" class="node-sub-label">Sector teams</text>
+              <text x="975" y="450" class="node-sub-label" opacity="0.5" style="font-size:8px;">CONTROLS &#183; SEALS &#183; LIFE SCIENCES</text>
+            </g>
+            <g data-node="ia">
+              <circle class="focus-ring" cx="460" cy="555" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="460" cy="555" r="11" fill="rgba(240,184,85,0.10)" stroke="#f0b855" stroke-width="1.5"/>
+              <text x="455" y="585" class="node-sub-label" text-anchor="middle">Specialist talent</text>
+              <text x="455" y="597" class="node-sub-label" text-anchor="middle" opacity="0.5" style="font-size:8px;">SCARCE, HARD-TO-REPLACE SKILLS</text>
+            </g>
+            <g data-node="tm">
+              <circle class="focus-ring" cx="690" cy="555" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="690" cy="555" r="11" fill="rgba(240,184,85,0.10)" stroke="#f0b855" stroke-width="1.5"/>
+              <text x="695" y="585" class="node-sub-label" text-anchor="middle">Future leaders</text>
+              <text x="695" y="597" class="node-sub-label" text-anchor="middle" opacity="0.5" style="font-size:8px;">WOMEN IN LEADERSHIP &amp; PIPELINE</text>
+            </g>
+            <g data-node="fhwa">
+              <circle class="focus-ring" cx="190" cy="360" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="190" cy="360" r="11" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <text x="165" y="358" class="node-sub-label" text-anchor="end">M&amp;A advisers</text>
+              <text x="165" y="370" class="node-sub-label" text-anchor="end" opacity="0.5" style="font-size:8px;">INTERMEDIARIES &amp; DEAL FLOW</text>
+            </g>
+            <g data-node="csa">
+              <circle class="focus-ring" cx="190" cy="440" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="190" cy="440" r="11" fill="rgba(124,196,168,0.10)" stroke="#7cc4a8" stroke-width="1.5"/>
+              <text x="165" y="438" class="node-sub-label" text-anchor="end">Suppliers &amp; principals</text>
+              <text x="165" y="450" class="node-sub-label" text-anchor="end" opacity="0.5" style="font-size:8px;">THE VALUE-ADD MODEL RELIES ON THEM</text>
+            </g>
+            <g data-node="cdpq">
+              <circle class="focus-ring" cx="190" cy="160" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="190" cy="160" r="11" fill="rgba(124,196,168,0.10)" stroke="#7cc4a8" stroke-width="1.5"/>
+              <text x="165" y="158" class="node-sub-label" text-anchor="end">Institutional shareholders</text>
+              <text x="165" y="170" class="node-sub-label" text-anchor="end" opacity="0.5" style="font-size:8px;">THE OWNERS OF THE COMPOUNDER</text>
+            </g>
+            <g data-node="ftq">
+              <circle class="focus-ring" cx="190" cy="245" r="16" fill="none" stroke="white" stroke-width="1" stroke-dasharray="2 2"/>
+              <circle cx="190" cy="245" r="11" fill="rgba(124,196,168,0.10)" stroke="#7cc4a8" stroke-width="1.5"/>
+              <text x="165" y="243" class="node-sub-label" text-anchor="end">Sell-side analysts</text>
+              <text x="165" y="255" class="node-sub-label" text-anchor="end" opacity="0.5" style="font-size:8px;">WHO FRAME THE EQUITY STORY</text>
+            </g>
+          </g>
+          <g class="nodes-hub">
+            <g data-node="cust">
+              <circle class="focus-ring" cx="570" cy="105" r="26" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="2 3"/>
+              <circle cx="570" cy="105" r="20" fill="rgba(8,12,22,0.95)" stroke="#f0b855" stroke-width="2"/>
+              <text x="570" y="102" class="node-label" text-anchor="middle">Sellers &amp;</text>
+              <text x="570" y="114" class="node-label" text-anchor="middle">founders</text>
+            </g>
+            <g data-node="emp">
+              <circle class="focus-ring" cx="825" cy="210" r="26" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="2 3"/>
+              <circle cx="825" cy="210" r="20" fill="rgba(8,12,22,0.95)" stroke="#7cc4a8" stroke-width="2.5"/>
+              <text x="825" y="213" class="node-label" text-anchor="middle">Customers</text>
+            </g>
+            <g data-node="part">
+              <circle class="focus-ring" cx="825" cy="395" r="26" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="2 3"/>
+              <circle cx="825" cy="395" r="20" fill="rgba(8,12,22,0.95)" stroke="#f0b855" stroke-width="2"/>
+              <text x="825" y="398" class="node-label" text-anchor="middle">Portfolio</text>
+            </g>
+            <g data-node="com">
+              <circle class="focus-ring" cx="570" cy="500" r="26" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="2 3"/>
+              <circle cx="570" cy="500" r="20" fill="rgba(8,12,22,0.95)" stroke="#f0b855" stroke-width="2"/>
+              <text x="570" y="497" class="node-label" text-anchor="middle">Talent</text>
+              <text x="570" y="509" class="node-label" text-anchor="middle" style="font-size:8px;">&amp; people</text>
+            </g>
+            <g data-node="reg">
+              <circle class="focus-ring" cx="315" cy="395" r="26" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="2 3"/>
+              <circle cx="315" cy="395" r="20" fill="rgba(8,12,22,0.95)" stroke="rgba(255,255,255,0.35)" stroke-width="2" stroke-dasharray="3 3"/>
+              <text x="315" y="398" class="node-label" text-anchor="middle">Advisers</text>
+            </g>
+            <g data-node="inv">
+              <circle class="focus-ring" cx="315" cy="210" r="26" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="2 3"/>
+              <circle cx="315" cy="210" r="20" fill="rgba(8,12,22,0.95)" stroke="#7cc4a8" stroke-width="2.5"/>
+              <text x="315" y="213" class="node-label" text-anchor="middle">Investors</text>
+            </g>
+          </g>
+          <g data-node="nw">
+            <circle class="focus-ring" cx="570" cy="300" r="46" fill="none" stroke="white" stroke-width="1.5" stroke-dasharray="2 3"/>
+            <circle cx="570" cy="300" r="40" fill="#5a8a9a" stroke="#8fb5c0" stroke-width="2" filter="url(#softGlow3)"/>
+            <circle cx="570" cy="300" r="40" fill="#5a8a9a" stroke="#8fb5c0" stroke-width="1.5"/>
+            <text x="570" y="297" class="node-center-label" text-anchor="middle">Diploma</text>
+            <text x="570" y="312" class="node-center-sub" text-anchor="middle">Trust Est. 64</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="eco-detail" id="ecoDetail">
+        <div class="detail-head">
+          <div>
+            <div class="detail-meta">Hover or click any node</div>
+            <h3 class="detail-name">Diploma PLC</h3>
+            <div class="detail-role">A FTSE 100 value-add solutions group &#8212; a decentralised &#8220;compounder&#8221; that buys and scales specialist businesses across three Sectors: Controls, Seals and Life Sciences. CEO Johnny Thomson.</div>
+          </div>
+          <div class="detail-state composite">Trust Est. 64</div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <div class="lbl">Network read</div>
+            <div class="val">A diversified, resilient trust network &#8212; no single dependency. Trust is strongest with investors and customers; thinnest where the group promise must travel: to sellers, across the portfolio, and into the talent market.</div>
+          </div>
+          <div class="detail-cell">
+            <div class="lbl">Highest-leverage move</div>
+            <div class="val">Activate S1 &#8212; make &#8220;the trusted buyer&#8221; measurable across the acquisition funnel, so the group&#8217;s growth engine runs on evidence, not reputation alone.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ecosystem-legend">
+        <div class="legend-item"><span class="legend-swatch strong"></span>Strong</div>
+        <div class="legend-item"><span class="legend-swatch thin"></span>Thin</div>
+        <div class="legend-item"><span class="legend-swatch leak"></span>Leak</div>
+        <div class="legend-item"><span class="legend-swatch untested"></span>Not yet measured</div>
+        <div class="legend-item"><span class="legend-swatch synergy"></span>Trust synergy</div>
+      </div>
+    </div>
+
+    <div class="eco-metrics">
+      <div class="eco-metric">
+        <div class="lbl">Network resilience</div>
+        <div class="val"><em>Diversified</em></div>
+        <div class="sub">No single dependency &#8212; trust is spread across investors, customers, sellers, talent and the portfolio.</div>
+      </div>
+      <div class="eco-metric">
+        <div class="lbl">Trust to build</div>
+        <div class="val">4 <span style="color:var(--text-faint);font-size:0.7em;">nodes</span></div>
+        <div class="sub">Sellers, the portfolio, talent and suppliers carry the thinnest, most improvable trust.</div>
+      </div>
+      <div class="eco-metric">
+        <div class="lbl">Synergies surfaced</div>
+        <div class="val">3 <span style="color:var(--text-faint);font-size:0.7em;">loops</span></div>
+        <div class="sub">All centred on making &#8220;one trusted Diploma&#8221; real across deals, portfolio and talent.</div>
+      </div>
+      <div class="eco-metric">
+        <div class="lbl">Sources</div>
+        <div class="val" style="font-size:0.82rem;">Cited</div>
+        <div class="sub">See Sources, in the Sense read.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYNERGIES -->
+  <section>
+    <div class="section-label"><span class="layer-tag activate">Activate</span> &nbsp;Trust Synergies</div>
+    <h2 class="section-title">Three compounding loops. <em>Making &#8220;one trusted Diploma&#8221; real is the unlock.</em></h2>
+
+    <div class="synergy-grid">
+
+      <div class="synergy-card">
+        <div class="synergy-num">S1</div>
+        <div class="synergy-edge">Sellers ↔ Portfolio</div>
+        <h4>Make &#8220;the trusted buyer&#8221; one measured promise &#8212; deal to integration.</h4>
+        <div class="synergy-state">
+          <span class="state-bar"><span class="bar thin"></span><span class="bar thin"></span></span>
+          <span class="state-text">Thin + Thin</span>
+        </div>
+        <div class="synergy-move">
+          <div class="lbl">Move</div>
+          <div class="val">Baseline how founders and a target&#8217;s own people read Diploma as an owner, then carry that signal into integration &#8212; so &#8220;trusted buyer&#8221; wins competitive deals and holds the relationships you acquire.</div>
+        </div>
+        <div class="synergy-solutions">
+          <span class="sol-chip"><span class="glyph">⚡</span>Energise</span>
+          <span class="sol-chip"><span class="glyph">↔</span>Align</span>
+          <span class="sol-chip"><span class="glyph">↻</span>Retain</span>
+        </div>
+        <div class="synergy-lift">Sellers · Portfolio · Connection · Deal advantage</div>
+      </div>
+
+      <div class="synergy-card">
+        <div class="synergy-num">S2</div>
+        <div class="synergy-edge">Investors ↔ Customers</div>
+        <h4>Let the corporate brand earn its keep as a trust mark.</h4>
+        <div class="synergy-state">
+          <span class="state-bar"><span class="bar strong"></span><span class="bar strong"></span></span>
+          <span class="state-text">Strong + Strong</span>
+        </div>
+        <div class="synergy-move">
+          <div class="lbl">Move</div>
+          <div class="val">Connect the compounder story investors reward to the lived experience of customers and businesses &#8212; using the Diploma name as a light endorsement where it compounds trust, without breaking local autonomy.</div>
+        </div>
+        <div class="synergy-solutions">
+          <span class="sol-chip"><span class="glyph">★</span>Positioning &amp; Proposition</span>
+          <span class="sol-chip"><span class="glyph">⚖</span>Credibility Engine</span>
+        </div>
+        <div class="synergy-lift">Investors · Customers · Clarity · Brand equity</div>
+      </div>
+
+      <div class="synergy-card">
+        <div class="synergy-num">S3</div>
+        <div class="synergy-edge">Portfolio ↔ Talent</div>
+        <h4>Make the group brand compound across decentralised businesses.</h4>
+        <div class="synergy-state">
+          <span class="state-bar"><span class="bar thin"></span><span class="bar thin"></span></span>
+          <span class="state-text">Thin + Thin</span>
+        </div>
+        <div class="synergy-move">
+          <div class="lbl">Move</div>
+          <div class="val">Benchmark trust by stakeholder across the portfolio and the talent market &#8212; so the group employer brand and the &#8220;greater than the sum of its parts&#8221; promise are evidenced as the group scales.</div>
+        </div>
+        <div class="synergy-solutions">
+          <span class="sol-chip"><span class="glyph">⚖</span>Credibility Engine</span>
+          <span class="sol-chip"><span class="glyph">♾</span>Change Intelligence</span>
+        </div>
+        <div class="synergy-lift">Portfolio · Talent · Confidence · Compounding standing</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EXPLORATION -->
+  <section>
+    <div class="section-label"><span class="layer-tag activate">Activate</span> &nbsp;Recommended moves</div>
+    <h2 class="section-title">Three moves that turn signal into <em>shared value</em>.</h2>
+
+    <div class="explore-grid">
+
+      <div class="explore-card">
+        <div class="explore-num">01 · The Trusted-Buyer Baseline</div>
+        <h3>Make &#8220;the trusted buyer&#8221; measurable across the funnel.</h3>
+        <div class="explore-target">Sellers · Founders · Advisers</div>
+        <div class="explore-what">A primary-research baseline of how founders, management teams and advisers read Diploma as an owner &#8212; captured pre-deal and tracked through integration, so the group competes for proprietary deals on evidence, not reputation alone.</div>
+        <div class="explore-rows">
+          <div><div class="lbl">Validates</div><div class="val">Connection. Whether the trusted-buyer promise is actually experienced.</div></div>
+          <div><div class="lbl">Unlocks</div><div class="val">A higher win-rate on competitive deals; relationships that survive the handover.</div></div>
+        </div>
+        <div class="shared-value">Founders get assurance their people are safe. Diploma wins deals others lose. The acquisition engine compounds trust, not just earnings. <span style="color:var(--text-muted);font-style:italic;">Proven: Berkshire Hathaway became the acknowledged buyer of choice.</span></div>
+      </div>
+
+      <div class="explore-card">
+        <div class="explore-num">02 · The Portfolio Trust Mark</div>
+        <h3>Use the corporate brand to lift the portfolio.</h3>
+        <div class="explore-target">Customers · Businesses · Investors</div>
+        <div class="explore-what">A read of where the Diploma name adds equity to each decentralised business &#8212; informing which brands to keep, where to optimise overlap, and where a light group endorsement compounds customer and talent trust without breaking local autonomy.</div>
+        <div class="explore-rows">
+          <div><div class="lbl">Validates</div><div class="val">Clarity. Where the group brand helps &#8212; and where it should stay invisible.</div></div>
+          <div><div class="lbl">Unlocks</div><div class="val">Portfolio optimisation; a corporate brand that earns its keep.</div></div>
+        </div>
+        <div class="shared-value">Customers feel the assurance of a group behind the business. Businesses keep their autonomy. The board sees which brands to back. <span style="color:var(--text-muted);font-style:italic;">Proven: Halma compounds growth by pairing local autonomy with one group purpose.</span></div>
+      </div>
+
+      <div class="explore-card">
+        <div class="explore-num">03 · The Compounder Benchmark</div>
+        <h3>Benchmark Diploma&#8217;s trust against the peer set.</h3>
+        <div class="explore-target">Board · Investors · Sector teams</div>
+        <div class="explore-what">A comparative trust read &#8212; by stakeholder and driver &#8212; against the compounder peer set (Halma, Spectris, Bunzl) and Diploma&#8217;s own history, turning trust into a board-level metric that protects the premium as the group scales.</div>
+        <div class="explore-rows">
+          <div><div class="lbl">Validates</div><div class="val">Confidence. Where Diploma leads, and where to close gaps, in numbers.</div></div>
+          <div><div class="lbl">Unlocks</div><div class="val">A quarterly signal the board, CEO and Sector teams can all act on.</div></div>
+        </div>
+        <div class="shared-value">The board sees standing, not just spend. Investors get a peer-relative read. Sector teams get one shared signal. <span style="color:var(--text-muted);font-style:italic;">Proven: Danaher made integration excellence an evidenced, benchmarked advantage.</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BRIDGE -->
+  <section>
+    <div class="bridge">
+      <div class="bridge-head">
+        <div class="section-label" style="margin-bottom: 10px;">Beyond Navigator</div>
+        <h2>A decade of compounding is the moment to <em>activate the Brand Effect</em>.</h2>
+        <p class="bridge-intro">TrustOS measures the trust shape. <em>MissionCTRL activates it.</em> For Diploma, the activation concentrates in Prove (turning the trusted-buyer and compounder promises into evidence) and Align (making one Diploma promise land consistently across a decentralised group).</p>
+      </div>
+
+      <div class="brand-effect-block">
+        <div class="be-block-head">
+          <div class="be-block-label">
+            <svg width="14" height="17" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="be-mg2" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="be-mc2"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#be-mg2)" clip-path="url(#be-mc2)"/></svg>
+            The Brand Effect
+          </div>
+          <h3 class="be-block-h">Diploma's moment activates <em>Align and Prove first</em>.</h3>
+        </div>
+
+        <div class="be-stages">
+          <div class="be-stage">
+            <div class="be-stage-num">01 · Believe</div>
+            <div class="be-stage-name">Foundation</div>
+            <div class="be-stage-driver clarity">◆ Clarity</div>
+            <div class="be-sols"><span class="sol-line">★ Purpose, Positioning &amp; Proposition</span></div>
+            <div class="be-activation dim">Investor story already clear</div>
+          </div>
+          <div class="be-stage active">
+            <div class="be-stage-num">02 · Align</div>
+            <div class="be-stage-name">Coherence</div>
+            <div class="be-stage-driver connection">◈ Connection</div>
+            <div class="be-sols"><span class="sol-line">⚡ Energise</span><span class="sol-line">↔ Align</span><span class="sol-line">↻ Retain</span></div>
+            <div class="be-activation">Activates S1</div>
+          </div>
+          <div class="be-stage active">
+            <div class="be-stage-num">03 · Prove</div>
+            <div class="be-stage-name">Evidence</div>
+            <div class="be-stage-driver confidence">△ Confidence</div>
+            <div class="be-sols"><span class="sol-line">⚖ Credibility Engine</span><span class="sol-line">♾ Change Intelligence</span></div>
+            <div class="be-activation">Activates S2 · S3</div>
+          </div>
+          <div class="be-stage">
+            <div class="be-stage-num">04 · Move</div>
+            <div class="be-stage-name">Movement</div>
+            <div class="be-stage-driver compound">◆ ◈ △ Compound</div>
+            <div class="be-sols"><span class="sol-line">One trusted Diploma &#8212; across deals, portfolio and talent.</span></div>
+            <div class="be-activation dim">The destination</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bridge-cta-row">
+        <a class="btn btn-mctrl" href="https://missionctrl.agency#contact">Activate Diploma's synergies with MissionCTRL →</a>
+        <a class="btn btn-primary" href="../#measure">Get the TrustOS Snapshot first</a>
+        <a class="btn btn-ghost" href="https://meetings-eu1.hubspot.com/dustin-lawrence" target="_blank" rel="noopener">Book a discovery call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="left">
+      <span style="font-size:0.85rem;font-weight:800;letter-spacing:-0.02em;"><span style="color:var(--pale);">Trust</span><span style="color:var(--cool);">OS</span></span>
+      <span>Activate · A MissionCTRL product</span>
+    </div>
+    <a href="https://missionctrl.agency">missionctrl.agency →</a>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  const data = {
+    nw: { name: 'Diploma PLC', meta: 'Centre · LSE: DPLM', state: 'composite', stateLabel: 'Trust Est. 64', role: "A FTSE 100 value-add solutions group — a decentralised 'compounder' that buys and scales specialist businesses across three Sectors: Controls, Seals and Life Sciences. CEO Johnny Thomson.", signal: "A diversified, resilient trust network — no single dependency. Trust is strongest with investors and customers, and thinnest where the group promise has to travel: to sellers in the deal funnel, across the decentralised portfolio, and into the talent market.", move: "Activate S1 — make 'the trusted buyer' measurable across the acquisition funnel, so the group's biggest growth engine runs on evidence, not reputation alone.", connections: ['cust','emp','part','com','reg','inv'], synergy: null },
+    cust: { name: 'Sellers & founders', meta: 'Hub · the acquisition pipeline', state: 'thin', stateLabel: 'Thin · the unpriced deal variable', role: 'Founder-owners and family businesses weighing whether to sell — and to whom. The group completes 15+ deals a year, so this is the engine of inorganic growth.', signal: "'The preferred and trusted buyer' is the promise that wins competitive deals. But to a founder choosing a permanent home for their company and people, the Diploma group brand carries far less awareness than the investor story — the variable no diligence stream measures.", move: "Make 'the trusted buyer' measurable across the funnel, so it wins deals on evidence (see S1).", connections: ['nw','eng','dot','part'], synergy: 'S1' },
+    emp: { name: 'Customers', meta: 'Hub · the operating businesses', state: 'strong', stateLabel: 'Strong · trust is the product', role: 'The OEMs, specifiers and regulated end-markets the operating businesses serve — high-cost-of-failure applications where technical expertise, certification and reliability are the value-add.', signal: 'Generally strong at the business level — trust is effectively the product the businesses sell. The open question is how consistently that experience holds across a fast-growing portfolio, and how much the group name reinforces it.', move: 'Use the corporate brand as a trust mark that reinforces customer trust where it helps (see S2).', connections: ['nw','mfg','pm','inv'], synergy: 'S2' },
+    part: { name: 'Portfolio businesses', meta: 'Hub · the decentralised portfolio', state: 'thin', stateLabel: 'Thin · uneven by design', role: 'The operating businesses and their MDs, run independently across Controls, Seals and Life Sciences, with a lean corporate centre.', signal: "Decentralised by design — each business runs its own brand and relationships. Where the Diploma name adds trust (and where it doesn't), and where brands overlap, is unmeasured. A group endorsement could compound trust without breaking local autonomy.", move: 'Map where the group brand lifts the portfolio; benchmark and compound as the group scales (see S2, S3).', connections: ['nw','dist','inst','cust','com'], synergy: 'S1 · S3' },
+    com: { name: 'Talent & people', meta: 'Hub · group & local employer brand', state: 'thin', stateLabel: 'Thin · still being built', role: 'Current and prospective employees across the group — from specialist technical talent to the future-leader pipeline and the Women in Leadership programme.', signal: "'Meaningful careers, a supportive culture' is the talent promise. In a decentralised group that experience varies business to business, and the group employer brand is still young — so the promise and the lived reality can diverge.", move: 'Make the group employer brand compound across the businesses, evidenced not asserted (see S3).', connections: ['nw','ia','tm','part'], synergy: 'S3' },
+    reg: { name: 'Advisers & the M&A market', meta: 'Hub · deal-flow intermediaries', state: 'untested', stateLabel: 'Untested in public signal', role: 'The corporate-finance advisers, brokers and intermediaries who source and shape deals, plus lenders and rating agencies.', signal: 'No public-signal trust read yet. This community shapes which proprietary deals Diploma sees first — a channel where a measured reputation as the trusted buyer would compound over time.', move: 'Extend the trusted-buyer signal to the adviser community that controls deal flow.', connections: ['nw','fhwa','csa'], synergy: null },
+    inv: { name: 'Investors', meta: 'Hub · LSE shareholders & analysts', state: 'strong', stateLabel: 'Strong · the compounder premium', role: 'Institutional shareholders and sell-side analysts who back the compounder model and price the premium.', signal: 'The strongest, most evidenced relationship — more than 850% total shareholder return over a decade, record FY2025 results and an upgraded FY2026 outlook. The premium rests on continued, evidenced trust as the group scales.', move: 'Connect the compounder story to the lived experience of customers and the portfolio (see S2).', connections: ['nw','cdpq','ftq','emp'], synergy: 'S2' },
+    eng: { name: 'Founder-owners weighing a sale', meta: 'Sub-node · the decision-makers', state: 'thin', stateLabel: 'Choosing a permanent home', role: 'Owners deciding whether — and to whom — to sell the business they built.', signal: 'They weigh price against the assurance their company, brand and people will be looked after. Trust in the buyer is decisive, and largely unmeasured.', move: 'Baseline how founders read Diploma as an owner (see S1).', connections: ['cust','ia'], synergy: 'S1' },
+    dot: { name: 'Family & management teams', meta: 'Sub-node · the people behind the deal', state: 'thin', stateLabel: 'Stay through the handover', role: 'The management and family teams who often remain after a sale.', signal: 'Their confidence that Diploma will honour the culture and autonomy shapes both the deal and the integration that follows.', move: 'Capture management trust pre- and post-deal.', connections: ['cust'], synergy: null },
+    mfg: { name: 'OEMs & specifiers', meta: 'Sub-node · who design the parts in', state: 'strong', stateLabel: 'Specified on trust', role: 'Engineers and OEMs who design the businesses\u2019 critical components into their own products.', signal: 'Once specified, these relationships are sticky and high-trust — a core source of the value-add model\u2019s resilience.', move: 'Protect and evidence this trust as businesses scale.', connections: ['emp'], synergy: null },
+    pm: { name: 'Regulated end-markets', meta: 'Sub-node · aero · IVD · energy · water', state: 'strong', stateLabel: 'High-cost-of-failure', role: 'Customers in aerospace, in-vitro diagnostics, clean energy, datacentres, industrial automation and water.', signal: 'Regulated, high-stakes buyers for whom certification and reliability are non-negotiable — trust is the precondition to trade.', move: 'Use group standing to reinforce credibility in regulated markets (see S2).', connections: ['emp'], synergy: 'S2' },
+    dist: { name: 'The operating businesses', meta: 'Sub-node · run independently', state: 'thin', stateLabel: 'Decentralised by design', role: 'The specialist businesses acquired and scaled across the three Sectors.', signal: 'Each runs its own brand and relationships. The group name\u2019s contribution to their trust — positive, neutral or invisible — is unmeasured.', move: 'Measure where the group brand lifts each business (see S3).', connections: ['part'], synergy: 'S3' },
+    inst: { name: 'Sector teams', meta: 'Sub-node · Controls · Seals · Life Sciences', state: 'thin', stateLabel: 'The connective layer', role: 'The small Sector leadership teams providing focused oversight between the centre and the businesses.', signal: 'They carry the group promise into the portfolio. How consistently it lands is exactly the Connection layer this read flags.', move: 'Equip Sector teams with a shared trust signal.', connections: ['part'], synergy: null },
+    ia: { name: 'Specialist technical talent', meta: 'Sub-node · scarce skills', state: 'thin', stateLabel: 'Hard to replace', role: 'The engineers, scientists and specialists the businesses depend on.', signal: 'In tight technical labour markets, the employer promise — and whether it is experienced — drives retention and hiring.', move: 'Baseline employer trust where the scarce skills sit (see S3).', connections: ['com','eng'], synergy: 'S3' },
+    tm: { name: 'Future leaders & Women in Leadership', meta: 'Sub-node · the pipeline', state: 'thin', stateLabel: 'The growth engine', role: 'The next-generation leadership pipeline, including the Women in Leadership programme.', signal: 'The group\u2019s scaling depends on leadership depth. The talent promise here is designed but not yet measured at group level.', move: 'Track the leadership-pipeline experience as a group signal.', connections: ['com'], synergy: null },
+    fhwa: { name: 'M&A advisers & intermediaries', meta: 'Sub-node · deal flow', state: 'untested', stateLabel: 'Controls first-look deals', role: 'Corporate-finance advisers and brokers who source deals.', signal: 'No public-signal read. A measured reputation as the trusted buyer would compound the proprietary deal flow Diploma sees.', move: 'Extend the trusted-buyer signal to advisers.', connections: ['reg'], synergy: null },
+    csa: { name: 'Suppliers & principals', meta: 'Sub-node · the value-add model', state: 'strong', stateLabel: 'Long-term partnerships', role: 'The principals and suppliers whose products the businesses distribute and add value to.', signal: 'Long-term, high-trust supplier and principal relationships underpin the value-add model — a quiet strength to protect.', move: 'Keep principal trust visible and evidenced.', connections: ['reg'], synergy: null },
+    cdpq: { name: 'Institutional shareholders', meta: 'Sub-node · the owners', state: 'strong', stateLabel: 'Back the compounder', role: 'The institutional base holding DPLM.', signal: 'A decade of compounding returns underpins strong confidence. The forward question is sustaining it through scale.', move: 'Keep the compounder story evidenced (see S2).', connections: ['inv'], synergy: 'S2' },
+    ftq: { name: 'Sell-side analysts', meta: 'Sub-node · the narrators', state: 'strong', stateLabel: 'Frame the equity story', role: 'Analysts framing Diploma for the market.', signal: 'Broadly constructive on the model and the upgraded outlook — a strength, provided the lived story keeps pace with the numbers.', move: 'Give analysts evidence that trust scales with the group.', connections: ['inv'], synergy: null }
+  };
+
+  const edgeMap = {
+    'nw-cust': ['nw','cust'], 'nw-emp': ['nw','emp'], 'nw-part': ['nw','part'],
+    'nw-com': ['nw','com'], 'nw-reg': ['nw','reg'], 'nw-inv': ['nw','inv'],
+    'cust-eng': ['cust','eng'], 'cust-dot': ['cust','dot'],
+    'emp-mfg': ['emp','mfg'], 'emp-pm': ['emp','pm'],
+    'part-dist': ['part','dist'], 'part-inst': ['part','inst'],
+    'com-ia': ['com','ia'], 'com-tm': ['com','tm'],
+    'reg-fhwa': ['reg','fhwa'], 'reg-csa': ['reg','csa'],
+    'inv-cdpq': ['inv','cdpq'], 'inv-ftq': ['inv','ftq'],
+    'eng-ia': ['eng','ia'], 'cdpq-com': ['cdpq','com'], 'fhwa-eng': ['fhwa','eng'], 'pm-dist': ['pm','dist'],
+    's1': ['cust','part'], 's2': ['inv','emp'], 's3': ['part','com']
+  };
+
+  const svg = document.getElementById('ecoSvg');
+  const detail = document.getElementById('ecoDetail');
+  let selected = null;
+
+  function highlight(id) {
+    svg.classList.add('has-focus');
+    const node = data[id]; if (!node) return;
+    const conns = new Set(node.connections);
+    svg.querySelectorAll('[data-node]').forEach(el => {
+      const nid = el.dataset.node; el.classList.remove('focused','connected');
+      if (nid === id) el.classList.add('focused'); else if (conns.has(nid)) el.classList.add('connected');
+    });
+    svg.querySelectorAll('[data-edge]').forEach(el => {
+      el.classList.remove('connected');
+      const ep = edgeMap[el.dataset.edge];
+      if (ep && (ep[0] === id || ep[1] === id)) el.classList.add('connected');
+    });
+  }
+
+  function clearFocus() {
+    svg.classList.remove('has-focus');
+    svg.querySelectorAll('[data-node]').forEach(el => el.classList.remove('focused','connected','selected'));
+    svg.querySelectorAll('[data-edge]').forEach(el => el.classList.remove('connected'));
+  }
+
+  function renderDetail(id) {
+    const n = data[id]; if (!n) return;
+    const synergyTag = n.synergy ? `<span class="detail-tag">Related synergy · ${n.synergy}</span>` : '';
+    detail.innerHTML = `
+      <div class="detail-head">
+        <div>
+          <div class="detail-meta">${n.meta}</div>
+          <h3 class="detail-name">${n.name}</h3>
+          <div class="detail-role">${n.role}</div>
+        </div>
+        <div class="detail-state ${n.state}">${n.stateLabel}</div>
+      </div>
+      <div class="detail-grid">
+        <div class="detail-cell">
+          <div class="lbl">What Navigator sees</div>
+          <div class="val">${n.signal}</div>
+        </div>
+        <div class="detail-cell">
+          <div class="lbl">Next move</div>
+          <div class="val">${n.move}</div>
+          ${synergyTag}
+        </div>
+      </div>
+    `;
+  }
+
+  function selectNode(id) {
+    selected = id; highlight(id);
+    svg.querySelectorAll('[data-node]').forEach(el => el.classList.remove('selected'));
+    const sel = svg.querySelector(`[data-node="${id}"]`); if (sel) sel.classList.add('selected');
+    renderDetail(id);
+  }
+
+  svg.addEventListener('mouseover', (e) => {
+    const t = e.target.closest('[data-node]'); if (!t) return;
+    if (selected && selected !== t.dataset.node) return;
+    highlight(t.dataset.node); renderDetail(t.dataset.node);
+  });
+  svg.addEventListener('mouseleave', () => {
+    if (selected) { highlight(selected); renderDetail(selected); }
+    else { clearFocus(); renderDetail('nw'); }
+  });
+  svg.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-node]');
+    if (t) {
+      if (selected === t.dataset.node) { selected = null; clearFocus(); renderDetail('nw'); }
+      else selectNode(t.dataset.node);
+    } else { selected = null; clearFocus(); renderDetail('nw'); }
+  });
+
+  renderDetail('nw');
+})();
+</script>
+
+</body>
+</html>
