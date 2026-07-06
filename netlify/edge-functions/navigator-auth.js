@@ -22,7 +22,7 @@ export default async (request, context) => {
   if (!password) {
     return new Response(
       "Access not configured — contact hello@missionctrl.agency",
-      { status: 503, headers: { "content-type": "text/plain" } }
+      { status: 503, headers: { "content-type": "text/plain; charset=utf-8" } }
     );
   }
 
@@ -42,7 +42,7 @@ export default async (request, context) => {
     headers: {
       "WWW-Authenticate": 'Basic realm="TrustOS Navigator", charset="UTF-8"',
       "Cache-Control": "no-store",
-      "content-type": "text/plain",
+      "content-type": "text/plain; charset=utf-8",
     },
   });
 };
