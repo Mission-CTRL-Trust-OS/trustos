@@ -5,7 +5,6 @@
 User-agent: *
 Allow: /
 Disallow: /navigator/
-Disallow: /results.html
 
 # AI search & retrieval crawlers are intentionally permitted via the rule above
 # (OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User, Claude-SearchBot,

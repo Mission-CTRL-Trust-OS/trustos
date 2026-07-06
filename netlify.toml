@@ -1,24 +1,26 @@
-plugins = []
-headers = []
-redirects = []
-
-[functions]
-
-  [functions."*"]
-
 [build]
 publish = "."
 
-  [build.environment]
+[functions]
+directory = "netlify/functions"
 
-  [build.processing]
+[[headers]]
+for = "/*"
 
-    [build.processing.css]
+  [headers.values]
+  X-Frame-Options = "SAMEORIGIN"
+  X-Content-Type-Options = "nosniff"
+  Referrer-Policy = "strict-origin-when-cross-origin"
+  Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-    [build.processing.html]
+[[headers]]
+for = "/*.png"
 
-    [build.processing.images]
+  [headers.values]
+  Cache-Control = "public, max-age=604800"
 
-    [build.processing.js]
+[[headers]]
+for = "/favicon*"
 
-  [build.services]
+  [headers.values]
+  Cache-Control = "public, max-age=604800"

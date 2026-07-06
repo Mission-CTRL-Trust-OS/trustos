@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <title>Page not found | TrustOS</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sora', system-ui, sans-serif; background: #0a0f1a; color: rgba(255,255,255,0.78); min-height: 100vh; display: flex; align-items: center; justify-content: center; font-weight: 300; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    .wrap { text-align: center; padding: 48px 24px; max-width: 560px; }
+    .tri { margin: 0 auto 28px; opacity: 0.9; }
+    h1 { color: #fff; font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -0.03em; margin-bottom: 12px; }
+    p { color: rgba(255,255,255,0.6); margin-bottom: 30px; }
+    .btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { display: inline-block; background: linear-gradient(135deg, #6da0b8, #5a8a9a); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 13px 30px; border-radius: 8px; text-decoration: none; }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-ghost { display: inline-block; border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.8); font-weight: 600; font-size: 0.9rem; padding: 13px 30px; border-radius: 8px; text-decoration: none; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.4); }
+    .foot { margin-top: 40px; font-size: 0.72rem; color: rgba(255,255,255,0.3); }
+    .foot a { color: rgba(255,255,255,0.45); text-decoration: none; }
+  </style>
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <svg class="tri" width="72" height="89" viewBox="0 0 120 148" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient>
+        <filter id="tglow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/>
+      <polygon points="30,12 90,12 60,88" fill="url(#tg)" filter="url(#tglow)"/>
+    </svg>
+    <h1>This page lost its way.</h1>
+    <p>The page you're looking for doesn't exist or has moved. Your trust picture, on the other hand, is 60 seconds away.</p>
+    <div class="btns">
+      <a href="/explorer/" class="btn-primary">Try the Explorer &mdash; free</a>
+      <a href="/" class="btn-ghost">Back to TrustOS</a>
+    </div>
+    <p class="foot">TrustOS &middot; A MissionCTRL product &middot; <a href="/insights/">Sector Insights</a> &middot; <a href="/faq/">FAQ</a></p>
+  </div>
+</body>
+</html>
