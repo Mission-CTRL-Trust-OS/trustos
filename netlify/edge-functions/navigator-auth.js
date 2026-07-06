@@ -11,7 +11,7 @@
 export default async (request, context) => {
   const url = new URL(request.url);
   const m = url.pathname.match(/^\/navigator\/([^\/]+)/);
-  if (!m) return context.next();
+  if (!m || m[1] === "index.html") return context.next();
 
   const slug = m[1].toUpperCase().replace(/[^A-Z0-9]/g, "_");
   const envName = "NAVIGATOR_PASSWORD_" + slug;

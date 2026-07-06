@@ -86,4 +86,10 @@
     <loc>https://trustos.missionctrl.agency/faq/</loc>
     <lastmod>2026-07-01</lastmod>
   </url>
+  <url>
+    <loc>https://trustos.missionctrl.agency/navigator/</loc>
+    <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
