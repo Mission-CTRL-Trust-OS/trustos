@@ -1133,7 +1133,7 @@
     </a>
   </div>
   <ul class="nav-links">
-    <li><a href="#" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
+    <li><a href="?request=navigator" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
 
     <li><a href="/methodology/">How it works</a></li>
     <li><a href="#sector-insights">Sector Insights</a></li>
@@ -1155,9 +1155,9 @@
       <p class="hero-sub hero-anim hero-anim-d3">Your most valuable asset is the one nobody measures. TrustOS reads trust across every stakeholder &#8212; a leading indicator of resilience and growth that warns you before the numbers move.</p>
       <div class="hero-actions hero-anim hero-anim-d4">
         <a href="/explorer/" class="btn-primary" style="font-size:0.9rem;padding:13px 38px;text-align:center;">Try the TrustOS Explorer<span style="display:block;font-size:0.62rem;font-weight:500;opacity:0.85;letter-spacing:0.04em;margin-top:3px;">Free &middot; self-serve &middot; 60 seconds</span></a>
-        <a href="#" onclick="openNav(event)" class="btn-ghost" style="font-size:0.85rem;padding:15px 28px;cursor:pointer;">Request a Navigator</a>
+        <a href="?request=navigator" onclick="openNav(event)" class="btn-ghost" style="font-size:0.85rem;padding:15px 28px;cursor:pointer;">Request a Navigator</a>
       </div>
-      <p class="hero-anim hero-anim-d4" style="font-size:0.78rem;color:rgba(255,255,255,0.45);margin-bottom:44px;">Ready for the full picture? <a href="#" onclick="openDemo(event)" style="color:#8fb5c0;text-decoration:none;border-bottom:1px solid rgba(143,181,192,0.4);cursor:pointer;">Book a Snapshot demo &rarr;</a></p>
+      <p class="hero-anim hero-anim-d4" style="font-size:0.78rem;color:rgba(255,255,255,0.45);margin-bottom:44px;">Ready for the full picture? <a href="?request=demo" onclick="openDemo(event)" style="color:#8fb5c0;text-decoration:none;border-bottom:1px solid rgba(143,181,192,0.4);cursor:pointer;">Book a Snapshot demo &rarr;</a></p>
       <div class="bench hero-anim hero-anim-d5">
         <div class="bench-row" id="benchRow">
           <div class="bench-item" data-i="0">
@@ -1618,7 +1618,7 @@
     <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:16px;">Ready to see your real trust picture?</p>
     <h2 style="font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">30 minutes.<br/>Your full trust picture, live.</h2>
     <p style="font-size:0.95rem;color:rgba(255,255,255,0.42);max-width:460px;margin:0 auto 32px;line-height:1.75;">We run a live TrustOS session using your stakeholder groups. You see the dashboard with your context. No templates. No generic demos.</p>
-    <a href="#" onclick="openDemo(event)" class="btn-light" style="font-size:0.92rem;padding:16px 42px;font-weight:700;display:inline-block;cursor:pointer;">Book a Demo</a>
+    <a href="?request=demo" onclick="openDemo(event)" class="btn-light" style="font-size:0.92rem;padding:16px 42px;font-weight:700;display:inline-block;cursor:pointer;">Book a Demo</a>
     <p style="font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:14px;">Prefer to self-serve? <a href="/explorer/" style="color:rgba(255,255,255,0.38);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.18);">Open the TrustOS Explorer.</a></p>
   </div>
 </section>
@@ -1688,7 +1688,7 @@
         <li><a href="#sector-insights">Sector Insights</a></li>
         <li><a href="/faq/">FAQ</a></li>
         <li><a href="https://missionctrl.agency" target="_blank" rel="noopener">MissionCTRL Solutions</a></li>
-        <li><a href="#" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
+        <li><a href="?request=navigator" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -1812,7 +1812,8 @@
   (function(){['demoModal','navModal'].forEach(function(id){var ov=document.getElementById(id);if(ov)ov.addEventListener('click',function(e){if(e.target===ov){closeDemo();closeNav();}});});
    document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDemo();closeNav();}});
    if(/[?&]book=demo/.test(location.search)){window.addEventListener('load',function(){openDemo();});}
-   if(/[?&]request=navigator/.test(location.search)){window.addEventListener('load',function(){openNav();});}})();
+   if(/[?&]request=navigator/.test(location.search)){window.addEventListener('load',function(){openNav();});}
+   if(/[?&]request=demo/.test(location.search)){window.addEventListener('load',function(){openDemo();});}})();
 </script>
 <script>
 (function(){

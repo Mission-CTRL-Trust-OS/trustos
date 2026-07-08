@@ -1594,13 +1594,13 @@
     </a>
   </div>
   <ul class="nav-links">
-    <li><a href="#" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
+    <li><a href="?request=navigator" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
     
     <li><a href="/methodology/">How it works</a></li>
     <li><a href="/insights/">Sector Insights</a></li>
     <li><a href="/faq/">FAQ</a></li>
   </ul>
-  <a href="#" onclick="openDemo(event)" class="nav-cta" style="cursor:pointer;">Book a Demo</a>
+  <a href="?request=demo" onclick="openDemo(event)" class="nav-cta" style="cursor:pointer;">Book a Demo</a>
 </nav>
 
 <div style="background:var(--deep);padding:64px 5% 0;text-align:center;position:relative;">
@@ -1767,8 +1767,8 @@
           <p id="hc-cta-line" style="font-size:1.08rem;font-weight:700;color:#fff;line-height:1.4;margin-bottom:8px;">See where your trust really stands — beyond self-assessment.</p>
           <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.65;max-width:540px;margin:0 auto 22px;">Request a free TrustOS Navigator or book a 30-minute demo — either way, your Explorer results come with you, so we start from where you are.</p>
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-            <a href="#" onclick="openNav(event)" class="btn-primary" style="font-size:0.88rem;padding:14px 30px;cursor:pointer;">Request your TrustOS Navigator</a>
-            <a href="#" onclick="openDemo(event)" class="btn-ghost" style="font-size:0.85rem;padding:13px 24px;cursor:pointer;">Book a Demo</a>
+            <a href="?request=navigator" onclick="openNav(event)" class="btn-primary" style="font-size:0.88rem;padding:14px 30px;cursor:pointer;">Request your TrustOS Navigator</a>
+            <a href="?request=demo" onclick="openDemo(event)" class="btn-ghost" style="font-size:0.85rem;padding:13px 24px;cursor:pointer;">Book a Demo</a>
           </div>
         </div>
 
@@ -1806,7 +1806,7 @@
         <li><a href="/insights/">Sector Insights</a></li>
         <li><a href="/faq/">FAQ</a></li>
         <li><a href="https://missionctrl.agency" target="_blank" rel="noopener">MissionCTRL Solutions</a></li>
-        <li><a href="#" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
+        <li><a href="?request=navigator" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -2285,7 +2285,8 @@
   (function(){['demoModal','navModal'].forEach(function(id){var ov=document.getElementById(id);if(ov)ov.addEventListener('click',function(e){if(e.target===ov){closeDemo();closeNav();}});});
    document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDemo();closeNav();}});
    if(/[?&]book=demo/.test(location.search)){window.addEventListener('load',function(){openDemo();});}
-   if(/[?&]request=navigator/.test(location.search)){window.addEventListener('load',function(){openNav();});}})();
+   if(/[?&]request=navigator/.test(location.search)){window.addEventListener('load',function(){openNav();});}
+   if(/[?&]request=demo/.test(location.search)){window.addEventListener('load',function(){openDemo();});}})();
 </script>
 </body>
 </html>
