@@ -1190,41 +1190,106 @@
 <!-- BESPOKE -->
 
 
-<!-- RELATIONSHIP FRAME — what TrustOS reads -->
-<section id="what-trust-is" style="background:var(--deep);padding:80px 5%;border-top:1px solid rgba(255,255,255,0.05);position:relative;overflow:hidden;">
+<!-- RELATIONSHIP FRAME — what TrustOS reads (Direction 2: done/next chart) -->
+<section id="what-trust-is" class="tos-dn" style="background:var(--deep);padding:80px 5%;border-top:1px solid rgba(255,255,255,0.05);position:relative;overflow:hidden;">
   <div class="grid-bg"></div>
-  <div style="max-width:860px;margin:0 auto;position:relative;z-index:2;text-align:center;">
+  <div style="max-width:960px;margin:0 auto;position:relative;z-index:2;text-align:center;">
     <p style="display:inline-flex;align-items:center;gap:10px;font-size:0.63rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--trust-cool);margin-bottom:14px;justify-content:center;"><span style="width:20px;height:2px;background:var(--trust-cool);display:block;"></span>What TrustOS reads</p>
-    <h2 style="font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.12;max-width:680px;margin:0 auto 22px;">Trust isn&#8217;t an opinion about you. <em style="color:var(--trust-cool);font-style:normal;">It&#8217;s the state of a relationship with you.</em></h2>
-    <p style="font-size:0.92rem;color:rgba(255,255,255,0.55);line-height:1.8;max-width:680px;margin:0 auto 16px;">That&#8217;s why the tools you run can&#8217;t see it. Reputation monitoring measures what people <em>say</em> about you &#8212; aggregate, outside-in, lagging. Trust is different in kind: it&#8217;s held by specific stakeholders, earned through repeated experience, and it can be strong with your regulators while quietly collapsing with your employees. It has to be read the way it exists &#8212; <strong style="color:rgba(255,255,255,0.8);font-weight:600;">relationship by relationship</strong>.</p>
-    <p style="font-size:0.92rem;color:rgba(255,255,255,0.55);line-height:1.8;max-width:680px;margin:0 auto 36px;">Think of it as emotional intelligence, at organisational scale. In a person it&#8217;s three capacities: knowing how you come across, reading how you actually land, and closing the gap between the two. People with it are trusted. Organisations are no different &#8212; except no organisation has it naturally. No one person feels the whole. TrustOS is how an organisation gets it: <strong style="color:rgba(255,255,255,0.8);font-weight:600;">self-awareness, made measurable</strong>.</p>
-    <div class="tos-rel-grid">
-      <div class="tos-rel-cell">
-        <p class="tos-rel-eyebrow">How you come across</p>
-        <p class="tos-rel-driver">Clarity</p>
-        <p class="tos-rel-body">What&#8217;s said &#8212; and whether it&#8217;s understood.</p>
+    <h2 style="font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.12;max-width:660px;margin:0 auto 16px;">Trust isn&#8217;t an opinion about you. <em style="color:var(--trust-cool);font-style:normal;">It&#8217;s the state of a relationship with you.</em></h2>
+    <p style="font-size:0.92rem;color:rgba(255,255,255,0.55);line-height:1.8;max-width:640px;margin:0 auto 44px;">Reputation measures what people <em style="font-style:italic;">say</em> about you &#8212; aggregate, outside-in, and always after the fact. Trust is held by specific stakeholders and earned through experience &#8212; so it moves <em style="font-style:italic;">before</em> the results do. That&#8217;s the difference between a rear-view mirror and an instrument.</p>
+
+    <div class="tos-dn-card">
+      <div class="tos-dn-head">
+        <p style="font-size:0.78rem;font-weight:700;color:rgba(255,255,255,0.7);letter-spacing:0.02em;margin:0;">The same event. Two very different instruments.</p>
+        <div class="tos-dn-legend">
+          <span><i class="rep"></i>Reputation &middot; what&#8217;s said</span>
+          <span><i class="tru"></i>Trust &middot; what&#8217;s believed</span>
+        </div>
       </div>
-      <div class="tos-rel-cell">
-        <p class="tos-rel-eyebrow">How you actually land</p>
-        <p class="tos-rel-driver">Connection</p>
-        <p class="tos-rel-body">What stakeholders really experience.</p>
+      <div class="tos-dn-fig">
+        <svg viewBox="0 0 880 300" role="img" aria-label="Trust declines ahead of an event; reputation only reacts after it. Illustrative pattern.">
+          <line class="tos-dn-ax" x1="40" y1="20" x2="40" y2="250"/>
+          <line class="tos-dn-ax" x1="40" y1="250" x2="850" y2="250"/>
+          <text class="tos-dn-axlbl" x="110" y="272">Q1</text><text class="tos-dn-axlbl" x="250" y="272">Q2</text>
+          <text class="tos-dn-axlbl" x="390" y="272">Q3</text><text class="tos-dn-axlbl" x="530" y="272">Q4</text>
+          <text class="tos-dn-axlbl" x="670" y="272">Q5</text><text class="tos-dn-axlbl" x="800" y="272">Q6</text>
+          <line class="tos-dn-evline" x1="560" y1="30" x2="560" y2="250"/>
+          <circle class="tos-dn-evdot" cx="560" cy="30" r="5"/>
+          <circle class="tos-dn-evring" cx="560" cy="30" r="5"/>
+          <g class="tos-dn-lbl tos-dn-lbl-1"><text class="tos-dn-evlbl" x="574" y="34">The event breaks</text></g>
+          <path class="tos-dn-ln rep" d="M40,93 C160,91 320,95 480,93 C520,92 545,93 560,95 C585,101 610,135 650,170 C695,203 770,218 850,224"/>
+          <path class="tos-dn-ln tru" d="M40,88 C90,88 118,90 158,96 C198,102 222,110 258,118 C288,125 312,127 342,136 C382,148 412,163 462,179 C502,191 532,201 560,208 C610,221 700,238 850,244"/>
+          <g class="tos-dn-lbl tos-dn-lbl-2">
+            <line class="tos-dn-brace" x1="280" y1="132" x2="280" y2="250"/>
+            <text class="tos-dn-gaplbl" x="64" y="185">Trust moves first</text>
+            <text class="tos-dn-gaplbl dim" x="64" y="202">The early-warning window</text>
+          </g>
+          <g class="tos-dn-lbl tos-dn-lbl-3">
+            <text class="tos-dn-zonelbl" x="588" y="62">Reputation reacts</text>
+            <text class="tos-dn-zonelbl dim" x="588" y="78">after the damage is priced in</text>
+          </g>
+        </svg>
       </div>
-      <div class="tos-rel-cell">
-        <p class="tos-rel-eyebrow">Whether actions match words</p>
-        <p class="tos-rel-driver">Confidence</p>
-        <p class="tos-rel-body">What can be proved.</p>
-      </div>
+      <p class="tos-dn-note">Illustrative pattern</p>
     </div>
-    <p style="font-size:1.05rem;font-weight:700;color:rgba(255,255,255,0.85);line-height:1.6;max-width:640px;margin:0 auto;">Reputation is what people say about what you&#8217;ve <em style="color:var(--trust-cool);font-style:normal;">done</em>. Trust is whether they believe in what you do <em style="color:var(--trust-cool);font-style:normal;">next</em>.</p>
+
+    <p style="font-size:1.05rem;font-weight:700;color:rgba(255,255,255,0.85);line-height:1.6;max-width:560px;margin:36px auto 0;">Reputation is what people say about what you&#8217;ve <em style="color:var(--trust-cool);font-style:normal;">done</em>. Trust is whether they believe in what you do <em style="color:var(--trust-cool);font-style:normal;">next</em>.</p>
+    <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.7;max-width:520px;margin:14px auto 0;">TrustOS reads it relationship by relationship &#8212; <strong style="color:rgba(255,255,255,0.7);font-weight:600;">self-awareness, made measurable</strong> &#8212; so you act in the warning window, not after it.</p>
   </div>
   <style>
-    .tos-rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.04);border-radius:12px;overflow:hidden;text-align:left;margin-bottom:36px;}
-    .tos-rel-cell{background:rgba(10,15,26,0.95);padding:26px 24px;}
-    .tos-rel-eyebrow{font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;}
-    .tos-rel-driver{font-size:1rem;font-weight:800;color:var(--trust-cool);margin-bottom:6px;}
-    .tos-rel-body{font-size:0.8rem;color:rgba(255,255,255,0.55);line-height:1.65;}
-    @media (max-width:768px){.tos-rel-grid{grid-template-columns:1fr;}}
+    .tos-dn-card{background:rgba(10,15,26,0.95);border:1px solid rgba(90,138,154,0.18);border-radius:16px;padding:36px 36px 20px;text-align:left;}
+    .tos-dn-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;margin-bottom:22px;}
+    .tos-dn-legend{display:flex;gap:22px;font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.55);}
+    .tos-dn-legend i{display:inline-block;width:18px;height:3px;border-radius:2px;margin-right:7px;vertical-align:middle;}
+    .tos-dn-legend i.rep{background:rgba(255,255,255,0.28);}
+    .tos-dn-legend i.tru{background:#6da0b8;}
+    .tos-dn-fig svg{width:100%;height:auto;display:block;}
+    .tos-dn-note{font-size:0.62rem;color:rgba(255,255,255,0.22);text-align:right;margin:10px 2px 0;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;}
+    .tos-dn-ax{stroke:rgba(255,255,255,0.12);stroke-width:1;}
+    .tos-dn-axlbl{font-family:'Sora',sans-serif;font-size:10px;fill:rgba(255,255,255,0.35);font-weight:500;}
+    .tos-dn-ln{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1300;stroke-dashoffset:1300;}
+    .tos-dn-ln.rep{stroke:rgba(255,255,255,0.28);}
+    .tos-dn-ln.tru{stroke:#6da0b8;filter:drop-shadow(0 0 6px rgba(109,160,184,0.5));}
+    .tos-dn.live .tos-dn-ln.tru{animation:tosDnDraw 2.6s ease-out forwards;}
+    .tos-dn.live .tos-dn-ln.rep{animation:tosDnDraw 2.6s ease-out 0.5s forwards;}
+    @keyframes tosDnDraw{to{stroke-dashoffset:0;}}
+    .tos-dn-evline{stroke:#e8a34b;stroke-width:1;stroke-dasharray:4 5;opacity:0.5;}
+    .tos-dn-evdot{fill:#e8a34b;}
+    .tos-dn-evring{fill:none;stroke:#e8a34b;stroke-width:1.5;}
+    .tos-dn.live .tos-dn-evring{animation:tosDnPulse 2.4s ease-in-out infinite;}
+    @keyframes tosDnPulse{0%,100%{r:5;opacity:0.9;}50%{r:9;opacity:0.35;}}
+    .tos-dn-evlbl{font-family:'Sora',sans-serif;font-size:10px;font-weight:700;fill:#e8a34b;letter-spacing:0.08em;text-transform:uppercase;}
+    .tos-dn-brace{stroke:#6da0b8;stroke-width:1;stroke-dasharray:3 4;opacity:0.55;}
+    .tos-dn-gaplbl{font-family:'Sora',sans-serif;font-size:9.5px;font-weight:700;fill:#6da0b8;letter-spacing:0.1em;text-transform:uppercase;}
+    .tos-dn-gaplbl.dim{opacity:0.6;}
+    .tos-dn-zonelbl{font-family:'Sora',sans-serif;font-size:9.5px;font-weight:700;fill:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase;}
+    .tos-dn-zonelbl.dim{opacity:0.65;}
+    .tos-dn-lbl{opacity:0;transition:opacity 0.7s ease;}
+    .tos-dn.live .tos-dn-lbl-2{opacity:1;transition-delay:2.2s;}
+    .tos-dn.live .tos-dn-lbl-1{opacity:1;transition-delay:2.7s;}
+    .tos-dn.live .tos-dn-lbl-3{opacity:1;transition-delay:3.2s;}
+    @media (max-width:680px){
+      .tos-dn-card{padding:22px 16px 14px;}
+      .tos-dn-lbl-1 text,.tos-dn-lbl-2 text,.tos-dn-lbl-3 text{display:none;}
+      .tos-dn-legend{gap:14px;}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .tos-dn .tos-dn-ln{stroke-dashoffset:0;animation:none!important;}
+      .tos-dn .tos-dn-lbl{opacity:1;transition:none;}
+      .tos-dn .tos-dn-evring{animation:none!important;}
+    }
   </style>
+  <script>
+    (function(){
+      var sec=document.getElementById('what-trust-is');
+      if(!sec)return;
+      if(!('IntersectionObserver' in window)){sec.classList.add('live');return;}
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){if(e.isIntersecting){sec.classList.add('live');io.disconnect();}});
+      },{threshold:0.35});
+      io.observe(sec);
+    })();
+  </script>
 </section>
 
 <!-- EVIDENCE BAND -->
