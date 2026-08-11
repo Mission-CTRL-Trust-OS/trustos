@@ -24,3 +24,10 @@ for = "/favicon*"
 
   [headers.values]
   Cache-Control = "public, max-age=604800"
+
+# Redirect the Netlify subdomain to the primary domain (301, forced)
+[[redirects]]
+from = "https://missionctrl-trustos.netlify.app/*"
+to = "https://trustos.missionctrl.agency/:splat"
+status = 301
+force = true
