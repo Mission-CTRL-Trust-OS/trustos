@@ -535,13 +535,13 @@
     .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
-    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
     .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
     .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
     .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
     .lb-fill{height:100%;border-radius:3px;}
     .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
-    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-bar-v{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
     .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
     .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
     .lb-tri{display:flex;justify-content:center;}
@@ -706,10 +706,10 @@
   <div class="live-banner">
     <div class="lb-left">
       <p class="lb-kicker">Cross-sector diagnostic &middot; Q2 2026 &middot; average of 12 reads</p>
-      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:64%"></div></div><span class="lb-bar-v">64</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:48%"></div></div><span class="lb-bar-v">48</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:52%"></div></div><span class="lb-bar-v">52</span></div></div><span class="lb-bar-v">88%</span></div><div class="lb-bar"><span class="lb-bar-l cn">FTSE value</span><div class="lb-track"><div class="lb-fill cn" style="width:28%"></div></div><span class="lb-bar-v">28%</span></div><div class="lb-bar"><span class="lb-bar-l cf">Connection</span><div class="lb-track"><div class="lb-fill cf" style="width:92%"></div></div><span class="lb-bar-v">11/12</span></div></div>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:64%"></div></div><span class="lb-bar-v">Strongest</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:48%"></div></div><span class="lb-bar-v">Weak edge</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:52%"></div></div><span class="lb-bar-v">Mid</span></div></div><span class="lb-bar-v">88%</span></div><div class="lb-bar"><span class="lb-bar-l cn">FTSE value</span><div class="lb-track"><div class="lb-fill cn" style="width:28%"></div></div><span class="lb-bar-v">28%</span></div><div class="lb-bar"><span class="lb-bar-l cf">Connection</span><div class="lb-track"><div class="lb-fill cf" style="width:92%"></div></div><span class="lb-bar-v">11/12</span></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; in eleven of the twelve sectors we&rsquo;ve read, it&rsquo;s where trust leaks first.</p>
     </div>
-    <div class="lb-tri"><svg width="240" height="227" viewBox="65.8 59.6 151.7 143.3" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="95.8,89.6 145.0,172.9 187.4,93.5"/><text class="lb-lbl cl" x="107.5" y="138.9" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.4,107.5,138.9)">CLARITY</text><text class="lb-lbl cn" x="179.4" y="140.3" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.9,179.4,140.3)">CONNECTION</text><text class="lb-lbl cf" x="142.2" y="76.6" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.4,142.2,76.6)">CONFIDENCE</text><text class="lb-comp" x="142.7" y="114.9">55</text><text class="lb-cap" x="142.7" y="126.9">TRUST INDEX</text></svg></div>
+    <div class="lb-tri"><svg width="240" height="227" viewBox="65.8 59.6 151.7 143.3" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="95.8,89.6 145.0,172.9 187.4,93.5"/><text class="lb-lbl cl" x="107.5" y="138.9" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.4,107.5,138.9)">CLARITY</text><text class="lb-lbl cn" x="179.4" y="140.3" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.9,179.4,140.3)">CONNECTION</text><text class="lb-lbl cf" x="142.2" y="76.6" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.4,142.2,76.6)">CONFIDENCE</text><text class="lb-comp" x="142.7" y="114.9" style="font-size:8.5px;letter-spacing:0.12em">FUNCTIONAL</text><text class="lb-cap" x="142.7" y="126.9">TRUST BAND</text></svg></div>
   </div>
 </div>
 
@@ -748,7 +748,7 @@
 
   <p>TrustOS reads trust across an organisation&rsquo;s whole stakeholder ecosystem &mdash; customers, employees, investors, regulators, communities &mdash; as three drivers, Clarity, Connection and Confidence, on a foundation of Integrity.</p>
 
-  <p>We have published trust reads across twelve sectors, from <a href="/energy-integrity-test/">Energy</a> to <a href="/council-trust-test/">local government</a> to <a href="/membership-bodies-trust-test/">the professional bodies</a>. One pattern dominates: <strong>in eleven of the twelve, Connection is the weakest layer</strong> &mdash; trailing Clarity by around eighteen points.</p>
+  <p>We have published trust reads across twelve sectors, from <a href="/energy-integrity-test/">Energy</a> to <a href="/council-trust-test/">local government</a> to <a href="/membership-bodies-trust-test/">the professional bodies</a>. One pattern dominates: <strong>in eleven of the twelve, Connection is the weakest layer</strong> &mdash; consistently behind what those organisations say about themselves.</p>
 
   <p>Clarity is what an organisation says. Connection is what its stakeholders actually experience. The distance between them is the say-do gap &mdash; and no single function owns it, which is exactly why it leaks.</p>
 
@@ -795,12 +795,12 @@
     <a href="/professional-services-trust-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Buyer-Hero POV  &middot;  Professional Services</div>
       <h3>When the auditors are outnumbered. The brand leader's trust test.</h3>
-      <p>Clarity 70. Connection 44. Confidence 50. The sector whose product is trust, hollowing its own assurance layer &mdash; the pattern in this briefing, live in one sector.</p>
+      <p>Functional band. Connection the weak edge. The sector whose product is trust, hollowing its own assurance layer &mdash; the pattern in this briefing, live in one sector.</p>
     </a>
     <a href="/private-capital-trust-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  &middot;  Private Capital</div>
       <h3>Twelve is the new five. Private capital's trust test.</h3>
-      <p>Clarity 64. Connection 46. Confidence 50. Growth at 12% is earned from stakeholders &mdash; the growth-permission argument of this briefing, priced into the deal.</p>
+      <p>Fragile band. Connection the weak edge. Growth at 12% is earned from stakeholders &mdash; the growth-permission argument of this briefing, priced into the deal.</p>
     </a>
   </div>
 </section>

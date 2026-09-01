@@ -310,6 +310,12 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+<script>
+/* TrustOS no-published-numbers rule: public surfaces show a band, never the composite score.
+   Boundaries are internal calibration and are not published. */
+function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}
+function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'Strongest':v===mn?'Weak edge':'Mid';}
+</script>
 </head>
 <body>
 
@@ -462,16 +468,16 @@
   .nv-tri svg{width:290px;height:260px;overflow:visible;}
   .nv-lbl{font-family:'Sora',sans-serif;font-size:7px;font-weight:800;letter-spacing:0.11em;}
   .nv-lbl.lc{fill:#8fb5c0;}.nv-lbl.ln{fill:#7cc4a8;}.nv-lbl.lf{fill:#a78bdb;}
-  .nv-comp{font-family:'Sora',sans-serif;font-size:20px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
+  .nv-comp{font-family:'Sora',sans-serif;font-size:8.5px;letter-spacing:0.12em;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
   .nv-cap{font-family:'Sora',sans-serif;font-size:6px;font-weight:700;letter-spacing:0.16em;fill:rgba(255,255,255,0.75);text-anchor:middle;dominant-baseline:middle;}
   .nv-bars{display:flex;flex-direction:column;gap:9px;width:100%;max-width:290px;}
-  .nv-bar{display:grid;grid-template-columns:74px 1fr 26px;align-items:center;gap:12px;}
+  .nv-bar{display:grid;grid-template-columns:74px 1fr 82px;align-items:center;gap:12px;}
   .nv-bar-l{font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;}
   .nv-bar-l.cl{color:#8fb5c0;}.nv-bar-l.cn{color:#7cc4a8;}.nv-bar-l.cf{color:#a78bdb;}
   .nv-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
   .nv-fill{display:block;height:100%;border-radius:3px;}
   .nv-fill.cl{background:#5a8a9a;}.nv-fill.cn{background:#7cc4a8;}.nv-fill.cf{background:#a78bdb;}
-  .nv-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.8);text-align:right;font-variant-numeric:tabular-nums;}
+  .nv-bar-v{font-size:0.58rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
   .nv-foundation{font-size:0.56rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-faint);}
   .nv-foundation strong{color:var(--pale);font-weight:800;}
 </style>
@@ -479,7 +485,7 @@
   <div class="hero-row">
     <div class="triangle-wrap nv-wrap">
       <div class="nv-tri">
-        <svg viewBox="0 0 290 260" width="290" height="260" overflow="visible" aria-label="Learning People trust shape: Clarity 61, Connection 67, Confidence 53, Trust Index 60">
+        <svg viewBox="0 0 290 260" width="290" height="260" overflow="visible" aria-label="Trust shape: Clarity, Connection and Confidence from public signal — published as a band, not scores">
           <defs>
             <linearGradient id="nv-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient>
             <filter id="nv-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tb"/><feMerge><feMergeNode in="tb"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -490,13 +496,13 @@
           <text id="nv-ln" class="nv-lbl ln"></text>
           <text id="nv-lf" class="nv-lbl lf"></text>
           <text id="nv-comp" class="nv-comp"></text>
-          <text id="nv-comp-l" class="nv-cap">TRUST INDEX</text>
+          <text id="nv-comp-l" class="nv-cap">TRUST BAND</text>
         </svg>
       </div>
       <div class="nv-bars">
-        <div class="nv-bar"><span class="nv-bar-l cl">Clarity</span><span class="nv-track"><span class="nv-fill cl" style="width:61%"></span></span><span class="nv-bar-v">61</span></div>
-        <div class="nv-bar"><span class="nv-bar-l cn">Connection</span><span class="nv-track"><span class="nv-fill cn" style="width:67%"></span></span><span class="nv-bar-v">67</span></div>
-        <div class="nv-bar"><span class="nv-bar-l cf">Confidence</span><span class="nv-track"><span class="nv-fill cf" style="width:53%"></span></span><span class="nv-bar-v">53</span></div>
+        <div class="nv-bar"><span class="nv-bar-l cl">Clarity</span><span class="nv-track"><span class="nv-fill cl" style="width:61%"></span></span><span class="nv-bar-v">Mid</span></div>
+        <div class="nv-bar"><span class="nv-bar-l cn">Connection</span><span class="nv-track"><span class="nv-fill cn" style="width:67%"></span></span><span class="nv-bar-v">Strongest</span></div>
+        <div class="nv-bar"><span class="nv-bar-l cf">Confidence</span><span class="nv-track"><span class="nv-fill cf" style="width:53%"></span></span><span class="nv-bar-v">Weak edge</span></div>
       </div>
       <div class="nv-foundation">On a foundation of <strong>Integrity</strong></div>
     </div>
@@ -679,6 +685,8 @@
 
 <script>
 (function(){
+  function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}
+
   var sticky=document.getElementById('stickyCta');
   var links={sense:document.querySelector('.subnav .sn.sense'),measure:document.querySelector('.subnav .sn.measure')};
   var secs=[{id:'sense',el:document.getElementById('sense')},{id:'measure',el:document.getElementById('measure')}];
@@ -862,7 +870,7 @@
   var cl=61,cn=67,cf=53,v=verts(cl,cn,cf),cen={x:(v.i.x+v.e.x+v.r.x)/3,y:(v.i.y+v.e.y+v.r.y)/3};
   var poly=document.getElementById('nv-poly');if(poly)poly.setAttribute('points',f1(v.i.x)+','+f1(v.i.y)+' '+f1(v.e.x)+','+f1(v.e.y)+' '+f1(v.r.x)+','+f1(v.r.y));
   lbl('nv-lc',v.i,v.e,cen,'CLARITY');lbl('nv-ln',v.e,v.r,cen,'CONNECTION');lbl('nv-lf',v.r,v.i,cen,'CONFIDENCE');
-  var comp=document.getElementById('nv-comp');if(comp){comp.setAttribute('x',f1(cen.x));comp.setAttribute('y',f1(cen.y-4));comp.textContent=Math.round((cl+cn+cf)/3);}
+  var comp=document.getElementById('nv-comp');if(comp){comp.setAttribute('x',f1(cen.x));comp.setAttribute('y',f1(cen.y-4));comp.textContent=trustBand((cl+cn+cf)/3);}
   var cap=document.getElementById('nv-comp-l');if(cap){cap.setAttribute('x',f1(cen.x));cap.setAttribute('y',f1(cen.y+8));}
 })();
 </script>

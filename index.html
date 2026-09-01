@@ -1138,6 +1138,12 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+<script>
+/* TrustOS no-published-numbers rule: public surfaces show a band, never the composite score.
+   Boundaries are internal calibration and are not published. */
+function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}
+function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'Strongest':v===mn?'Weak edge':'Mid';}
+</script>
 </head>
 <body>
 
@@ -1523,16 +1529,16 @@
             <text id="si-ln" class="si-tri-lbl ln"></text>
             <text id="si-lf" class="si-tri-lbl lf"></text>
             <text id="si-comp" class="si-tri-comp"></text>
-            <text id="si-comp-l" class="si-tri-cen">TRUST INDEX</text>
+            <text id="si-comp-l" class="si-tri-cen">TRUST BAND</text>
           </svg>
         </div>
 
         <h3 class="si-headline" id="si-headline">When the chair falls. Energy&#8217;s Integrity test.</h3>
 
         <div class="si-chips" id="si-chips">
-          <span class="si-chip cl"><b id="si-cl">74</b> Clarity</span>
-          <span class="si-chip cn"><b id="si-cn">53</b> Connection</span>
-          <span class="si-chip cf"><b id="si-cf">54</b> Confidence</span>
+          <span class="si-chip cl"><b id="si-cl">Strongest</b> Clarity</span>
+          <span class="si-chip cn"><b id="si-cn">Weak edge</b> Connection</span>
+          <span class="si-chip cf"><b id="si-cf">Mid</b> Confidence</span>
         </div>
         <p class="si-read" id="si-readline">Connection is the thinnest layer &#8212; where this sector&#8217;s trust leaks first.</p>
 
@@ -1550,7 +1556,7 @@
     <div style="max-width:860px;margin:48px auto 0;padding:30px 34px;background:rgba(124,196,168,0.05);border:1px solid rgba(124,196,168,0.2);border-left:3px solid #7cc4a8;border-radius:12px;">
       <p style="display:inline-flex;align-items:center;gap:9px;font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#7cc4a8;margin:0 0 12px;"><span style="width:18px;height:2px;background:#7cc4a8;display:block;"></span>The pattern across every sector</p>
       <h3 style="font-size:clamp(1.2rem,2.2vw,1.6rem);font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.18;margin:0 0 14px;">Look at the short edge. It&#8217;s nearly always <em style="color:#7cc4a8;font-style:normal;">Connection</em>.</h3>
-      <p style="font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.75;margin:0 0 14px;">In eleven of the twelve sectors we&#8217;ve read, Connection is the weakest layer &#8212; trailing Clarity by around 18 points. It&#8217;s the say-do gap <strong style="color:rgba(255,255,255,0.8);font-weight:600;">no single function owns</strong>: where trust leaks, and the first thing a TrustOS read makes visible. In plain terms: organisations are far better at talking than at knowing how they land &#8212; and it shows up in the relationship before it shows up in the results.</p>
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.75;margin:0 0 14px;">In eleven of the twelve sectors we&#8217;ve read, Connection is the weakest layer &#8212; consistently behind what organisations say about themselves. It&#8217;s the say-do gap <strong style="color:rgba(255,255,255,0.8);font-weight:600;">no single function owns</strong>: where trust leaks, and the first thing a TrustOS read makes visible. In plain terms: organisations are far better at talking than at knowing how they land &#8212; and it shows up in the relationship before it shows up in the results.</p>
       <div style="margin-top:22px;padding-top:20px;border-top:1px solid rgba(124,196,168,0.18);">
         <p style="font-size:0.88rem;color:rgba(255,255,255,0.6);line-height:1.7;margin:0 0 15px;">That gap has a name. It&#8217;s the <strong style="color:rgba(255,255,255,0.85);font-weight:600;">alignment problem</strong> &#8212; the distance between what an organisation believes and says, and what its stakeholders actually experience. Measuring it is what TrustOS does. <strong style="color:rgba(255,255,255,0.85);font-weight:600;">Closing it is what MissionCTRL does.</strong></p>
         <a href="https://missionctrl.agency" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:700;padding:11px 22px;border-radius:7px;background:linear-gradient(135deg,#ff6b2b,#ffad3b);color:#0a0f1a;text-decoration:none;transition:opacity 0.2s,transform 0.15s;" onmouseover="this.style.opacity='0.9';this.style.transform='translateY(-1px)';" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)';">See how MissionCTRL closes the alignment gap &#8594;</a>
@@ -1584,7 +1590,7 @@
     .si-tri-e-c,.si-tri-e-n,.si-tri-e-f{stroke:transparent;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:4 5;}
     .si-tri-lbl{font-family:'Sora',sans-serif;font-size:7px;font-weight:800;letter-spacing:0.11em;}
     .si-tri-lbl.lc{fill:#8fb5c0;} .si-tri-lbl.ln{fill:#7cc4a8;} .si-tri-lbl.lf{fill:#a78bdb;}
-    .si-tri-comp{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
+    .si-tri-comp{font-family:'Sora',sans-serif;font-size:7.5px;letter-spacing:0.12em;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
     .si-tri-cen{font-family:'Sora',sans-serif;font-size:6px;font-weight:700;letter-spacing:0.16em;fill:rgba(255,255,255,0.75);text-anchor:middle;dominant-baseline:middle;}
     .si-tri.soon .si-tri-fill{opacity:0;}
     .si-tri.soon .si-tri-e-c,.si-tri.soon .si-tri-e-n,.si-tri.soon .si-tri-e-f{stroke:rgba(255,255,255,0.15);}
@@ -1614,7 +1620,8 @@
 
   <script>
   (function(){
-    var SECTORS = [
+    function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'Strongest':v===mn?'Weak edge':'Mid';}
+      var SECTORS = [
       {key:'energy',name:'Energy',eyebrow:'Energy · Sector POV · Q2 2026',stake:'Regulators · Investors · Communities · Customers · Employees',cl:74,cn:53,cf:54,comp:60,headline:'When the chair falls. Energy’s Integrity test.',url:'/energy-integrity-test/',read:'Read the full POV →'},
       {key:'mining',name:'Mining &amp; Resources',eyebrow:'Mining · Sector POV · Q2 2026',stake:'Clients · Specifiers · Contractors · Regulators · Communities · Employees',cl:81,cn:58,cf:62,comp:67,headline:'When the merger clears. Mining’s architecture test.',url:'/mining-trust-window/',read:'Read the full POV →'},
       {key:'council',name:'Local Government',eyebrow:'Council · Buyer-Hero POV',stake:'Residents · Members · Partners · Regulators · Officers',cl:50,cn:40,cf:45,comp:45,headline:'When the council flips. The comms leader’s trust test.',url:'/council-trust-test/',read:'Read the buyer-hero POV →'},
@@ -1681,9 +1688,9 @@
       document.getElementById('si-poly').setAttribute('points',f1(I.x)+','+f1(I.y)+' '+f1(E.x)+','+f1(E.y)+' '+f1(R.x)+','+f1(R.y));
       setLn('si-ec',I,E);setLn('si-en',E,R);setLn('si-ef',R,I);
       placeLbl('si-lc',I,E,cen,'CLARITY');placeLbl('si-ln',E,R,cen,'CONNECTION');placeLbl('si-lf',R,I,cen,'CONFIDENCE');
-      setTx('si-comp',cen.x,cen.y-4,'middle',null); if(showComp)elComp.textContent=Math.round(comp);
+      setTx('si-comp',cen.x,cen.y-4,'middle',null); if(showComp)elComp.textContent=trustBand(comp);
       setTx('si-comp-l',cen.x,cen.y+8,'middle',null);
-      elCL.textContent=Math.round(cl);elCN.textContent=Math.round(cn);elCF.textContent=Math.round(cf);
+      elCL.textContent=driverRank(cl,cl,cn,cf);elCN.textContent=driverRank(cn,cl,cn,cf);elCF.textContent=driverRank(cf,cl,cn,cf);
     }
 
     var cur={cl:50,cn:50,cf:50,comp:50},anim=null;

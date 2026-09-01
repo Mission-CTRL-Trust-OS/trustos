@@ -541,7 +541,7 @@
   .md-tri{display:flex;justify-content:center;}
   .md-lbl{font-family:'Sora',sans-serif;font-size:7px;font-weight:800;letter-spacing:0.11em;}
   .md-lbl.lc{fill:#8fb5c0;}.md-lbl.ln{fill:#7cc4a8;}.md-lbl.lf{fill:#a78bdb;}
-  .md-comp{font-family:'Sora',sans-serif;font-size:17px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
+  .md-comp{font-family:'Sora',sans-serif;font-size:7.5px;letter-spacing:0.12em;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle;letter-spacing:-0.02em;}
   .md-cap{font-family:'Sora',sans-serif;font-size:6px;font-weight:700;letter-spacing:0.16em;fill:rgba(255,255,255,0.75);text-anchor:middle;dominant-baseline:middle;}
   .md-state{font-size:0.62rem;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:var(--trust-cool);margin:0 0 10px;}
   .md-title{font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:-0.02em;margin:0 0 10px;line-height:1.25;}
@@ -558,6 +558,12 @@
   .meth-pulse{animation:methPulse 6s ease-in-out infinite;}
   @keyframes methPulse{0%,100%{opacity:0.4;}50%{opacity:0.75;}}
   @media (prefers-reduced-motion: reduce){.lg-amb *{animation:none!important}.meth-pulse{animation:none!important}}
+
+  .band-scale{margin:1.8em 0 2em;border-top:1px solid rgba(255,255,255,0.08);}
+  .bs-row{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,0.06);align-items:baseline;}
+  .bs-name{font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#7fb4cc;}
+  .bs-what{font-size:0.88rem;line-height:1.7;color:rgba(255,255,255,0.6);}
+  @media (max-width:640px){.bs-row{grid-template-columns:1fr;gap:5px;}}
 </style>
 <!-- seo-ai:start -->
 <link rel="canonical" href="https://trustos.missionctrl.agency/methodology/" />
@@ -611,6 +617,12 @@
     }
   ]
 }
+</script>
+<script>
+/* TrustOS no-published-numbers rule: public surfaces show a band, never the composite score.
+   Boundaries are internal calibration and are not published. */
+function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}
+function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'Strongest':v===mn?'Weak edge':'Mid';}
 </script>
 </head>
 <body>
@@ -686,7 +698,7 @@
         <text id="md-ln" class="md-lbl ln"></text>
         <text id="md-lf" class="md-lbl lf"></text>
         <text id="md-comp" class="md-comp"></text>
-        <text id="md-comp-l" class="md-cap">TRUST INDEX</text>
+        <text id="md-comp-l" class="md-cap">TRUST BAND</text>
       </svg>
     </div>
     <div class="md-panel">
@@ -698,6 +710,17 @@
     </div>
   </div>
   <p>TrustOS reads trust as <strong>alignment</strong> &mdash; between what an organisation intends, what its stakeholders expect, and what they actually experience. Three drivers &mdash; <strong>Clarity</strong>, <strong>Connection</strong> and <strong>Confidence</strong> &mdash; sit on a foundation of <strong>Integrity</strong>, and roll up into one 0&ndash;100 <strong>Trust Index</strong>, with the full breakdown always shown beneath it, never instead of it. The triangle deforms to the scores: a strong, balanced organisation fills the shape; a lopsided one pulls a corner in, showing exactly where trust is thinning.</p>
+
+  <h2>Bands: what we publish, and what we don&rsquo;t</h2>
+  <p>The Trust Index runs 0&ndash;100, but <strong>a score is only ever published for a read we have actually measured.</strong> Sector POVs, Navigators and the Explorer are built from public signal, which is limited by nature &mdash; precise enough to show a shape and a weak edge, not precise enough to carry a number. So those are published as <strong>bands</strong>.</p>
+  <div class="band-scale">
+    <div class="bs-row"><span class="bs-name">Exposed</span><span class="bs-what">Trust does no work for you. Claims are discounted on arrival and every relationship is re-argued from scratch.</span></div>
+    <div class="bs-row"><span class="bs-name">Fragile</span><span class="bs-what">Trust exists but is not load-bearing. It holds in good conditions and gives way under pressure or change.</span></div>
+    <div class="bs-row"><span class="bs-name">Functional</span><span class="bs-what">Trust is real, but uneven. Some relationships carry the business; others are quietly costing it &mdash; and the difference only shows under change.</span></div>
+    <div class="bs-row"><span class="bs-name">Resilient</span><span class="bs-what">Trust absorbs shocks. You get the benefit of the doubt, recover faster, and claims land first time.</span></div>
+    <div class="bs-row"><span class="bs-name">Defining</span><span class="bs-what">Trust is an asset others measure themselves against. You set the terms the category follows.</span></div>
+  </div>
+  <p>Inside an installed read, a client sees both: the Index and its three drivers, scored per stakeholder group, with direction of travel and what would move each one. That is the difference between an estimate and evidence &mdash; and it is why the numbers live in the read, not on this website.</p>
 
   <h2>From estimate to evidence: Sense &rarr; Measure &rarr; Act</h2>
   <p>A Navigator or sector POV is read from <strong>public signal alone</strong> &mdash; annual reports, disclosure, news, the public footprint. That makes it a <strong>directional estimate, not a statistically validated measurement</strong>, and we label it that way on purpose. A <strong>Snapshot</strong> replaces the estimate with primary research across your stakeholders &mdash; measured against a bar that keeps rising. The honesty is the point.</p>
@@ -765,6 +788,8 @@
 
 <script>
 (function(){
+  function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'Strongest':v===mn?'Weak edge':'Mid';}
+
   var C={x:145,y:118},R=98,a30=Math.PI/6;
   var EQ={i:{x:C.x+R*Math.cos(Math.PI+a30),y:C.y+R*Math.sin(Math.PI+a30)},e:{x:C.x,y:C.y+R},r:{x:C.x+R*Math.cos(-a30),y:C.y+R*Math.sin(-a30)}};
   function verts(cl,cn,cf){var fi=(cl+cf)/2/100,fe=(cl+cn)/2/100,fr=(cn+cf)/2/100;
@@ -791,7 +816,7 @@
   function draw(cl,cn,cf){var v=verts(cl,cn,cf),cen={x:(v.i.x+v.e.x+v.r.x)/3,y:(v.i.y+v.e.y+v.r.y)/3};
     document.getElementById('md-poly').setAttribute('points',f1(v.i.x)+','+f1(v.i.y)+' '+f1(v.e.x)+','+f1(v.e.y)+' '+f1(v.r.x)+','+f1(v.r.y));
     lbl('md-lc',v.i,v.e,cen,'CLARITY');lbl('md-ln',v.e,v.r,cen,'CONNECTION');lbl('md-lf',v.r,v.i,cen,'CONFIDENCE');
-    var n=document.getElementById('md-comp');n.setAttribute('x',f1(cen.x));n.setAttribute('y',f1(cen.y-4));n.textContent=Math.round((cl+cn+cf)/3);
+    var n=document.getElementById('md-comp');n.setAttribute('x',f1(cen.x));n.setAttribute('y',f1(cen.y-4));n.textContent=trustBand((cl+cn+cf)/3);
     var c=document.getElementById('md-comp-l');c.setAttribute('x',f1(cen.x));c.setAttribute('y',f1(cen.y+8));}
   function morph(t){if(anim)cancelAnimationFrame(anim);
     if(reduce){cur={cl:t.cl,cn:t.cn,cf:t.cf};draw(cur.cl,cur.cn,cur.cf);return;}

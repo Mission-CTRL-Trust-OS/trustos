@@ -274,7 +274,7 @@
     }
     .ds-row {
       display: grid;
-      grid-template-columns: 110px 1fr 36px;
+      grid-template-columns: 110px 1fr 100px;
       align-items: center;
       gap: 14px;
       margin-bottom: 12px;
@@ -535,13 +535,13 @@
     .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
-    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
     .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
     .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
     .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
     .lb-fill{height:100%;border-radius:3px;}
     .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
-    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-bar-v{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
     .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
     .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
     .lb-tri{display:flex;justify-content:center;}
@@ -706,10 +706,10 @@
   <div class="live-banner">
     <div class="lb-left">
       <p class="lb-kicker">Sector diagnostic &middot; Q2 2026</p>
-      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:58%"></div></div><span class="lb-bar-v">58</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:44%"></div></div><span class="lb-bar-v">44</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:50%"></div></div><span class="lb-bar-v">50</span></div></div>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:58%"></div></div><span class="lb-bar-v">Strongest</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:44%"></div></div><span class="lb-bar-v">Weak edge</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:50%"></div></div><span class="lb-bar-v">Mid</span></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; where this sector&rsquo;s trust leaks first.</p>
     </div>
-    <div class="lb-tri"><svg width="240" height="224" viewBox="73.2 65.5 137.7 128.4" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="99.2,91.5 145.0,168.0 184.9,95.0"/><text class="lb-lbl cl" x="110.9" y="136.4" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.1,110.9,136.4)">CLARITY</text><text class="lb-lbl cn" x="176.4" y="137.7" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.3,176.4,137.7)">CONNECTION</text><text class="lb-lbl cf" x="142.5" y="80.3" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.3,142.5,80.3)">CONFIDENCE</text><text class="lb-comp" x="143.0" y="114.2">51</text><text class="lb-cap" x="143.0" y="126.2">TRUST INDEX</text></svg></div>
+    <div class="lb-tri"><svg width="240" height="224" viewBox="73.2 65.5 137.7 128.4" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="99.2,91.5 145.0,168.0 184.9,95.0"/><text class="lb-lbl cl" x="110.9" y="136.4" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.1,110.9,136.4)">CLARITY</text><text class="lb-lbl cn" x="176.4" y="137.7" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.3,176.4,137.7)">CONNECTION</text><text class="lb-lbl cf" x="142.5" y="80.3" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.3,142.5,80.3)">CONFIDENCE</text><text class="lb-comp" x="143.0" y="114.2" style="font-size:8.5px;letter-spacing:0.12em">FRAGILE</text><text class="lb-cap" x="143.0" y="126.2">TRUST BAND</text></svg></div>
   </div>
 </div>
 
@@ -743,36 +743,38 @@
   <p>Running the TrustOS methodology across the sector at composite level produces this picture.</p>
 
   <div class="diagnostic-strip">
-    <div class="ds-label">Membership &amp; professional bodies trust diagnostic  &middot;  Q2 2026</div>
+    <div class="ds-label">Membership &amp; professional bodies trust diagnostic  &middot;  Q2 2026 &middot; published as bands</div>
     <div class="ds-row clarity">
       <div class="ds-name">Clarity</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">58</div>
+      <div class="ds-score">Strongest</div>
     </div>
     <div class="ds-row connection">
       <div class="ds-name">Connection</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">44</div>
+      <div class="ds-score">Weak edge</div>
     </div>
     <div class="ds-row confidence">
       <div class="ds-name">Confidence</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">50</div>
+      <div class="ds-score">Mid</div>
     </div>
     <div class="ds-row composite">
       <div class="ds-name">Composite</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">51</div>
+      <div class="ds-score">Fragile</div>
     </div>
   </div>
 
-  <p><strong>Clarity &mdash; 58.</strong> The formal promise is the clearest in this series: a royal charter, a code of conduct, a public register. You can read exactly what the institution exists to do. But the membership promise &mdash; the answer to "why should I pay this year?" &mdash; is a benefit list competing against subscription services that personalise everything. The sector's own data shows personalisation at 43%, up one percentage point in five years. The charter is articulate; the proposition is not. A clear constitution and an unclear offer.</p>
+  
 
-  <p><strong>Connection &mdash; 44. The weakest layer &mdash; and here the sector has measured its own gap.</strong> Engagement is Connection by another name: whether what members experience matches what membership promised. The sector's number-one unsolved challenge, in its own report, for the second cycle running. Different audiences experience different institutions: the engaged volunteer experiences a community; the lapsing member experiences a direct debit and a magazine; the student experiences an exam fee; the public experiences nothing at all &mdash; 92% trust the nurse, and the certifying institution is invisible behind her. The sector's proof points &mdash; registers, standards, qualifications, public-interest work &mdash; are not absent. They are disconnected from the people they were built for.</p>
+  <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.7;border-left:2px solid var(--trust-cool);padding-left:14px;margin:1.6em 0 2.2em;">Sector reads are published as bands. The Trust Index and its three drivers &mdash; scored per stakeholder group, with direction of travel &mdash; are produced only inside a measured read. TrustOS never publishes a score it hasn&#8217;t measured.</p><p><strong>Clarity &mdash; the strongest layer.</strong> The formal promise is the clearest in this series: a royal charter, a code of conduct, a public register. You can read exactly what the institution exists to do. But the membership promise &mdash; the answer to "why should I pay this year?" &mdash; is a benefit list competing against subscription services that personalise everything. The sector's own data shows personalisation at 43%, up one percentage point in five years. The charter is articulate; the proposition is not. A clear constitution and an unclear offer.</p>
 
-  <p><strong>Confidence &mdash; 50.</strong> Proof and follow-through. The standards machinery is real: registers exist, qualifications are audited, CPD is recorded. But the institution cannot evidence its central claim &mdash; that membership develops trusted professionals &mdash; because the behavioural data sits in systems that don't connect: learning records in one platform, community participation in another, the member record in a third, with integration at 19% and flat. And at the public-interest end, the evidence question has become statutory: the FRC's new powers exist because assurance could not be demonstrated to the standard the state now requires.</p>
+  <p><strong>Connection &mdash; the weakest layer &mdash; and here the sector has measured its own gap.</strong> Engagement is Connection by another name: whether what members experience matches what membership promised. The sector's number-one unsolved challenge, in its own report, for the second cycle running. Different audiences experience different institutions: the engaged volunteer experiences a community; the lapsing member experiences a direct debit and a magazine; the student experiences an exam fee; the public experiences nothing at all &mdash; 92% trust the nurse, and the certifying institution is invisible behind her. The sector's proof points &mdash; registers, standards, qualifications, public-interest work &mdash; are not absent. They are disconnected from the people they were built for.</p>
 
-  <p><strong>Trust Index: 51.</strong> Between NGO &amp; Charity's 48 and Technology &amp; AI's 52 in this series. Connection is the lowest layer for the eleventh time in twelve. The 14-point Clarity-to-Connection spread is narrower than the series average &mdash; not because Connection is stronger here, but because Clarity is weaker: the sector is under-promising and under-delivering to the same audiences at once. The shape is the diagnosis: the most trusted profession-holders in Britain, certified by institutions that cannot show the trust reaching them.</p>
+  <p><strong>Confidence &mdash; the middle layer.</strong> Proof and follow-through. The standards machinery is real: registers exist, qualifications are audited, CPD is recorded. But the institution cannot evidence its central claim &mdash; that membership develops trusted professionals &mdash; because the behavioural data sits in systems that don't connect: learning records in one platform, community participation in another, the member record in a third, with integration at 19% and flat. And at the public-interest end, the evidence question has become statutory: the FRC's new powers exist because assurance could not be demonstrated to the standard the state now requires.</p>
+
+  <p><strong>Trust band: Fragile.</strong> Between NGO &amp; Charity's 48 and Technology &amp; AI's 52 in this series. Connection is the lowest layer for the eleventh time in twelve. The Clarity-to-Connection spread is narrower than the series average &mdash; not because Connection is stronger here, but because Clarity is weaker: the sector is under-promising and under-delivering to the same audiences at once. The shape is the diagnosis: the most trusted profession-holders in Britain, certified by institutions that cannot show the trust reaching them.</p>
 
   <h2>The Integrity layer &mdash; the charter test</h2>
 
@@ -854,12 +856,12 @@
     <a href="/professional-services-trust-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Buyer-Hero POV  &middot;  Professional Services</div>
       <h3>When the auditors are outnumbered. The brand leader's trust test.</h3>
-      <p>Clarity 70. Connection 44. Confidence 50. The firms this sector certifies, under the same Bill and the same AI pressure &mdash; the companion read, one step down the chain.</p>
+      <p>Functional band. Connection the weak edge. The firms this sector certifies, under the same Bill and the same AI pressure &mdash; the companion read, one step down the chain.</p>
     </a>
     <a href="/private-capital-trust-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  &middot;  Private Capital</div>
       <h3>Twelve is the new five. Private capital's trust test.</h3>
-      <p>Clarity 64. Connection 46. Confidence 50. Another institution whose product is other people's trust &mdash; and whose proof machine is being asked the same question.</p>
+      <p>Fragile band. Connection the weak edge. Another institution whose product is other people's trust &mdash; and whose proof machine is being asked the same question.</p>
     </a>
   </div>
 </section>

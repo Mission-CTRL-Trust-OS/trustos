@@ -274,7 +274,7 @@
     }
     .ds-row {
       display: grid;
-      grid-template-columns: 110px 1fr 36px;
+      grid-template-columns: 110px 1fr 100px;
       align-items: center;
       gap: 14px;
       margin-bottom: 12px;
@@ -534,13 +534,13 @@
     .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
-    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
     .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
     .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
     .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
     .lb-fill{height:100%;border-radius:3px;}
     .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
-    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-bar-v{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
     .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
     .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
     .lb-tri{display:flex;justify-content:center;}
@@ -704,10 +704,10 @@
   <div class="live-banner">
     <div class="lb-left">
       <p class="lb-kicker">Sector diagnostic &middot; Q2 2026</p>
-      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:55%"></div></div><span class="lb-bar-v">55</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:42%"></div></div><span class="lb-bar-v">42</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:48%"></div></div><span class="lb-bar-v">48</span></div></div>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:55%"></div></div><span class="lb-bar-v">Strongest</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:42%"></div></div><span class="lb-bar-v">Weak edge</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:48%"></div></div><span class="lb-bar-v">Mid</span></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; where this sector&rsquo;s trust leaks first.</p>
     </div>
-    <div class="lb-tri"><svg width="240" height="224" viewBox="75.3 66.8 133.9 124.8" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="101.3,92.8 145.0,165.5 183.2,96.0"/><text class="lb-lbl cl" x="112.0" y="135.8" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.0,112.0,135.8)">CLARITY</text><text class="lb-lbl cn" x="175.5" y="137.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.2,175.5,137.0)">CONNECTION</text><text class="lb-lbl cf" x="142.7" y="81.4" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.2,142.7,81.4)">CONFIDENCE</text><text class="lb-comp" x="143.2" y="114.1">48</text><text class="lb-cap" x="143.2" y="126.1">TRUST INDEX</text></svg></div>
+    <div class="lb-tri"><svg width="240" height="224" viewBox="75.3 66.8 133.9 124.8" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="101.3,92.8 145.0,165.5 183.2,96.0"/><text class="lb-lbl cl" x="112.0" y="135.8" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.0,112.0,135.8)">CLARITY</text><text class="lb-lbl cn" x="175.5" y="137.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.2,175.5,137.0)">CONNECTION</text><text class="lb-lbl cf" x="142.7" y="81.4" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.2,142.7,81.4)">CONFIDENCE</text><text class="lb-comp" x="143.2" y="114.1" style="font-size:8.5px;letter-spacing:0.12em">FRAGILE</text><text class="lb-cap" x="143.2" y="126.1">TRUST BAND</text></svg></div>
   </div>
 </div>
 
@@ -757,20 +757,22 @@
   <p>Running the TrustOS methodology against the public signal around a representative UK-based international NGO produces this picture for the brand-leader buyer-hero.</p>
 
   <div class="diagnostic-strip">
-    <div class="ds-label">INGO brand-leader trust diagnostic  ·  Q2 2026</div>
-    <div class="ds-row clarity"><div class="ds-name">Clarity</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">55</div></div>
-    <div class="ds-row connection"><div class="ds-name">Connection</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">42</div></div>
-    <div class="ds-row confidence"><div class="ds-name">Confidence</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">48</div></div>
-    <div class="ds-row composite"><div class="ds-name">Composite</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">48</div></div>
+    <div class="ds-label">INGO brand-leader trust diagnostic  ·  Q2 2026 &middot; published as bands</div>
+    <div class="ds-row clarity"><div class="ds-name">Clarity</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Strongest</div></div>
+    <div class="ds-row connection"><div class="ds-name">Connection</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Weak edge</div></div>
+    <div class="ds-row confidence"><div class="ds-name">Confidence</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Mid</div></div>
+    <div class="ds-row composite"><div class="ds-name">Composite</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Fragile</div></div>
   </div>
 
-  <p><strong>Clarity &mdash; 55. Mission-articulated, audience-fragmented.</strong> UK INGOs articulate mission, theory of change, values, beneficiary stories and country-level evidence. But the vocabulary is audience-coded &mdash; donor-coded for institutional donors, programme-coded for programmes teams, supporter-coded for fundraising, advocacy-coded for political work. Boards, communities, donors and the public hear different things from the same brand.</p>
+  
 
-  <p><strong>Connection &mdash; 42. The brand leader's weakest layer, and a structural one.</strong> The four-audience trust contract &mdash; institutional donors, supporters, community partners, political licence &mdash; is where the brand leader operates daily. And these four currently work from different evidence. The localisation/shift-the-power agenda makes this worse: the closer the community-led model gets to genuine community leadership, the further it can drift from the donor-comprehensible narrative the institutional funder still requires.</p>
+  <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.7;border-left:2px solid var(--trust-cool);padding-left:14px;margin:1.6em 0 2.2em;">Sector reads are published as bands. The Trust Index and its three drivers &mdash; scored per stakeholder group, with direction of travel &mdash; are produced only inside a measured read. TrustOS never publishes a score it hasn&#8217;t measured.</p><p><strong>Clarity &mdash; mission-articulated, audience-fragmented.</strong> UK INGOs articulate mission, theory of change, values, beneficiary stories and country-level evidence. But the vocabulary is audience-coded &mdash; donor-coded for institutional donors, programme-coded for programmes teams, supporter-coded for fundraising, advocacy-coded for political work. Boards, communities, donors and the public hear different things from the same brand.</p>
 
-  <p><strong>Confidence &mdash; 48. Where the funding cliff and the political risk now compound.</strong> Confidence &mdash; the alignment between intent and reality &mdash; is where civil society, peer organisations, communities and political audiences have grown sophisticated at running the brand promise against the operational evidence. The cost of a Confidence leak is now measurable in donor-renewal failure, supporter-attrition, board confidence loss and political-licence damage simultaneously.</p>
+  <p><strong>Connection &mdash; the brand leader's weakest layer, and a structural one.</strong> The four-audience trust contract &mdash; institutional donors, supporters, community partners, political licence &mdash; is where the brand leader operates daily. And these four currently work from different evidence. The localisation/shift-the-power agenda makes this worse: the closer the community-led model gets to genuine community leadership, the further it can drift from the donor-comprehensible narrative the institutional funder still requires.</p>
 
-  <p><strong>Trust Index: 48.</strong> The lowest composite of the six published TrustOS POVs. The INGO brand leader is in the hardest trust window of the sector portfolio &mdash; because the brand-promise must hold simultaneously across four audiences whose evidence-bars have all risen at the moment the funding architecture has contracted.</p>
+  <p><strong>Confidence &mdash; where the funding cliff and the political risk now compound.</strong> Confidence &mdash; the alignment between intent and reality &mdash; is where civil society, peer organisations, communities and political audiences have grown sophisticated at running the brand promise against the operational evidence. The cost of a Confidence leak is now measurable in donor-renewal failure, supporter-attrition, board confidence loss and political-licence damage simultaneously.</p>
+
+  <p><strong>Trust band: Fragile.</strong> The lowest composite of the six published TrustOS POVs. The INGO brand leader is in the hardest trust window of the sector portfolio &mdash; because the brand-promise must hold simultaneously across four audiences whose evidence-bars have all risen at the moment the funding architecture has contracted.</p>
 
   <h2>The evidence-of-delivery layer &mdash; how Integrity manifests for the INGO brand leader</h2>
 
@@ -852,17 +854,17 @@
     <a href="/regtech-brand-trust/" class="related-card">
       <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  RegTech</div>
       <h3>When the rebrand is the question. The RegTech brand leader's trust test.</h3>
-      <p>Clarity 60. Connection 45. Confidence 50. Three years ago, I helped redefine Adenza at Emperor. Now the question for every RegTech CMO: where is the measurement layer underneath the brand promise?</p>
+      <p>Fragile band. Connection the weak edge. Three years ago, I helped redefine Adenza at Emperor. Now the question for every RegTech CMO: where is the measurement layer underneath the brand promise?</p>
     </a>
     <a href="/social-care-workforce-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  ·  Social Care</div>
       <h3>When the pipeline closes. Social Care's workforce trust test.</h3>
-      <p>Clarity 62. Connection 48. Confidence 52. The Casey Commission reports next month — into a sector that has just lost its workforce pipeline.</p>
+      <p>Fragile band. Connection the weak edge. The Casey Commission reports next month — into a sector that has just lost its workforce pipeline.</p>
     </a>
     <a href="/education-public-purpose-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  ·  Education</div>
       <h3>When the courses close. Education's public-purpose test.</h3>
-      <p>Clarity 68. Connection 52. Confidence 50. Queen Mary just cut 295 modules across its School of the Arts — the moment Education's public-purpose foundation became visible.</p>
+      <p>Functional band. Connection the weak edge. Queen Mary just cut 295 modules across its School of the Arts — the moment Education's public-purpose foundation became visible.</p>
     </a>
   </div>
 </section>
