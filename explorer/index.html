@@ -1298,7 +1298,7 @@
       position: relative;
     }
     #hc-overall {
-      font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em;
+      font-size: 0.95rem; font-weight: 800; letter-spacing: -0.05em;
       color: #fff; line-height: 1;
     }
     .hc-score-meta { flex: 1; }
@@ -1316,7 +1316,7 @@
     .hc-tri-e-c, .hc-tri-e-n, .hc-tri-e-f { stroke:transparent; stroke-width:1.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
 
     .hc-tri-cen  { font-family:'Sora',sans-serif; font-size:6px; font-weight:700; letter-spacing:0.16em; fill:rgba(255,255,255,0.75); text-anchor:middle; dominant-baseline:middle; }
-    .hc-tri-comp { font-family:'Sora',sans-serif; font-size:17px; font-weight:800; fill:#fff; text-anchor:middle; dominant-baseline:middle; letter-spacing:-0.02em; }
+    .hc-tri-comp { font-family:'Sora',sans-serif; font-size:7.5px; letter-spacing:0.12em; font-weight:800; fill:#fff; text-anchor:middle; dominant-baseline:middle; letter-spacing:-0.02em; }
     .hc-tri-lbl  { font-family:'Sora',sans-serif; font-size:7px; font-weight:800; letter-spacing:0.11em; }
     .hc-tri-lbl.lc { fill:#8fb5c0; } .hc-tri-lbl.ln { fill:#7cc4a8; } .hc-tri-lbl.lf { fill:#a78bdb; }
 
@@ -1579,6 +1579,12 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+<script>
+/* TrustOS no-published-numbers rule: public surfaces show a band, never the composite score.
+   Boundaries are internal calibration and are not published. */
+function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}
+function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'Strongest':v===mn?'Weak edge':'Mid';}
+</script>
 </head>
 
 <body>
@@ -1690,10 +1696,10 @@
           <!-- Score row -->
           <div class="hc-score-row">
             <div class="hc-ring" id="hc-ring">
-              <span id="hc-overall">50</span>
+              <span id="hc-overall">Fragile</span>
             </div>
             <div class="hc-score-meta">
-              <div class="hc-score-label">Your indicative Trust Index</div>
+              <div class="hc-score-label">Your indicative trust band</div>
               <div class="hc-status mid" id="hc-status">Gaps detected</div>
             </div>
             <p class="hc-score-note" style="font-size:0.6rem;color:rgba(255,255,255,0.22);line-height:1.5;max-width:120px;">Based on your inputs. Adjust sliders to refine.</p>
@@ -1720,7 +1726,7 @@
               <text id="hc-ln" class="hc-tri-lbl ln"></text>
               <text id="hc-lf" class="hc-tri-lbl lf"></text>
               <text id="hc-cen-num" class="hc-tri-comp"></text>
-              <text id="hc-cen" class="hc-tri-cen">TRUST INDEX</text>
+              <text id="hc-cen" class="hc-tri-cen">TRUST BAND</text>
             </svg>
           </div>
 
@@ -1879,6 +1885,8 @@
 <script>
 /* ── Morphing trust gap triangle ── */
 (function() {
+  function trustBand(n){n=Math.round(n);return n<40?'Exposed':n<55?'Fragile':n<70?'Functional':n<85?'Resilient':'Defining';}function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'Strongest':v===mn?'Weak edge':'Mid';}
+
   var EQ  = { intent: {x:130,y:140}, expectation: {x:130,y:380}, reality: {x:338,y:260} };
   var GAP = { intent: {x:45,y:20},   expectation: {x:35,y:500},  reality: {x:490,y:260} };
 
@@ -2042,7 +2050,10 @@
 
     // Overall score
     var overall = Math.round((cl + cn + cf) / 3);
-    document.getElementById('hc-overall').textContent = overall;
+    // Published output is a band, never the composite score (no-published-numbers rule).
+    // Boundaries are internal calibration: 40 / 55 / 70 / 85. The 70 threshold below is preserved.
+    var bandName = overall < 40 ? 'Exposed' : overall < 55 ? 'Fragile' : overall < 70 ? 'Functional' : overall < 85 ? 'Resilient' : 'Defining';
+    document.getElementById('hc-overall').textContent = bandName;
 
     // Score ring colour
     var ring = document.getElementById('hc-ring');
@@ -2178,7 +2189,7 @@
     placeLbl('hc-ln',E,R,cen,'CONNECTION');
     placeLbl('hc-lf',R,I,cen,'CONFIDENCE');
     var gn=document.getElementById('hc-cen-num');
-    if(gn){gn.setAttribute('x',f1(cen.x));gn.setAttribute('y',f1(cen.y-4));gn.textContent=Math.round((cl+cn+cf)/3);}
+    if(gn){gn.setAttribute('x',f1(cen.x));gn.setAttribute('y',f1(cen.y-4));gn.textContent=trustBand((cl+cn+cf)/3);}
     var gc=document.getElementById('hc-cen');
     if(gc){gc.setAttribute('x',f1(cen.x));gc.setAttribute('y',f1(cen.y+8));}
   }

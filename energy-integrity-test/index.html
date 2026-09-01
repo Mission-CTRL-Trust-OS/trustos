@@ -274,7 +274,7 @@
     }
     .ds-row {
       display: grid;
-      grid-template-columns: 110px 1fr 36px;
+      grid-template-columns: 110px 1fr 100px;
       align-items: center;
       gap: 14px;
       margin-bottom: 12px;
@@ -541,13 +541,13 @@
     .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
-    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
     .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
     .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
     .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
     .lb-fill{height:100%;border-radius:3px;}
     .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
-    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-bar-v{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
     .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
     .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
     .lb-tri{display:flex;justify-content:center;}
@@ -705,10 +705,10 @@
   <div class="live-banner">
     <div class="lb-left">
       <p class="lb-kicker">Sector diagnostic &middot; Q2 2026</p>
-      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:74%"></div></div><span class="lb-bar-v">74</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:53%"></div></div><span class="lb-bar-v">53</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:54%"></div></div><span class="lb-bar-v">54</span></div></div>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:74%"></div></div><span class="lb-bar-v">Strongest</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:53%"></div></div><span class="lb-bar-v">Weak edge</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:54%"></div></div><span class="lb-bar-v">Mid</span></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; where this sector&rsquo;s trust leaks first.</p>
     </div>
-    <div class="lb-tri"><svg width="240" height="230" viewBox="64.7 60.6 151.7 145.6" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="90.7,86.6 145.0,180.2 190.4,91.8"/><text class="lb-lbl cl" x="106.6" y="140.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.9,106.6,140.0)">CLARITY</text><text class="lb-lbl cn" x="179.3" y="141.9" text-anchor="middle" dominant-baseline="middle" transform="rotate(-62.8,179.3,141.9)">CONNECTION</text><text class="lb-lbl cf" x="141.2" y="76.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(3.0,141.2,76.2)">CONFIDENCE</text><text class="lb-comp" x="142.0" y="115.6">60</text><text class="lb-cap" x="142.0" y="127.6">TRUST INDEX</text></svg></div>
+    <div class="lb-tri"><svg width="240" height="230" viewBox="64.7 60.6 151.7 145.6" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="90.7,86.6 145.0,180.2 190.4,91.8"/><text class="lb-lbl cl" x="106.6" y="140.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.9,106.6,140.0)">CLARITY</text><text class="lb-lbl cn" x="179.3" y="141.9" text-anchor="middle" dominant-baseline="middle" transform="rotate(-62.8,179.3,141.9)">CONNECTION</text><text class="lb-lbl cf" x="141.2" y="76.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(3.0,141.2,76.2)">CONFIDENCE</text><text class="lb-comp" x="142.0" y="115.6" style="font-size:8.5px;letter-spacing:0.12em">FUNCTIONAL</text><text class="lb-cap" x="142.0" y="127.6">TRUST BAND</text></svg></div>
   </div>
 </div>
 
@@ -754,36 +754,38 @@
   <p>Running the TrustOS methodology across the sector at composite level produces this picture.</p>
 
   <div class="diagnostic-strip">
-    <div class="ds-label">Energy sector trust diagnostic  ·  Q2 2026</div>
+    <div class="ds-label">Energy sector trust diagnostic  ·  Q2 2026 &middot; published as bands</div>
     <div class="ds-row clarity">
       <div class="ds-name">Clarity</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">74</div>
+      <div class="ds-score">Strongest</div>
     </div>
     <div class="ds-row connection">
       <div class="ds-name">Connection</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">53</div>
+      <div class="ds-score">Weak edge</div>
     </div>
     <div class="ds-row confidence">
       <div class="ds-name">Confidence</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">54</div>
+      <div class="ds-score">Mid</div>
     </div>
     <div class="ds-row composite">
       <div class="ds-name">Composite</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">60</div>
+      <div class="ds-score">Functional</div>
     </div>
   </div>
 
-  <p><strong>Clarity &mdash; 74. High, and broadly stable.</strong> Net-zero narratives are clearly articulated. Brand pillars are well-defined. Investor day decks have the right architecture. Brandpie's energy research notes that the overwhelming majority of industry leaders are preparing to evolve their brand to maintain relevance &mdash; meaning the sector now has a shared muscle for stating intent. The Clarity question is not where the sector loses ground in 2026.</p>
+  
 
-  <p><strong>Connection &mdash; 53. The weakest layer.</strong> A European retreat from offshore wind, a Gulf production-growth narrative, a North American LNG export expansion, and a Latin American social-licence dispute read as one company to the outside world. Federated business architectures &mdash; JVs, national subsidiaries, technology partnerships &mdash; produce inconsistent governance evidence. The strongest proof points in the sector are failing to land as a coherent signal because they are not connected as evidence. The BP event makes the Connection-gap visible at the very top of the house: a chair appointment process that produced a sub-12-month tenure is, on its face, a connection failure between the board's stated standards and the board's executed selection.</p>
+  <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.7;border-left:2px solid var(--trust-cool);padding-left:14px;margin:1.6em 0 2.2em;">Sector reads are published as bands. The Trust Index and its three drivers &mdash; scored per stakeholder group, with direction of travel &mdash; are produced only inside a measured read. TrustOS never publishes a score it hasn&#8217;t measured.</p><p><strong>Clarity &mdash; high, and broadly stable.</strong> Net-zero narratives are clearly articulated. Brand pillars are well-defined. Investor day decks have the right architecture. Brandpie's energy research notes that the overwhelming majority of industry leaders are preparing to evolve their brand to maintain relevance &mdash; meaning the sector now has a shared muscle for stating intent. The Clarity question is not where the sector loses ground in 2026.</p>
 
-  <p><strong>Confidence &mdash; 54. Where activism lives in 2026.</strong> BP's walk-back of 2030 emissions targets, Shell's strategy reset, &Oslash;rsted's offshore-wind writedowns and capital-discipline pivot, and the divergence between national oil companies' net-zero narratives and their production-growth realities all sit on the Confidence axis &mdash; intent versus reality. Civil society and activist investors have grown sophisticated at running intent against disclosure, fast &mdash; and climate- and governance-related shareholder resolutions have been climbing through 2026. The cost of a Confidence leak is now measurable in shareholder votes, regulatory pressure, and capital cost.</p>
+  <p><strong>Connection &mdash; the weakest layer.</strong> A European retreat from offshore wind, a Gulf production-growth narrative, a North American LNG export expansion, and a Latin American social-licence dispute read as one company to the outside world. Federated business architectures &mdash; JVs, national subsidiaries, technology partnerships &mdash; produce inconsistent governance evidence. The strongest proof points in the sector are failing to land as a coherent signal because they are not connected as evidence. The BP event makes the Connection-gap visible at the very top of the house: a chair appointment process that produced a sub-12-month tenure is, on its face, a connection failure between the board's stated standards and the board's executed selection.</p>
 
-  <p><strong>Trust Index: 60.</strong> Below Mining's 67. Energy is in a harder trust window in 2026 than Mining is &mdash; and the BP event has just lowered the floor.</p>
+  <p><strong>Confidence &mdash; where activism lives in 2026.</strong> BP's walk-back of 2030 emissions targets, Shell's strategy reset, &Oslash;rsted's offshore-wind writedowns and capital-discipline pivot, and the divergence between national oil companies' net-zero narratives and their production-growth realities all sit on the Confidence axis &mdash; intent versus reality. Civil society and activist investors have grown sophisticated at running intent against disclosure, fast &mdash; and climate- and governance-related shareholder resolutions have been climbing through 2026. The cost of a Confidence leak is now measurable in shareholder votes, regulatory pressure, and capital cost.</p>
+
+  <p><strong>Trust band: Functional.</strong> Below Mining's 67. Energy is in a harder trust window in 2026 than Mining is &mdash; and the BP event has just lowered the floor.</p>
 
   <h2>The Integrity layer &mdash; the foundation under the three drivers</h2>
 
@@ -871,17 +873,17 @@
     <a href="/mining-trust-window/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  ·  Mining</div>
       <h3>When the merger clears. Mining's architecture test.</h3>
-      <p>Clarity 81. Connection 58. Confidence 62. Anglo Teck cleared Canada last month &mdash; the approval reveals what every other major's deal architecture will now be measured against.</p>
+      <p>Functional band. Connection the weak edge. Anglo Teck cleared Canada last month &mdash; the approval reveals what every other major's deal architecture will now be measured against.</p>
     </a>
     <a href="/regtech-brand-trust/" class="related-card">
       <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  RegTech</div>
       <h3>When the rebrand is the question. The RegTech brand leader's trust test.</h3>
-      <p>Clarity 60. Connection 45. Confidence 50. Three years ago, I helped redefine Adenza at Emperor. Now the question for every RegTech CMO.</p>
+      <p>Fragile band. Connection the weak edge. Three years ago, I helped redefine Adenza at Emperor. Now the question for every RegTech CMO.</p>
     </a>
     <a href="/ingo-brand-trust/" class="related-card">
       <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  International NGO</div>
       <h3>When the funding collapses. The INGO brand leader's trust test.</h3>
-      <p>Clarity 55. Connection 42. Confidence 48. With USAID dismantled and the UK Global Fund cut, the question for every INGO Director of Communications, Fundraising or Brand.</p>
+      <p>Fragile band. Connection the weak edge. With USAID dismantled and the UK Global Fund cut, the question for every INGO Director of Communications, Fundraising or Brand.</p>
     </a>
   </div>
 </section>

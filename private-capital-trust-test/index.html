@@ -274,7 +274,7 @@
     }
     .ds-row {
       display: grid;
-      grid-template-columns: 110px 1fr 36px;
+      grid-template-columns: 110px 1fr 100px;
       align-items: center;
       gap: 14px;
       margin-bottom: 12px;
@@ -535,13 +535,13 @@
     .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
-    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
     .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
     .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
     .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
     .lb-fill{height:100%;border-radius:3px;}
     .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
-    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-bar-v{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
     .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
     .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
     .lb-tri{display:flex;justify-content:center;}
@@ -706,10 +706,10 @@
   <div class="live-banner">
     <div class="lb-left">
       <p class="lb-kicker">Sector diagnostic &middot; Q2 2026</p>
-      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:64%"></div></div><span class="lb-bar-v">64</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:46%"></div></div><span class="lb-bar-v">46</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:50%"></div></div><span class="lb-bar-v">50</span></div></div>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:64%"></div></div><span class="lb-bar-v">Strongest</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:46%"></div></div><span class="lb-bar-v">Weak edge</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:50%"></div></div><span class="lb-bar-v">Mid</span></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; where this sector&rsquo;s trust leaks first.</p>
     </div>
-    <div class="lb-tri"><svg width="240" height="228" viewBox="70.6 64.1 141.1 133.8" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="96.6,90.1 145.0,171.9 185.7,94.5"/><text class="lb-lbl cl" x="109.6" y="137.6" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.4,109.6,137.6)">CLARITY</text><text class="lb-lbl cn" x="176.9" y="139.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(-62.2,176.9,139.2)">CONNECTION</text><text class="lb-lbl cf" x="141.8" y="79.3" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.8,141.8,79.3)">CONFIDENCE</text><text class="lb-comp" x="142.5" y="114.8">53</text><text class="lb-cap" x="142.5" y="126.8">TRUST INDEX</text></svg></div>
+    <div class="lb-tri"><svg width="240" height="228" viewBox="70.6 64.1 141.1 133.8" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="96.6,90.1 145.0,171.9 185.7,94.5"/><text class="lb-lbl cl" x="109.6" y="137.6" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.4,109.6,137.6)">CLARITY</text><text class="lb-lbl cn" x="176.9" y="139.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(-62.2,176.9,139.2)">CONNECTION</text><text class="lb-lbl cf" x="141.8" y="79.3" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.8,141.8,79.3)">CONFIDENCE</text><text class="lb-comp" x="142.5" y="114.8" style="font-size:8.5px;letter-spacing:0.12em">FRAGILE</text><text class="lb-cap" x="142.5" y="126.8">TRUST BAND</text></svg></div>
   </div>
 </div>
 
@@ -743,36 +743,38 @@
   <p>Running the TrustOS methodology across the sector at composite level produces this picture.</p>
 
   <div class="diagnostic-strip">
-    <div class="ds-label">Private capital trust diagnostic  &middot;  Q2 2026</div>
+    <div class="ds-label">Private capital trust diagnostic  &middot;  Q2 2026 &middot; published as bands</div>
     <div class="ds-row clarity">
       <div class="ds-name">Clarity</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">64</div>
+      <div class="ds-score">Strongest</div>
     </div>
     <div class="ds-row connection">
       <div class="ds-name">Connection</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">46</div>
+      <div class="ds-score">Weak edge</div>
     </div>
     <div class="ds-row confidence">
       <div class="ds-name">Confidence</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">50</div>
+      <div class="ds-score">Mid</div>
     </div>
     <div class="ds-row composite">
       <div class="ds-name">Composite</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">53</div>
+      <div class="ds-score">Fragile</div>
     </div>
   </div>
 
-  <p><strong>Clarity &mdash; 64.</strong> The macro story is crisp and newly quantified. The UK industry now publishes its own economic footprint &mdash; &pound;199 billion, 2.5 million jobs &mdash; the way a sector defends a licence, and has renamed itself "UK Private Capital" to tell it. But Clarity weakens exactly where the commitment is made: fund by fund. Bain's verdict on the firm-level promise is "too often vague or unconvincing," and "'we sort of do everything' is no longer a persuasive pitch." The sector has a clear story and 12,900 unclear promises.</p>
+  
 
-  <p><strong>Connection &mdash; 46. The weakest layer, and the widest gap between audiences anywhere in this series.</strong> LPs experience a different firm than the pitch describes &mdash; Bain says so directly. The 2.5 million people employed through portfolio companies experience ownership through a different story than "investing for a better economy." The political audience reads extraction where the industry reads stewardship. And a new audience is arriving with no prior at all: pension savers, whose capital is being invited in through the DC reforms the industry itself campaigned for. The sector's proof points are not absent &mdash; they are disconnected. Returns evidence for LPs, jobs evidence for politicians, conduct evidence for the regulator: never one signal.</p>
+  <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.7;border-left:2px solid var(--trust-cool);padding-left:14px;margin:1.6em 0 2.2em;">Sector reads are published as bands. The Trust Index and its three drivers &mdash; scored per stakeholder group, with direction of travel &mdash; are produced only inside a measured read. TrustOS never publishes a score it hasn&#8217;t measured.</p><p><strong>Clarity &mdash; the strongest layer.</strong> The macro story is crisp and newly quantified. The UK industry now publishes its own economic footprint &mdash; &pound;199 billion, 2.5 million jobs &mdash; the way a sector defends a licence, and has renamed itself "UK Private Capital" to tell it. But Clarity weakens exactly where the commitment is made: fund by fund. Bain's verdict on the firm-level promise is "too often vague or unconvincing," and "'we sort of do everything' is no longer a persuasive pitch." The sector has a clear story and 12,900 unclear promises.</p>
 
-  <p><strong>Confidence &mdash; 50.</strong> The sector's native proof is cash, and the cash isn't flowing: distributions have held below 15% of NAV for four consecutive years, a modern-industry record. Top-quartile outperformance is real and evidenced &mdash; but the average US fund can no longer verify its claim against the public alternative over ten years. And the regulator has been into the engine room: the FCA's multi-firm review of private market valuations found gaps in accountability, conflict management and independence in the processes behind the marks that fees, performance claims and continuation vehicles all rest on.</p>
+  <p><strong>Connection &mdash; the weakest layer, and the widest gap between audiences anywhere in this series.</strong> LPs experience a different firm than the pitch describes &mdash; Bain says so directly. The 2.5 million people employed through portfolio companies experience ownership through a different story than "investing for a better economy." The political audience reads extraction where the industry reads stewardship. And a new audience is arriving with no prior at all: pension savers, whose capital is being invited in through the DC reforms the industry itself campaigned for. The sector's proof points are not absent &mdash; they are disconnected. Returns evidence for LPs, jobs evidence for politicians, conduct evidence for the regulator: never one signal.</p>
 
-  <p><strong>Trust Index: 53.</strong> Between Technology &amp; AI's 52 and Social Care's 54 in this series. The Clarity-to-Connection spread is 18 points &mdash; almost exactly the series average. Connection is the lowest layer for the tenth time in eleven. The pattern that holds for councils, miners and hospitals holds for the people who own them.</p>
+  <p><strong>Confidence &mdash; the middle layer.</strong> The sector's native proof is cash, and the cash isn't flowing: distributions have held below 15% of NAV for four consecutive years, a modern-industry record. Top-quartile outperformance is real and evidenced &mdash; but the average US fund can no longer verify its claim against the public alternative over ten years. And the regulator has been into the engine room: the FCA's multi-firm review of private market valuations found gaps in accountability, conflict management and independence in the processes behind the marks that fees, performance claims and continuation vehicles all rest on.</p>
+
+  <p><strong>Trust band: Fragile.</strong> Between Technology &amp; AI's 52 and Social Care's, in the same band in this series. The gap between what the sector says and how it lands sits close to the series average. Connection is the lowest layer for the tenth time in eleven. The pattern that holds for councils, miners and hospitals holds for the people who own them.</p>
 
   <h2>The Integrity layer &mdash; other people's money is a conduct standard</h2>
 
@@ -854,12 +856,12 @@
     <a href="/netzero-consent-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  &middot;  Net Zero</div>
       <h3>&pound;455bn in the pipeline. Net Zero's consent test.</h3>
-      <p>Clarity 78. Connection 52. Confidence 56. The assets this capital underwrites, read through the same methodology &mdash; execution runs on consent, and consent runs on trust.</p>
+      <p>Functional band. Connection the weak edge. The assets this capital underwrites, read through the same methodology &mdash; execution runs on consent, and consent runs on trust.</p>
     </a>
     <a href="/professional-services-trust-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Buyer-Hero POV  &middot;  Professional Services</div>
       <h3>When the auditors are outnumbered. The brand leader's trust test.</h3>
-      <p>Clarity 70. Connection 44. Confidence 50. The advisers this sector relies on face the same shape &mdash; the evidence-of-assurance question, one step up the chain.</p>
+      <p>Functional band. Connection the weak edge. The advisers this sector relies on face the same shape &mdash; the evidence-of-assurance question, one step up the chain.</p>
     </a>
   </div>
 </section>

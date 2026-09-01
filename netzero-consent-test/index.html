@@ -274,7 +274,7 @@
     }
     .ds-row {
       display: grid;
-      grid-template-columns: 110px 1fr 36px;
+      grid-template-columns: 110px 1fr 100px;
       align-items: center;
       gap: 14px;
       margin-bottom: 12px;
@@ -535,13 +535,13 @@
     .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
-    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
     .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
     .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
     .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
     .lb-fill{height:100%;border-radius:3px;}
     .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
-    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-bar-v{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
     .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
     .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
     .lb-tri{display:flex;justify-content:center;}
@@ -706,10 +706,10 @@
   <div class="live-banner">
     <div class="lb-left">
       <p class="lb-kicker">Sector diagnostic &middot; Q2 2026</p>
-      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:78%"></div></div><span class="lb-bar-v">78</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:52%"></div></div><span class="lb-bar-v">52</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:56%"></div></div><span class="lb-bar-v">56</span></div></div>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:78%"></div></div><span class="lb-bar-v">Strongest</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:52%"></div></div><span class="lb-bar-v">Weak edge</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:56%"></div></div><span class="lb-bar-v">Mid</span></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; where this sector&rsquo;s trust leaks first.</p>
     </div>
-    <div class="lb-tri"><svg width="240" height="230" viewBox="62.1 59.2 154.7 148.5" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="88.1,85.2 145.0,181.7 190.8,91.5"/><text class="lb-lbl cl" x="105.4" y="140.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.5,105.4,140.0)">CLARITY</text><text class="lb-lbl cn" x="179.5" y="142.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(-63.1,179.5,142.5)">CONNECTION</text><text class="lb-lbl cf" x="140.3" y="75.4" text-anchor="middle" dominant-baseline="middle" transform="rotate(3.5,140.3,75.4)">CONFIDENCE</text><text class="lb-comp" x="141.3" y="115.5">62</text><text class="lb-cap" x="141.3" y="127.5">TRUST INDEX</text></svg></div>
+    <div class="lb-tri"><svg width="240" height="230" viewBox="62.1 59.2 154.7 148.5" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="88.1,85.2 145.0,181.7 190.8,91.5"/><text class="lb-lbl cl" x="105.4" y="140.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.5,105.4,140.0)">CLARITY</text><text class="lb-lbl cn" x="179.5" y="142.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(-63.1,179.5,142.5)">CONNECTION</text><text class="lb-lbl cf" x="140.3" y="75.4" text-anchor="middle" dominant-baseline="middle" transform="rotate(3.5,140.3,75.4)">CONFIDENCE</text><text class="lb-comp" x="141.3" y="115.5" style="font-size:8.5px;letter-spacing:0.12em">FUNCTIONAL</text><text class="lb-cap" x="141.3" y="127.5">TRUST BAND</text></svg></div>
   </div>
 </div>
 
@@ -749,36 +749,38 @@
   <p>Running the TrustOS methodology across the sector at composite level produces this picture.</p>
 
   <div class="diagnostic-strip">
-    <div class="ds-label">Net Zero delivery economy trust diagnostic  ·  Q2 2026</div>
+    <div class="ds-label">Net Zero delivery economy trust diagnostic  ·  Q2 2026 &middot; published as bands</div>
     <div class="ds-row clarity">
       <div class="ds-name">Clarity</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">78</div>
+      <div class="ds-score">Strongest</div>
     </div>
     <div class="ds-row connection">
       <div class="ds-name">Connection</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">52</div>
+      <div class="ds-score">Weak edge</div>
     </div>
     <div class="ds-row confidence">
       <div class="ds-name">Confidence</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">56</div>
+      <div class="ds-score">Mid</div>
     </div>
     <div class="ds-row composite">
       <div class="ds-name">Composite</div>
       <div class="ds-bar-bg"><div class="ds-bar"></div></div>
-      <div class="ds-score">62</div>
+      <div class="ds-score">Functional</div>
     </div>
   </div>
 
-  <p><strong>Clarity &mdash; 78. The highest we've scored in this series.</strong> The macro story is articulate and evidenced: around 84% of global GDP now sits under net zero commitments, most of the world's 2,000 largest companies are committed, and British wind farms helped pull down wholesale electricity costs in 2025. The ECIU/CBI report is itself a Clarity artefact &mdash; the sector now has a shared, quantified account of what it is and what it's worth. But Clarity is national, and consent is local. A planning committee doesn't read GVA multipliers.</p>
+  
 
-  <p><strong>Connection &mdash; 52. The weakest layer, and weaker than Energy's.</strong> Three fragmentations produce it. First, the business base: 23,500 companies, 96% of them SMEs, with no shared voice &mdash; so the sector reads as one undifferentiated "net zero" to the outside world, and a single battery fire anywhere reads against 130GW of pipeline owned by companies that had nothing to do with it. Second, the national&ndash;local gap: the sector wins the macro argument and loses the village hall. The &pound;105 billion never lands in the objection letters. Third, the portfolio&ndash;project gap: a developer's strongest community work on one project never reaches the planning committee on the next. The sector's proof points are not absent &mdash; they are disconnected.</p>
+  <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.7;border-left:2px solid var(--trust-cool);padding-left:14px;margin:1.6em 0 2.2em;">Sector reads are published as bands. The Trust Index and its three drivers &mdash; scored per stakeholder group, with direction of travel &mdash; are produced only inside a measured read. TrustOS never publishes a score it hasn&#8217;t measured.</p><p><strong>Clarity &mdash; the highest we've scored in this series.</strong> The macro story is articulate and evidenced: around 84% of global GDP now sits under net zero commitments, most of the world's 2,000 largest companies are committed, and British wind farms helped pull down wholesale electricity costs in 2025. The ECIU/CBI report is itself a Clarity artefact &mdash; the sector now has a shared, quantified account of what it is and what it's worth. But Clarity is national, and consent is local. A planning committee doesn't read GVA multipliers.</p>
 
-  <p><strong>Confidence &mdash; 56. The pipeline's structural exposure.</strong> Only 12% of the pipeline is under construction. The sector's promises &mdash; jobs, lower bills, community benefit &mdash; run ahead of delivered evidence by design; that is what a pipeline is. The proof that does exist is failing to attach to the specific promises specific developers made in specific places. Intent-versus-reality is being judged project by project, and most projects have no measured baseline to be judged against.</p>
+  <p><strong>Connection &mdash; the weakest layer, and weaker than Energy's.</strong> Three fragmentations produce it. First, the business base: 23,500 companies, 96% of them SMEs, with no shared voice &mdash; so the sector reads as one undifferentiated "net zero" to the outside world, and a single battery fire anywhere reads against 130GW of pipeline owned by companies that had nothing to do with it. Second, the national&ndash;local gap: the sector wins the macro argument and loses the village hall. The &pound;105 billion never lands in the objection letters. Third, the portfolio&ndash;project gap: a developer's strongest community work on one project never reaches the planning committee on the next. The sector's proof points are not absent &mdash; they are disconnected.</p>
 
-  <p><strong>Trust Index: 62.</strong> Above Energy's 60, below Mining's 67 &mdash; but with the widest spread between strongest and weakest layer of any sector in this series: 26 points between Clarity and Connection. That spread is the diagnosis. The clearest story in the economy, carried by the weakest signal.</p>
+  <p><strong>Confidence &mdash; the pipeline's structural exposure.</strong> Only 12% of the pipeline is under construction. The sector's promises &mdash; jobs, lower bills, community benefit &mdash; run ahead of delivered evidence by design; that is what a pipeline is. The proof that does exist is failing to attach to the specific promises specific developers made in specific places. Intent-versus-reality is being judged project by project, and most projects have no measured baseline to be judged against.</p>
+
+  <p><strong>Trust band: Functional.</strong> In the same band as Energy and Mining &mdash; but with the widest spread between strongest and weakest layer of any sector in this series: the widest distance between Clarity and Connection anywhere in this series. That spread is the diagnosis. The clearest story in the economy, carried by the weakest signal.</p>
 
   <h2>The Integrity layer &mdash; when you're building, not defending</h2>
 
@@ -860,12 +862,12 @@
     <a href="/energy-integrity-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  ·  Energy</div>
       <h3>When the chair falls. Energy's Integrity test.</h3>
-      <p>Clarity 74. Connection 55. Confidence 54. Energy's Integrity layer just became visible &mdash; the BP chair event run through the methodology, and what it costs to leave the foundation unmeasured.</p>
+      <p>Functional band. Connection the weak edge. Energy's Integrity layer just became visible &mdash; the BP chair event run through the methodology, and what it costs to leave the foundation unmeasured.</p>
     </a>
     <a href="/mining-trust-window/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  ·  Mining</div>
       <h3>When the merger clears. Mining's architecture test.</h3>
-      <p>Clarity 81. Connection 58. Confidence 62. Anglo Teck just cleared Canada &mdash; the story underneath the approval is the one Mining hasn't been telling itself. Trust architecture is now deal infrastructure.</p>
+      <p>Functional band. Connection the weak edge. Anglo Teck just cleared Canada &mdash; the story underneath the approval is the one Mining hasn't been telling itself. Trust architecture is now deal infrastructure.</p>
     </a>
   </div>
 </section>

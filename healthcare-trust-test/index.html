@@ -274,7 +274,7 @@
     }
     .ds-row {
       display: grid;
-      grid-template-columns: 110px 1fr 36px;
+      grid-template-columns: 110px 1fr 100px;
       align-items: center;
       gap: 14px;
       margin-bottom: 12px;
@@ -534,13 +534,13 @@
     .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
-    .lb-bar{display:grid;grid-template-columns:96px 1fr 30px;align-items:center;gap:14px;}
+    .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
     .lb-bar-l{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;}
     .lb-bar-l.cl{color:#8fb5c0;}.lb-bar-l.cn{color:#7cc4a8;}.lb-bar-l.cf{color:#a78bdb;}
     .lb-track{height:5px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;}
     .lb-fill{height:100%;border-radius:3px;}
     .lb-fill.cl{background:#5a8a9a;}.lb-fill.cn{background:#7cc4a8;}.lb-fill.cf{background:#a78bdb;}
-    .lb-bar-v{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.75);text-align:right;font-variant-numeric:tabular-nums;}
+    .lb-bar-v{font-size:0.6rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
     .lb-hook{font-size:0.84rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:22px 0 0;}
     .lb-hook strong{color:rgba(255,255,255,0.8);font-weight:600;}
     .lb-tri{display:flex;justify-content:center;}
@@ -698,10 +698,10 @@
   <div class="live-banner">
     <div class="lb-left">
       <p class="lb-kicker">Sector diagnostic &middot; Q2 2026</p>
-      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:62%"></div></div><span class="lb-bar-v">62</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:48%"></div></div><span class="lb-bar-v">48</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:52%"></div></div><span class="lb-bar-v">52</span></div></div>
+      <div class="lb-bars"><div class="lb-bar"><span class="lb-bar-l cl">Clarity</span><div class="lb-track"><div class="lb-fill cl" style="width:62%"></div></div><span class="lb-bar-v">Strongest</span></div><div class="lb-bar"><span class="lb-bar-l cn">Connection</span><div class="lb-track"><div class="lb-fill cn" style="width:48%"></div></div><span class="lb-bar-v">Weak edge</span></div><div class="lb-bar"><span class="lb-bar-l cf">Confidence</span><div class="lb-track"><div class="lb-fill cf" style="width:52%"></div></div><span class="lb-bar-v">Mid</span></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; where this sector&rsquo;s trust leaks first.</p>
     </div>
-    <div class="lb-tri"><svg width="240" height="225" viewBox="70.6 64.1 142.8 133.8" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="96.6,90.1 145.0,171.9 187.4,93.5"/><text class="lb-lbl cl" x="109.6" y="137.6" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.4,109.6,137.6)">CLARITY</text><text class="lb-lbl cn" x="177.7" y="138.9" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.6,177.7,138.9)">CONNECTION</text><text class="lb-lbl cf" x="142.5" y="78.8" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.2,142.5,78.8)">CONFIDENCE</text><text class="lb-comp" x="143.0" y="114.5">54</text><text class="lb-cap" x="143.0" y="126.5">TRUST INDEX</text></svg></div>
+    <div class="lb-tri"><svg width="240" height="225" viewBox="70.6 64.1 142.8 133.8" aria-hidden="true"><defs><linearGradient id="lb-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient><filter id="lb-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tealBlur"/><feMerge><feMergeNode in="tealBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><polygon fill="url(#lb-grad)" filter="url(#lb-glow)" points="96.6,90.1 145.0,171.9 187.4,93.5"/><text class="lb-lbl cl" x="109.6" y="137.6" text-anchor="middle" dominant-baseline="middle" transform="rotate(59.4,109.6,137.6)">CLARITY</text><text class="lb-lbl cn" x="177.7" y="138.9" text-anchor="middle" dominant-baseline="middle" transform="rotate(-61.6,177.7,138.9)">CONNECTION</text><text class="lb-lbl cf" x="142.5" y="78.8" text-anchor="middle" dominant-baseline="middle" transform="rotate(2.2,142.5,78.8)">CONFIDENCE</text><text class="lb-comp" x="143.0" y="114.5" style="font-size:8.5px;letter-spacing:0.12em">FRAGILE</text><text class="lb-cap" x="143.0" y="126.5">TRUST BAND</text></svg></div>
   </div>
 </div>
 
@@ -749,20 +749,22 @@
   <p>Running the TrustOS methodology across the sector at composite level produces this picture.</p>
 
   <div class="diagnostic-strip">
-    <div class="ds-label">Healthcare sector trust diagnostic  ·  Q2 2026</div>
-    <div class="ds-row clarity"><div class="ds-name">Clarity</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">67</div></div>
-    <div class="ds-row connection"><div class="ds-name">Connection</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">45</div></div>
-    <div class="ds-row confidence"><div class="ds-name">Confidence</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">50</div></div>
-    <div class="ds-row composite"><div class="ds-name">Composite</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">54</div></div>
+    <div class="ds-label">Healthcare sector trust diagnostic  ·  Q2 2026 &middot; published as bands</div>
+    <div class="ds-row clarity"><div class="ds-name">Clarity</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Strongest</div></div>
+    <div class="ds-row connection"><div class="ds-name">Connection</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Weak edge</div></div>
+    <div class="ds-row confidence"><div class="ds-name">Confidence</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Mid</div></div>
+    <div class="ds-row composite"><div class="ds-name">Composite</div><div class="ds-bar-bg"><div class="ds-bar"></div></div><div class="ds-score">Fragile</div></div>
   </div>
 
-  <p><strong>Clarity &mdash; 67. High, and broadly stable.</strong> The mission is clear and widely held: safe, universal care, free at the point of use. The 10-Year Health Plan gives the system a shared, quantified narrative of where it is going &mdash; community, digital, prevention. Pharma and medtech articulate purpose and evidence well. Clarity is the highest of the three, and it is not where the sector loses ground in 2026.</p>
+  
 
-  <p><strong>Connection &mdash; 45. The sector&#8217;s weakest layer, and a structural one.</strong> The lived experience of a patient, their family, the clinician treating them, the GP referring them, the trust delivering care, the ICB commissioning it, the regulator inspecting it, the pharma or medtech supplier behind it, and the public funding it all read as different systems to the outside world. More than 200 trusts, 42 ICBs, emerging neighbourhoods and IHOs, two-plus regulators, and the primary / secondary / community / social-care splits produce inconsistent evidence at every level. The abolition of the centre widens that gap before it narrows it.</p>
+  <p style="font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.7;border-left:2px solid var(--trust-cool);padding-left:14px;margin:1.6em 0 2.2em;">Sector reads are published as bands. The Trust Index and its three drivers &mdash; scored per stakeholder group, with direction of travel &mdash; are produced only inside a measured read. TrustOS never publishes a score it hasn&#8217;t measured.</p><p><strong>Clarity &mdash; high, and broadly stable.</strong> The mission is clear and widely held: safe, universal care, free at the point of use. The 10-Year Health Plan gives the system a shared, quantified narrative of where it is going &mdash; community, digital, prevention. Pharma and medtech articulate purpose and evidence well. Clarity is the highest of the three, and it is not where the sector loses ground in 2026.</p>
 
-  <p><strong>Confidence &mdash; 50. Where delivery strain and earned autonomy now meet.</strong> Waiting lists, safety inquiries, the analogue-to-digital transition, workforce pressure and the equity of access all sit on the Confidence axis &mdash; intent versus reality. Earned autonomy has just made this the layer that determines a provider&#8217;s freedom and funding.</p>
+  <p><strong>Connection &mdash; the sector&#8217;s weakest layer, and a structural one.</strong> The lived experience of a patient, their family, the clinician treating them, the GP referring them, the trust delivering care, the ICB commissioning it, the regulator inspecting it, the pharma or medtech supplier behind it, and the public funding it all read as different systems to the outside world. More than 200 trusts, 42 ICBs, emerging neighbourhoods and IHOs, two-plus regulators, and the primary / secondary / community / social-care splits produce inconsistent evidence at every level. The abolition of the centre widens that gap before it narrows it.</p>
 
-  <p><strong>Trust Index: 54.</strong> In the same window as Social Care, and below Education&#8217;s 57. Healthcare is in one of the harder trust windows of this series &mdash; and the removal of NHS England has just lowered the floor under the consistency the public assumed.</p>
+  <p><strong>Confidence &mdash; where delivery strain and earned autonomy now meet.</strong> Waiting lists, safety inquiries, the analogue-to-digital transition, workforce pressure and the equity of access all sit on the Confidence axis &mdash; intent versus reality. Earned autonomy has just made this the layer that determines a provider&#8217;s freedom and funding.</p>
+
+  <p><strong>Trust band: Fragile.</strong> In the same band as Social Care, and a band below Education. Healthcare is in one of the harder trust windows of this series &mdash; and the removal of NHS England has just lowered the floor under the consistency the public assumed.</p>
 
   <h2>Clinical Trust &mdash; how Integrity manifests for healthcare</h2>
 
@@ -844,17 +846,17 @@
     <a href="/social-care-workforce-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  ·  Social Care</div>
       <h3>When the pipeline closes. Social Care's workforce trust test.</h3>
-      <p>Clarity 62. Connection 48. Confidence 52. The Casey Commission reports into a sector that has just lost its workforce pipeline.</p>
+      <p>Fragile band. Connection the weak edge. The Casey Commission reports into a sector that has just lost its workforce pipeline.</p>
     </a>
     <a href="/professional-services-trust-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  Professional Services</div>
       <h3>When the auditors are outnumbered. The brand leader's trust test.</h3>
-      <p>Clarity 70. Connection 44. Confidence 50. Audit reform dropped, AI hiring overtakes auditors &mdash; the sector whose product is trust is hollowing its assurance layer.</p>
+      <p>Functional band. Connection the weak edge. Audit reform dropped, AI hiring overtakes auditors &mdash; the sector whose product is trust is hollowing its assurance layer.</p>
     </a>
     <a href="/education-public-purpose-test/" class="related-card">
       <div class="related-card-eyebrow">2026 Sector POV  ·  Education</div>
       <h3>When the courses close. Education's public-purpose test.</h3>
-      <p>Clarity 68. Connection 52. Confidence 50. Queen Mary just cut 295 modules &mdash; the moment Education's public-purpose foundation became visible.</p>
+      <p>Functional band. Connection the weak edge. Queen Mary just cut 295 modules &mdash; the moment Education's public-purpose foundation became visible.</p>
     </a>
   </div>
 </section>
