@@ -475,8 +475,128 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+<script>
+/* ══ TrustOS shape + band track ══ canonical renderer.
+   Public surfaces state a BAND, never a composite score. The 40/55/70/85
+   boundaries below are internal calibration and are never rendered. ══ */
+window.TrustShape = (function () {
+  var C = { x: 150, y: 104 }, R = 100, A30 = Math.PI / 6;
+  var VIEWBOX = '46 26 208 182', OFF = 11;
+  var EQ = {
+    i: { x: C.x - R * Math.cos(A30), y: C.y - R * 0.5 },
+    e: { x: C.x + R * Math.cos(A30), y: C.y - R * 0.5 },
+    r: { x: C.x,                     y: C.y + R }
+  };
+  var BANDS = ['Exposed','Fragile','Functional','Resilient','Defining'];
+  var MEANING = {
+    'Exposed':   'Trust does no work for you. Claims are discounted on arrival.',
+    'Fragile':   'Trust exists but is not load-bearing. It gives way under pressure or change.',
+    'Functional':'Trust is real, but uneven. Some relationships carry the business; others quietly cost it.',
+    'Resilient': 'Trust absorbs shocks. You get the benefit of the doubt; claims land first time.',
+    'Defining':  'Trust is an asset others measure themselves against.'
+  };
+  function bandIdx(n){n=Math.round(n);return n<40?0:n<55?1:n<70?2:n<85?3:4;}
+  function band(n){return BANDS[bandIdx(n)];}
+  function rank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v===mx?'STRONGEST':v===mn?'WEAK EDGE':'MID';}
+  function verts(cl,cn,cf){
+    var fi=(cl+cf)/200, fe=(cl+cn)/200, fr=(cn+cf)/200;
+    return {
+      i:{x:C.x+(EQ.i.x-C.x)*fi, y:C.y+(EQ.i.y-C.y)*fi},
+      e:{x:C.x+(EQ.e.x-C.x)*fe, y:C.y+(EQ.e.y-C.y)*fe},
+      r:{x:C.x+(EQ.r.x-C.x)*fr, y:C.y+(EQ.r.y-C.y)*fr}
+    };
+  }
+  function f(n){return n.toFixed(1);}
+  function pts(v){return f(v.i.x)+','+f(v.i.y)+' '+f(v.e.x)+','+f(v.e.y)+' '+f(v.r.x)+','+f(v.r.y);}
+  function lab(ia,ib,cen,txt,cls){
+    var mx=(ia.x+ib.x)/2, my=(ia.y+ib.y)/2, dx=ib.x-ia.x, dy=ib.y-ia.y;
+    var len=Math.sqrt(dx*dx+dy*dy);
+    var ang=Math.atan2(dy,dx)*180/Math.PI;
+    if(ang>90)ang-=180; if(ang<-90)ang+=180;
+    var px=-dy/len, py=dx/len;
+    if(px*(cen.x-mx)+py*(cen.y-my)>0){px=-px;py=-py;}
+    var lx=mx+px*OFF, ly=my+py*OFF;
+    return '<text class="ts-lbl '+cls+'" x="'+f(lx)+'" y="'+f(ly)+'" text-anchor="middle" '+
+           'dominant-baseline="middle" transform="rotate('+ang.toFixed(1)+','+f(lx)+','+f(ly)+')">'+txt+'</text>';
+  }
+  /* inner markup only — caller owns the <svg> element */
+  function inner(cl,cn,cf,centreText){
+    var v=verts(cl,cn,cf), iv=verts(100,100,100);
+    var icen={x:(iv.i.x+iv.e.x+iv.r.x)/3, y:(iv.i.y+iv.e.y+iv.r.y)/3};
+    var acen={x:(v.i.x+v.e.x+v.r.x)/3,    y:(v.i.y+v.e.y+v.r.y)/3};
+    return '<polygon class="ts-leak" points="'+pts(iv)+'"/>'+
+           '<polygon class="ts-ideal" points="'+pts(iv)+'"/>'+
+           '<polygon class="ts-act" points="'+pts(v)+'"/>'+
+           '<line class="ts-e-cl" x1="'+f(v.i.x)+'" y1="'+f(v.i.y)+'" x2="'+f(v.e.x)+'" y2="'+f(v.e.y)+'"/>'+
+           '<line class="ts-e-cn" x1="'+f(v.e.x)+'" y1="'+f(v.e.y)+'" x2="'+f(v.r.x)+'" y2="'+f(v.r.y)+'"/>'+
+           '<line class="ts-e-cf" x1="'+f(v.r.x)+'" y1="'+f(v.r.y)+'" x2="'+f(v.i.x)+'" y2="'+f(v.i.y)+'"/>'+
+           lab(iv.i,iv.e,icen,'CLARITY &middot; '+rank(cl,cl,cn,cf),'cl')+
+           lab(iv.e,iv.r,icen,'CONNECTION &middot; '+rank(cn,cl,cn,cf),'cn')+
+           lab(iv.r,iv.i,icen,'CONFIDENCE &middot; '+rank(cf,cl,cn,cf),'cf')+
+           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText).toUpperCase()+'</text>';
+  }
+  /* paint into an existing <svg>; sets viewBox and aria */
+  function paint(svg,cl,cn,cf,centreText,ariaName){
+    if(!svg) return;
+    svg.setAttribute('viewBox',VIEWBOX);
+    svg.setAttribute('class','ts-svg');
+    svg.setAttribute('role','img');
+    svg.setAttribute('aria-label',(ariaName?ariaName+' ':'')+'trust shape — '+
+      band((cl+cn+cf)/3)+' band, published without scores');
+    svg.removeAttribute('aria-hidden');
+    svg.innerHTML=inner(cl,cn,cf,centreText);
+  }
+  /* whole-element markup, for pages that ship the shape statically */
+  function staticSvg(cl,cn,cf,centreText,ariaName){
+    return '<svg class="ts-svg" viewBox="'+VIEWBOX+'" role="img" aria-label="'+
+      (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band((cl+cn+cf)/3)+
+      ' band, published without scores">'+inner(cl,cn,cf,centreText)+'</svg>';
+  }
+  function trackHtml(comp,compact){
+    var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
+    for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
+    var aria='Trust band: '+name+', band '+(bi+1)+' of 5';
+    if(compact){
+      return '<div class="bt compact" role="img" aria-label="'+aria+'">'+
+        '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
+        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div></div>';
+    }
+    for(i=0;i<5;i++) l+='<div class="bt-lab'+(i===bi?' on':'')+'">'+BANDS[i]+'</div>';
+    return '<div class="bt" role="img" aria-label="'+aria+'">'+
+      '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
+      '<p class="bt-meaning">'+MEANING[name]+'</p>'+
+      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p></div>';
+  }
+  /* paint a band track into a container */
+  function track(el,comp,compact){
+    if(!el) return;
+    var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
+    for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
+    el.className='bt'+(compact?' compact':'');
+    el.setAttribute('role','img');
+    el.setAttribute('aria-label','Trust band: '+name+', band '+(bi+1)+' of 5');
+    var html=trackHtml(comp,compact);
+    el.outerHTML=html;
+  }
+  return { paint: paint, track: track, band: band, bandIdx: bandIdx, rank: rank,
+           inner: inner, staticSvg: staticSvg, trackHtml: trackHtml,
+           VIEWBOX: VIEWBOX, BANDS: BANDS };
+})();
+</script>
 </head>
 <body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px;">
+<defs>
+<linearGradient id="ts-leak" x1="0.5" y1="0" x2="0.5" y2="1">
+<stop offset="0%" stop-color="rgba(255,255,255,0.075)"/><stop offset="100%" stop-color="rgba(255,255,255,0.02)"/>
+</linearGradient>
+<linearGradient id="ts-shape" x1="0.5" y1="0" x2="0.5" y2="1">
+<stop offset="0%" stop-color="rgba(178,208,222,0.62)"/><stop offset="55%" stop-color="rgba(126,172,192,0.42)"/>
+<stop offset="100%" stop-color="rgba(86,132,152,0.26)"/>
+</linearGradient>
+</defs>
+</svg>
+
 
 <div class="app">
 
@@ -640,30 +760,47 @@
   .nv-bar-v{font-size:0.58rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.6);text-align:right;}
   .nv-foundation{font-size:0.56rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-faint);}
   .nv-foundation strong{color:var(--pale);font-weight:800;}
+
+/* ══ TrustOS shape + band track ══ shared component (no published scores) ══ */
+.ts-svg{display:block;width:100%;height:auto;overflow:visible;}
+.ts-leak{fill:url(#ts-leak);}
+.ts-ideal{fill:none;stroke:rgba(255,255,255,0.34);stroke-width:0.75;stroke-dasharray:4.5 3.5;stroke-linejoin:round;}
+.ts-act{fill:url(#ts-shape);}
+.ts-e-cl{stroke:#a8cdd8;fill:none;stroke-width:1.2;stroke-linecap:round;}
+.ts-e-cn{stroke:#7cc4a8;fill:none;stroke-width:1.2;stroke-linecap:round;}
+.ts-e-cf{stroke:#a78bdb;fill:none;stroke-width:1.2;stroke-linecap:round;}
+.ts-lbl{font-family:'Sora',sans-serif;font-size:5px;font-weight:800;letter-spacing:0.16em;}
+.ts-lbl.cl{fill:#a8cdd8;}.ts-lbl.cn{fill:#7cc4a8;}.ts-lbl.cf{fill:#a78bdb;}
+.ts-centre{font-family:'Sora',sans-serif;font-size:11.5px;font-weight:800;letter-spacing:0.17em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
+.ts-frame{width:100%;max-width:470px;margin:6px auto 0;}
+.ts-legend{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);text-align:center;margin:4px 0 0;}
+
+.bt{width:100%;max-width:430px;margin:22px auto 0;}
+.bt-segs{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;}
+.bt-seg{height:5px;border-radius:2px;background:rgba(255,255,255,0.07);transition:background .5s ease,box-shadow .5s ease;}
+.bt-seg.on{background:#7fb4cc;box-shadow:0 0 11px rgba(127,180,204,0.55);}
+.bt-seg.below{background:rgba(127,180,204,0.24);}
+.bt-labels{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-top:9px;}
+.bt-lab{font-size:0.53rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;text-align:center;color:rgba(255,255,255,0.22);transition:color .5s ease;white-space:nowrap;}
+.bt-lab.on{color:#fff;font-weight:800;}
+.bt-meaning{font-size:0.8rem;line-height:1.68;color:rgba(255,255,255,0.55);text-align:center;margin:11px auto 0;max-width:46ch;}
+.bt-cap{font-size:0.63rem;line-height:1.6;color:rgba(255,255,255,0.22);text-align:center;margin:10px 0 0;font-style:italic;}
+.bt.compact{max-width:210px;margin:0;}
+.bt.compact .bt-seg{height:4px;}
+.bt.compact .bt-labels{grid-template-columns:1fr;margin-top:7px;}
+.bt.compact .bt-lab{text-align:left;font-size:0.56rem;color:#fff;font-weight:800;letter-spacing:0.14em;}
+.bt.compact .bt-lab .of{color:rgba(255,255,255,0.22);font-weight:600;letter-spacing:0.04em;}
+.bt.compact .bt-meaning,.bt.compact .bt-cap{display:none;}
+@media (max-width:760px){.bt-lab{font-size:0.44rem;letter-spacing:0.03em;}}
+@media (prefers-reduced-motion:reduce){.bt-seg{transition:none;}.bt-lab{transition:none;}}
 </style>
   <!-- HERO -->
   <div class="hero-row">
     <div class="triangle-wrap nv-wrap">
       <div class="nv-tri">
-        <svg viewBox="0 0 290 260" width="290" height="260" overflow="visible" aria-label="Trust shape: Clarity, Connection and Confidence from public signal — published as a band, not scores">
-          <defs>
-            <linearGradient id="nv-grad" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="55%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient>
-            <filter id="nv-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.43  0 0 0 0 0.63  0 0 0 0 0.72  0 0 0 0.45 0" result="tb"/><feMerge><feMergeNode in="tb"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <polygon id="nv-ideal" points="" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.2" stroke-dasharray="4 5"/>
-          <polygon id="nv-poly" fill="url(#nv-grad)" filter="url(#nv-glow)"/>
-          <text id="nv-lc" class="nv-lbl lc"></text>
-          <text id="nv-ln" class="nv-lbl ln"></text>
-          <text id="nv-lf" class="nv-lbl lf"></text>
-          <text id="nv-comp" class="nv-comp"></text>
-          <text id="nv-comp-l" class="nv-cap">TRUST BAND</text>
-        </svg>
+        <svg id="nv-shape" class="ts-svg" viewBox="46 26 208 182" role="img" aria-label="Trust shape"></svg>
       </div>
-      <div class="nv-bars">
-        <div class="nv-bar"><span class="nv-bar-l cl">Clarity</span><span class="nv-track"><span class="nv-fill cl" style="width:65%"></span></span><span class="nv-bar-v">Strongest</span></div>
-        <div class="nv-bar"><span class="nv-bar-l cn">Connection</span><span class="nv-track"><span class="nv-fill cn" style="width:52%"></span></span><span class="nv-bar-v">Weak edge</span></div>
-        <div class="nv-bar"><span class="nv-bar-l cf">Confidence</span><span class="nv-track"><span class="nv-fill cf" style="width:58%"></span></span><span class="nv-bar-v">Mid</span></div>
-      </div>
+      <div id="nv-track"></div>
       <div class="nv-foundation">On a foundation of <strong>Integrity</strong></div>
     </div>
 
@@ -1091,11 +1228,8 @@
     el.setAttribute('transform','rotate('+ang.toFixed(1)+','+f1(lx)+','+f1(ly)+')');el.textContent=txt;}
   var IV=verts(100,100,100),ideal=document.getElementById('nv-ideal');
   if(ideal)ideal.setAttribute('points',f1(IV.i.x)+','+f1(IV.i.y)+' '+f1(IV.e.x)+','+f1(IV.e.y)+' '+f1(IV.r.x)+','+f1(IV.r.y));
-  var cl=65,cn=52,cf=58,v=verts(cl,cn,cf),cen={x:(v.i.x+v.e.x+v.r.x)/3,y:(v.i.y+v.e.y+v.r.y)/3};
-  var poly=document.getElementById('nv-poly');if(poly)poly.setAttribute('points',f1(v.i.x)+','+f1(v.i.y)+' '+f1(v.e.x)+','+f1(v.e.y)+' '+f1(v.r.x)+','+f1(v.r.y));
-  lbl('nv-lc',v.i,v.e,cen,'CLARITY');lbl('nv-ln',v.e,v.r,cen,'CONNECTION');lbl('nv-lf',v.r,v.i,cen,'CONFIDENCE');
-  var comp=document.getElementById('nv-comp');if(comp){comp.setAttribute('x',f1(cen.x));comp.setAttribute('y',f1(cen.y-4));comp.textContent="FUNCTIONAL";}
-  var cap=document.getElementById('nv-comp-l');if(cap){cap.setAttribute('x',f1(cen.x));cap.setAttribute('y',f1(cen.y+8));}
+  var cl=65,cn=52,cf=58,comp=58;
+  if(window.TrustShape){window.TrustShape.paint(document.getElementById('nv-shape'),cl,cn,cf,window.TrustShape.band(comp),'');window.TrustShape.track(document.getElementById('nv-track'),comp,true);}
 })();
 </script>
 </body>
