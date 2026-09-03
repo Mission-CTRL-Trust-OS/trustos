@@ -91,7 +91,7 @@
 
     /* Page hero */
     .page-hero { padding: 130px 5% 60px; position: relative; overflow: hidden; }
-    .page-hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+    .page-hero-inner { max-width: 1280px; margin: 0 auto; position: relative; z-index: 2; }
     .breadcrumb {
       font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em;
       color: rgba(255,255,255,0.45); margin-bottom: 28px;
@@ -128,7 +128,7 @@
 
     /* Article grid */
     .insights-grid {
-      max-width: 1100px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 40px 5% 60px;
       display: grid;
@@ -192,6 +192,7 @@
     .chip.clarity { background: rgba(90,138,154,0.12); color: #5a8a9a; }
     .chip.connection { background: rgba(124,196,168,0.12); color: #7cc4a8; }
     .chip.confidence { background: rgba(167,139,219,0.12); color: #a78bdb; }
+    .insight-card-chips .bt { flex: 1 1 100%; margin: 0 0 12px; max-width: 420px; }
     .insight-card-meta {
       display: flex; flex-wrap: wrap; gap: 16px 28px;
       font-size: 0.72rem; color: rgba(255,255,255,0.4);
@@ -359,8 +360,13 @@
 .ts-e-cf{stroke:#a78bdb;fill:none;stroke-width:1.2;stroke-linecap:round;}
 .ts-lbl{font-family:'Sora',sans-serif;font-size:5px;font-weight:800;letter-spacing:0.16em;}
 .ts-lbl.cl{fill:#a8cdd8;}.ts-lbl.cn{fill:#7cc4a8;}.ts-lbl.cf{fill:#a78bdb;}
-.ts-centre{font-family:'Sora',sans-serif;font-size:11.5px;font-weight:800;letter-spacing:0.17em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
+.ts-centre{font-family:'Sora',sans-serif;font-size:8.4px;font-weight:800;letter-spacing:0.2em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
 .ts-frame{width:100%;max-width:470px;margin:6px auto 0;}
+.ts-svg.soon .ts-act{opacity:0;}
+.ts-svg.soon .ts-e-cl,.ts-svg.soon .ts-e-cn,.ts-svg.soon .ts-e-cf{stroke:rgba(255,255,255,0.16);}
+.ts-svg.soon .ts-lbl{fill:rgba(255,255,255,0.25);}
+.ts-svg.soon .ts-centre{fill:rgba(255,255,255,0.3);}
+.ts-svg.soon .ts-leak{opacity:0.4;}
 .ts-legend{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);text-align:center;margin:4px 0 0;}
 
 .bt{width:100%;max-width:430px;margin:22px auto 0;}
@@ -423,7 +429,7 @@ function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v=
    boundaries below are internal calibration and are never rendered. ══ */
 window.TrustShape = (function () {
   var C = { x: 150, y: 104 }, R = 100, A30 = Math.PI / 6;
-  var VIEWBOX = '46 26 208 182', OFF = 11;
+  var VIEWBOX = '46 26 208 182', OFF = 11, CENTRE = 'TRUST INDEX';
   var EQ = {
     i: { x: C.x - R * Math.cos(A30), y: C.y - R * 0.5 },
     e: { x: C.x + R * Math.cos(A30), y: C.y - R * 0.5 },
@@ -475,7 +481,7 @@ window.TrustShape = (function () {
            lab(iv.i,iv.e,icen,'CLARITY &middot; '+rank(cl,cl,cn,cf),'cl')+
            lab(iv.e,iv.r,icen,'CONNECTION &middot; '+rank(cn,cl,cn,cf),'cn')+
            lab(iv.r,iv.i,icen,'CONFIDENCE &middot; '+rank(cf,cl,cn,cf),'cf')+
-           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText).toUpperCase()+'</text>';
+           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText||CENTRE).toUpperCase()+'</text>';
   }
   /* paint into an existing <svg>; sets viewBox and aria */
   function paint(svg,cl,cn,cf,centreText,ariaName){
@@ -494,31 +500,31 @@ window.TrustShape = (function () {
       (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band((cl+cn+cf)/3)+
       ' band, published without scores">'+inner(cl,cn,cf,centreText)+'</svg>';
   }
-  function trackHtml(comp,compact){
+  function trackInner(comp,compact){
     var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
     for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
-    var aria='Trust band: '+name+', band '+(bi+1)+' of 5';
     if(compact){
-      return '<div class="bt compact" role="img" aria-label="'+aria+'">'+
-        '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
-        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div></div>';
+      return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
+        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div>';
     }
     for(i=0;i<5;i++) l+='<div class="bt-lab'+(i===bi?' on':'')+'">'+BANDS[i]+'</div>';
-    return '<div class="bt" role="img" aria-label="'+aria+'">'+
-      '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
+    return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
       '<p class="bt-meaning">'+MEANING[name]+'</p>'+
-      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p></div>';
+      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p>';
   }
-  /* paint a band track into a container */
+  function trackHtml(comp,compact){
+    var bi=bandIdx(comp);
+    return '<div class="bt'+(compact?' compact':'')+'" role="img" aria-label="Trust band: '+
+      BANDS[bi]+', band '+(bi+1)+' of 5">'+trackInner(comp,compact)+'</div>';
+  }
+  /* paint a band track into a container — keeps the element, so repeat calls work */
   function track(el,comp,compact){
     if(!el) return;
-    var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
-    for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
+    var bi=bandIdx(comp);
     el.className='bt'+(compact?' compact':'');
     el.setAttribute('role','img');
-    el.setAttribute('aria-label','Trust band: '+name+', band '+(bi+1)+' of 5');
-    var html=trackHtml(comp,compact);
-    el.outerHTML=html;
+    el.setAttribute('aria-label','Trust band: '+BANDS[bi]+', band '+(bi+1)+' of 5');
+    el.innerHTML=trackInner(comp,compact);
   }
   return { paint: paint, track: track, band: band, bandIdx: bandIdx, rank: rank,
            inner: inner, staticSvg: staticSvg, trackHtml: trackHtml,
@@ -588,9 +594,8 @@ window.TrustShape = (function () {
         <h2>Brand growth in an insular world &mdash; measured.</h2>
         <p class="desc">Edelman&rsquo;s 2026 Barometer tells brands to use trust as a leading growth indicator &mdash; not a reputation issue. Two authorities, one thesis: 88% say trust decides what they buy; &pound;841bn of FTSE 350 value is attributable to it. The launch briefing, with the pattern from twelve sectors of published reads.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 64</span>
-          <span class="chip connection">Connection 48</span>
-          <span class="chip confidence">Confidence 52</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Functional, band 3 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Functional <span class="of">&middot; band 3 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>7 July 2026</strong></span>
@@ -610,9 +615,8 @@ window.TrustShape = (function () {
         <h2>The profession is trusted. The institution is the question.</h2>
         <p class="desc">Nurses 92%, engineers 90% &mdash; public trust in professionals has never been higher, while trust in institutions falls through the floor. The bodies that certify the professionals sit on the fault line, and almost none measure the thing they trade in.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 58</span>
-          <span class="chip connection">Connection 44</span>
-          <span class="chip confidence">Confidence 50</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>12 June 2026</strong></span>
@@ -631,9 +635,8 @@ window.TrustShape = (function () {
         <h2>Twelve is the new five. Private capital&#8217;s trust test.</h2>
         <p class="desc">Bain just told private equity that deals now need 12% annual EBITDA growth, not 5% &mdash; and growth at that rate is earned from stakeholders. Five diligence lenses, 32,000 unsold companies, $3.8 trillion waiting: the one lever nobody instruments is trust.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 64</span>
-          <span class="chip connection">Connection 46</span>
-          <span class="chip confidence">Confidence 50</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>11 June 2026</strong></span>
@@ -652,9 +655,8 @@ window.TrustShape = (function () {
         <h2>When the auditors are outnumbered. The professional-services brand leader&#8217;s trust test.</h2>
         <p class="desc">Audit reform dropped in January 2026; by May the Big Four were hiring more AI specialists than auditors. The sector whose product is trust is hollowing its assurance layer &mdash; where is the evidence underneath &#8220;trust us&#8221;?</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 70</span>
-          <span class="chip connection">Connection 44</span>
-          <span class="chip confidence">Confidence 50</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Functional, band 3 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Functional <span class="of">&middot; band 3 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>8 June 2026</strong></span>
@@ -673,9 +675,8 @@ window.TrustShape = (function () {
         <h2>When the centre dissolves. Healthcare&#8217;s trust test.</h2>
         <p class="desc">NHS England is being abolished and the 10-Year Plan is live &mdash; and &#8220;earned autonomy&#8221; makes trust the currency that decides which providers get freedom and budget. The methodology applied across the NHS, pharma, medtech and private health.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 67</span>
-          <span class="chip connection">Connection 45</span>
-          <span class="chip confidence">Confidence 50</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>8 June 2026</strong></span>
@@ -694,9 +695,8 @@ window.TrustShape = (function () {
         <h2>When the council flips. The council comms leader&#8217;s trust test.</h2>
         <p class="desc">I'm a Waltham Forest resident. My council just took a &pound;19m EFS loan to balance its 2026/27 budget. It didn't flip in May. But its trust architecture did. The same architecture problem is now live across London boroughs, urban unitaries and the LGR reorganisation cohort.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 50</span>
-          <span class="chip connection">Connection 40</span>
-          <span class="chip confidence">Confidence 45</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>8 June 2026</strong></span>
@@ -715,9 +715,8 @@ window.TrustShape = (function () {
         <h2>When the pipeline closes. Social Care&#8217;s workforce trust test.</h2>
         <p class="desc">The Casey Commission reports next month. The sector it&#8217;s trying to reform has just lost its workforce pipeline.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 62</span>
-          <span class="chip connection">Connection 48</span>
-          <span class="chip confidence">Confidence 52</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>27 May 2026</strong></span>
@@ -736,9 +735,8 @@ window.TrustShape = (function () {
         <h2>When the courses close. Education&#8217;s public-purpose test.</h2>
         <p class="desc">Queen Mary just cut 295 modules across its School of the Arts &mdash; the moment Education&#8217;s public-purpose foundation became visible.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 68</span>
-          <span class="chip connection">Connection 52</span>
-          <span class="chip confidence">Confidence 50</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Functional, band 3 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Functional <span class="of">&middot; band 3 of 5</span></div></div></div>
+          <span class="chip confidence">Confidence &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>27 May 2026</strong></span>
@@ -757,9 +755,8 @@ window.TrustShape = (function () {
         <h2>When the rebrand is the question. The RegTech brand leader&#8217;s trust test.</h2>
         <p class="desc">Three years on from the Adenza rebrand and the Nasdaq acquisition, the question for every RegTech and capital-markets brand leader: where is the measurement layer underneath the brand promise?</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 60</span>
-          <span class="chip connection">Connection 45</span>
-          <span class="chip confidence">Confidence 50</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>5 June 2026</strong></span>
@@ -778,9 +775,8 @@ window.TrustShape = (function () {
         <h2>When the funding collapses. The INGO brand leader&#8217;s trust test.</h2>
         <p class="desc">With USAID dismantled, the UK Global Fund contribution cut and the largest INGO funding-cliff in three decades arriving in the same fiscal year, the question for every Director of Communications, Fundraising or Brand at a UK-based international NGO.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 55</span>
-          <span class="chip connection">Connection 42</span>
-          <span class="chip confidence">Confidence 48</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>5 June 2026</strong></span>
@@ -800,9 +796,8 @@ window.TrustShape = (function () {
         <h2>&pound;455bn in the pipeline. Net Zero&#8217;s consent test.</h2>
         <p class="desc">The UK&#8217;s net zero economy just posted &pound;105bn and a &pound;455bn pipeline &mdash; and the report behind the numbers says execution decides who captures it. Execution runs on consent; consent runs on trust. The methodology applied across the delivery economy: developers, storage, hydrogen and the capital behind them.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 78</span>
-          <span class="chip connection">Connection 52</span>
-          <span class="chip confidence">Confidence 56</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Functional, band 3 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Functional <span class="of">&middot; band 3 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>4 June 2026</strong></span>
@@ -822,9 +817,8 @@ window.TrustShape = (function () {
         <h2>When the chair falls. Energy&#8217;s Integrity test.</h2>
         <p class="desc">Energy&#8217;s Integrity layer just became visible. The TrustOS methodology applied at sector level across Oil &amp; Gas, Utilities and Renewables &mdash; what the BP chair event proves about the foundation under every other trust claim.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 74</span>
-          <span class="chip connection">Connection 53</span>
-          <span class="chip confidence">Confidence 54</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Functional, band 3 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Functional <span class="of">&middot; band 3 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>27 May 2026</strong></span>
@@ -844,9 +838,8 @@ window.TrustShape = (function () {
         <h2>When the merger clears. Mining&#8217;s architecture test.</h2>
         <p class="desc">Anglo Teck cleared Canada last month. The story underneath the approval is the one Mining hasn&#8217;t been telling itself: trust architecture is no longer a communications layer &mdash; it is deal infrastructure. The methodology applied at sector level across the major houses.</p>
         <div class="insight-card-chips">
-          <span class="chip clarity">Clarity 81</span>
-          <span class="chip connection">Connection 58</span>
-          <span class="chip confidence">Confidence 62</span>
+          <div class="bt compact" role="img" aria-label="Trust band: Functional, band 3 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Functional <span class="of">&middot; band 3 of 5</span></div></div></div>
+          <span class="chip connection">Connection &middot; weak edge</span>
         </div>
         <div class="insight-card-meta">
           <span><strong>27 May 2026</strong></span>
