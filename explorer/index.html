@@ -1657,9 +1657,13 @@ window.TrustShape = (function () {
     svg.innerHTML=inner(cl,cn,cf,centreText);
   }
   /* whole-element markup, for pages that ship the shape statically */
-  function staticSvg(cl,cn,cf,centreText,ariaName){
+  /* comp is the published composite. It must be passed whenever a band track
+     sits beside this shape, or the two can name different bands. Falls back to
+     the driver mean. */
+  function staticSvg(cl,cn,cf,centreText,ariaName,comp){
+    var c=(comp===undefined||comp===null)?(cl+cn+cf)/3:comp;
     return '<svg class="ts-svg" viewBox="'+VIEWBOX+'" role="img" aria-label="'+
-      (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band((cl+cn+cf)/3)+
+      (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band(c)+
       ' band, published without scores">'+inner(cl,cn,cf,centreText)+'</svg>';
   }
   function trackInner(comp,compact){

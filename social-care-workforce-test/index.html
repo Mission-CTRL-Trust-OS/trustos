@@ -743,8 +743,14 @@ window.TrustShape = (function () {
     svg.innerHTML=inner(cl,cn,cf,centreText);
   }
   /* whole-element markup, for pages that ship the shape statically */
-  function staticSvg(cl,cn,cf,centreText,ariaName){
-    return '<svg class="ts-svg" viewBox="46 26 208 182" role="img" aria-label="Social care trust shape &mdash; Fragile band, published without scores"><polygon class="ts-leak" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-ideal" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-act" points="100.6,75.5 197.6,76.5 150.0,154.0"/><line class="ts-e-cl" x1="100.6" y1="75.5" x2="197.6" y2="76.5"/><line class="ts-e-cn" x1="197.6" y1="76.5" x2="150.0" y2="154.0"/><line class="ts-e-cf" x1="150.0" y1="154.0" x2="100.6" y2="75.5"/><text class="ts-lbl cl" x="150.0" y="43.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(0.0,150.0,43.0)">CLARITY &middot; STRONGEST</text><text class="ts-lbl cn" x="202.8" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(-60.0,202.8,134.5)">CONNECTION &middot; WEAK EDGE</text><text class="ts-lbl cf" x="97.2" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(60.0,97.2,134.5)">CONFIDENCE &middot; MID</text><text class="ts-centre" x="149.4" y="98.0">TRUST INDEX</text></svg>';
+  /* comp is the published composite. It must be passed whenever a band track
+     sits beside this shape, or the two can name different bands. Falls back to
+     the driver mean. */
+  function staticSvg(cl,cn,cf,centreText,ariaName,comp){
+    var c=(comp===undefined||comp===null)?(cl+cn+cf)/3:comp;
+    return '<svg class="ts-svg" viewBox="'+VIEWBOX+'" role="img" aria-label="'+
+      (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band(c)+
+      ' band, published without scores">'+inner(cl,cn,cf,centreText)+'</svg>';
   }
   function trackInner(comp,compact){
     var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
@@ -865,7 +871,7 @@ window.TrustShape = (function () {
       <div class="bt compact" role="img" aria-label="Trust band: Fragile, band 2 of 5"><div class="bt-segs"><div class="bt-seg below"></div><div class="bt-seg on"></div><div class="bt-seg"></div><div class="bt-seg"></div><div class="bt-seg"></div></div><div class="bt-labels"><div class="bt-lab on">Fragile <span class="of">&middot; band 2 of 5</span></div></div></div>
       <p class="lb-hook"><strong>Connection is the thinnest layer</strong> &mdash; where this sector&rsquo;s trust leaks first.</p>
     </div>
-    <div class="lb-tri"><div class="ts-frame" style="max-width:320px;margin:0;"><svg class="ts-svg" viewBox="46 26 208 182" role="img" aria-label="Social care trust shape &mdash; Fragile band, published without scores"><polygon class="ts-leak" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-ideal" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-act" points="100.6,75.5 197.6,76.5 150.0,154.0"/><line class="ts-e-cl" x1="100.6" y1="75.5" x2="197.6" y2="76.5"/><line class="ts-e-cn" x1="197.6" y1="76.5" x2="150.0" y2="154.0"/><line class="ts-e-cf" x1="150.0" y1="154.0" x2="100.6" y2="75.5"/><text class="ts-lbl cl" x="150.0" y="43.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(0.0,150.0,43.0)">CLARITY &middot; STRONGEST</text><text class="ts-lbl cn" x="202.8" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(-60.0,202.8,134.5)">CONNECTION &middot; WEAK EDGE</text><text class="ts-lbl cf" x="97.2" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(60.0,97.2,134.5)">CONFIDENCE &middot; MID</text><text class="ts-centre" x="149.4" y="98.0">FRAGILE</text></svg><p class="ts-legend">Dashed = aligned ideal &middot; tint = the leak</p></div></div>
+    <div class="lb-tri"><div class="ts-frame" style="max-width:320px;margin:0;"><svg class="ts-svg" viewBox="46 26 208 182" role="img" aria-label="Social care trust shape &mdash; Fragile band, published without scores"><polygon class="ts-leak" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-ideal" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-act" points="100.6,75.5 197.6,76.5 150.0,154.0"/><line class="ts-e-cl" x1="100.6" y1="75.5" x2="197.6" y2="76.5"/><line class="ts-e-cn" x1="197.6" y1="76.5" x2="150.0" y2="154.0"/><line class="ts-e-cf" x1="150.0" y1="154.0" x2="100.6" y2="75.5"/><text class="ts-lbl cl" x="150.0" y="43.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(0.0,150.0,43.0)">CLARITY &middot; STRONGEST</text><text class="ts-lbl cn" x="202.8" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(-60.0,202.8,134.5)">CONNECTION &middot; WEAK EDGE</text><text class="ts-lbl cf" x="97.2" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(60.0,97.2,134.5)">CONFIDENCE &middot; MID</text><text class="ts-centre" x="149.4" y="98.0">TRUST INDEX</text></svg><p class="ts-legend">Dashed = aligned ideal &middot; tint = the leak</p></div></div>
   </div>
 </div>
 
