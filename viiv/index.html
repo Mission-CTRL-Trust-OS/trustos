@@ -87,6 +87,14 @@
   .btn-quiet { font-family: inherit; font-size: .74rem; font-weight: 600; color: rgba(255,255,255,.6); background: transparent; border: 1px solid rgba(255,255,255,.18); padding: 10px 18px; border-radius: 6px; cursor: pointer; }
   .btn-quiet:hover { border-color: rgba(255,255,255,.4); color: #fff; }
 </style>
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+<!-- Consent-gated analytics (Microsoft Clarity) — see assets/mc-analytics.js -->
+<script defer src="/assets/mc-analytics.js"></script>
 </head>
 <body>
 
@@ -157,15 +165,6 @@
   </div>
 </div>
 
-<div class="consent" id="consent" role="dialog" aria-label="Analytics consent">
-  <div class="consent-t">Analytics — only with your OK</div>
-  <div class="consent-b">We'd like to use Microsoft Clarity to see how this page is read (heatmaps, session replay). No ad tracking, no sale of data. Declining changes nothing.</div>
-  <div class="consent-row">
-    <button class="btn" id="consent-yes" style="border:none; cursor:pointer; font-family:inherit;">Allow</button>
-    <button class="btn-quiet" id="consent-no">No thanks</button>
-  </div>
-</div>
-
 <script>
 (function() {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -209,39 +208,6 @@
       requestAnimationFrame(step);
     }, 1600);
   }
-})();
-</script>
-
-<script>
-/* Consent-gated Microsoft Clarity — same key as the more page, so one choice covers the funnel.
-   SETUP: replace CLARITY_PROJECT_ID with the ID from clarity.microsoft.com. */
-(function() {
-  var CLARITY_PROJECT_ID = 'ycg9h5xkb6';
-  var KEY = 'mc-analytics-consent';
-  function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
-  function store(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
-  function loadClarity() {
-    if (window.clarity || CLARITY_PROJECT_ID.indexOf('REPLACE') === 0) return;
-    (function(c, l, a, r, i, t, y) {
-      c[a] = c[a] || function() { (c[a].q = c[a].q || []).push(arguments); };
-      t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
-      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
-    })(window, document, 'clarity', 'script', CLARITY_PROJECT_ID);
-    window.clarity('consentv2', { ad_storage: 'denied', analytics_storage: 'granted' });
-  }
-  var banner = document.getElementById('consent');
-  function show() { if (banner) banner.classList.add('on'); }
-  function hide() { if (banner) banner.classList.remove('on'); }
-  var yes = document.getElementById('consent-yes'), no = document.getElementById('consent-no');
-  if (yes) yes.addEventListener('click', function() { store('granted'); hide(); loadClarity(); });
-  if (no) no.addEventListener('click', function() { store('denied'); hide(); });
-  var choices = document.getElementById('privacy-choices');
-  if (choices) choices.addEventListener('click', function(e) { e.preventDefault(); show(); });
-  var gpc = typeof navigator !== 'undefined' && navigator.globalPrivacyControl;
-  var c = stored();
-  if (c === 'granted') { loadClarity(); return; }
-  if (c === 'denied' || gpc) return;
-  setTimeout(show, 6500); /* after the ad's beats have played */
 })();
 </script>
 

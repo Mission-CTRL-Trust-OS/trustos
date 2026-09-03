@@ -7,11 +7,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>Cookie Policy | TrustOS</title>
-<meta name="description" content="How MissionCTRL Ltd uses cookies and similar technologies across TrustOS and MissionCTRL. We use privacy-first, cookieless analytics." />
+<meta name="description" content="How MissionCTRL Ltd uses cookies and similar technologies across TrustOS and MissionCTRL. Our standard analytics are cookieless; session analytics run only with your consent." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://trustos.missionctrl.agency/cookie-policy/" />
 <meta property="og:title" content="Cookie Policy | TrustOS" />
-<meta property="og:description" content="How MissionCTRL Ltd uses cookies. We use privacy-first, cookieless analytics." />
+<meta property="og:description" content="How MissionCTRL Ltd uses cookies. Cookieless analytics as standard; session analytics only with your consent." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://trustos.missionctrl.agency/cookie-policy/" />
 <meta property="og:image" content="https://trustos.missionctrl.agency/og-image.png" />
@@ -93,6 +93,8 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init()
 </script>
+<!-- Consent-gated analytics (Microsoft Clarity) — see assets/mc-analytics.js -->
+<script defer src="/assets/mc-analytics.js"></script>
 </head>
 <body>
 
@@ -119,7 +121,7 @@
 <header class="doc-hero">
   <div class="eyebrow">Legal</div>
   <h1>Cookie Policy</h1>
-  <p class="doc-meta"><strong>Last updated:</strong> 26 June 2026 &nbsp;·&nbsp; <strong>Applies to:</strong> trustos.missionctrl.agency and missionctrl.agency</p>
+  <p class="doc-meta"><strong>Last updated:</strong> 3 September 2026 &nbsp;·&nbsp; <strong>Applies to:</strong> trustos.missionctrl.agency and missionctrl.agency</p>
 </header>
 
 <main class="doc">
@@ -127,7 +129,7 @@
   <p>This Cookie Policy explains how <strong>MissionCTRL Ltd</strong> ("we", "us" or "our") uses cookies and similar technologies on our websites <strong>trustos.missionctrl.agency</strong> and <strong>missionctrl.agency</strong> (together, "the sites"). TrustOS is a product of MissionCTRL Ltd. It should be read alongside our <a class="inline" href="/privacy-policy/">Privacy Policy</a>.</p>
 
   <div class="callout">
-    <strong>The short version.</strong> We care about privacy, so we deliberately keep cookies to a minimum. Our website analytics are <strong>cookieless</strong> and collect no personal data. The sites do not use advertising or cross-site tracking cookies. A small number of cookies may only be set if you choose to interact with an embedded tool such as a booking calendar or video.
+    <strong>The short version.</strong> We care about privacy, so we deliberately keep cookies to a minimum. Our standard website analytics are <strong>cookieless</strong> and collect no personal data. On a small number of pages we also offer <strong>session analytics</strong>, which do set cookies — these load <strong>only if you choose "Allow"</strong> when asked, and never on our gated client report pages. The sites do not use advertising or cross-site tracking cookies. A few other cookies may be set only if you interact with an embedded tool such as a booking calendar or video.
   </div>
 
   <h2><span class="num">1.</span>What are cookies?</h2>
@@ -139,8 +141,9 @@
   <h2><span class="num">3.</span>Strictly necessary cookies</h2>
   <p>These are essential for the sites to function and for security. They are always active and do not require consent. They may include cookies set by our hosting and content-delivery provider (Netlify) to load pages securely and reliably, and any cookie required to remember a cookie choice you have made.</p>
 
-  <h2><span class="num">4.</span>Analytics — cookieless</h2>
+  <h2><span class="num">4.</span>Analytics</h2>
   <p>We use <strong>Plausible Analytics</strong> to understand, in aggregate, how the sites are used. Plausible is a privacy-first, EU-based service that is deliberately <strong>cookieless</strong>: it sets no cookies, stores no IP addresses, collects no personal data, and does not track visitors across other websites or over time. Because no personal data or cookies are involved, this does not require your consent.</p>
+  <p>On a small number of pages — principally campaign and prospect pages — we also use <strong>Microsoft Clarity</strong> to see how a page is actually read (heatmaps and session replay). Unlike Plausible, Clarity <strong>does set cookies</strong> (<code>_clck</code> and <code>_clsk</code>) and processes usage data on Microsoft’s infrastructure as our processor, so it is <strong>never loaded until you give consent</strong>. You will be asked before anything is set; declining changes nothing about how the page works, and you can change your mind at any time using the <strong>Privacy choices</strong> link in the page footer. We honour Global Privacy Control signals as a decline. Clarity is <strong>never</strong> enabled on our gated client report pages (<code>/navigator/</code>), and sensitive regions such as answers you type into a page are masked from recordings.</p>
 
   <h2><span class="num">5.</span>Functional and third-party cookies</h2>
   <p>Some features rely on third-party services that may set their own cookies <strong>only when you actively use them</strong> — for example, booking a meeting through an embedded scheduling tool, submitting a form, or playing an embedded video. Where any such non-essential cookie requires consent, we will ask for it before it is set. These third parties operate under their own cookie and privacy policies.</p>
@@ -150,13 +153,14 @@
     <tbody>
       <tr><td>Strictly necessary</td><td>Security, hosting and core site delivery; remembering your cookie choice</td><td>No</td></tr>
       <tr><td>Analytics (Plausible)</td><td>Aggregated, anonymous usage statistics — cookieless</td><td>No (no cookies / no personal data)</td></tr>
+      <tr><td>Session analytics (Microsoft Clarity)</td><td>Heatmaps and session replay on selected campaign pages — sets <code>_clck</code> / <code>_clsk</code>; excluded from <code>/navigator/</code></td><td>Yes — asked before anything is set</td></tr>
       <tr><td>Functional / third-party embeds</td><td>Calendar booking, forms, video — only if you interact with them</td><td>Yes, where applicable</td></tr>
       <tr><td>Advertising / cross-site tracking</td><td>Not used on the sites</td><td>—</td></tr>
     </tbody>
   </table>
 
   <h2><span class="num">6.</span>Managing your cookies</h2>
-  <p>Because we do not use non-essential cookies by default, there is usually nothing you need to switch off. If you wish to control cookies more broadly, you can manage or delete them through your browser settings, and set most browsers to block cookies or alert you when one is being set. Restricting cookies may affect how some embedded features work.</p>
+  <p>Non-essential cookies are off unless you allow them. If you have allowed session analytics and want to withdraw that, use the <strong>Privacy choices</strong> link in the page footer — it reopens the choice at any time. If you wish to control cookies more broadly, you can manage or delete them through your browser settings, and set most browsers to block cookies or alert you when one is being set. Restricting cookies may affect how some embedded features work.</p>
   <p>Useful browser guides are available for <a class="inline" href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a>, <a class="inline" href="https://support.apple.com/en-gb/guide/safari/sfri11471/mac" target="_blank" rel="noopener">Safari</a>, <a class="inline" href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer" target="_blank" rel="noopener">Firefox</a> and <a class="inline" href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener">Edge</a>.</p>
 
   <h2><span class="num">7.</span>Changes to this policy</h2>
