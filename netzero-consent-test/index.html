@@ -171,7 +171,7 @@
 
     /* BANNER IMAGE */
     .article-banner-wrap {
-      max-width: 1120px;
+      max-width: 1320px;
       margin: 0 auto;
       padding: 0 5%;
     }
@@ -188,7 +188,7 @@
 
     /* ARTICLE BODY */
     .article-body {
-      max-width: 860px;
+      max-width: 940px;
       margin: 0 auto;
       padding: 80px 5% 60px;
       font-size: 1.05rem;
@@ -532,7 +532,7 @@
     }
   
     /* Live sector banner (replaces static banner image) */
-    .live-banner{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
+    .live-banner{display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:center;background:radial-gradient(circle at 72% 45%,rgba(90,138,154,0.10),rgba(90,138,154,0.02));border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:36px 42px;box-shadow:0 30px 80px rgba(0,0,0,0.4);margin-top:-20px;position:relative;z-index:3;}
     .lb-kicker{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 20px;}
     .lb-bars{display:flex;flex-direction:column;gap:12px;max-width:420px;}
     .lb-bar{display:grid;grid-template-columns:96px 1fr 86px;align-items:center;gap:14px;}
@@ -563,8 +563,13 @@
 .ts-e-cf{stroke:#a78bdb;fill:none;stroke-width:1.2;stroke-linecap:round;}
 .ts-lbl{font-family:'Sora',sans-serif;font-size:5px;font-weight:800;letter-spacing:0.16em;}
 .ts-lbl.cl{fill:#a8cdd8;}.ts-lbl.cn{fill:#7cc4a8;}.ts-lbl.cf{fill:#a78bdb;}
-.ts-centre{font-family:'Sora',sans-serif;font-size:11.5px;font-weight:800;letter-spacing:0.17em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
+.ts-centre{font-family:'Sora',sans-serif;font-size:8.4px;font-weight:800;letter-spacing:0.2em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
 .ts-frame{width:100%;max-width:470px;margin:6px auto 0;}
+.ts-svg.soon .ts-act{opacity:0;}
+.ts-svg.soon .ts-e-cl,.ts-svg.soon .ts-e-cn,.ts-svg.soon .ts-e-cf{stroke:rgba(255,255,255,0.16);}
+.ts-svg.soon .ts-lbl{fill:rgba(255,255,255,0.25);}
+.ts-svg.soon .ts-centre{fill:rgba(255,255,255,0.3);}
+.ts-svg.soon .ts-leak{opacity:0.4;}
 .ts-legend{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);text-align:center;margin:4px 0 0;}
 
 .bt{width:100%;max-width:430px;margin:22px auto 0;}
@@ -673,7 +678,7 @@
    boundaries below are internal calibration and are never rendered. ══ */
 window.TrustShape = (function () {
   var C = { x: 150, y: 104 }, R = 100, A30 = Math.PI / 6;
-  var VIEWBOX = '46 26 208 182', OFF = 11;
+  var VIEWBOX = '46 26 208 182', OFF = 11, CENTRE = 'TRUST INDEX';
   var EQ = {
     i: { x: C.x - R * Math.cos(A30), y: C.y - R * 0.5 },
     e: { x: C.x + R * Math.cos(A30), y: C.y - R * 0.5 },
@@ -725,7 +730,7 @@ window.TrustShape = (function () {
            lab(iv.i,iv.e,icen,'CLARITY &middot; '+rank(cl,cl,cn,cf),'cl')+
            lab(iv.e,iv.r,icen,'CONNECTION &middot; '+rank(cn,cl,cn,cf),'cn')+
            lab(iv.r,iv.i,icen,'CONFIDENCE &middot; '+rank(cf,cl,cn,cf),'cf')+
-           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText).toUpperCase()+'</text>';
+           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText||CENTRE).toUpperCase()+'</text>';
   }
   /* paint into an existing <svg>; sets viewBox and aria */
   function paint(svg,cl,cn,cf,centreText,ariaName){
@@ -740,35 +745,33 @@ window.TrustShape = (function () {
   }
   /* whole-element markup, for pages that ship the shape statically */
   function staticSvg(cl,cn,cf,centreText,ariaName){
-    return '<svg class="ts-svg" viewBox="'+VIEWBOX+'" role="img" aria-label="'+
-      (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band((cl+cn+cf)/3)+
-      ' band, published without scores">'+inner(cl,cn,cf,centreText)+'</svg>';
+    return '<svg class="ts-svg" viewBox="46 26 208 182" role="img" aria-label="Net zero trust shape &mdash; Functional band, published without scores"><polygon class="ts-leak" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-ideal" points="63.4,54.0 236.6,54.0 150.0,204.0"/><polygon class="ts-act" points="92.0,70.5 206.3,71.5 150.0,158.0"/><line class="ts-e-cl" x1="92.0" y1="70.5" x2="206.3" y2="71.5"/><line class="ts-e-cn" x1="206.3" y1="71.5" x2="150.0" y2="158.0"/><line class="ts-e-cf" x1="150.0" y1="158.0" x2="92.0" y2="70.5"/><text class="ts-lbl cl" x="150.0" y="43.0" text-anchor="middle" dominant-baseline="middle" transform="rotate(0.0,150.0,43.0)">CLARITY &middot; STRONGEST</text><text class="ts-lbl cn" x="202.8" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(-60.0,202.8,134.5)">CONNECTION &middot; WEAK EDGE</text><text class="ts-lbl cf" x="97.2" y="134.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(60.0,97.2,134.5)">CONFIDENCE &middot; MID</text><text class="ts-centre" x="149.4" y="96.0">TRUST INDEX</text></svg>';
   }
-  function trackHtml(comp,compact){
+  function trackInner(comp,compact){
     var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
     for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
-    var aria='Trust band: '+name+', band '+(bi+1)+' of 5';
     if(compact){
-      return '<div class="bt compact" role="img" aria-label="'+aria+'">'+
-        '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
-        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div></div>';
+      return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
+        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div>';
     }
     for(i=0;i<5;i++) l+='<div class="bt-lab'+(i===bi?' on':'')+'">'+BANDS[i]+'</div>';
-    return '<div class="bt" role="img" aria-label="'+aria+'">'+
-      '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
+    return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
       '<p class="bt-meaning">'+MEANING[name]+'</p>'+
-      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p></div>';
+      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p>';
   }
-  /* paint a band track into a container */
+  function trackHtml(comp,compact){
+    var bi=bandIdx(comp);
+    return '<div class="bt'+(compact?' compact':'')+'" role="img" aria-label="Trust band: '+
+      BANDS[bi]+', band '+(bi+1)+' of 5">'+trackInner(comp,compact)+'</div>';
+  }
+  /* paint a band track into a container — keeps the element, so repeat calls work */
   function track(el,comp,compact){
     if(!el) return;
-    var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
-    for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
+    var bi=bandIdx(comp);
     el.className='bt'+(compact?' compact':'');
     el.setAttribute('role','img');
-    el.setAttribute('aria-label','Trust band: '+name+', band '+(bi+1)+' of 5');
-    var html=trackHtml(comp,compact);
-    el.outerHTML=html;
+    el.setAttribute('aria-label','Trust band: '+BANDS[bi]+', band '+(bi+1)+' of 5');
+    el.innerHTML=trackInner(comp,compact);
   }
   return { paint: paint, track: track, band: band, bandIdx: bandIdx, rank: rank,
            inner: inner, staticSvg: staticSvg, trackHtml: trackHtml,

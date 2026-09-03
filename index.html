@@ -1150,7 +1150,7 @@ function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v=
    boundaries below are internal calibration and are never rendered. ══ */
 window.TrustShape = (function () {
   var C = { x: 150, y: 104 }, R = 100, A30 = Math.PI / 6;
-  var VIEWBOX = '46 26 208 182', OFF = 11;
+  var VIEWBOX = '46 26 208 182', OFF = 11, CENTRE = 'TRUST INDEX';
   var EQ = {
     i: { x: C.x - R * Math.cos(A30), y: C.y - R * 0.5 },
     e: { x: C.x + R * Math.cos(A30), y: C.y - R * 0.5 },
@@ -1202,7 +1202,7 @@ window.TrustShape = (function () {
            lab(iv.i,iv.e,icen,'CLARITY &middot; '+rank(cl,cl,cn,cf),'cl')+
            lab(iv.e,iv.r,icen,'CONNECTION &middot; '+rank(cn,cl,cn,cf),'cn')+
            lab(iv.r,iv.i,icen,'CONFIDENCE &middot; '+rank(cf,cl,cn,cf),'cf')+
-           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText).toUpperCase()+'</text>';
+           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText||CENTRE).toUpperCase()+'</text>';
   }
   /* paint into an existing <svg>; sets viewBox and aria */
   function paint(svg,cl,cn,cf,centreText,ariaName){
@@ -1221,31 +1221,31 @@ window.TrustShape = (function () {
       (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band((cl+cn+cf)/3)+
       ' band, published without scores">'+inner(cl,cn,cf,centreText)+'</svg>';
   }
-  function trackHtml(comp,compact){
+  function trackInner(comp,compact){
     var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
     for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
-    var aria='Trust band: '+name+', band '+(bi+1)+' of 5';
     if(compact){
-      return '<div class="bt compact" role="img" aria-label="'+aria+'">'+
-        '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
-        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div></div>';
+      return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
+        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div>';
     }
     for(i=0;i<5;i++) l+='<div class="bt-lab'+(i===bi?' on':'')+'">'+BANDS[i]+'</div>';
-    return '<div class="bt" role="img" aria-label="'+aria+'">'+
-      '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
+    return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
       '<p class="bt-meaning">'+MEANING[name]+'</p>'+
-      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p></div>';
+      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p>';
   }
-  /* paint a band track into a container */
+  function trackHtml(comp,compact){
+    var bi=bandIdx(comp);
+    return '<div class="bt'+(compact?' compact':'')+'" role="img" aria-label="Trust band: '+
+      BANDS[bi]+', band '+(bi+1)+' of 5">'+trackInner(comp,compact)+'</div>';
+  }
+  /* paint a band track into a container — keeps the element, so repeat calls work */
   function track(el,comp,compact){
     if(!el) return;
-    var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
-    for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
+    var bi=bandIdx(comp);
     el.className='bt'+(compact?' compact':'');
     el.setAttribute('role','img');
-    el.setAttribute('aria-label','Trust band: '+name+', band '+(bi+1)+' of 5');
-    var html=trackHtml(comp,compact);
-    el.outerHTML=html;
+    el.setAttribute('aria-label','Trust band: '+BANDS[bi]+', band '+(bi+1)+' of 5');
+    el.innerHTML=trackInner(comp,compact);
   }
   return { paint: paint, track: track, band: band, bandIdx: bandIdx, rank: rank,
            inner: inner, staticSvg: staticSvg, trackHtml: trackHtml,
@@ -1445,7 +1445,7 @@ window.TrustShape = (function () {
 <!-- EVIDENCE BAND -->
 <section style="background:var(--deep);padding:72px 5%;border-top:1px solid rgba(255,255,255,0.05);position:relative;overflow:hidden;">
   <div class="grid-bg"></div>
-  <div style="max-width:1080px;margin:0 auto;position:relative;z-index:2;">
+  <div style="max-width:1280px;margin:0 auto;position:relative;z-index:2;">
     <div style="text-align:center;margin-bottom:38px;">
       <p style="display:inline-flex;align-items:center;gap:10px;font-size:0.63rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--trust-cool);margin-bottom:14px;justify-content:center;"><span style="width:20px;height:2px;background:var(--trust-cool);display:block;"></span>The evidence</p>
       <h2 style="font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.12;max-width:620px;margin:0 auto;">Trust isn&#8217;t soft. It&#8217;s the most expensive thing to lose.</h2>
@@ -1488,7 +1488,7 @@ window.TrustShape = (function () {
 
 <!-- COMPARISON TABLE -->
 <section id="compare" style="background:var(--deep);padding:80px 5%;border-top:1px solid rgba(255,255,255,0.05);">
-  <div style="max-width:1080px;margin:0 auto;">
+  <div style="max-width:1280px;margin:0 auto;">
     <div style="text-align:center;margin-bottom:40px;">
       <h2 style="font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.12;max-width:620px;margin:0 auto;">The tools you already run weren&#8217;t built to measure trust. <em style="color:var(--trust-cool);font-style:normal;">TrustOS is.</em></h2>
       <p style="font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.75;max-width:640px;margin:18px auto 0;">Each of them reads a fragment, or the past. NPS: one question, one relationship. Employee surveys: one stakeholder. Reputation monitoring: what&#8217;s being said about what you&#8217;ve already done. TrustOS reads the thing they all orbit &#8212; the live state of every relationship your business is built on.</p>
@@ -1581,7 +1581,7 @@ window.TrustShape = (function () {
 
 <!-- PROCESS -->
 <section style="background:var(--deep);padding:64px 5%;border-top:1px solid rgba(255,255,255,0.05);" id="process">
-  <div style="max-width:1080px;margin:0 auto;">
+  <div style="max-width:1280px;margin:0 auto;">
     <p class="section-label">What happens next</p>
     <h2 style="font-size:clamp(1.4rem,2.5vw,2rem);font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:44px;line-height:1.12;">Live in six weeks. Board-ready from your first read.</h2>
     <div class="tl" id="processTl">
@@ -1614,7 +1614,7 @@ window.TrustShape = (function () {
 <!-- SECTOR INSIGHTS -->
 <section id="sector-insights" style="background:var(--deep);padding:80px 5%;border-top:1px solid rgba(255,255,255,0.05);position:relative;overflow:hidden;">
   <div class="grid-bg"></div>
-  <div style="max-width:1080px;margin:0 auto;position:relative;z-index:2;">
+  <div style="max-width:1280px;margin:0 auto;position:relative;z-index:2;">
     <div style="text-align:center;margin-bottom:44px;">
       <p style="display:inline-flex;align-items:center;gap:10px;font-size:0.63rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--trust-cool);margin-bottom:14px;justify-content:center;"><span style="width:20px;height:2px;background:var(--trust-cool);display:block;"></span>Sector Point of View</p>
       <h2 style="font-size:clamp(1.5rem,2.8vw,2.2rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1.12;max-width:660px;margin:0 auto 12px;">Trust looks different in every sector.<br/><em style="color:var(--trust-cool);font-style:normal;">Pick yours &#8212; watch the shape change.</em></h2>
@@ -1666,7 +1666,7 @@ window.TrustShape = (function () {
 
   <style>
     .si-layout{display:flex;flex-direction:column;align-items:center;gap:24px;}
-    .si-selector{width:100%;max-width:760px;}
+    .si-selector{width:100%;max-width:1040px;}
     #si-list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
     .si-selector-h{font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 14px;text-align:center;}
     .si-opt{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:20px;padding:7px 14px;cursor:pointer;transition:background .18s,border-color .18s,color .18s;white-space:nowrap;color:rgba(255,255,255,0.6);}
@@ -1677,11 +1677,10 @@ window.TrustShape = (function () {
     .si-stake-label{display:block;font-size:0.55rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:5px;}
     .si-stake-list{font-size:0.72rem;color:rgba(255,255,255,0.5);}
     .si-soon{font-size:0.54rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.06);padding:2px 7px;border-radius:20px;}
-    .si-panel{background:rgba(90,138,154,0.05);border:1px solid rgba(90,138,154,0.16);border-radius:14px;padding:26px 30px 24px;width:100%;max-width:560px;}
+    .si-panel{background:rgba(90,138,154,0.05);border:1px solid rgba(90,138,154,0.16);border-radius:14px;padding:26px 34px 24px;width:100%;max-width:860px;}
     .si-eyebrow{font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--trust-cool);margin:0 0 10px;text-align:center;}
-    .si-tri-wrap{position:relative;width:100%;max-width:430px;margin:6px auto 2px;}
-    .si-tri-wrap::before{content:"";display:block;padding-bottom:89.66%;}
-    .si-tri{position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;}
+    .si-tri-wrap{position:relative;width:100%;max-width:460px;margin:2px auto 6px;}
+    .si-tri{width:100%;height:auto;overflow:visible;}
     .si-tri-fill{fill:url(#si-tri-grad);transition:opacity .3s ease;}
     .si-tri-e-c,.si-tri-e-n,.si-tri-e-f{stroke:transparent;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:4 5;}
     .si-tri-lbl{font-family:'Sora',sans-serif;font-size:7px;font-weight:800;letter-spacing:0.11em;}
@@ -1708,7 +1707,7 @@ window.TrustShape = (function () {
     .si-panel.soon .si-headline{color:rgba(255,255,255,0.6);}
     @media (max-width:820px){
       .si-layout{gap:18px;}
-      .si-tri-wrap{max-width:230px;}
+      .si-tri-wrap{max-width:300px;}
       .si-opt{padding:7px 12px;}
       .si-opt-name{font-size:0.74rem;}
     }
@@ -1723,8 +1722,13 @@ window.TrustShape = (function () {
 .ts-e-cf{stroke:#a78bdb;fill:none;stroke-width:1.2;stroke-linecap:round;}
 .ts-lbl{font-family:'Sora',sans-serif;font-size:5px;font-weight:800;letter-spacing:0.16em;}
 .ts-lbl.cl{fill:#a8cdd8;}.ts-lbl.cn{fill:#7cc4a8;}.ts-lbl.cf{fill:#a78bdb;}
-.ts-centre{font-family:'Sora',sans-serif;font-size:11.5px;font-weight:800;letter-spacing:0.17em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
+.ts-centre{font-family:'Sora',sans-serif;font-size:8.4px;font-weight:800;letter-spacing:0.2em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
 .ts-frame{width:100%;max-width:470px;margin:6px auto 0;}
+.ts-svg.soon .ts-act{opacity:0;}
+.ts-svg.soon .ts-e-cl,.ts-svg.soon .ts-e-cn,.ts-svg.soon .ts-e-cf{stroke:rgba(255,255,255,0.16);}
+.ts-svg.soon .ts-lbl{fill:rgba(255,255,255,0.25);}
+.ts-svg.soon .ts-centre{fill:rgba(255,255,255,0.3);}
+.ts-svg.soon .ts-leak{opacity:0.4;}
 .ts-legend{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);text-align:center;margin:4px 0 0;}
 
 .bt{width:100%;max-width:430px;margin:22px auto 0;}
@@ -1814,7 +1818,7 @@ window.TrustShape = (function () {
       var v=computeVerts(cl,cn,cf);
       var cen={x:(v.intent.x+v.expectation.x+v.reality.x)/3,y:(v.intent.y+v.expectation.y+v.reality.y)/3};
       var I=v.intent,E=v.expectation,R=v.reality;
-      if(window.TrustShape){window.TrustShape.paint(document.getElementById('si-tri-svg'),cl,cn,cf,window.TrustShape.band(comp),cur.name||'');window.TrustShape.track(document.getElementById('si-track'),comp,false);}
+      if(window.TrustShape){window.TrustShape.paint(document.getElementById('si-tri-svg'),cl,cn,cf,'Trust Index',cur.name||'');window.TrustShape.track(document.getElementById('si-track'),comp,false);}
     }
 
     var cur={cl:50,cn:50,cf:50,comp:50},anim=null;

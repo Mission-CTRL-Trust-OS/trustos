@@ -322,7 +322,7 @@ function driverRank(v,a,b,c){var mx=Math.max(a,b,c),mn=Math.min(a,b,c);return v=
    boundaries below are internal calibration and are never rendered. ══ */
 window.TrustShape = (function () {
   var C = { x: 150, y: 104 }, R = 100, A30 = Math.PI / 6;
-  var VIEWBOX = '46 26 208 182', OFF = 11;
+  var VIEWBOX = '46 26 208 182', OFF = 11, CENTRE = 'TRUST INDEX';
   var EQ = {
     i: { x: C.x - R * Math.cos(A30), y: C.y - R * 0.5 },
     e: { x: C.x + R * Math.cos(A30), y: C.y - R * 0.5 },
@@ -374,7 +374,7 @@ window.TrustShape = (function () {
            lab(iv.i,iv.e,icen,'CLARITY &middot; '+rank(cl,cl,cn,cf),'cl')+
            lab(iv.e,iv.r,icen,'CONNECTION &middot; '+rank(cn,cl,cn,cf),'cn')+
            lab(iv.r,iv.i,icen,'CONFIDENCE &middot; '+rank(cf,cl,cn,cf),'cf')+
-           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText).toUpperCase()+'</text>';
+           '<text class="ts-centre" x="'+f(acen.x)+'" y="'+f(acen.y-4)+'">'+String(centreText||CENTRE).toUpperCase()+'</text>';
   }
   /* paint into an existing <svg>; sets viewBox and aria */
   function paint(svg,cl,cn,cf,centreText,ariaName){
@@ -393,31 +393,31 @@ window.TrustShape = (function () {
       (ariaName?ariaName+' ':'')+'trust shape &mdash; '+band((cl+cn+cf)/3)+
       ' band, published without scores">'+inner(cl,cn,cf,centreText)+'</svg>';
   }
-  function trackHtml(comp,compact){
+  function trackInner(comp,compact){
     var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
     for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
-    var aria='Trust band: '+name+', band '+(bi+1)+' of 5';
     if(compact){
-      return '<div class="bt compact" role="img" aria-label="'+aria+'">'+
-        '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
-        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div></div>';
+      return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+
+        '<div class="bt-lab on">'+name+' <span class="of">&middot; band '+(bi+1)+' of 5</span></div></div>';
     }
     for(i=0;i<5;i++) l+='<div class="bt-lab'+(i===bi?' on':'')+'">'+BANDS[i]+'</div>';
-    return '<div class="bt" role="img" aria-label="'+aria+'">'+
-      '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
+    return '<div class="bt-segs">'+s+'</div><div class="bt-labels">'+l+'</div>'+
       '<p class="bt-meaning">'+MEANING[name]+'</p>'+
-      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p></div>';
+      '<p class="bt-cap">Published as a band. Scores come from a measured read.</p>';
   }
-  /* paint a band track into a container */
+  function trackHtml(comp,compact){
+    var bi=bandIdx(comp);
+    return '<div class="bt'+(compact?' compact':'')+'" role="img" aria-label="Trust band: '+
+      BANDS[bi]+', band '+(bi+1)+' of 5">'+trackInner(comp,compact)+'</div>';
+  }
+  /* paint a band track into a container — keeps the element, so repeat calls work */
   function track(el,comp,compact){
     if(!el) return;
-    var bi=bandIdx(comp), name=BANDS[bi], i, s='', l='';
-    for(i=0;i<5;i++) s+='<div class="bt-seg'+(i===bi?' on':i<bi?' below':'')+'"></div>';
+    var bi=bandIdx(comp);
     el.className='bt'+(compact?' compact':'');
     el.setAttribute('role','img');
-    el.setAttribute('aria-label','Trust band: '+name+', band '+(bi+1)+' of 5');
-    var html=trackHtml(comp,compact);
-    el.outerHTML=html;
+    el.setAttribute('aria-label','Trust band: '+BANDS[bi]+', band '+(bi+1)+' of 5');
+    el.innerHTML=trackInner(comp,compact);
   }
   return { paint: paint, track: track, band: band, bandIdx: bandIdx, rank: rank,
            inner: inner, staticSvg: staticSvg, trackHtml: trackHtml,
@@ -611,8 +611,13 @@ window.TrustShape = (function () {
 .ts-e-cf{stroke:#a78bdb;fill:none;stroke-width:1.2;stroke-linecap:round;}
 .ts-lbl{font-family:'Sora',sans-serif;font-size:5px;font-weight:800;letter-spacing:0.16em;}
 .ts-lbl.cl{fill:#a8cdd8;}.ts-lbl.cn{fill:#7cc4a8;}.ts-lbl.cf{fill:#a78bdb;}
-.ts-centre{font-family:'Sora',sans-serif;font-size:11.5px;font-weight:800;letter-spacing:0.17em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
+.ts-centre{font-family:'Sora',sans-serif;font-size:8.4px;font-weight:800;letter-spacing:0.2em;fill:#fff;text-anchor:middle;dominant-baseline:middle;}
 .ts-frame{width:100%;max-width:470px;margin:6px auto 0;}
+.ts-svg.soon .ts-act{opacity:0;}
+.ts-svg.soon .ts-e-cl,.ts-svg.soon .ts-e-cn,.ts-svg.soon .ts-e-cf{stroke:rgba(255,255,255,0.16);}
+.ts-svg.soon .ts-lbl{fill:rgba(255,255,255,0.25);}
+.ts-svg.soon .ts-centre{fill:rgba(255,255,255,0.3);}
+.ts-svg.soon .ts-leak{opacity:0.4;}
 .ts-legend{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22);text-align:center;margin:4px 0 0;}
 
 .bt{width:100%;max-width:430px;margin:22px auto 0;}
@@ -1005,7 +1010,7 @@ window.TrustShape = (function () {
   var IV=verts(100,100,100),ideal=document.getElementById('nv-ideal');
   if(ideal)ideal.setAttribute('points',f1(IV.i.x)+','+f1(IV.i.y)+' '+f1(IV.e.x)+','+f1(IV.e.y)+' '+f1(IV.r.x)+','+f1(IV.r.y));
   var cl=61,cn=67,cf=53,comp=60;
-  if(window.TrustShape){window.TrustShape.paint(document.getElementById('nv-shape'),cl,cn,cf,window.TrustShape.band(comp),'');window.TrustShape.track(document.getElementById('nv-track'),comp,true);}
+  if(window.TrustShape){window.TrustShape.paint(document.getElementById('nv-shape'),cl,cn,cf,'Trust Index','');window.TrustShape.track(document.getElementById('nv-track'),comp,true);}
 })();
 </script>
 </body>
