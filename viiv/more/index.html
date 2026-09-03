@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How ViiV hears itself</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  html, body { background: #0A0F1A; }
+  body { font-family: 'Sora', sans-serif; color: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: #8FB5C0; text-decoration: none; }
+  a:hover { color: #B6D2D9; }
+
+  @keyframes vv-speak { 0%, 100% { transform: scaleY(0.42); } 50% { transform: scaleY(1); } }
+  @keyframes vv-drift { 0%, 100% { transform: translate(0,0) scale(1); opacity: .5; } 50% { transform: translate(36px,-24px) scale(1.12); opacity: .8; } }
+  @keyframes vv-rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  @keyframes vv-hold { from { opacity: 0; } to { opacity: 0; } }
+  @keyframes ds-trust-glow { 0%, 100% { text-shadow: 0 0 6px rgba(143,181,192,0.18); } 50% { text-shadow: 0 0 16px rgba(143,181,192,0.55), 0 0 34px rgba(143,181,192,0.22); } }
+  @keyframes ds-mark-glow-amb { 0%, 100% { opacity: 0.95; } 50% { opacity: 0.55; } }
+  .ds-trust-glow { color: #8fb5c0; animation: ds-trust-glow 4s ease-in-out infinite; }
+  .mark-glow { animation: ds-mark-glow-amb 4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    [data-rv] { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .bar, .orb, .ds-trust-glow, .mark-glow { animation: none !important; }
+  }
+
+  .page { position: relative; background: #0A0F1A; overflow: hidden; }
+  .texture { position: absolute; inset: 0; opacity: .3; pointer-events: none; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.04) 0 1px, transparent 1px 78px); }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  section { position: relative; padding: clamp(56px, 10vh, 108px) clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,.06); }
+  .tinted { background: linear-gradient(180deg, rgba(143,181,192,.035) 0%, rgba(10,15,26,0) 60%); }
+
+  /* sticky header */
+  .top { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 16px clamp(24px, 5vw, 64px); background: rgba(10,15,26,.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid rgba(255,255,255,.06); }
+  .lockup { display: inline-flex; align-items: center; gap: 16px; }
+  .wordlink { display: inline-flex; align-items: center; gap: 9px; }
+  .wordmark { font-size: 1.02rem; font-weight: 800; letter-spacing: -0.03em; }
+  .wordmark .t { color: #fff; } .wordmark .o { color: #5a8a9a; }
+  .lockup-div { width: 1px; height: 18px; background: rgba(255,255,255,.12); }
+  .endorse { display: inline-flex; align-items: center; gap: 6px; font-size: .6rem; font-weight: 500; color: rgba(255,255,255,.38); }
+  .badge { display: inline-flex; align-items: center; gap: 8px; font-size: .56rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.34); border: 1px solid rgba(255,255,255,.10); border-radius: 4px; padding: 6px 11px; }
+  .badge .dot { width: 5px; height: 5px; border-radius: 50%; background: #5A8A9A; }
+
+  .kicker { display: flex; align-items: center; gap: 12px; font-size: .62rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgba(143,181,192,.85); margin-bottom: 24px; }
+  .kicker::before { content: ""; width: 22px; height: 2px; background: currentColor; }
+  h1 { font-size: clamp(2.2rem, 6.4vw, 4.6rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.04; text-wrap: pretty; max-width: 1000px; }
+  h2 { font-size: clamp(1.55rem, 3.8vw, 2.7rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.12; text-wrap: pretty; max-width: 900px; }
+  .lede { font-size: clamp(1rem, 1.8vw, 1.2rem); font-weight: 400; color: rgba(255,255,255,.58); line-height: 1.72; margin-top: 24px; max-width: 680px; text-wrap: pretty; }
+  .lede b, .note b { color: rgba(255,255,255,.9); font-weight: 600; }
+
+  /* hero */
+  .hero { padding-top: clamp(56px, 12vh, 120px); padding-bottom: clamp(52px, 10vh, 104px); border-top: none; overflow: hidden; }
+  .orb { position: absolute; right: -6vw; top: -12vh; width: 42vw; height: 42vw; border-radius: 50%; filter: blur(90px); pointer-events: none; background: radial-gradient(circle, rgba(90,138,154,.26) 0%, rgba(90,138,154,0) 70%); animation: vv-drift 20s ease-in-out infinite; }
+  .hero-field { position: absolute; left: 0; right: 0; bottom: 0; height: 26vh; display: flex; align-items: flex-end; justify-content: center; gap: 11px; opacity: .5; pointer-events: none; }
+  .bar { width: 6px; border-radius: 3px 3px 0 0; transform-origin: bottom; }
+
+  /* mirror rows */
+  .mirror { display: flex; flex-direction: column; margin-top: clamp(32px, 5vh, 56px); border-top: 1px solid rgba(255,255,255,.08); }
+  .mrow { display: grid; grid-template-columns: minmax(150px, 260px) 1fr; gap: clamp(18px, 4vw, 48px); align-items: center; padding: clamp(22px, 4vh, 40px) 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .mfig { font-family: 'JetBrains Mono', monospace; font-size: clamp(2.6rem, 8vw, 5.6rem); font-weight: 800; letter-spacing: -0.06em; line-height: .9; color: #8FB5C0; font-variant-numeric: tabular-nums; text-shadow: 0 0 34px rgba(143,181,192,.2); }
+  .mtext { display: block; font-size: clamp(1rem, 1.9vw, 1.35rem); font-weight: 600; color: rgba(255,255,255,.88); line-height: 1.45; text-wrap: pretty; }
+  .msrc { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.28); margin-top: 12px; }
+  .note { font-size: clamp(.92rem, 1.5vw, 1.05rem); color: rgba(255,255,255,.6); line-height: 1.72; margin-top: clamp(26px, 4vh, 40px); max-width: 720px; text-wrap: pretty; }
+  @media (max-width: 620px) { .mrow { grid-template-columns: 1fr; gap: 8px; } }
+
+  /* instrument */
+  .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(28px, 5vw, 60px); align-items: center; margin-top: clamp(32px, 5vh, 52px); }
+  .drivers { display: flex; flex-direction: column; border-top: 1px solid rgba(255,255,255,.08); }
+  .drow { padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .dname { font-size: .8rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  .dgloss { font-size: .95rem; color: rgba(255,255,255,.6); line-height: 1.65; margin-top: 8px; text-wrap: pretty; }
+  .dgloss b { color: rgba(255,255,255,.85); font-weight: 600; }
+  .card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; backdrop-filter: blur(20px); }
+  .device-card { padding: 24px 24px 20px; }
+  .device-card svg { width: 100%; height: auto; display: block; }
+  .device-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .device-title { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+  .device-period { font-family: 'JetBrains Mono', monospace; font-size: .58rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.32); }
+  .device-note { font-size: .8rem; color: rgba(255,255,255,.6); line-height: 1.65; margin-top: 16px; text-wrap: pretty; }
+  .device-note b { color: rgba(255,255,255,.9); font-weight: 600; }
+  .device-src { font-size: .56rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.26); margin-top: 12px; }
+
+  /* plain-english driver blocks */
+  .meaning-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin-top: clamp(30px, 5vh, 48px); }
+  .meaning { padding: 26px 26px 22px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-top: 2px solid; display: flex; flex-direction: column; }
+  .meaning.mc { border-top-color: #8fb5c0; } .meaning.mn { border-top-color: #7cc4a8; } .meaning.mf { border-top-color: #a78bdb; }
+  .m-name { font-size: .78rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  .meaning.mc .m-name { color: #8fb5c0; } .meaning.mn .m-name { color: #7cc4a8; } .meaning.mf .m-name { color: #a78bdb; }
+  .m-q { font-size: 1.02rem; font-weight: 700; color: rgba(255,255,255,.92); line-height: 1.45; margin-top: 10px; text-wrap: pretty; }
+  .m-body { font-size: .85rem; color: rgba(255,255,255,.6); line-height: 1.7; margin-top: 12px; flex: 1; text-wrap: pretty; }
+  .m-body b { color: rgba(255,255,255,.85); font-weight: 600; }
+  .m-src { font-size: .56rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.26); margin-top: 16px; line-height: 1.7; }
+
+  /* industry reading */
+  .reading { margin-top: clamp(36px, 6vh, 60px); padding: clamp(26px, 4vw, 40px); border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); }
+  .reading-title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
+  .bands { display: flex; gap: 6px; margin-top: 22px; }
+  .bandseg { flex: 1; text-align: center; font-size: .58rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.3); padding: 12px 4px 11px; border-radius: 6px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); position: relative; }
+  .bandseg.on { color: #fff; background: rgba(143,181,192,.13); border-color: rgba(143,181,192,.6); box-shadow: 0 0 24px rgba(143,181,192,.15); }
+  .bandseg.on::after { content: "HEALTHCARE READS HERE"; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: .5rem; letter-spacing: .14em; color: rgba(143,181,192,.75); }
+  .bands { margin-bottom: 26px; }
+  .reading-body { font-size: .92rem; color: rgba(255,255,255,.62); line-height: 1.75; margin-top: 16px; max-width: 820px; text-wrap: pretty; }
+  .reading-body b { color: rgba(255,255,255,.9); font-weight: 600; }
+  .reading-rule { font-size: .78rem; color: rgba(143,181,192,.8); font-weight: 600; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.07); line-height: 1.7; }
+  @media (max-width: 620px) { .bandseg { font-size: .46rem; letter-spacing: .06em; } .bandseg.on::after { display: none; } }
+
+  /* applied-to-ViiV benefit cards */
+  .benefit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: clamp(30px, 5vh, 48px); }
+  @media (max-width: 760px) { .benefit-grid { grid-template-columns: 1fr; } }
+  .benefit { display: flex; flex-direction: column; padding: 26px 26px 22px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); }
+  .b-tag { font-size: .62rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: rgba(143,181,192,.85); }
+  .b-outcome { font-size: 1.05rem; font-weight: 700; color: rgba(255,255,255,.92); line-height: 1.4; margin-top: 10px; text-wrap: pretty; }
+  .b-body { font-size: .85rem; color: rgba(255,255,255,.6); line-height: 1.7; margin-top: 12px; flex: 1; text-wrap: pretty; }
+  .b-body b { color: rgba(255,255,255,.85); font-weight: 600; }
+  .b-how { font-size: .78rem; color: rgba(143,181,192,.85); line-height: 1.65; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.07); }
+  .b-how b { color: rgba(143,181,192,1); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .6rem; margin-right: 6px; }
+  .diff-strip { margin-top: 22px; padding: 20px 26px; border-radius: 12px; border: 1px dashed rgba(255,255,255,.14); font-size: .82rem; color: rgba(255,255,255,.5); line-height: 1.75; text-wrap: pretty; }
+  .diff-strip b { color: rgba(255,255,255,.85); font-weight: 600; }
+
+
+  /* ask module */
+  .ask-box { margin-top: clamp(30px, 5vh, 48px); padding: clamp(26px, 4vw, 40px); border-radius: 14px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); }
+  .ask-q { font-size: .62rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: rgba(143,181,192,.85); margin: 34px 0 6px; }
+  .ask-q:first-of-type { margin-top: 0; }
+  .ask-t { font-size: 1.02rem; font-weight: 700; color: rgba(255,255,255,.9); line-height: 1.5; margin-bottom: 4px; text-wrap: pretty; }
+  .ask-hint { font-size: .68rem; color: rgba(255,255,255,.32); margin-bottom: 14px; }
+  .picks { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pick { font-family: inherit; font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.6); background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.13); border-radius: 100px; padding: 10px 18px; cursor: pointer; transition: all .18s ease; }
+  .pick:hover { border-color: rgba(143,181,192,.55); color: #fff; }
+  .pick.sel { background: rgba(143,181,192,.13); border-color: #8fb5c0; color: #fff; }
+  .pick .rk { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; border-radius: 50%; background: #5A8A9A; color: #fff; font-size: .6rem; font-weight: 800; margin-right: 8px; }
+  .other-in { display: none; font-family: inherit; font-size: .78rem; color: #fff; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 10px 14px; margin-top: 10px; width: 100%; max-width: 420px; }
+  .other-in.on { display: block; }
+  .other-in:focus { outline: none; border-color: #8fb5c0; }
+  .slider-row { display: flex; align-items: center; gap: 20px; max-width: 560px; }
+  .slider-row input[type=range] { flex: 1; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 2px; background: rgba(255,255,255,.12); outline: none; }
+  .slider-row input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #8FB5C0; cursor: pointer; border: none; box-shadow: 0 0 14px rgba(143,181,192,.4); }
+  .slider-row input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #8FB5C0; cursor: pointer; border: none; }
+  .slider-val { font-family: 'JetBrains Mono', monospace; font-size: 1.7rem; font-weight: 800; color: #8FB5C0; min-width: 92px; text-align: right; font-variant-numeric: tabular-nums; }
+  .slider-val.dim { color: rgba(255,255,255,.25); }
+  .reveal { display: none; font-size: .78rem; color: rgba(143,181,192,.9); line-height: 1.65; margin-top: 12px; }
+  .reveal.on { display: block; }
+  .ask-open { font-family: inherit; font-size: .82rem; color: #fff; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 12px 14px; width: 100%; max-width: 620px; min-height: 74px; resize: vertical; }
+  .ask-open:focus { outline: none; border-color: #8fb5c0; }
+  .ask-result { display: none; margin-top: 32px; border-top: 1px solid rgba(255,255,255,.08); padding-top: 26px; }
+  .ask-result.on { display: block; }
+  .ar-line { font-size: .95rem; font-weight: 700; color: rgba(255,255,255,.9); line-height: 1.55; text-wrap: pretty; }
+  .ar-ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .btn-quiet { font-family: inherit; font-size: .76rem; font-weight: 600; color: rgba(255,255,255,.6); background: transparent; border: 1px solid rgba(255,255,255,.18); padding: 13px 22px; border-radius: 6px; cursor: pointer; text-decoration: none; display: inline-block; }
+  .btn-quiet:hover { border-color: rgba(255,255,255,.4); color: #fff; }
+  .ask-privacy { font-size: .66rem; color: rgba(255,255,255,.3); line-height: 1.7; margin-top: 16px; }
+
+  /* read zero */
+  .rz-split { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(24px, 4vw, 48px); align-items: center; }
+  @media (max-width: 820px) { .rz-split { grid-template-columns: 1fr; } }
+  .rz-row { padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,.07); }
+  .rz-row:last-child { border-bottom: none; }
+  .rz-name { font-size: .7rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  .rz-q { font-size: .92rem; font-weight: 600; color: rgba(255,255,255,.85); line-height: 1.5; margin: 6px 0 12px; text-wrap: pretty; }
+  .rz-slider { width: 100%; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 2px; background: rgba(255,255,255,.12); outline: none; }
+  .rz-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #8FB5C0; cursor: pointer; border: none; box-shadow: 0 0 14px rgba(143,181,192,.4); }
+  .rz-slider::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #8FB5C0; cursor: pointer; border: none; }
+  #rz-n::-webkit-slider-thumb { background: #7cc4a8; box-shadow: 0 0 14px rgba(124,196,168,.4); }
+  #rz-n::-moz-range-thumb { background: #7cc4a8; }
+  #rz-f::-webkit-slider-thumb { background: #a78bdb; box-shadow: 0 0 14px rgba(167,139,219,.4); }
+  #rz-f::-moz-range-thumb { background: #a78bdb; }
+  .rz-ends { display: flex; justify-content: space-between; font-size: .58rem; color: rgba(255,255,255,.3); margin-top: 8px; }
+  .rz-canvas svg { width: 100%; height: auto; display: block; }
+  #rz-shape { transition: fill-opacity .4s ease; }
+
+  /* consent banner */
+  .consent { position: fixed; left: 18px; bottom: 18px; z-index: 60; max-width: 380px; background: #10151f; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; padding: 18px 20px; box-shadow: 0 12px 40px rgba(0,0,0,.5); display: none; }
+  .consent.on { display: block; }
+  .consent-t { font-size: .78rem; font-weight: 800; color: #fff; }
+  .consent-b { font-size: .72rem; color: rgba(255,255,255,.55); line-height: 1.65; margin-top: 8px; }
+  .consent-row { display: flex; gap: 8px; margin-top: 14px; }
+  .consent-row .btn { font-size: .74rem; padding: 10px 18px; }
+  .consent-row .btn-quiet { font-size: .74rem; padding: 10px 18px; }
+
+  /* MissionCTRL endorsement band */
+  .mc-band { position: relative; border-top: 1px solid rgba(255,255,255,.06); padding: clamp(48px, 8vh, 84px) clamp(24px, 5vw, 64px); background: linear-gradient(180deg, rgba(255,107,43,.025) 0%, rgba(10,15,26,0) 55%); }
+  .mc-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(220px, 320px) 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+  @media (max-width: 760px) { .mc-inner { grid-template-columns: 1fr; } }
+  .mc-kicker { font-size: .6rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 20px; }
+  .mc-lockup { display: inline-flex; align-items: center; gap: 10px; }
+  .mc-stack { display: flex; flex-direction: column; }
+  .mc-ission { font-size: 1.35rem; font-weight: 700; color: #fff; letter-spacing: -0.04em; line-height: 0.85; }
+  .mc-ctrl { font-size: 1.35rem; font-weight: 800; letter-spacing: 0.06em; line-height: 0.85; color: #fff; margin-top: 2px; }
+  .mc-ctrl .c { color: #ff6b2b; }
+  .mc-tag { font-size: .72rem; font-weight: 600; color: rgba(255,255,255,.45); margin-top: 14px; letter-spacing: .02em; }
+  .mc-quote { font-size: clamp(1.15rem, 2.4vw, 1.6rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; color: rgba(255,255,255,.92); text-wrap: pretty; }
+  .mc-quote .warm { background: linear-gradient(90deg, #ff6b2b, #ffad3b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .mc-body { font-size: .9rem; color: rgba(255,255,255,.58); line-height: 1.75; margin-top: 16px; max-width: 640px; text-wrap: pretty; }
+  .mc-body b { color: rgba(255,255,255,.85); font-weight: 600; }
+  .mc-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; font-size: .8rem; font-weight: 700; color: #fff; border: 1px solid rgba(255,255,255,.22); border-radius: 6px; padding: 12px 22px; transition: border-color .2s ease, background .2s ease; }
+  .mc-cta:hover { border-color: rgba(255,173,59,.6); background: rgba(255,107,43,.06); color: #fff; }
+
+  /* privacy notice */
+  .privacy-note { margin: 0 clamp(24px, 5vw, 64px); max-width: 1120px; padding: 18px 0 26px; }
+  .privacy-note details { border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: 14px 18px; background: rgba(255,255,255,.02); }
+  .privacy-note summary { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.4); cursor: pointer; }
+  .privacy-note p { font-size: .72rem; color: rgba(255,255,255,.42); line-height: 1.75; margin-top: 10px; }
+  .privacy-note b { color: rgba(255,255,255,.65); font-weight: 600; }
+  .privacy-note a { color: rgba(143,181,192,.8); }
+
+  /* assurance */
+  .assure { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 26px; }
+  .arow { display: flex; gap: 14px; align-items: flex-start; padding: 20px 22px; border-radius: 12px; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); }
+  .arow .tick { flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; background: rgba(143,181,192,.14); display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .arow span:last-child { font-size: .88rem; color: rgba(255,255,255,.72); line-height: 1.6; text-wrap: pretty; }
+  .arow b { color: #fff; font-weight: 600; }
+
+  /* CTA */
+  .cta-sec { text-align: center; overflow: hidden; padding-top: clamp(64px, 12vh, 130px); }
+  .cta-orb { position: absolute; left: 50%; top: 40%; transform: translate(-50%,-50%); width: 60vw; height: 60vw; max-width: 900px; max-height: 900px; border-radius: 50%; filter: blur(100px); pointer-events: none; background: radial-gradient(circle, rgba(90,138,154,.22) 0%, rgba(90,138,154,0) 68%); }
+  .cta-sec .kicker { display: inline-flex; }
+  .cta-sec .kicker::before { display: none; }
+  .cta-sec .lede { margin-left: auto; margin-right: auto; max-width: 560px; }
+  .cta-row { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 36px; }
+  .btn { display: inline-block; font-size: .95rem; font-weight: 700; color: #fff; background: #5A8A9A; padding: 17px 32px; border-radius: 6px; transition: background .2s ease, transform .15s ease; }
+  .btn:hover { background: #4d7a8a; color: #fff; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,.22); }
+  .btn-ghost:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.4); }
+  .cta-mail { display: block; font-size: .8rem; color: rgba(255,255,255,.38); margin-top: 24px; }
+  .cta-mail a { border-bottom: 1px solid rgba(143,181,192,.35); }
+  .deeper { display: flex; justify-content: center; gap: 26px; flex-wrap: wrap; margin-top: 44px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,.06); }
+  .deeper a { font-size: .74rem; font-weight: 500; color: rgba(255,255,255,.42); border-bottom: 1px solid rgba(255,255,255,.16); padding-bottom: 3px; }
+
+  .foot { position: relative; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; padding: 18px clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,.06); background: rgba(8,12,20,.5); }
+  .foot span { font-size: .58rem; letter-spacing: .04em; color: rgba(255,255,255,.28); line-height: 1.8; max-width: 640px; }
+  .foot span:last-child { color: rgba(255,255,255,.22); text-align: right; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="texture" aria-hidden="true"></div>
+
+  <div class="top">
+    <span class="lockup">
+      <a class="wordlink" href="/">
+        <svg width="20" height="25" viewBox="0 0 120 148" fill="none" overflow="visible" role="img" aria-label="TrustOS mark">
+          <defs>
+            <linearGradient id="mk-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient>
+            <linearGradient id="mk-ml" x1="60" y1="12" x2="60" y2="140"><stop offset="0%" stop-color="#5a8a9a" stop-opacity="0.5"/><stop offset="100%" stop-color="#5a8a9a" stop-opacity="0.03"/></linearGradient>
+            <filter id="mk-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+          </defs>
+          <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/>
+          <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="url(#mk-ml)"/>
+          <polygon class="mark-glow" points="30,12 90,12 60,88" fill="#6da0b8" filter="url(#mk-glow)"/>
+          <polygon points="30,12 90,12 60,88" fill="url(#mk-tg)"/>
+          <polygon points="30,12 90,12 60,88" fill="none" stroke="#8fb5c0" stroke-width="1.6"/>
+        </svg>
+        <span class="wordmark"><span class="t">Trust</span><span class="o">OS</span></span>
+      </a>
+      <span class="lockup-div"></span>
+      <a class="endorse" href="https://missionctrl.agency" target="_blank" rel="noopener">
+        <svg width="8" height="10" viewBox="0 0 120 148" fill="none" aria-hidden="true"><defs><linearGradient id="en-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="en-mc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#en-mg)" clip-path="url(#en-mc)"/></svg>
+        A MissionCTRL product
+      </a>
+    </span>
+    <span class="badge"><span class="dot"></span>For ViiV Healthcare · Confidential</span>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="orb" aria-hidden="true"></div>
+    <div class="hero-field" id="hero-field" aria-hidden="true"></div>
+    <div class="wrap" style="position: relative;">
+      <div class="kicker" data-rv>How ViiV hears itself — the two-minute version</div>
+      <h1 data-rv>Making HIV history runs on trust.<br/><span class="ds-trust-glow">Most of it is unmeasured.</span></h1>
+      <p class="lede" data-rv>No company listens to people living with HIV the way ViiV does — Positive Perspectives proves that. TrustOS extends that same discipline to every relationship the mission runs through. Concretely: <b>a quarterly measure of how much the people ViiV depends on trust ViiV — scored, tracked, owned by ViiV, built by Mission CTRL.</b></p>
+    </div>
+  </section>
+
+  <!-- ═══ 01 THE MIRROR ═══ -->
+  <section class="tinted">
+    <div class="wrap">
+      <div class="kicker" data-rv>01 · The promise, measured against the experience</div>
+      <h2 data-rv>High trust. Unheard.</h2>
+      <p class="lede" data-rv>From ViiV’s own study — the strongest patient-listening programme in HIV. Both things are true at once:</p>
+      <div class="mirror">
+        <div class="mrow" data-rv>
+          <span class="mfig">80%</span>
+          <span><span class="mtext">of people living with HIV report high trust in their healthcare provider.</span><span class="msrc">Positive Perspectives 3 (interim) — ViiV's own study · n=698 · 16 countries · 2025</span></span>
+        </div>
+        <div class="mrow" data-rv>
+          <span class="mfig">47.5%</span>
+          <span><span class="mtext">sometimes feel unheard by that same provider.</span><span class="msrc">Positive Perspectives 3 · 2025</span></span>
+        </div>
+        <div class="mrow" data-rv>
+          <span class="mfig">39.7%</span>
+          <span><span class="mtext">didn’t make the decision about their own treatment jointly with their provider.</span><span class="msrc">Positive Perspectives 3 · 2025</span></span>
+        </div>
+      </div>
+      <p class="note" data-rv>Feeling unheard is where engagement quietly leaks — adherence, retention, uptake of new options: the things making HIV history depends on. And this is the relationship ViiV listens to <b>most</b>. The clinics delivering long-acting care every eight weeks, the commissioners, the communities, ViiV’s own people — the mission now runs through them all, and none of them are measured like this. <b>You can’t close a gap you can’t see.</b></p>
+    </div>
+  </section>
+
+  <!-- ═══ 02 HOW TRUSTOS CLOSES IT ═══ -->
+  <section>
+    <div class="wrap">
+      <div class="kicker" data-rv>02 · How TrustOS closes it</div>
+      <h2 data-rv>Three questions, asked of every relationship. One shared picture.</h2>
+      <p class="lede" data-rv>Every read asks the same three plain questions of each stakeholder group — and turns the answers into a score, a shape, and a ranked list of what to fix.</p>
+      <div class="meaning-grid">
+        <div class="meaning mc" data-rv>
+          <div class="m-name">Clarity</div>
+          <div class="m-q">Did the message that arrived match the message you sent?</div>
+          <div class="m-body">Strong Clarity means stakeholders can say back what ViiV stands for, in their own words. The sector shows what weak looks like: <b>39% of healthcare workers across Europe and Central Asia still lack knowledge of U=U</b>, and <b>42% of England's HIV diagnoses still arrive late</b>.</div>
+          <div class="m-src">ECDC/EACS survey, 2024 report · UKHSA, Oct 2025</div>
+        </div>
+        <div class="meaning mn" data-rv>
+          <div class="m-name">Connection</div>
+          <div class="m-q">What did it feel like to be on the other side of you?</div>
+          <div class="m-body">Not what you meant — what they experienced. ViiV's own study is the sharpest picture anywhere of the gap: <b>80% report high trust; 47.5% sometimes feel unheard — the same people.</b></div>
+          <div class="m-src">Positive Perspectives 3 (interim), 2025</div>
+        </div>
+        <div class="meaning mf" data-rv>
+          <div class="m-name">Confidence</div>
+          <div class="m-q">Would they vouch for you when you're not in the room?</div>
+          <div class="m-body">Evidence in place of assurance — in a sector where claims are discounted by default: pharma ranks <b>24th of 25 industries</b> in Gallup's ratings. Proof is the only currency that clears.</div>
+          <div class="m-src">Gallup industry ratings, Aug 2025</div>
+        </div>
+      </div>
+
+      <div class="split" style="align-items: center;">
+        <div data-rv>
+          <p class="note" style="margin-top: 0;">TrustOS has already read twelve sectors from public signal — this is <b>healthcare's shape</b>, the sector ViiV lives in. It reads as <b>Fragile: trust present, not yet load-bearing</b>, with Connection — feeling heard — its weakest edge, as in 11 of the 12 sectors read.</p>
+          <p class="note"><b>ViiV's own shape has never been measured.</b> The cycle that measures it is Sense → Measure → Act: a baseline in six weeks, read again every quarter, each wave landing with the gaps ranked and the actions behind them.</p>
+        </div>
+        <div class="card device-card" data-rv>
+          <div class="device-head"><span class="device-title">Healthcare — sector read</span><span class="device-period">Q2 2026 · TrustOS</span></div>
+          <svg viewBox="20 40 250 200" xmlns="http://www.w3.org/2000/svg" aria-label="TrustOS triangle device: the healthcare sector's shape pulled inward from the aligned ideal — Connection pulled furthest">
+            <defs>
+              <linearGradient id="devg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7fb4cc"/><stop offset="50%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/>
+              </linearGradient>
+              <filter id="devglow" x="-40%" y="-40%" width="180%" height="180%">
+                <feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#6da0b8" flood-opacity="0.35"/>
+              </filter>
+            </defs>
+            <!-- the aligned ideal -->
+            <polygon points="60.1,69.0 229.9,69.0 145.0,216.0" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1" stroke-dasharray="5 8"/>
+            <!-- the gap between ideal and actual: the leak, per edge -->
+            <polygon points="60.1,69.0 229.9,69.0 194.7,89.3 85.6,83.7" fill="#8fb5c0" fill-opacity="0.055"/>
+            <polygon points="229.9,69.0 145.0,216.0 145.0,160.6 194.7,89.3" fill="#7cc4a8" fill-opacity="0.14"/>
+            <polygon points="145.0,216.0 60.1,69.0 85.6,83.7 145.0,160.6" fill="#a78bdb" fill-opacity="0.085"/>
+            <!-- the sector's actual shape: pulled inward from the ideal, furthest on Connection -->
+            <polygon points="85.6,83.7 194.7,89.3 145.0,160.6" fill="url(#devg)" fill-opacity="0.85" filter="url(#devglow)"/>
+            <line x1="85.6" y1="83.7" x2="194.7" y2="89.3" stroke="#8fb5c0" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="194.7" y1="89.3" x2="145.0" y2="160.6" stroke="#7cc4a8" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="145.0" y1="160.6" x2="85.6" y2="83.7" stroke="#a78bdb" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- edge labels: name + qualitative read, no numbers -->
+            <text x="145" y="57.5" text-anchor="middle" dominant-baseline="middle" font-family="Sora, sans-serif" font-size="8.5" font-weight="800" letter-spacing="1.4" fill="#8fb5c0">CLARITY · STRONGEST</text>
+            <text x="200.5" y="150.0" transform="rotate(-60,200.5,150.0)" text-anchor="middle" dominant-baseline="middle" font-family="Sora, sans-serif" font-size="8.5" font-weight="800" letter-spacing="1.4" fill="#7cc4a8">CONNECTION · WEAK EDGE</text>
+            <text x="89.5" y="150.0" transform="rotate(60,89.5,150.0)" text-anchor="middle" dominant-baseline="middle" font-family="Sora, sans-serif" font-size="8.5" font-weight="800" letter-spacing="1.4" fill="#a78bdb">CONFIDENCE · MID</text>
+            <!-- the band, not a score -->
+            <text x="141.8" y="112.0" text-anchor="middle" dominant-baseline="middle" font-family="Sora, sans-serif" font-size="11" font-weight="800" letter-spacing="1.8" fill="#ffffff">FRAGILE</text>
+            <!-- caption -->
+            <text x="145" y="230" text-anchor="middle" font-family="Sora, sans-serif" font-size="6.5" font-weight="600" letter-spacing="1" fill="rgba(255,255,255,0.25)">DASHED = ALIGNED IDEAL · TINT = THE LEAK</text>
+          </svg>
+          <div class="device-note">The dashed triangle is aligned trust; the solid shape is where healthcare actually sits, pulled furthest in on Connection. <b>A ViiV read draws ViiV's own shape — and puts numbers on it.</b></div>
+          <div class="device-src">Source: TrustOS healthcare sector read · trustos.missionctrl.agency</div>
+        </div>
+      </div>
+
+      <div class="reading" data-rv>
+        <div class="reading-title">Why this unifies, not just informs.</div>
+        <div class="reading-body">Patient engagement, medical, market access and comms each hold a piece of the same mission — and each argues its corner from different anecdotes. A quarterly read gives every function the same picture of where the promise is landing and where it leaks. <b>One map. One direction of travel. Everyone behind the same purpose.</b></div>
+        <div class="reading-rule">Sector reads are published as bands, never scores. ViiV's numbers — the Trust Index, three drivers, per stakeholder group, with direction of travel — would exist only inside ViiV's own read. <b style="color: #fff;">What would ViiV's read say? That's the conversation.</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 04 APPLIED TO VIIV ═══ -->
+  <section>
+    <div class="wrap">
+      <div class="kicker" data-rv>03 · What ViiV gets</div>
+      <h2 data-rv>Not a score. A map, a next move, and a lesson.</h2>
+      <p class="lede" data-rv>ViiV measures almost everything it <b>does</b> — trials, uptake, access, grants — and almost nothing about how it's <b>experienced</b>. Applied to ViiV, the instrument's four jobs:</p>
+      <div class="benefit-grid">
+        <div class="benefit" data-rv>
+          <div class="b-tag">Spot the leaks</div>
+          <div class="b-outcome">See which relationship is weakening — before the performance numbers say so.</div>
+          <div class="b-body">More than 75% of HIV growth now runs through relationships ViiV doesn't control — the clinics, commissioners and communities who deliver long-acting care every eight weeks. The read shows where trust is quietly eroding across those groups <b>while adherence, retention and uptake still look fine</b>.</div>
+          <div class="b-how"><b>How</b>Every read is broken down by stakeholder group, driver and market. Not a level — a location: which relationship, which driver, where.</div>
+        </div>
+        <div class="benefit" data-rv>
+          <div class="b-tag">Prove impact</div>
+          <div class="b-outcome">Engagement, evidenced — to the board, and for the disclosure era.</div>
+          <div class="b-body">GSK is in CSRD scope from FY2027: how engagement with affected communities is organised becomes auditable disclosure. <b>Measured outcomes satisfy what descriptions of activity can't</b> — and show whether "here until you aren't" is landing the way it's meant.</div>
+          <div class="b-how"><b>How</b>Scores, trends and evidence per relationship, inside an instrument ViiV owns. Live in six weeks; board-ready from the first read.</div>
+        </div>
+        <div class="benefit" data-rv>
+          <div class="b-tag">Make the next move</div>
+          <div class="b-outcome">The room aligned on what to fix first.</div>
+          <div class="b-body">Patient engagement, medical, access and comms each hold a piece of the same relationships. A measured ranking settles what moves first — so the conversation after a read is about <b>what to do</b>, not whether to believe the finding.</div>
+          <div class="b-how"><b>How</b>Each wave lands with the gaps ranked and prioritised actions behind them, per stakeholder group.</div>
+        </div>
+        <div class="benefit" data-rv>
+          <div class="b-tag">Learn from every move</div>
+          <div class="b-outcome">The question no ranking answers: are your own relationships getting stronger?</div>
+          <div class="b-body">Thirteen years ranked first measures standing, not direction. Quarter on quarter, the read shows each relationship's <b>direction of travel</b> — and the instrument compounds: wave by wave it learns what actually shifts each relationship.</div>
+          <div class="b-how"><b>How</b>A quarterly rhythm with listening embedded between waves — every read sharper than the last.</div>
+        </div>
+      </div>
+      <div class="diff-strip" data-rv>NPS reads one question of one relationship. Brand tracking measures what's said. Employee surveys read one group. Reputation monitoring reads the past. <b>None locates which relationship is weakening, on which driver, or what to do about it.</b> That's the job Trust Intelligence exists to do.</div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 ASSURANCE ═══ -->
+  <section>
+    <div class="wrap">
+      <div class="kicker" data-rv>04 · The questions you're already asking</div>
+      <div class="assure">
+        <div class="arow" data-rv><span class="tick"><svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 5.5 L4 8 L8.5 2.5" stroke="#8fb5c0" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>The instrument points at ViiV — never at communities.</b> Complementary to community-led monitoring, always.</span></div>
+        <div class="arow" data-rv><span class="tick"><svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 5.5 L4 8 L8.5 2.5" stroke="#8fb5c0" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>It never infers how people feel.</b> It asks — consented, transparent, text-based. No sentiment surveillance, no emotion inference.</span></div>
+        <div class="arow" data-rv><span class="tick"><svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 5.5 L4 8 L8.5 2.5" stroke="#8fb5c0" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Anonymity by design.</b> Individuals are never identifiable in any read — findings only ever surface in aggregate.</span></div>
+        <div class="arow" data-rv><span class="tick"><svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 5.5 L4 8 L8.5 2.5" stroke="#8fb5c0" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Every figure is sourced.</b> Published methodology, defensible in front of medical, legal and compliance.</span></div>
+        <div class="arow" data-rv><span class="tick"><svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 5.5 L4 8 L8.5 2.5" stroke="#8fb5c0" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>What does it ask of your teams?</b> Minutes per quarter, not another survey programme — listening is embedded in touchpoints you already run. Live in six weeks.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 READ ZERO ═══ -->
+  <section class="tinted" id="shape">
+    <div class="wrap">
+      <div class="kicker" data-rv>05 · Read Zero — the read ViiV takes of itself</div>
+      <h2 data-rv>Draw ViiV's shape. Sixty seconds.</h2>
+      <p class="lede" data-rv>Pick the relationship you know best and trust your gut — <b>the shape draws itself</b>. Nothing leaves this page until you choose to send it. And when enough shapes come back, ViiV's self-portrait — the first read ViiV has ever taken of itself — returns to you, presented by the colleague who invited you.</p>
+      <div class="ask-box" data-rv data-clarity-mask="true">
+
+        <div class="ask-q">1 · Your relationship</div>
+        <div class="ask-t">Which relationship do you know best?</div>
+        <div class="ask-hint">Pick one — the one whose answers you could almost hear.</div>
+        <div class="picks" id="rz-group">
+          <button class="pick" data-v="People living with HIV">People living with HIV</button>
+          <button class="pick" data-v="Community &amp; advocacy organisations">Community &amp; advocacy organisations</button>
+          <button class="pick" data-v="Healthcare professionals &amp; clinics">Healthcare professionals &amp; clinics</button>
+          <button class="pick" data-v="Payers &amp; commissioners">Payers &amp; commissioners</button>
+          <button class="pick" data-v="Policymakers &amp; regulators">Policymakers &amp; regulators</button>
+          <button class="pick" data-v="ViiV's own people">ViiV's own people</button>
+          <button class="pick" data-v="__other">Other…</button>
+        </div>
+        <input class="other-in" id="rz-other" type="text" maxlength="80" placeholder="Tell us which"/>
+
+        <div class="ask-q">2 · Your instinct — three questions, three sliders</div>
+        <div class="rz-split">
+          <div class="rz-sliders">
+            <div class="rz-row">
+              <div class="rz-name" style="color: #8fb5c0;">Clarity</div>
+              <div class="rz-q">If you asked them what ViiV stands for — how close would their answer be?</div>
+              <input type="range" class="rz-slider" id="rz-c" min="0" max="100" step="1" value="50" aria-label="Clarity"/>
+              <div class="rz-ends"><span>Miles off</span><span>Word for word</span></div>
+            </div>
+            <div class="rz-row">
+              <div class="rz-name" style="color: #7cc4a8;">Connection</div>
+              <div class="rz-q">How heard do they feel by ViiV?</div>
+              <input type="range" class="rz-slider" id="rz-n" min="0" max="100" step="1" value="50" aria-label="Connection"/>
+              <div class="rz-ends"><span>Unheard</span><span>Fully heard</span></div>
+            </div>
+            <div class="rz-row">
+              <div class="rz-name" style="color: #a78bdb;">Confidence</div>
+              <div class="rz-q">Would they vouch for ViiV when we're not in the room?</div>
+              <input type="range" class="rz-slider" id="rz-f" min="0" max="100" step="1" value="50" aria-label="Confidence"/>
+              <div class="rz-ends"><span>Never</span><span>Without hesitation</span></div>
+            </div>
+          </div>
+          <div class="rz-canvas">
+            <svg viewBox="20 40 250 200" xmlns="http://www.w3.org/2000/svg" aria-label="Your shape of ViiV, drawn from your three answers">
+              <defs>
+                <linearGradient id="rzg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7fb4cc"/><stop offset="50%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#4d7a8a"/>
+                </linearGradient>
+                <filter id="rzglow" x="-40%" y="-40%" width="180%" height="180%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#6da0b8" flood-opacity="0.35"/>
+                </filter>
+              </defs>
+              <polygon points="60.1,69.0 229.9,69.0 145.0,216.0" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1" stroke-dasharray="5 8"/>
+              <polygon id="rz-shape" points="102.5,93.5 187.5,93.5 145.0,167.0" fill="url(#rzg)" fill-opacity="0" filter="url(#rzglow)"/>
+              <line id="rz-e1" x1="0" y1="0" x2="0" y2="0" stroke="#8fb5c0" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
+              <line id="rz-e2" x1="0" y1="0" x2="0" y2="0" stroke="#7cc4a8" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
+              <line id="rz-e3" x1="0" y1="0" x2="0" y2="0" stroke="#a78bdb" stroke-width="2.5" stroke-linecap="round" opacity="0"/>
+              <text id="rz-band" x="145" y="112" text-anchor="middle" dominant-baseline="middle" font-family="Sora, sans-serif" font-size="11" font-weight="800" letter-spacing="1.8" fill="#ffffff" opacity="0"></text>
+              <text id="rz-wait" x="145" y="118" text-anchor="middle" dominant-baseline="middle" font-family="Sora, sans-serif" font-size="7.5" font-weight="600" letter-spacing="1.6" fill="rgba(255,255,255,0.3)">MOVE THE SLIDERS — THE SHAPE IS YOURS</text>
+              <text x="145" y="228" text-anchor="middle" font-family="Sora, sans-serif" font-size="6.5" font-weight="600" letter-spacing="1" fill="rgba(255,255,255,0.25)">DASHED = ALIGNED IDEAL</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="ask-result" id="rz-result">
+          <div class="ar-line" id="rz-line"></div>
+          <div class="ask-q" style="margin-top: 26px;">3 · One more — the honest one</div>
+          <div class="ask-t">If the board asked you to prove your instinct tomorrow — what could you actually show them?</div>
+          <div class="picks" id="rz-ev">
+            <button class="pick" data-v="Solid, measured data">Solid, measured data</button>
+            <button class="pick" data-v="Case studies and anecdotes">Case studies and anecdotes</button>
+            <button class="pick" data-v="Activity metrics — meetings held, grants made">Activity metrics — meetings held, grants made</button>
+            <button class="pick" data-v="We'd commission research and wait months">We'd commission research and wait months</button>
+            <button class="pick" data-v="Honestly — nothing">Honestly — nothing</button>
+          </div>
+          <div class="ask-q">Optional · Your question</div>
+          <div class="ask-t" style="font-size: .9rem;">If you could hear one completely honest answer from them — what would you ask?</div>
+          <textarea class="ask-open" id="rz-open" maxlength="280" placeholder="One question. It might end up in the first read."></textarea>
+          <div class="ar-ctas">
+            <a class="btn" id="rz-mail" href="#">Email my shape</a>
+            <button class="btn-quiet" id="rz-copy">Copy my shape</button>
+            <a class="btn-quiet" href="https://calendar.app.google/u4mwxt1BfvrPaM5AA" target="_blank" rel="noopener">Book the 30-minute demo</a>
+            <a class="btn-quiet" href="https://calendar.app.google/4FoFKVe1BRhBrx7X9" target="_blank" rel="noopener">15-minute Q&amp;A</a>
+          </div>
+          <div class="ask-privacy">Your shape exists only on this page until you send it. "Email my shape" opens your own mail client, addressed to MissionCTRL (hello@missionctrl.agency); shapes are combined into ViiV's self-portrait, used solely for the ViiV conversation, and deleted on request.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="cta-sec">
+    <div class="cta-orb" aria-hidden="true"></div>
+    <div class="wrap" style="position: relative; max-width: 780px;">
+      <div class="kicker" data-rv>Make the next move</div>
+      <h2 data-rv style="margin: 0 auto;">What would ViiV's shape look like?</h2>
+      <p class="lede" data-rv>One conversation answers that. Pick the length that fits.</p>
+      <div class="cta-row" data-rv>
+        <!-- 1-hour deep-dive calendar link: ADD WHEN AVAILABLE -->
+        <a class="btn" href="https://calendar.app.google/u4mwxt1BfvrPaM5AA" target="_blank" rel="noopener">Book a 30-minute demo</a>
+        <a class="btn btn-ghost" href="https://calendar.app.google/4FoFKVe1BRhBrx7X9" target="_blank" rel="noopener">15-minute Q&amp;A</a>
+      </div>
+      <span class="cta-mail" data-rv>Or just reply to the person who sent you this — or write to <a href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a></span>
+      <div class="deeper" data-rv>
+        <a href="/methodology/">The deep end — the full methodology →</a>
+        <a href="/explorer/">Try the Explorer — 60 seconds, no form →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MISSIONCTRL ═══ -->
+  <div class="mc-band">
+    <div class="mc-inner">
+      <div data-rv>
+        <div class="mc-kicker">The company behind the instrument</div>
+        <a class="mc-lockup" href="https://missionctrl.agency" target="_blank" rel="noopener" aria-label="MissionCTRL">
+          <svg width="38" height="47" viewBox="0 0 120 148" fill="none" aria-hidden="true">
+            <defs><linearGradient id="mc-g" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="mc-c"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs>
+            <rect width="120" height="148" fill="url(#mc-g)" clip-path="url(#mc-c)"/>
+          </svg>
+          <span class="mc-stack">
+            <span class="mc-ission">ission</span>
+            <span class="mc-ctrl"><span class="c">C</span>TRL</span>
+          </span>
+        </a>
+        <div class="mc-tag">Lead as One. Move the Many.</div>
+      </div>
+      <div data-rv>
+        <div class="mc-quote">"Most brands don't have an awareness problem. They have a <span class="warm">self-awareness</span> problem."</div>
+        <div class="mc-body">MissionCTRL partners with purpose-led leaders to close the gap between what their organisation <b>believes, says and does</b> — turning brand into a force for collective impact. TrustOS is the trust-intelligence layer of that work: measuring Clarity, Connection and Confidence across your stakeholder ecosystem, so the gap isn't a feeling — it's a number with a direction.</div>
+        <a class="mc-cta" href="https://missionctrl.agency" target="_blank" rel="noopener">missionctrl.agency →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="privacy-note">
+    <details id="privacy">
+      <summary>Privacy on this page</summary>
+      <p><b>Who we are.</b> This page is operated by Mission CTRL Ltd (Company No. 17018199, England &amp; Wales), the maker of TrustOS, for ViiV Healthcare colleagues invited by a link. Contact: <a href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a>.</p>
+      <p><b>What we collect automatically: nothing, unless you allow it.</b> With your consent — and only then — we use Microsoft Clarity to understand how this page is used (heatmaps and session replay). Clarity sets cookies and processes usage data on Microsoft servers; form answers on this page are masked from recordings. No advertising trackers, no sale of data, and declining changes nothing about how the page works. You can change your choice any time via "Privacy choices" below. We honour Global Privacy Control signals as a decline.</p>
+      <p><b>The questions module.</b> Your answers stay in your browser until you choose to send them. Sending opens your own email client; what you send is used only to prepare the ViiV × TrustOS conversation (legitimate interest, Art. 6(1)(f) UK/EU GDPR), is shared only within Mission CTRL and with the ViiV colleague who invited you, and is deleted on request or when the engagement ends. You may ask for access, correction or erasure at the address above, and you have the right to complain to the ICO or your local supervisory authority.</p>
+    </details>
+  </div>
+
+  <div class="foot">
+    <span>TrustOS — Trust Intelligence. Make trust your North Star. Sources: ViiV Positive Perspectives 3, interim (2025) · ECDC/EACS healthcare-worker survey (2024 report) · UKHSA HIV surveillance (Oct 2025) · Gallup industry ratings (Aug 2025) · TrustOS sector reads, published as bands.</span>
+    <span>Mission CTRL Ltd · Company No. 17018199 · <a href="#" id="privacy-choices" style="color: rgba(255,255,255,.35);">Privacy choices</a></span>
+  </div>
+</div>
+
+<div class="consent" id="consent" role="dialog" aria-label="Analytics consent">
+  <div class="consent-t">Analytics — only with your OK</div>
+  <div class="consent-b">We'd like to use Microsoft Clarity to see how this page is read (heatmaps, session replay — your form answers are masked). No ad tracking, no sale of data. Declining changes nothing.</div>
+  <div class="consent-row">
+    <button class="btn" id="consent-yes">Allow</button>
+    <button class="btn-quiet" id="consent-no">No thanks</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ambient hero field
+  var field = document.getElementById('hero-field');
+  if (field) {
+    var n = Math.max(26, Math.min(62, Math.floor(window.innerWidth / 26)));
+    var idx = []; for (var i = 0; i < n; i++) idx.push(i);
+    for (var j = idx.length - 1; j > 0; j--) { var k = (j * 7919 + 13) % (j + 1); var t = idx[j]; idx[j] = idx[k]; idx[k] = t; }
+    var muted = {}; for (var m = 0; m < Math.round(n * 0.475); m++) muted[idx[m]] = true;
+    for (var b = 0; b < n; b++) {
+      var el = document.createElement('div');
+      el.className = 'bar';
+      var isMuted = !!muted[b];
+      var h = 22 + Math.round(70 * Math.abs(Math.sin(b * 2.399)));
+      el.style.height = (isMuted ? 14 : h) + '%';
+      el.style.background = isMuted
+        ? 'linear-gradient(to top, rgba(255,255,255,.05), rgba(255,255,255,.01))'
+        : 'linear-gradient(to top, rgba(90,138,154,.5), rgba(143,181,192,.04))';
+      if (!isMuted && !reduced) {
+        el.style.animation = 'vv-speak ' + (2.6 + (b % 5) * 0.4).toFixed(2) + 's ease-in-out ' + ((b % 9) * 0.35).toFixed(2) + 's infinite';
+      }
+      field.appendChild(el);
+    }
+  }
+
+  // reveal: only below-the-fold elements start hidden; sweep fallback keeps it robust
+  if (reduced || !('IntersectionObserver' in window)) return;
+  var els = Array.prototype.slice.call(document.querySelectorAll('[data-rv]'));
+  function reveal(el) {
+    if (el.dataset.rvDone) return;
+    el.dataset.rvDone = '1';
+    el.style.animation = 'vv-rise .8s cubic-bezier(.16,1,.3,1) both';
+  }
+  var vh = window.innerHeight;
+  els.forEach(function(el) {
+    if (el.getBoundingClientRect().top > vh * 1.05) el.style.animation = 'vv-hold .01s linear both';
+    else el.dataset.rvDone = '1';
+  });
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0, rootMargin: '0px 0px -6% 0px' });
+  els.forEach(function(el) { if (!el.dataset.rvDone) io.observe(el); });
+  function sweep() {
+    els.forEach(function(el) {
+      if (el.dataset.rvDone) return;
+      if (el.getBoundingClientRect().top < window.innerHeight * 1.15) reveal(el);
+    });
+  }
+  window.addEventListener('scroll', sweep, { passive: true });
+  window.addEventListener('resize', sweep, { passive: true });
+  sweep();
+  var ticks = 0;
+  var timer = setInterval(function() { sweep(); if (++ticks > 40) clearInterval(timer); }, 500);
+})();
+</script>
+
+<script>
+/* ── Read Zero: draw ViiV's shape. Nothing leaves this page until the visitor sends it. ── */
+(function() {
+  var A = [60.1, 69.0], B = [229.9, 69.0], C = [145.0, 216.0], G = [145.0, 118.0];
+  var state = { group: null, other: '', otherOn: false, touched: { c: false, n: false, f: false }, c: 50, n: 50, f: 50, ev: null, open: '' };
+
+  function decode(t) { var d = document.createElement('div'); d.innerHTML = t; return d.textContent; }
+  function band(avg) {
+    return avg < 40 ? 'EXPOSED' : avg < 55 ? 'FRAGILE' : avg < 70 ? 'FUNCTIONAL' : avg < 85 ? 'RESILIENT' : 'DEFINING';
+  }
+  function gloss(b) {
+    return { EXPOSED: 'running on goodwill that may not be there', FRAGILE: 'trust present, but not yet load-bearing', FUNCTIONAL: "trust that's real but uneven", RESILIENT: 'trust that carries weight when tested', DEFINING: 'trust as identity' }[b];
+  }
+
+  // Q1 — one group
+  var gp = document.getElementById('rz-group'), other = document.getElementById('rz-other');
+  gp.querySelectorAll('.pick').forEach(function(b) {
+    b.addEventListener('click', function() {
+      gp.querySelectorAll('.pick').forEach(function(o) { o.classList.remove('sel'); });
+      b.classList.add('sel');
+      var v = b.dataset.v;
+      if (v === '__other') { state.group = '__other'; state.otherOn = true; other.classList.add('on'); other.focus(); }
+      else { state.group = decode(v); state.otherOn = false; other.classList.remove('on'); }
+      update();
+    });
+  });
+  other.addEventListener('input', function() { state.other = other.value.trim(); update(); });
+
+  // sliders → live shape
+  function vertex(V, fac) { return [(G[0] + fac * (V[0] - G[0])).toFixed(1), (G[1] + fac * (V[1] - G[1])).toFixed(1)]; }
+  function draw() {
+    var eff = function(x) { return 0.25 + 0.75 * (x / 100); };
+    var fA = eff((state.c + state.f) / 2), fB = eff((state.c + state.n) / 2), fC = eff((state.n + state.f) / 2);
+    var a = vertex(A, fA), b = vertex(B, fB), c = vertex(C, fC);
+    var shape = document.getElementById('rz-shape');
+    shape.setAttribute('points', a + ' ' + b + ' ' + c);
+    shape.setAttribute('fill-opacity', '0.85');
+    function edge(id, p, q) {
+      var e = document.getElementById(id);
+      e.setAttribute('x1', p[0]); e.setAttribute('y1', p[1]); e.setAttribute('x2', q[0]); e.setAttribute('y2', q[1]);
+      e.setAttribute('opacity', '1');
+    }
+    edge('rz-e1', a, b); edge('rz-e2', b, c); edge('rz-e3', c, a);
+    document.getElementById('rz-wait').setAttribute('opacity', '0');
+    var all = state.touched.c && state.touched.n && state.touched.f;
+    var bandEl = document.getElementById('rz-band');
+    if (all) {
+      var g2 = [(parseFloat(a[0]) + parseFloat(b[0]) + parseFloat(c[0])) / 3, (parseFloat(a[1]) + parseFloat(b[1]) + parseFloat(c[1])) / 3];
+      bandEl.setAttribute('x', g2[0].toFixed(1)); bandEl.setAttribute('y', (g2[1] - 3).toFixed(1));
+      bandEl.textContent = band((state.c + state.n + state.f) / 3);
+      bandEl.setAttribute('opacity', '1');
+    }
+  }
+  [['rz-c', 'c'], ['rz-n', 'n'], ['rz-f', 'f']].forEach(function(pair) {
+    var el = document.getElementById(pair[0]);
+    el.addEventListener('input', function() {
+      state[pair[1]] = parseInt(el.value, 10);
+      state.touched[pair[1]] = true;
+      draw(); update();
+    });
+  });
+
+  // sting + open
+  document.querySelectorAll('#rz-ev .pick').forEach(function(b) {
+    b.addEventListener('click', function() {
+      document.querySelectorAll('#rz-ev .pick').forEach(function(o) { o.classList.remove('sel'); });
+      b.classList.add('sel');
+      state.ev = decode(b.dataset.v);
+      update();
+    });
+  });
+  document.getElementById('rz-open').addEventListener('input', function(e) { state.open = e.target.value.trim(); update(); });
+
+  function groupName() { return state.group === '__other' ? (state.other || null) : state.group; }
+  function summary() {
+    var b = band((state.c + state.n + state.f) / 3);
+    return 'ViiV x TrustOS - my Read Zero shape:\n' +
+      '- Relationship: ' + groupName() + '\n' +
+      '- Clarity (would their answer match?): ' + state.c + '/100\n' +
+      '- Connection (how heard do they feel?): ' + state.n + '/100\n' +
+      '- Confidence (would they vouch?): ' + state.f + '/100\n' +
+      '- My shape reads as: ' + b +
+      (state.ev ? '\n- If the board asked for proof tomorrow: ' + state.ev : '') +
+      (state.open ? '\n- The one honest question I would ask: ' + state.open : '');
+  }
+
+  function update() {
+    var done = groupName() && state.touched.c && state.touched.n && state.touched.f;
+    var panel = document.getElementById('rz-result');
+    panel.classList.toggle('on', !!done);
+    if (!done) return;
+    var b = band((state.c + state.n + state.f) / 3);
+    var weakest = Math.min(state.c, state.n, state.f);
+    var wname = weakest === state.n ? 'Connection — feeling heard' : weakest === state.c ? 'Clarity — being understood' : 'Confidence — being vouched for';
+    document.getElementById('rz-line').textContent =
+      'Your shape: ' + groupName() + ' reads as ' + b.charAt(0) + b.slice(1).toLowerCase() + ' — ' + gloss(b) + '. Weakest edge by your own instinct: ' + wname + '. This is your belief, drawn. A measured read shows the experience — the gap between the two is the work.';
+    document.getElementById('rz-mail').href = 'mailto:hello@missionctrl.agency?subject=' +
+      encodeURIComponent('ViiV \u00d7 TrustOS \u2014 my Read Zero shape') + '&body=' + encodeURIComponent(summary() + '\n\n(Add anything else here \u2014 including whether you\u2019d like the demo or the 15-minute Q&A.)');
+  }
+
+  document.getElementById('rz-copy').addEventListener('click', function() {
+    var btn = this, text = summary();
+    function ok() { btn.textContent = 'Copied \u2014 paste anywhere'; setTimeout(function() { btn.textContent = 'Copy my shape'; }, 2600); }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok);
+      else { var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); ok(); }
+    } catch (e) { btn.textContent = 'Please use the email option'; }
+  });
+})();
+</script>
+
+<script>
+/* ── Consent-gated Microsoft Clarity: nothing loads until the visitor allows it ──
+   SETUP: create a project at clarity.microsoft.com and replace CLARITY_PROJECT_ID below.
+   In the Clarity dashboard, ALSO set Settings -> IP blocking as needed and confirm
+   masking mode (this page additionally masks the answers module via data-clarity-mask). */
+(function() {
+  var CLARITY_PROJECT_ID = 'ycg9h5xkb6';
+  var KEY = 'mc-analytics-consent';
+  function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function store(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  function loadClarity() {
+    if (window.clarity || CLARITY_PROJECT_ID.indexOf('REPLACE') === 0) return;
+    (function(c, l, a, r, i, t, y) {
+      c[a] = c[a] || function() { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', CLARITY_PROJECT_ID);
+    window.clarity('consentv2', { ad_storage: 'denied', analytics_storage: 'granted' });
+  }
+  var banner = document.getElementById('consent');
+  function show() { if (banner) banner.classList.add('on'); }
+  function hide() { if (banner) banner.classList.remove('on'); }
+  var yes = document.getElementById('consent-yes'), no = document.getElementById('consent-no');
+  if (yes) yes.addEventListener('click', function() { store('granted'); hide(); loadClarity(); });
+  if (no) no.addEventListener('click', function() { store('denied'); hide(); });
+  var choices = document.getElementById('privacy-choices');
+  if (choices) choices.addEventListener('click', function(e) { e.preventDefault(); show(); });
+
+  var gpc = typeof navigator !== 'undefined' && navigator.globalPrivacyControl;
+  var c = stored();
+  if (c === 'granted') { loadClarity(); return; }
+  if (c === 'denied' || gpc) return;            // respect stored decline + GPC
+  setTimeout(show, 1200);                        // fresh visitor: ask
+})();
+</script>
+
+</body>
+</html>

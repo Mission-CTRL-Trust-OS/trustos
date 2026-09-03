@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Here until no one feels unheard</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0A0F1A; }
+  body { font-family: 'Sora', sans-serif; color: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: #8FB5C0; text-decoration: none; }
+  a:hover { color: #B6D2D9; }
+
+  @keyframes vv-speak { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1); } }
+  @keyframes vv-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes vv-sweep { from { width: 0; } to { width: min(420px, 46vw); } }
+  @keyframes vv-drift { 0%, 100% { transform: translate(0,0) scale(1); opacity: .55; } 50% { transform: translate(40px,-26px) scale(1.12); opacity: .85; } }
+  @keyframes ds-trust-glow { 0%, 100% { text-shadow: 0 0 6px rgba(143,181,192,0.18); } 50% { text-shadow: 0 0 16px rgba(143,181,192,0.55), 0 0 34px rgba(143,181,192,0.22); } }
+  @keyframes ds-mark-glow-amb { 0%, 100% { opacity: 0.95; } 50% { opacity: 0.55; } }
+  .ds-trust-glow { color: #8fb5c0; animation: ds-trust-glow 4s ease-in-out infinite; }
+  .mark-glow { animation: ds-mark-glow-amb 4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .beat { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .rule { animation: none !important; width: min(420px, 46vw) !important; }
+    .bar, .ds-trust-glow, .mark-glow, .orb { animation: none !important; }
+  }
+
+  .stage { position: relative; min-height: 100svh; display: flex; flex-direction: column; overflow: hidden; background: radial-gradient(120% 90% at 12% 8%, #0E1826 0%, #0A0F1A 55%, #080C14 100%); }
+  .texture { position: absolute; inset: 0; opacity: .35; pointer-events: none; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.045) 0 1px, transparent 1px 78px); }
+  .orb { position: absolute; left: -8vw; bottom: -18vh; width: 46vw; height: 46vw; border-radius: 50%; filter: blur(90px); pointer-events: none; background: radial-gradient(circle, rgba(90,138,154,.30) 0%, rgba(90,138,154,0) 70%); animation: vv-drift 20s ease-in-out infinite; }
+  .field { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 11px; padding: 0 3vw; pointer-events: none; }
+  .field-fade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(175deg, rgba(10,15,26,.62) 0%, rgba(10,15,26,.88) 48%, rgba(10,15,26,.72) 78%, rgba(10,15,26,.35) 100%); }
+  .horizon { position: absolute; left: 0; right: 0; bottom: 78px; height: 1px; pointer-events: none; background: linear-gradient(90deg, rgba(143,181,192,0) 0%, rgba(143,181,192,.22) 20%, rgba(143,181,192,.22) 80%, rgba(143,181,192,0) 100%); }
+  .bar { width: 7px; border-radius: 4px 4px 0 0; transform-origin: bottom; }
+
+  .top { position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 26px clamp(24px, 5vw, 64px); }
+  .lockup { display: inline-flex; align-items: center; gap: 16px; }
+  .wordlink { display: inline-flex; align-items: center; gap: 9px; }
+  .wordmark { font-size: 1.08rem; font-weight: 800; letter-spacing: -0.03em; }
+  .wordmark .t { color: #fff; } .wordmark .o { color: #5a8a9a; }
+  .lockup-div { width: 1px; height: 18px; background: rgba(255,255,255,.12); }
+  .endorse { display: inline-flex; align-items: center; gap: 6px; font-size: .6rem; font-weight: 500; letter-spacing: .02em; color: rgba(255,255,255,.38); }
+  .badge { display: inline-flex; align-items: center; gap: 8px; font-size: .58rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.34); border: 1px solid rgba(255,255,255,.10); border-radius: 4px; padding: 7px 12px; }
+  .badge .dot { width: 5px; height: 5px; border-radius: 50%; background: #5A8A9A; }
+
+  .seq { position: relative; z-index: 3; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: clamp(30px, 5vh, 54px); padding: 4vh clamp(24px, 6vw, 80px) 8vh; max-width: 1180px; }
+  .beat { opacity: 0; }
+  .b1 { animation: vv-rise .9s cubic-bezier(.16,1,.3,1) .35s both; }
+  .b2 { animation: vv-rise .9s cubic-bezier(.16,1,.3,1) 1.5s both; }
+  .b3 { animation: vv-rise 1.1s cubic-bezier(.16,1,.3,1) 2.9s both; }
+  .b4 { animation: vv-rise .9s cubic-bezier(.16,1,.3,1) 4.3s both; }
+  .b5 { animation: vv-rise .9s cubic-bezier(.16,1,.3,1) 5.2s both; }
+
+  .quote { display: flex; gap: clamp(16px, 2.4vw, 28px); align-items: flex-start; max-width: 900px; }
+  .quote-bar { flex-shrink: 0; width: 3px; align-self: stretch; border-radius: 2px; background: linear-gradient(180deg, #8FB5C0, rgba(143,181,192,0)); }
+  .quote-text { display: block; font-size: clamp(1.15rem, 2.6vw, 1.85rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.42; color: rgba(255,255,255,.92); text-wrap: pretty; }
+  .quote-text .q { color: #8FB5C0; }
+  .attrib { display: block; font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 14px; }
+
+  .heard { display: grid; grid-template-columns: auto 1fr; gap: clamp(18px, 3vw, 40px); align-items: center; max-width: 940px; }
+  .heard-fig { font-family: 'JetBrains Mono', monospace; font-size: clamp(3.6rem, 11vw, 8.2rem); font-weight: 800; letter-spacing: -0.06em; line-height: .88; color: #8FB5C0; font-variant-numeric: tabular-nums; text-shadow: 0 0 40px rgba(143,181,192,.28); }
+  .heard-label { display: block; font-size: clamp(1.05rem, 2.3vw, 1.6rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; color: rgba(255,255,255,.92); text-wrap: pretty; }
+  .heard-src { display: block; font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.28); margin-top: 12px; }
+  @media (max-width: 620px) { .heard { grid-template-columns: 1fr; gap: 10px; } }
+
+  h1 { font-size: clamp(2.4rem, 7.6vw, 5.8rem); font-weight: 800; letter-spacing: -0.045em; line-height: 1.02; color: #fff; text-wrap: pretty; }
+  .rule { height: 3px; width: 0; border-radius: 2px; margin-top: 26px; background: linear-gradient(90deg, #8FB5C0, rgba(77,122,138,0)); animation: vv-sweep 1.2s cubic-bezier(.16,1,.3,1) 3.7s both; }
+
+  .ctas { display: flex; align-items: center; gap: clamp(18px, 3vw, 30px); flex-wrap: wrap; }
+  .btn { display: inline-block; font-size: .95rem; font-weight: 700; color: #fff; background: #5A8A9A; padding: 17px 34px; border-radius: 6px; transition: background .2s ease, transform .15s ease; }
+  .btn:hover { background: #4d7a8a; color: #fff; transform: translateY(-1px); }
+  .deep { font-size: .74rem; font-weight: 500; color: rgba(255,255,255,.42); border-bottom: 1px solid rgba(255,255,255,.16); padding-bottom: 3px; }
+
+  .foot { position: relative; z-index: 3; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 18px clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,.06); background: rgba(8,12,20,.5); }
+  .foot span { font-size: .58rem; letter-spacing: .04em; color: rgba(255,255,255,.28); }
+  .foot span:last-child { color: rgba(255,255,255,.22); }
+  .foot a { color: rgba(255,255,255,.3); }
+  .consent { position: fixed; left: 18px; bottom: 18px; z-index: 60; max-width: 380px; background: #10151f; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; padding: 18px 20px; box-shadow: 0 12px 40px rgba(0,0,0,.5); display: none; }
+  .consent.on { display: block; }
+  .consent-t { font-size: .78rem; font-weight: 800; color: #fff; }
+  .consent-b { font-size: .72rem; color: rgba(255,255,255,.55); line-height: 1.65; margin-top: 8px; }
+  .consent-row { display: flex; gap: 8px; margin-top: 14px; }
+  .consent-row .btn { font-size: .74rem; padding: 10px 18px; }
+  .btn-quiet { font-family: inherit; font-size: .74rem; font-weight: 600; color: rgba(255,255,255,.6); background: transparent; border: 1px solid rgba(255,255,255,.18); padding: 10px 18px; border-radius: 6px; cursor: pointer; }
+  .btn-quiet:hover { border-color: rgba(255,255,255,.4); color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="texture" aria-hidden="true"></div>
+  <div class="orb" aria-hidden="true"></div>
+  <div class="field" id="field" aria-hidden="true"></div>
+  <div class="field-fade" aria-hidden="true"></div>
+  <div class="horizon" aria-hidden="true"></div>
+
+  <div class="top">
+    <span class="lockup">
+      <a class="wordlink" href="/">
+        <svg width="22" height="27" viewBox="0 0 120 148" fill="none" overflow="visible" role="img" aria-label="TrustOS mark">
+          <defs>
+            <linearGradient id="mk-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient>
+            <linearGradient id="mk-ml" x1="60" y1="12" x2="60" y2="140"><stop offset="0%" stop-color="#5a8a9a" stop-opacity="0.5"/><stop offset="100%" stop-color="#5a8a9a" stop-opacity="0.03"/></linearGradient>
+            <filter id="mk-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+          </defs>
+          <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/>
+          <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="url(#mk-ml)"/>
+          <polygon class="mark-glow" points="30,12 90,12 60,88" fill="#6da0b8" filter="url(#mk-glow)"/>
+          <polygon points="30,12 90,12 60,88" fill="url(#mk-tg)"/>
+          <polygon points="30,12 90,12 60,88" fill="none" stroke="#8fb5c0" stroke-width="1.6"/>
+        </svg>
+        <span class="wordmark"><span class="t">Trust</span><span class="o">OS</span></span>
+      </a>
+      <span class="lockup-div"></span>
+      <a class="endorse" href="https://missionctrl.agency" target="_blank" rel="noopener">
+        <svg width="8" height="10" viewBox="0 0 120 148" fill="none" aria-hidden="true"><defs><linearGradient id="en-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="en-mc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#en-mg)" clip-path="url(#en-mc)"/></svg>
+        A MissionCTRL product
+      </a>
+    </span>
+    <span class="badge"><span class="dot"></span>For ViiV Healthcare · Confidential</span>
+  </div>
+
+  <div class="seq">
+    <div class="beat b1 quote">
+      <span class="quote-bar" aria-hidden="true"></span>
+      <span>
+        <span class="quote-text"><span class="q">“</span>Dear HIV &amp; AIDS… we’re not going anywhere. Here until you aren’t.<span class="q">”</span></span>
+        <span class="attrib">Your words. One of the great missions in medicine.</span>
+      </span>
+    </div>
+
+    <div class="beat b2 heard">
+      <span class="heard-fig"><span class="count" data-target="47">0</span>.5%</span>
+      <span>
+        <span class="heard-label">of people living with HIV sometimes feel unheard.</span>
+        <span class="heard-src">Your own study — Positive Perspectives 3, 2025</span>
+      </span>
+    </div>
+
+    <div class="beat b3">
+      <h1><span class="ds-trust-glow">Here until</span><br/>no one feels unheard.</h1>
+      <div class="rule" aria-hidden="true"></div>
+    </div>
+
+    <div class="beat b4 ctas">
+      <a class="btn" href="more/">How ViiV hears itself — 2 minutes →</a>
+      <a class="deep" href="/">or see the instrument itself →</a>
+    </div>
+  </div>
+
+  <div class="foot beat b5">
+    <span>TrustOS — the instrument that measures trust. A Mission CTRL product.</span>
+    <span>Mission CTRL Ltd · Company No. 17018199 · <a href="#" id="privacy-choices">Privacy choices</a> · <a href="more/#privacy">Privacy note</a></span>
+  </div>
+</div>
+
+<div class="consent" id="consent" role="dialog" aria-label="Analytics consent">
+  <div class="consent-t">Analytics — only with your OK</div>
+  <div class="consent-b">We'd like to use Microsoft Clarity to see how this page is read (heatmaps, session replay). No ad tracking, no sale of data. Declining changes nothing.</div>
+  <div class="consent-row">
+    <button class="btn" id="consent-yes" style="border:none; cursor:pointer; font-family:inherit;">Allow</button>
+    <button class="btn-quiet" id="consent-no">No thanks</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // The listening field: a row of voices — just under half of them silent.
+  var field = document.getElementById('field');
+  var n = Math.max(26, Math.min(62, Math.floor(window.innerWidth / 24)));
+  var muteCount = Math.round(n * 0.475);
+  var idx = [];
+  for (var i = 0; i < n; i++) idx.push(i);
+  for (var j = idx.length - 1; j > 0; j--) { var k = (j * 7919 + 13) % (j + 1); var t = idx[j]; idx[j] = idx[k]; idx[k] = t; }
+  var muted = {}; for (var m = 0; m < muteCount; m++) muted[idx[m]] = true;
+  for (var b = 0; b < n; b++) {
+    var el = document.createElement('div');
+    el.className = 'bar';
+    var isMuted = !!muted[b];
+    var h = 14 + Math.round(44 * Math.abs(Math.sin(b * 2.399)));
+    el.style.height = (isMuted ? 5 : h) + 'vh';
+    el.style.background = isMuted
+      ? 'linear-gradient(to top, rgba(255,255,255,.055), rgba(255,255,255,.01))'
+      : 'linear-gradient(to top, rgba(90,138,154,.62), rgba(143,181,192,.05))';
+    if (!isMuted) el.style.boxShadow = '0 0 22px rgba(90,138,154,.16)';
+    if (!isMuted && !reduced) {
+      el.style.animation = 'vv-speak ' + (2.6 + (b % 5) * 0.4).toFixed(2) + 's ease-in-out ' + ((b % 9) * 0.35).toFixed(2) + 's infinite';
+    }
+    field.appendChild(el);
+  }
+
+  // Count-up for 47.5
+  var c = document.querySelector('.count');
+  if (c) {
+    if (reduced) { c.textContent = '47'; return; }
+    setTimeout(function() {
+      var dur = 1300, start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        c.textContent = Math.round(47 * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }, 1600);
+  }
+})();
+</script>
+
+<script>
+/* Consent-gated Microsoft Clarity — same key as the more page, so one choice covers the funnel.
+   SETUP: replace CLARITY_PROJECT_ID with the ID from clarity.microsoft.com. */
+(function() {
+  var CLARITY_PROJECT_ID = 'ycg9h5xkb6';
+  var KEY = 'mc-analytics-consent';
+  function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function store(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  function loadClarity() {
+    if (window.clarity || CLARITY_PROJECT_ID.indexOf('REPLACE') === 0) return;
+    (function(c, l, a, r, i, t, y) {
+      c[a] = c[a] || function() { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', CLARITY_PROJECT_ID);
+    window.clarity('consentv2', { ad_storage: 'denied', analytics_storage: 'granted' });
+  }
+  var banner = document.getElementById('consent');
+  function show() { if (banner) banner.classList.add('on'); }
+  function hide() { if (banner) banner.classList.remove('on'); }
+  var yes = document.getElementById('consent-yes'), no = document.getElementById('consent-no');
+  if (yes) yes.addEventListener('click', function() { store('granted'); hide(); loadClarity(); });
+  if (no) no.addEventListener('click', function() { store('denied'); hide(); });
+  var choices = document.getElementById('privacy-choices');
+  if (choices) choices.addEventListener('click', function(e) { e.preventDefault(); show(); });
+  var gpc = typeof navigator !== 'undefined' && navigator.globalPrivacyControl;
+  var c = stored();
+  if (c === 'granted') { loadClarity(); return; }
+  if (c === 'denied' || gpc) return;
+  setTimeout(show, 6500); /* after the ad's beats have played */
+})();
+</script>
+
+</body>
+</html>
