@@ -172,6 +172,30 @@
   .rz-canvas svg { width: 100%; height: auto; display: block; }
   #rz-shape { transition: fill-opacity .4s ease; }
 
+  /* ── Finish the sentence: the campaign system, in the visitor's own words ── */
+  .unm-lock { display: flex; align-items: baseline; gap: .5em; flex-wrap: wrap; font-size: clamp(1rem, 2.4vw, 1.45rem); font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: #8fb5c0; margin: 4px 0 16px; }
+  .unm-blank { min-width: 6em; padding-bottom: 3px; color: rgba(255,255,255,.32); border-bottom: 2px solid rgba(143,181,192,.45); }
+  .unm-blank.on { color: #fff; }
+  .unm-in { display: block; width: 100%; max-width: 460px; margin-top: 12px; font-family: inherit; font-size: .88rem; font-weight: 600; color: #fff; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.14); border-radius: 6px; padding: 12px 14px; }
+  .unm-in::placeholder { color: rgba(255,255,255,.3); font-weight: 500; }
+  .unm-in:focus { outline: none; border-color: rgba(143,181,192,.65); }
+
+  /* ── The share card: their shape, their sentence, nothing they didn't write ── */
+  .card-wrap { margin-top: 30px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.08); display: none; }
+  .card-wrap.on { display: block; }
+  #rz-card { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid rgba(255,255,255,.10); }
+  .card-note { font-size: .68rem; line-height: 1.7; color: rgba(255,255,255,.4); margin-top: 12px; }
+
+  /* ── What changes when it's measured ── */
+  .strike-band { padding: clamp(44px, 7vh, 76px) clamp(24px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,.06); background: rgba(255,255,255,.012); }
+  .strike-row { display: grid; grid-template-columns: repeat(2, max-content); justify-content: center; align-items: baseline; column-gap: clamp(28px, 6vw, 88px); row-gap: clamp(14px, 2.4vh, 24px); margin: 0 auto; }
+  @media (max-width: 560px) { .strike-row { grid-template-columns: max-content; row-gap: 12px; } }
+  .sk { display: inline-flex; align-items: baseline; gap: .42em; font-size: clamp(.94rem, 2vw, 1.3rem); font-weight: 800; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  .sk i { position: relative; font-style: normal; color: rgba(255,255,255,.38); }
+  .sk i::after { content: ''; position: absolute; left: -3px; right: -3px; top: 52%; height: 2px; border-radius: 1px; background: #5a8a9a; }
+  .sk b { font-weight: 800; color: #fff; }
+  .strike-cap { text-align: center; font-size: .62rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: clamp(24px, 4vh, 40px); }
+
   /* consent banner */
   .consent { position: fixed; left: 18px; bottom: 18px; z-index: 60; max-width: 380px; background: #10151f; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; padding: 18px 20px; box-shadow: 0 12px 40px rgba(0,0,0,.5); display: none; }
   .consent.on { display: block; }
@@ -437,9 +461,9 @@
   <!-- ═══ 05 READ ZERO ═══ -->
   <section class="tinted" id="shape">
     <div class="wrap">
-      <div class="kicker" data-rv>05 · Read Zero — the read ViiV takes of itself</div>
+      <div class="kicker" data-rv>05 · Read Zero — the first act of Unmute</div>
       <h2 data-rv>Draw ViiV's shape. Sixty seconds.</h2>
-      <p class="lede" data-rv>Pick the relationship you know best and trust your gut — <b>the shape draws itself</b>. Nothing leaves this page until you choose to send it. And when enough shapes come back, ViiV's self-portrait — the first read ViiV has ever taken of itself — returns to you, presented by the colleague who invited you.</p>
+      <p class="lede" data-rv>Pick the relationship you know best and trust your gut — <b>the shape draws itself</b>. Nothing leaves this page until you choose to send it. And when enough shapes come back, ViiV's self-portrait — the first read ViiV has ever taken of itself — returns to you, presented by the colleague who invited you. Before ViiV asks anyone else to listen, this is ViiV listening to itself.</p>
       <div class="ask-box" data-rv data-clarity-mask="true">
 
         <div class="ask-q">1 · Your relationship</div>
@@ -514,6 +538,31 @@
           <div class="ask-q">Optional · Your question</div>
           <div class="ask-t" style="font-size: .9rem;">If you could hear one completely honest answer from them — what would you ask?</div>
           <textarea class="ask-open" id="rz-open" maxlength="280" placeholder="One question. It might end up in the first read."></textarea>
+
+          <div class="ask-q" style="margin-top: 26px;">4 · Finish the sentence</div>
+          <div class="ask-t">Who does ViiV most need to hear?</div>
+          <div class="unm-lock">Unmute <span class="unm-blank" id="unm-blank">______</span></div>
+          <div class="picks" id="unm-picks">
+            <button class="pick" data-v="the room">the room</button>
+            <button class="pick" data-v="the clinic">the clinic</button>
+            <button class="pick" data-v="the quiet ones">the quiet ones</button>
+            <button class="pick" data-v="the commissioner">the commissioner</button>
+            <button class="pick" data-v="the people we never ask">the people we never ask</button>
+            <button class="pick" data-v="ourselves">ourselves</button>
+          </div>
+          <input class="unm-in" id="unm-own" type="text" maxlength="40" placeholder="Or write your own — three words is plenty"/>
+
+          <div class="card-wrap" id="rz-card-wrap">
+            <div class="ask-q">Your card</div>
+            <div class="ask-t" style="font-size: .9rem;">Nobody else drew this shape. Take it with you, or send it to the next person.</div>
+            <canvas id="rz-card" width="1200" height="630" role="img" aria-label="Your Read Zero card: the shape you drew, the band it reads as, and the sentence you finished."></canvas>
+            <div class="card-note">The card is drawn in your browser and never sent anywhere. Download it to keep or attach it; “Send it on” opens your own mail client with nothing filled in but the words.</div>
+            <div class="ar-ctas" style="margin-top: 18px;">
+              <a class="btn" id="rz-dl" href="#" download="unmute-my-shape.png">Download the card</a>
+              <a class="btn-quiet" id="rz-fwd" href="#">Send it on</a>
+            </div>
+          </div>
+
           <div class="ar-ctas">
             <a class="btn" id="rz-mail" href="#">Email my shape</a>
             <button class="btn-quiet" id="rz-copy">Copy my shape</button>
@@ -525,6 +574,17 @@
       </div>
     </div>
   </section>
+
+  <!-- ═══ WHAT CHANGES ═══ -->
+  <div class="strike-band">
+    <div class="strike-cap" data-rv>What changes when it's measured</div>
+    <div class="strike-row" data-rv>
+      <span class="sk">We <i>think</i> <b>know</b></span>
+      <span class="sk"><i>Assumed</i> <b>measured</b></span>
+      <span class="sk"><i>Talking</i> <b>listening</b></span>
+      <span class="sk">Heard <i>about</i> <b>heard from</b></span>
+    </div>
+  </div>
 
   <!-- ═══ CTA ═══ -->
   <section class="cta-sec">
@@ -648,7 +708,7 @@
 /* ── Read Zero: draw ViiV's shape. Nothing leaves this page until the visitor sends it. ── */
 (function() {
   var A = [60.1, 69.0], B = [229.9, 69.0], C = [145.0, 216.0], G = [145.0, 118.0];
-  var state = { group: null, other: '', otherOn: false, touched: { c: false, n: false, f: false }, c: 50, n: 50, f: 50, ev: null, open: '' };
+  var state = { group: null, other: '', otherOn: false, touched: { c: false, n: false, f: false }, c: 50, n: 50, f: 50, ev: null, open: '', unm: '' };
 
   function decode(t) { var d = document.createElement('div'); d.innerHTML = t; return d.textContent; }
   function band(avg) {
@@ -725,7 +785,8 @@
       '- Clarity (would their answer match?): ' + state.c + '/100\n' +
       '- Connection (how heard do they feel?): ' + state.n + '/100\n' +
       '- Confidence (would they vouch?): ' + state.f + '/100\n' +
-      '- My shape reads as: ' + b +
+      '- My shape reads as: ' + b + '\n' +
+      '- Unmute: ' + (state.unm || '(not answered)') +
       (state.ev ? '\n- If the board asked for proof tomorrow: ' + state.ev : '') +
       (state.open ? '\n- The one honest question I would ask: ' + state.open : '');
   }
@@ -734,6 +795,7 @@
     var done = groupName() && state.touched.c && state.touched.n && state.touched.f;
     var panel = document.getElementById('rz-result');
     panel.classList.toggle('on', !!done);
+    refreshCard();
     if (!done) return;
     var b = band((state.c + state.n + state.f) / 3);
     var weakest = Math.min(state.c, state.n, state.f);
@@ -743,6 +805,175 @@
     document.getElementById('rz-mail').href = 'mailto:hello@missionctrl.agency?subject=' +
       encodeURIComponent('ViiV \u00d7 TrustOS \u2014 my Read Zero shape') + '&body=' + encodeURIComponent(summary() + '\n\n(Add anything else here \u2014 including whether you\u2019d like the demo or the 15-minute Q&A.)');
   }
+
+  /* ── Finish the sentence. The campaign system, completed by the visitor. ── */
+  var unmPicks = document.getElementById('unm-picks'), unmOwn = document.getElementById('unm-own'), unmBlank = document.getElementById('unm-blank');
+  function setUnm(v) {
+    state.unm = v;
+    unmBlank.textContent = v || '______';
+    unmBlank.classList.toggle('on', !!v);
+    update();
+  }
+  unmPicks.querySelectorAll('.pick').forEach(function(b) {
+    b.addEventListener('click', function() {
+      unmPicks.querySelectorAll('.pick').forEach(function(o) { o.classList.remove('sel'); });
+      b.classList.add('sel');
+      unmOwn.value = '';
+      setUnm(b.dataset.v);
+    });
+  });
+  unmOwn.addEventListener('input', function() {
+    var v = unmOwn.value.trim();
+    if (v) unmPicks.querySelectorAll('.pick').forEach(function(o) { o.classList.remove('sel'); });
+    setUnm(v);
+  });
+
+  /* ── The card. Drawn in the browser, never sent. Their shape, their band
+        word, their sentence — and no numbers, per the standing rule. ── */
+  function wrap(x, text, maxW) {
+    var words = String(text).split(' '), lines = [], line = '';
+    for (var i = 0; i < words.length; i++) {
+      var test = line ? line + ' ' + words[i] : words[i];
+      if (x.measureText(test).width > maxW && line) { lines.push(line); line = words[i]; }
+      else line = test;
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function drawCard() {
+    var cv = document.getElementById('rz-card');
+    if (!cv || !cv.getContext) return;
+    var W = 1200, H = 630, x = cv.getContext('2d');
+    var b = band((state.c + state.n + state.f) / 3);
+    var SORA = 'Sora, "Helvetica Neue", Helvetica, Arial, sans-serif';
+
+    x.clearRect(0, 0, W, H);
+    var bg = x.createRadialGradient(180, 90, 0, 180, 90, 1100);
+    bg.addColorStop(0, '#0E1826'); bg.addColorStop(0.55, '#0A0F1A'); bg.addColorStop(1, '#080C14');
+    x.fillStyle = bg; x.fillRect(0, 0, W, H);
+    x.strokeStyle = 'rgba(255,255,255,0.10)'; x.lineWidth = 2; x.strokeRect(1, 1, W - 2, H - 2);
+
+    // geometry: the same coordinate space as the live shape on the page
+    var SC = 1.85, OX = 56, OY = 96;
+    function P(pt) { return [OX + (parseFloat(pt[0]) - 20) * SC, OY + (parseFloat(pt[1]) - 40) * SC]; }
+    function tri(pts, close) {
+      x.beginPath(); x.moveTo(pts[0][0], pts[0][1]);
+      for (var i = 1; i < pts.length; i++) x.lineTo(pts[i][0], pts[i][1]);
+      if (close !== false) x.closePath();
+    }
+    var iA = P(A), iB = P(B), iC = P(C);
+    x.setLineDash([6, 9]); x.strokeStyle = 'rgba(255,255,255,0.18)'; x.lineWidth = 1.5;
+    tri([iA, iB, iC]); x.stroke(); x.setLineDash([]);
+
+    var eff = function(v) { return 0.25 + 0.75 * (v / 100); };
+    var fA = eff((state.c + state.f) / 2), fB = eff((state.c + state.n) / 2), fC = eff((state.n + state.f) / 2);
+    function vtx(V, fac) { return [G[0] + fac * (V[0] - G[0]), G[1] + fac * (V[1] - G[1])]; }
+    var a = P(vtx(A, fA)), bb = P(vtx(B, fB)), c = P(vtx(C, fC));
+
+    var gy = x.createLinearGradient(0, OY, 0, OY + 200 * SC);
+    gy.addColorStop(0, '#7fb4cc'); gy.addColorStop(0.5, '#6da0b8'); gy.addColorStop(1, '#4d7a8a');
+    x.save(); x.globalAlpha = 0.85; x.fillStyle = gy; tri([a, bb, c]); x.fill(); x.restore();
+
+    [[a, bb, '#8fb5c0'], [bb, c, '#7cc4a8'], [c, a, '#a78bdb']].forEach(function(e) {
+      x.beginPath(); x.moveTo(e[0][0], e[0][1]); x.lineTo(e[1][0], e[1][1]);
+      x.strokeStyle = e[2]; x.lineWidth = 3.4; x.lineCap = 'round'; x.stroke();
+    });
+
+    var gx = (a[0] + bb[0] + c[0]) / 3, gyy = (a[1] + bb[1] + c[1]) / 3;
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillStyle = '#fff'; x.font = '800 18px ' + SORA;
+    if (x.letterSpacing !== undefined) x.letterSpacing = '3px';
+    x.fillText(b, gx, gyy);
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+
+    x.font = '600 11px ' + SORA; x.fillStyle = 'rgba(255,255,255,0.26)';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '1.6px';
+    x.fillText('DASHED = ALIGNED IDEAL', OX + 125 * SC, OY + 188 * SC);
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+
+    // the words
+    var L = 580, R = 1132, maxW = R - L;
+    x.textAlign = 'left'; x.textBaseline = 'alphabetic';
+
+    x.font = '700 13px ' + SORA; x.fillStyle = '#8fb5c0';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '2.4px';
+    x.fillText('READ ZERO \u00b7 ' + String(groupName() || '').toUpperCase(), L, 140);
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+
+    x.font = '800 50px ' + SORA;
+    if (x.letterSpacing !== undefined) x.letterSpacing = '2.6px';
+    x.fillStyle = '#8fb5c0'; x.fillText('UNMUTE', L, 212);
+    var lines = wrap(x, String(state.unm || '').toUpperCase(), maxW).slice(0, 2);
+    x.fillStyle = '#ffffff';
+    lines.forEach(function(ln, i) { x.fillText(ln, L, 272 + i * 56); });
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+
+    var ry = 272 + (lines.length - 1) * 56 + 30;
+    var gr = x.createLinearGradient(L, 0, L + 200, 0);
+    gr.addColorStop(0, '#8fb5c0'); gr.addColorStop(1, 'rgba(77,122,138,0)');
+    x.fillStyle = gr; x.fillRect(L, ry, 200, 3);
+
+    x.font = '500 20px ' + SORA; x.fillStyle = 'rgba(255,255,255,0.72)';
+    wrap(x, 'This is what I think they\u2019d say. I\u2019d like to know if I\u2019m right.', maxW)
+      .slice(0, 3).forEach(function(ln, i) { x.fillText(ln, L, ry + 44 + i * 30); });
+
+    // A card with no route back is a dead end.
+    x.font = '700 12px ' + SORA; x.fillStyle = '#8fb5c0';
+    if (x.letterSpacing !== undefined) x.letterSpacing = '2.2px';
+    x.fillText('DRAW YOURS \u2014 SIXTY SECONDS', L, 482);
+    if (x.letterSpacing !== undefined) x.letterSpacing = '0px';
+    x.font = '600 17px ' + SORA; x.fillStyle = 'rgba(255,255,255,0.6)';
+    x.fillText('trustos.missionctrl.agency/viiv', L, 512);
+    var uw = x.measureText('trustos.missionctrl.agency/viiv').width;
+    x.font = '500 14px ' + SORA; x.fillStyle = 'rgba(255,255,255,0.34)';
+    x.fillText('the word at the door is Unmute', L + uw + 18, 512);
+
+    x.fillStyle = 'rgba(255,255,255,0.08)'; x.fillRect(78, 556, W - 156, 1);
+    x.font = '600 13px ' + SORA; x.fillStyle = 'rgba(255,255,255,0.32)';
+    x.fillText('TrustOS \u2014 the instrument that measures trust. A MissionCTRL product.', 78, 592);
+    x.textAlign = 'right';
+    x.fillText('Confidential \u00b7 for ViiV Healthcare', W - 78, 592);
+    x.textAlign = 'left';
+  }
+
+  var cardWrap = document.getElementById('rz-card-wrap');
+  function refreshCard() {
+    var ready = groupName() && state.touched.c && state.touched.n && state.touched.f && state.unm;
+    cardWrap.classList.toggle('on', !!ready);
+    if (!ready) return;
+    drawCard();
+    var bnd = band((state.c + state.n + state.f) / 3);
+    var body = 'I took two minutes and drew ViiV\u2019s shape \u2014 what I think ' + groupName() +
+      ' would actually say about us, not what we hope they would.\n\n' +
+      'Mine reads as ' + bnd + '. Unmute ' + state.unm + '.\n\n' +
+      'Draw yours \u2014 sixty seconds, and nothing leaves the page unless you send it:\n' +
+      'https://trustos.missionctrl.agency/viiv/\n' +
+      'The word at the door is: Unmute\n\n' +
+      'This is what I think they\u2019d say. I\u2019d like to know if I\u2019m right.';
+    document.getElementById('rz-fwd').href = 'mailto:?subject=' +
+      encodeURIComponent('Two minutes: draw ViiV\u2019s shape') + '&body=' + encodeURIComponent(body);
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function() { if (cardWrap.classList.contains('on')) drawCard(); });
+  }
+
+  document.getElementById('rz-dl').addEventListener('click', function(e) {
+    e.preventDefault();
+    var cv = document.getElementById('rz-card'), name = 'unmute-my-shape.png';
+    function fallback() { try { window.open(cv.toDataURL('image/png'), '_blank'); } catch (er) {} }
+    try {
+      if (!cv.toBlob) return fallback();
+      cv.toBlob(function(bl) {
+        if (!bl) return fallback();
+        var u = URL.createObjectURL(bl), a = document.createElement('a');
+        a.href = u; a.download = name; document.body.appendChild(a); a.click();
+        document.body.removeChild(a); setTimeout(function() { URL.revokeObjectURL(u); }, 4000);
+      }, 'image/png');
+    } catch (er) { fallback(); }
+    if (window.plausible) window.plausible('Read Zero card downloaded');
+  });
 
   document.getElementById('rz-copy').addEventListener('click', function() {
     var btn = this, text = summary();
