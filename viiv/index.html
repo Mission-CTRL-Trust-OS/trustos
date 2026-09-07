@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Unmute the room</title>
+<title>Nobody gets left behind out loud</title>
 <meta name="robots" content="noindex, nofollow"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet"/>
@@ -27,6 +27,7 @@
     .rule { animation: none !important; width: min(420px, 46vw) !important; }
     .bar, .ds-trust-glow, .mark-glow, .orb { animation: none !important; }
     .unm-after, .unm-fill, .field-fade { transition: none !important; }
+    .obj-i.first { text-shadow: none !important; }
   }
 
   .stage { position: relative; min-height: 100svh; display: flex; flex-direction: column; overflow: hidden; background: radial-gradient(120% 90% at 12% 8%, #0E1826 0%, #0A0F1A 55%, #080C14 100%); }
@@ -63,6 +64,14 @@
   .quote-text .q { color: #8FB5C0; }
   .attrib { display: block; font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-top: 14px; }
 
+  /* Their own three objectives, in their own order. Listen is first. */
+  .obj { display: flex; align-items: center; gap: clamp(10px, 1.6vw, 18px); flex-wrap: wrap; margin-top: clamp(14px, 2.2vh, 22px); }
+  .obj-lead { font-size: .68rem; font-weight: 500; letter-spacing: .02em; color: rgba(255,255,255,.4); }
+  .obj-set { display: flex; align-items: center; gap: clamp(8px, 1.4vw, 14px); flex-wrap: wrap; }
+  .obj-i { font-size: clamp(.66rem, 1.35vw, .8rem); font-weight: 800; letter-spacing: .15em; text-transform: uppercase; color: rgba(255,255,255,.28); }
+  .obj-i.first { color: #8fb5c0; text-shadow: 0 0 16px rgba(143,181,192,.4); }
+  .obj-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,.18); }
+
   .heard { display: grid; grid-template-columns: auto 1fr; gap: clamp(18px, 3vw, 40px); align-items: center; max-width: 940px; }
   .heard-fig { font-family: 'JetBrains Mono', monospace; font-size: clamp(3rem, 8.4vw, 6.2rem); font-weight: 800; letter-spacing: -0.06em; line-height: .88; color: #8FB5C0; font-variant-numeric: tabular-nums; text-shadow: 0 0 40px rgba(143,181,192,.28); }
   .heard-label { display: block; font-size: clamp(1.05rem, 2.3vw, 1.6rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; color: rgba(255,255,255,.92); text-wrap: pretty; }
@@ -89,8 +98,8 @@
   .unmute .wave { opacity: 0; transition: opacity .3s ease .1s; }
   .unmute[aria-pressed="true"] .wave { opacity: 1; }
   .unm-hint { font-size: .68rem; font-weight: 500; letter-spacing: .04em; color: rgba(255,255,255,.34); }
-  .unm-after { max-width: 660px; margin-top: 13px; font-size: clamp(.84rem, 1.6vw, .98rem); font-weight: 500; line-height: 1.62; color: rgba(255,255,255,.66); text-wrap: pretty; opacity: 0; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease; }
-  .unm-after.on { opacity: 1; transform: none; }
+  .unm-after { max-width: 660px; font-size: clamp(.84rem, 1.6vw, .98rem); font-weight: 500; line-height: 1.62; color: rgba(255,255,255,.66); text-wrap: pretty; opacity: 0; max-height: 0; overflow: hidden; transform: translateY(8px); transition: opacity .6s ease, transform .6s ease, max-height .6s cubic-bezier(.16,1,.3,1), margin-top .6s ease; }
+  .unm-after.on { opacity: 1; max-height: 12em; margin-top: 13px; transform: none; }
   .unm-after b { font-weight: 700; color: rgba(255,255,255,.9); }
 
   .ctas { display: flex; align-items: center; gap: clamp(18px, 3vw, 30px); flex-wrap: wrap; }
@@ -124,7 +133,10 @@
     h1 { font-size: clamp(2rem, 4.6vw, 3.3rem); }
     .rule { margin-top: 12px; }
     .unm-lock { margin-top: 10px; font-size: clamp(.86rem, 1.5vw, 1.1rem); }
-    .unm-after { margin-top: 10px; font-size: .84rem; line-height: 1.55; }
+    .unm-after.on { margin-top: 10px; }
+    .unm-after { font-size: .84rem; line-height: 1.55; }
+    .obj { margin-top: 10px; }
+    .obj-lead { font-size: .64rem; }
   }
 </style>
 <!-- Privacy-friendly analytics by Plausible -->
@@ -175,8 +187,18 @@
     <div class="beat b1 quote">
       <span class="quote-bar" aria-hidden="true"></span>
       <span>
-        <span class="quote-text"><span class="q">“</span>Dear HIV &amp; AIDS… we’re not going anywhere. Here until you aren’t.<span class="q">”</span></span>
-        <span class="attrib">Your words. One of the great missions in medicine.</span>
+        <span class="quote-text"><span class="q">“</span>Our mission is to leave no person living with HIV behind.<span class="q">”</span></span>
+        <span class="attrib">ViiV Healthcare. Your words. One of the great missions in medicine.</span>
+        <span class="obj">
+          <span class="obj-lead">And the three things you say will get you there, in your order:</span>
+          <span class="obj-set">
+            <span class="obj-i first">Listen</span>
+            <span class="obj-dot" aria-hidden="true"></span>
+            <span class="obj-i">Let communities lead</span>
+            <span class="obj-dot" aria-hidden="true"></span>
+            <span class="obj-i">Collaborate and co-create</span>
+          </span>
+        </span>
       </span>
     </div>
 
@@ -189,7 +211,7 @@
     </div>
 
     <div class="beat b3">
-      <h1>The mute button<br/><span class="ds-trust-glow">is on our side.</span></h1>
+      <h1>Nobody gets left<br/>behind <span class="ds-trust-glow">out loud.</span></h1>
       <div class="rule" aria-hidden="true"></div>
       <div class="unm-lock">Unmute <span class="unm-fill" id="unm-fill">the room</span></div>
     </div>
@@ -204,13 +226,13 @@
           </svg>
           <span>Unmute</span>
         </button>
-        <span class="unm-hint" id="unm-hint">Just under half the voices behind this page are silent. One tap.</span>
+        <span class="unm-hint" id="unm-hint">Being left behind sounds like this. One tap.</span>
       </div>
-      <p class="unm-after" id="unm-after"><b>One tap raised them.</b> That is the easy part. Knowing whether it worked &mdash; out there, in a clinic, in a commissioning meeting &mdash; is the part nobody has measured.</p>
+      <p class="unm-after" id="unm-after"><b>One tap raised them.</b> That is the easy part. Out there the mute button is on our side &mdash; and nobody has measured whether we have taken our finger off it.</p>
     </div>
 
     <div class="beat b5 ctas">
-      <a class="btn" href="more/">How ViiV hears itself — 2 minutes →</a>
+      <a class="btn" href="more/">How ViiV hears its mission — 2 minutes →</a>
       <a class="deep" href="/">or see the instrument itself →</a>
     </div>
   </div>
@@ -276,7 +298,16 @@
       var veil = document.querySelector('.field-fade');
       if (veil) veil.classList.add('lit');
       var after = document.getElementById('unm-after');
-      if (after) setTimeout(function() { after.classList.add('on'); }, reduced ? 0 : 700);
+      if (after) setTimeout(function() {
+        after.classList.add('on');
+        // On short screens the reveal can push the click off the bottom. Bring it back.
+        setTimeout(function() {
+          var cta = document.querySelector('.ctas');
+          if (cta && cta.getBoundingClientRect().bottom > window.innerHeight - 8) {
+            cta.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'end' });
+          }
+        }, reduced ? 0 : 750);
+      }, reduced ? 0 : 700);
       if (window.plausible) window.plausible('Unmute the field');
     });
   }
