@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Don't count me &middot; TrustOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{--blaze:#ff6b2b;--amber:#ffad3b;--deep:#0a0f1a;--muted:#8b95a7}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;padding:32px;
+       background:var(--deep);color:#f4f6fa;
+       font-family:'Sora',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+       background-image:radial-gradient(60% 50% at 50% 0%,rgba(255,107,43,.14),transparent 70%)}
+  main{width:100%;max-width:520px;text-align:center}
+  .mark{width:38px;height:auto;margin:0 auto 28px;display:block}
+  h1{font-size:clamp(26px,5vw,34px);line-height:1.15;font-weight:700;margin:0 0 14px;letter-spacing:-.02em}
+  p{font-size:15px;line-height:1.6;color:#c9d1de;margin:0 0 14px}
+  .status{margin:26px 0 22px;padding:16px 18px;border-radius:12px;font-size:14px;line-height:1.5;
+          border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+  .status.on{border-color:rgba(255,107,43,.45);background:rgba(255,107,43,.09)}
+  .status strong{color:var(--amber)}
+  ul{list-style:none;padding:0;margin:12px 0 0;font-size:13px;color:var(--muted);text-align:left}
+  ul li{padding:5px 0 5px 22px;position:relative}
+  ul li:before{content:"";position:absolute;left:4px;top:12px;width:7px;height:7px;border-radius:50%;background:var(--blaze)}
+  button{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+         padding:11px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.22);
+         background:transparent;color:#c9d1de;transition:.15s}
+  button:hover{border-color:var(--blaze);color:#fff}
+  .note{font-size:12px;color:var(--muted);margin-top:26px}
+  a{color:var(--amber)}
+</style>
+</head>
+<body>
+<main>
+  <svg class="mark" viewBox="0 0 120 152" fill="none" aria-hidden="true">
+    <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" stroke="#ff6b2b" stroke-width="8" stroke-linejoin="round"/>
+  </svg>
+  <h1>Don't count me</h1>
+  <p>This device is now excluded from TrustOS analytics. Open this page once on every browser and device you use &mdash; phone, laptop, work machine &mdash; and none of your own visits will be counted.</p>
+
+  <div class="status" id="status">Applying&hellip;</div>
+
+  <button id="undo" type="button">Start counting me again</button>
+
+  <p class="note">The setting lives in this browser's own storage, so it goes away if you clear site data &mdash; just open this page again. Nothing is sent anywhere; this page loads no analytics of its own.</p>
+</main>
+
+<script>
+(function () {
+  var statusEl = document.getElementById('status');
+  var undoEl = document.getElementById('undo');
+
+  function clearClarityCookies() {
+    var hosts = [location.hostname, '.' + location.hostname, '.missionctrl.agency'];
+    ['_clck', '_clsk'].forEach(function (name) {
+      hosts.forEach(function (h) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=' + h;
+      });
+      document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    });
+  }
+
+  function apply() {
+    try {
+      localStorage.setItem('plausible_ignore', 'true');
+      localStorage.setItem('mc-analytics-consent', 'denied');
+      clearClarityCookies();
+      statusEl.className = 'status on';
+      statusEl.innerHTML = '<strong>You are not being counted.</strong>' +
+        '<ul><li>Plausible: page views from this browser are ignored</li>' +
+        '<li>Microsoft Clarity: declined, so it never loads &mdash; no session recording</li>' +
+        '<li>Any Clarity cookies already on this device have been cleared</li></ul>';
+      undoEl.hidden = false;
+    } catch (e) {
+      statusEl.className = 'status';
+      statusEl.innerHTML = 'This browser is blocking local storage, so the setting could not be saved. ' +
+        'Turn off private/incognito mode or allow site data for this site, then reload.';
+      undoEl.hidden = true;
+    }
+  }
+
+  undoEl.addEventListener('click', function () {
+    try {
+      localStorage.removeItem('plausible_ignore');
+      localStorage.removeItem('mc-analytics-consent');
+    } catch (e) {}
+    statusEl.className = 'status';
+    statusEl.innerHTML = 'Exclusion removed. Your visits will be counted again, and you will be asked ' +
+      'about session analytics next time you land on the site.';
+    undoEl.hidden = true;
+  });
+
+  apply();
+})();
+</script>
+</body>
+</html>
