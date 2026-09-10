@@ -26,6 +26,8 @@
   ul{list-style:none;padding:0;margin:12px 0 0;font-size:13px;color:var(--muted);text-align:left}
   ul li{padding:5px 0 5px 22px;position:relative}
   ul li:before{content:"";position:absolute;left:4px;top:12px;width:7px;height:7px;border-radius:50%;background:var(--blaze)}
+  .handoff{font-size:14px;line-height:1.6;color:#c9d1de;margin:0 0 20px}
+  .handoff span{display:block;font-size:12px;color:var(--muted);margin-top:6px}
   button{font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
          padding:11px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.22);
          background:transparent;color:#c9d1de;transition:.15s}
@@ -44,6 +46,7 @@
 
   <div class="status" id="status">Applying&hellip;</div>
 
+  <p class="handoff">One more, on the other site: <a href="https://missionctrl.agency/notrack/">MissionCTRL &rarr;</a><br><span>They are separate browsers as far as storage is concerned, so both need one tap on each device.</span></p>
   <button id="undo" type="button">Start counting me again</button>
 
   <p class="note">The setting lives in this browser's own storage, so it goes away if you clear site data &mdash; just open this page again. Nothing is sent anywhere; this page loads no analytics of its own.</p>

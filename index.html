@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>TrustOS by MissionCTRL — Measure Brand &amp; Stakeholder Trust</title>
-  <meta name="description" content="TrustOS by MissionCTRL measures brand and stakeholder trust as a leading indicator — and shows where it's leaking before the numbers do. Live in six weeks.">
+  <meta name="description" content="Measure stakeholder trust as a leading indicator — Clarity, Connection and Confidence on one 0–100 index. See where trust leaks before the numbers show it.">
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -1083,6 +1083,7 @@
       "parentOrganization": {
         "@type": "Organization",
         "name": "MissionCTRL",
+        "alternateName": ["Mission CTRL", "MissionCTRL Ltd"],
         "url": "https://missionctrl.agency"
       },
       "sameAs": [
@@ -1258,6 +1259,33 @@ window.TrustShape = (function () {
 </script>
 <!-- Consent-gated analytics (Microsoft Clarity) — see assets/mc-analytics.js -->
 <script defer src="/assets/mc-analytics.js"></script>
+<script defer src="/assets/mc-goals.js"></script>
+<style>
+  /* Mobile navigation — below 900px the desktop .nav-links are display:none,
+     which left phones and tablets with no navigation at all. */
+  .nav-mobile { display: none; position: relative; }
+  .nav-mobile > summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 7px;
+    font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.72);
+    padding: 8px 14px; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px;
+  }
+  .nav-mobile > summary::-webkit-details-marker { display: none; }
+  .nav-mobile > summary::marker { content: ""; }
+  .nav-mobile[open] > summary { color: #fff; border-color: rgba(109,160,184,0.6); }
+  .nav-mobile-panel {
+    position: absolute; top: calc(100% + 14px); left: 0; min-width: 234px;
+    background: rgba(10,15,26,0.98); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 8px; display: flex; flex-direction: column;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.45); z-index: 200;
+  }
+  .nav-mobile-panel a {
+    font-size: 0.92rem; color: rgba(255,255,255,0.78); padding: 12px 14px;
+    border-radius: 8px; text-decoration: none;
+  }
+  .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
+  @media (max-width: 900px) { .nav-mobile { display: block; } }
+  @media (min-width: 901px) { .nav-mobile { display: none !important; } }
+</style>
 </head>
 <body>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;left:-9999px;">
@@ -1285,6 +1313,17 @@ window.TrustShape = (function () {
       A MissionCTRL product &rarr;
     </a>
   </div>
+  <details class="nav-mobile" id="navMobile">
+    <summary aria-label="Open navigation">Menu</summary>
+    <div class="nav-mobile-panel">
+      <a href="?request=navigator" onclick="document.getElementById('navMobile').open=false;openNav(event)">Request a Navigator</a>
+      <a href="/methodology/" onclick="document.getElementById('navMobile').open=false">How it works</a>
+      <a href="#sector-insights" onclick="document.getElementById('navMobile').open=false">Sector Insights</a>
+      <a href="/insights/" onclick="document.getElementById('navMobile').open=false">All sector POVs</a>
+      <a href="/faq/" onclick="document.getElementById('navMobile').open=false">FAQ</a>
+      <a href="/explorer/" onclick="document.getElementById('navMobile').open=false">Try the Explorer &mdash; free</a>
+    </div>
+  </details>
   <ul class="nav-links">
     <li><a href="?request=navigator" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
 
@@ -1665,6 +1704,31 @@ window.TrustShape = (function () {
     </div>
 
     <div style="text-align:center;margin-top:36px;">
+      <!-- Crawlable, tappable index of every sector POV (the selector above shows one at a time) -->
+      <style>
+        .si-all{max-width:900px;margin:0 auto 26px;text-align:center;}
+        .si-all-label{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:12px;}
+        .si-all-links{display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:center;}
+        .si-all-links a{font-size:0.8rem;color:rgba(255,255,255,0.55);text-decoration:none;border-bottom:1px solid rgba(90,138,154,0.32);padding-bottom:2px;transition:color .2s,border-color .2s;}
+        .si-all-links a:hover{color:#6da0b8;border-color:#6da0b8;}
+        @media (max-width:600px){.si-all-links{gap:12px 16px;}.si-all-links a{font-size:0.85rem;}}
+      </style>
+      <div class="si-all">
+        <div class="si-all-label">Read the trust test for your sector</div>
+        <div class="si-all-links">
+        <a href="/council-trust-test/">Councils &amp; local government</a>
+        <a href="/education-public-purpose-test/">Education</a>
+        <a href="/energy-integrity-test/">Energy</a>
+        <a href="/healthcare-trust-test/">Healthcare</a>
+        <a href="/ingo-brand-trust/">INGOs &amp; charities</a>
+        <a href="/membership-bodies-trust-test/">Membership bodies</a>
+        <a href="/mining-trust-window/">Mining</a>
+        <a href="/netzero-consent-test/">Net Zero &amp; infrastructure</a>
+        <a href="/private-capital-trust-test/">Private capital</a>
+        <a href="/professional-services-trust-test/">Professional services</a>
+        <a href="/social-care-workforce-test/">Social care</a>
+        </div>
+      </div>
       <a href="/insights/" style="display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:600;color:var(--trust-cool);text-decoration:none;border-bottom:1px solid rgba(90,138,154,0.4);padding-bottom:2px;transition:color 0.2s,border-color 0.2s;" onmouseover="this.style.color='#6da0b8';this.style.borderColor='#6da0b8';" onmouseout="this.style.color='var(--trust-cool)';this.style.borderColor='rgba(90,138,154,0.4)';">Browse all Sector POVs &rarr;</a>
     </div>
   </div>
