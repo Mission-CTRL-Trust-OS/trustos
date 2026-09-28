@@ -588,7 +588,9 @@
 .bt.compact .bt-lab .of{color:rgba(255,255,255,0.22);font-weight:600;letter-spacing:0.04em;}
 .bt.compact .bt-meaning,.bt.compact .bt-cap{display:none;}
 @media (max-width:760px){.bt-lab{font-size:0.44rem;letter-spacing:0.03em;}}
-@media (prefers-reduced-motion:reduce){.bt-seg{transition:none;}.bt-lab{transition:none;}}
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.bt-seg,.bt-lab{transition:none;}.ts-svg,.ts-svg *{transition:none!important;animation:none!important;}.btn-primary:hover,.nav-cta:hover,.related-card:hover{transform:none!important;}}
 </style>
 <!-- seo-ai:start -->
 <link rel="canonical" href="https://trustos.missionctrl.agency/regtech-brand-trust/" />

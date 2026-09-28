@@ -78,6 +78,10 @@
   .footer-legal a { color: rgba(255,255,255,0.4); border-bottom: 1px solid rgba(255,255,255,0.1); text-decoration: none; }
   .footer-legal a:hover { color: var(--trust-cool); }
   @media (max-width: 900px) { .nav-links { display: none; } .footer-grid { grid-template-columns: 1fr; gap: 36px; } }
+
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.nav-cta:hover{transform:none!important;}}
 </style>
 <script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
 <script>

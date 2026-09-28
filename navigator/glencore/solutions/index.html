@@ -244,6 +244,10 @@
   @keyframes lgAmb{0%,100%{opacity:.95}50%{opacity:.55}}
   @keyframes lgAmbM{0%,100%{opacity:.8}50%{opacity:.45}}
   @media (prefers-reduced-motion: reduce){.lg-amb *{animation:none!important}}
+
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.btn-mctrl:hover,.nav-cta:hover{transform:none!important;}}
 </style>
 <!-- seo-ai:start -->
 <meta name="robots" content="noindex, follow" />

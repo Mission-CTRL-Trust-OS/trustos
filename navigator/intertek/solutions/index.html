@@ -383,6 +383,10 @@
   .acc-body .sources-block{margin-top:6px;}
   @media(max-width:860px){.why-grid{grid-template-columns:1fr;}}
   @media(max-width:760px){.cta-split{grid-template-columns:1fr;} .subnav .sn-brand{display:none;}}
+
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.btn-mctrl:hover,.btn-measure:hover,.nav-cta:hover{transform:none!important;}}
 </style>
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
