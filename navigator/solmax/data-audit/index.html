@@ -167,15 +167,37 @@ textarea{resize:vertical;min-height:62px;line-height:1.6}
 .lens span{font-size:0.82rem;line-height:1.7;color:var(--trust-slate);opacity:.6}
 @media(max-width:780px){.lenses{grid-template-columns:1fr}}
 
-/* ── FILTERS ── */
-.filters{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;padding:18px 20px;background:var(--white);border:1px solid var(--hair);border-radius:8px;margin-top:22px}
+/* ── FILTERS / SEARCH ── */
+.filters{
+  display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;
+  padding:14px 20px;background:var(--white);border:1px solid var(--hair);border-radius:8px;margin-top:22px;
+  position:sticky;top:var(--stick-top,118px);z-index:40;
+  box-shadow:0 12px 26px -20px rgba(10,15,26,.55);
+}
 .filters .field{margin:0;flex:1 1 190px}
 .count{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--trust-slate);opacity:.55;padding-bottom:12px;white-space:nowrap}
 .count .ok{color:#1c7a4a;opacity:1}
+.searchwrap{position:relative;display:flex}
+.searchwrap input{padding-right:36px}
+.clearq{
+  position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  background:none;border:0;font-family:'Sora',sans-serif;font-size:1.1rem;line-height:1;
+  color:var(--trust-slate);opacity:.45;cursor:pointer;padding:5px 7px;border-radius:4px;
+}
+.clearq:hover{opacity:1;color:var(--trust-cool)}
+.qnote{
+  flex:1 1 100%;display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+  font-size:0.8rem;line-height:1.6;color:var(--trust-slate);opacity:.8;
+  border-top:1px solid var(--hair-soft);padding-top:10px;margin-top:0;
+}
+.qnote .grow{flex:1 1 240px}
+.qnote b{font-weight:700}
+.qnote.none{color:var(--warn);opacity:1}
+button.btn.tiny{font-size:0.72rem;padding:9px 15px;border-width:1px;white-space:nowrap}
 
 /* ── ROWS ── */
 .group{margin-top:34px}
-.group-head{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:2px solid var(--trust-slate)}
+.group-head{display:flex;align-items:baseline;gap:12px;padding:12px 0 10px;border-bottom:2px solid var(--trust-slate);position:sticky;top:var(--stick-head,200px);background:var(--white);z-index:20}
 .group-head h3{font-size:0.95rem;font-weight:700;letter-spacing:-0.01em;color:var(--trust-slate)}
 .group-head span{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--trust-slate);opacity:.4;margin-left:auto}
 .item{border-bottom:1px solid var(--hair-soft);padding:18px 0;display:grid;grid-template-columns:1fr 310px;gap:22px;align-items:start}
@@ -302,6 +324,39 @@ footer{background:var(--deep);padding:48px 5% 36px}
 .sent p a{color:var(--trust-cool);text-decoration:underline}
 .err{font-size:0.86rem;line-height:1.7;color:#b0341f;font-weight:600;margin-top:12px;min-height:1px}
 @media(max-width:480px){.sent{padding:24px 20px}}
+
+/* ── BANNERS (resume · un-ticked groups · centrally held lines) ── */
+.banner{
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+  font-size:0.84rem;line-height:1.65;color:var(--trust-slate);
+  background:var(--warn-soft);border:1px solid rgba(154,106,30,.28);
+  border-radius:8px;padding:13px 16px;margin-top:18px;
+}
+.banner .grow{flex:1 1 260px}
+.banner b{font-weight:700}
+.banner.cool{background:rgba(90,138,154,0.08);border-color:rgba(90,138,154,0.28)}
+button.linkish{background:none;border:0;font-family:'Sora',sans-serif;font-size:inherit;color:var(--trust-cool);text-decoration:underline;cursor:pointer;padding:0}
+button.linkish:hover{color:#3a6a7a}
+.err[aria-live]{font-weight:600}
+
+/* ── ADDED ITEMS ("other documents" the 57 lines missed) ── */
+.group.added .group-head{border-bottom-color:var(--trust-cool)}
+.group.added .group-head h3{color:var(--trust-cool)}
+.item.added input.j-xlabel{font-size:0.92rem;font-weight:600}
+.notebtn.del{color:#b0341f}
+.notebtn.del:hover{color:#8a2718}
+.tag.added{color:var(--trust-cool);border-color:rgba(90,138,154,.45);background:rgba(90,138,154,.07);opacity:1}
+.tag.out{color:var(--warn);border-color:rgba(154,106,30,.4);background:var(--warn-soft);opacity:1}
+
+/* ── STEP RAIL: clickable, and all five steps readable on a phone ── */
+.steps li{cursor:pointer}
+.steps li:hover{color:rgba(255,255,255,0.72)}
+.steps li:focus-visible{outline:2px solid var(--trust-cool);outline-offset:2px}
+@media(max-width:620px){
+  .rail-in{height:auto;min-height:46px;padding:6px 4%}
+  .steps{flex-wrap:wrap;overflow:visible;gap:4px}
+  .steps li{padding:4px 7px;letter-spacing:0.05em;font-size:0.56rem}
+}
 </style>
 <!-- seo-ai:start -->
 <meta name="robots" content="noindex, nofollow" />
@@ -344,11 +399,11 @@ footer{background:var(--deep);padding:48px 5% 36px}
 <div class="rail">
   <div class="rail-in">
     <ol class="steps" id="steps">
-      <li data-s="1">1 &middot; You</li>
-      <li data-s="2">2 &middot; Groups</li>
-      <li data-s="3">3 &middot; Regions</li>
-      <li data-s="4">4 &middot; What exists</li>
-      <li data-s="5">5 &middot; Send</li>
+      <li data-s="1" role="button" tabindex="0">1 &middot; You</li>
+      <li data-s="2" role="button" tabindex="0">2 &middot; Groups</li>
+      <li data-s="3" role="button" tabindex="0">3 &middot; Regions</li>
+      <li data-s="4" role="button" tabindex="0">4 &middot; What exists</li>
+      <li data-s="5" role="button" tabindex="0">5 &middot; Send</li>
     </ol>
     <a class="rail-share" href="#share">Share this page &rarr;</a>
   </div>
@@ -359,7 +414,7 @@ footer{background:var(--deep);padding:48px 5% 36px}
   <div class="hero">
     <div class="grid-bg"></div>
     <div class="section-inner">
-      <div class="section-label">Solmax data audit &middot; ten minutes, nothing to prepare</div>
+      <div class="section-label">Solmax data audit &middot; nothing to prepare</div>
       <h1>What Solmax <em>already</em> knows</h1>
       <p class="hero-sub">Before we ask anyone at Solmax a single new question, we are working out what the business already holds. This page asks you <strong>what exists</strong> &mdash; not for the files, and not for anything you would have to go and build.</p>
       <p class="hero-sub">You will see only the lines that touch your work. &ldquo;We don&rsquo;t have that&rdquo;, &ldquo;not my area&rdquo; and &ldquo;I don&rsquo;t know&rdquo; are real answers here, and each takes one click.</p>
@@ -384,6 +439,11 @@ footer{background:var(--deep);padding:48px 5% 36px}
 
   <div class="section grey">
     <div class="section-inner narrow">
+      <p class="banner cool" id="resume" role="status" hidden>
+        <span class="grow">You have <b id="resume-n">0</b> <span id="resume-w">answers</span> saved in this browser from earlier &mdash; carry on where you left off.</span>
+        <button type="button" class="btn quiet tiny" id="resume-clear">Start again</button>
+        <button type="button" class="linkish" id="resume-x">Dismiss</button>
+      </p>
       <div class="section-label">Step one of five</div>
       <h2 class="section-title">Who is filling this in</h2>
       <p class="lede">So we know who to thank, and who to come back to if something is unclear.</p>
@@ -394,6 +454,7 @@ footer{background:var(--deep);padding:48px 5% 36px}
         </div>
         <div class="field"><label for="me-role">Your role <span class="opt">&mdash; optional</span></label><input type="text" id="me-role" placeholder="e.g. Marketing Manager, Asia Pacific"></div>
         <div class="actions"><button class="btn" id="go2">Continue</button></div>
+        <p class="err" id="e1" role="status" aria-live="polite"></p>
         <p class="mini">Your answers stay in this browser until you choose to send them. If you name a colleague as holding something, we collect their name and email so Dustin can ask them directly &mdash; nothing else, and nothing is shared outside the Solmax audit.</p>
       </div>
     </div>
@@ -410,10 +471,12 @@ footer{background:var(--deep);padding:48px 5% 36px}
       <p class="lede" style="font-size:0.9rem">Investors and lenders are not on this list on purpose: that relationship is read from financial and market evidence, gathered separately with Finance.</p>
       <div class="panel">
         <div class="ticks" id="rel-ticks"></div>
+        <p class="banner" id="rel-warn" role="status" aria-live="polite" hidden></p>
         <div class="actions">
           <button class="btn" id="go3">Continue</button>
           <button class="btn quiet" id="back1">Back</button>
         </div>
+        <p class="err" id="e2" role="status" aria-live="polite"></p>
       </div>
     </div>
   </div>
@@ -432,6 +495,7 @@ footer{background:var(--deep);padding:48px 5% 36px}
           <button class="btn" id="go4">See my list</button>
           <button class="btn quiet" id="back2">Back</button>
         </div>
+        <p class="err" id="e3" role="status" aria-live="polite"></p>
       </div>
     </div>
   </div>
@@ -444,6 +508,7 @@ footer{background:var(--deep);padding:48px 5% 36px}
       <div class="section-label">Step four of five</div>
       <h2 class="section-title">What exists</h2>
       <p class="lede">Three things per line at most, and only the lines you can speak to. If a line belongs to someone else, name them and we will ask them ourselves.</p>
+      <p class="lede" id="s4-time" style="font-size:0.9rem;margin-top:10px">&mdash;</p>
 
       <div class="lenses">
         <div class="lens"><b>Intent</b><span>What Solmax set out to be. Strategy, priorities, objectives, targets &mdash; as decided, not as published.</span></div>
@@ -452,6 +517,12 @@ footer{background:var(--deep);padding:48px 5% 36px}
       </div>
 
       <div class="filters">
+        <div class="field" style="flex:2 1 250px"><label for="f-q">Search for what you hold</label>
+          <span class="searchwrap">
+            <input type="text" id="f-q" placeholder="e.g. TDS, engagement survey, permit, rebates" autocomplete="off" spellcheck="false" aria-describedby="q-note">
+            <button type="button" class="clearq" id="f-q-clear" aria-label="Clear the search" hidden>&times;</button>
+          </span>
+        </div>
         <div class="field"><label for="f-rel">Filter by relationship</label><select id="f-rel"></select></div>
         <div class="field"><label for="f-lens">Filter by lens</label><select id="f-lens">
           <option value="">All three</option><option>Intent</option><option>Expectation</option><option>Reality</option>
@@ -460,6 +531,10 @@ footer{background:var(--deep);padding:48px 5% 36px}
           <option value="">Everything</option><option value="todo">Not yet answered</option><option value="done">Answered</option>
         </select></div>
         <div class="count" id="tally">&mdash;</div>
+        <p class="qnote" id="q-note" role="status" aria-live="polite">
+          <span class="grow" id="q-count">Search the whole catalogue above &mdash; and if what you hold is not in it, add it yourself.</span>
+          <button type="button" class="btn quiet tiny" id="add-other">+ Add something we missed</button>
+        </p>
       </div>
 
       <div id="rows"></div>
@@ -500,6 +575,8 @@ footer{background:var(--deep);padding:48px 5% 36px}
             <input type="hidden" name="lines-answered" id="hf-lines-answered">
             <input type="hidden" name="lines-total" id="hf-lines-total">
             <input type="hidden" name="people-named" id="hf-people-named">
+            <input type="hidden" name="other-items-count" id="hf-other-count">
+            <input type="hidden" name="other-items" id="hf-other">
             <textarea class="hp" name="return" id="hf-return" rows="2" tabindex="-1" aria-hidden="true"></textarea>
             <div class="actions">
               <button class="btn" type="submit" id="sendBtn">Send my return to Dustin &rarr;</button>
@@ -508,7 +585,7 @@ footer{background:var(--deep);padding:48px 5% 36px}
             <p class="err" id="send-err"></p>
             <p class="status-line" id="dl-status"></p>
           </form>
-          <p class="mini">Your name and email come from step one. Nothing you typed is sent anywhere until you press the button.</p>
+          <p class="mini">Sending as <b id="send-as">&mdash;</b>. <button type="button" class="linkish" id="edit-me">Change your name or email</button> &mdash; your answers are kept. Nothing you typed is sent anywhere until you press the button.</p>
         </div>
       </div>
 
@@ -567,7 +644,7 @@ footer{background:var(--deep);padding:48px 5% 36px}
         <p class="mini">A forward from you carries more weight than a cold email from us, which is the only reason we are asking you to press the button rather than doing it ourselves.</p>
       </div>
 
-      <p class="note">A blank line is not a failure. If Solmax does not hold something, that is a finding &mdash; it goes in the December 2026 baseline as a gap we have measured rather than a number we have guessed. Thank you for the ten minutes.</p>
+      <p class="note">A blank line is not a failure. If Solmax does not hold something, that is a finding &mdash; it goes in the December 2026 baseline as a gap we have measured rather than a number we have guessed. Thank you for the time it took.</p>
       <p class="mini">Deadline: <strong id="dl-2">&mdash;</strong>. Questions: <strong>Dustin Lawrence</strong>, <a href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a>.</p>
       <div class="actions"><button class="btn quiet" id="back4">Back to my list</button></div>
     </div>
@@ -655,73 +732,82 @@ const OWNERS = {
   DASH:"Dashboards & analytics", CRM:"CRM", CEA:"CEA & technical training", CHANNEL:"Channel",
   PEOPLE:"Talent & culture", QHSE:"QHSE", TECHSVC:"Technical service", EXEC:"Executive / board"
 };
+/* Lower-cased, accent-stripped, punctuation-flattened — what the search compares.
+   The fifth element of each row below is that row's search vocabulary: the words a
+   Solmax employee would actually type, abbreviations and regional variants included. */
+const norm=s=>String(s==null?"":s).toLowerCase().normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
 const C="Customers, Specifiers & Engineers", D="Distributors & Channel Partners", I="Installers",
       E="Employees", G="Communities & Regulators", A="Across all five";
 const ROWS=[
-[C,"Intent","The five marketing priorities, as they landed on 16 September 2026","EXEC"],
-[C,"Intent","“Let’s build infrastructure better” and the four pillars — as strategy, not as copy","EXEC"],
-[C,"Intent","Supplier to solution provider: the CEO’s stated direction, August 2026","EXEC"],
-[C,"Expectation","Corporate website and industry pages, in every language published","BRAND"],
-[C,"Expectation","Regionally adapted website and campaign content, in local languages","REGMKT"],
-[C,"Expectation","Product datasheets, technical data sheets, and the specification text we write","GLOBAL"],
-[C,"Expectation","Brand guidelines and the messaging framework","GLOBAL"],
-[C,"Expectation","Sales decks — the template or the best example. Not every deck.","REGMKT"],
-[C,"Expectation","Brochures and printed literature as used in your region","REGMKT"],
-[C,"Expectation","The design tools and calculators — their claims and assumptions","BRAND"],
-[C,"Reality","Customer survey — the results, most recent two years","REGMKT"],
-[C,"Reality","The questionnaire used for each survey run, and the rating scale","REGMKT"],
-[C,"Reality","Customer complaints and claims register","QHSE"],
-[C,"Reality","On-time in-full delivery, non-conformances, returns and credit notes","QHSE"],
-[C,"Reality","Technical support tickets; lead response time out of the CRM","CRM"],
-[C,"Reality","2026 seminar feedback — the form, and the response rate even where it is low","REGMKT"],
-[C,"Reality","Exhibition feedback — the booth-staff version, kept separate from seminars","REGMKT"],
-[E,"Intent","The people and workforce plan, and how it serves the business strategy","PEOPLE"],
-[E,"Intent","The 2027 plan and its objectives, as set rather than as communicated","EXEC"],
-[E,"Expectation","Employer value proposition and careers-site content","PEOPLE"],
-[E,"Expectation","Internal comms calendar, town hall decks and the CEO’s messages","PEOPLE"],
-[E,"Expectation","The five priorities and the 2027 plan, as communicated internally","PEOPLE"],
-[E,"Reality","Employee engagement survey history — questionnaire, scale, results, action plans","PEOPLE"],
-[E,"Reality","Exit interview records and themes","PEOPLE"],
-[E,"Reality","Voluntary attrition by region, function and tenure; absence data","PEOPLE"],
-[E,"Reality","Safety incidents, LTIFR and near-miss reporting","QHSE"],
-[D,"Intent","Channel strategy — which markets go direct, which go through partners, and why","CHANNEL"],
-[D,"Intent","Growth targets by channel","CHANNEL"],
-[D,"Expectation","Distributor and partner agreements, and the terms inside them","CHANNEL"],
-[D,"Expectation","Price lists, margin and rebate schedules","CHANNEL"],
-[D,"Expectation","Service commitments: lead times, minimum orders, stocking terms","CHANNEL"],
-[D,"Reality","Distributor and partner satisfaction surveys","CHANNEL"],
-[D,"Reality","Annual joint business plans — what each side committed to, and delivered","CHANNEL"],
-[D,"Reality","Sales through partner against target; share of wallet","CHANNEL"],
-[D,"Reality","On-time in-full performance to distributors","QHSE"],
-[I,"Intent","Technical service strategy — what field support Solmax offers, and where","TECHSVC"],
-[I,"Intent","The certification strategy behind CEA — what it is for","CEA"],
-[I,"Expectation","Installation manuals and method statements","TECHSVC"],
-[I,"Expectation","CEA training and certification content","CEA"],
-[I,"Expectation","Technical service commitments — what is promised, and how fast","TECHSVC"],
-[I,"Reality","CEA training feedback and exam results","CEA"],
-[I,"Reality","Field technical service call logs — what they actually call about","TECHSVC"],
-[I,"Reality","Installation defect rates; rework and repair records","QHSE"],
-[I,"Reality","Site incident reports; time to site actually achieved","QHSE"],
-[G,"Intent","The ESG and sustainability strategy, and its targets","QHSE"],
-[G,"Intent","The environmental compliance strategy","QHSE"],
-[G,"Expectation","Environmental permits and the applications made to obtain them","QHSE"],
-[G,"Expectation","ISO 14001 and 45001 policies and their scopes","QHSE"],
-[G,"Expectation","Sustainability report, ESG statements and EPDs","GLOBAL"],
-[G,"Reality","Regulator correspondence and inspection notices — what they ask us for","QHSE"],
-[G,"Reality","Complaints from neighbours: noise, odour, traffic, dust","QHSE"],
-[G,"Reality","Inspection reports, findings and any enforcement notices","QHSE"],
-[G,"Reality","Emissions and discharge monitoring against permit limits","QHSE"],
-[A,"Reality","CRM leads and conversion","CRM"],
-[A,"Reality","Website and search behaviour","DASH"],
-[A,"Reality","Social engagement","DASH"],
-[A,"Expectation","Stakeholder personas and journeys","BRAND"]
-].map((r,i)=>({ref:"L"+String(i+1).padStart(2,"0"),rel:r[0],lens:r[1],ask:r[2],own:r[3]}));
+[C,"Intent","The five marketing priorities, as they landed on 16 September 2026","EXEC","marketing priorities five priorities marketing strategy strategic priorities marketing plan priority list"],
+[C,"Intent","“Let’s build infrastructure better” and the four pillars — as strategy, not as copy","EXEC","build infrastructure better four pillars brand platform positioning purpose narrative strategy pillars tagline"],
+[C,"Intent","Supplier to solution provider: the CEO’s stated direction, August 2026","EXEC","ceo direction solution provider supplier to solution transformation vision statement business strategy direction"],
+[C,"Expectation","Corporate website and industry pages, in every language published","BRAND","website corporate website web pages industry pages site content languages translations sitemap online"],
+[C,"Expectation","Regionally adapted website and campaign content, in local languages","REGMKT","regional website local website campaign content localised localized landing pages campaigns local language"],
+[C,"Expectation","Product datasheets, technical data sheets, and the specification text we write","GLOBAL","datasheet data sheet tds technical data sheet spec sheet specification product spec pds product literature"],
+[C,"Expectation","Brand guidelines and the messaging framework","GLOBAL","brand guidelines brand book style guide messaging framework tone of voice logo visual identity brand manual"],
+[C,"Expectation","Sales decks — the template or the best example. Not every deck.","REGMKT","sales deck pitch deck presentation powerpoint slides capability deck sales presentation template"],
+[C,"Expectation","Brochures and printed literature as used in your region","REGMKT","brochure leaflet flyer printed literature catalogue catalog print collateral marketing material"],
+[C,"Expectation","The design tools and calculators — their claims and assumptions","BRAND","design tool calculator sizing tool design software engineering calculator assumptions claims app modelling"],
+[C,"Reality","Customer survey — the results, most recent two years","REGMKT","customer survey satisfaction survey csat nps net promoter voice of the customer voc survey results feedback"],
+[C,"Reality","The questionnaire used for each survey run, and the rating scale","REGMKT","questionnaire survey questions rating scale survey instrument question set nps scale survey methodology"],
+[C,"Reality","Customer complaints and claims register","QHSE","complaints complaint log claims register warranty claims customer complaints escalations grievances"],
+[C,"Reality","On-time in-full delivery, non-conformances, returns and credit notes","QHSE","otif on time in full delivery performance non conformance ncr returns credit notes rma logistics fill rate"],
+[C,"Reality","Technical support tickets; lead response time out of the CRM","CRM","support tickets helpdesk technical support crm salesforce lead response time service desk enquiries cases"],
+[C,"Reality","2026 seminar feedback — the form, and the response rate even where it is low","REGMKT","seminar feedback event feedback webinar feedback lunch and learn response rate evaluation form cpd"],
+[C,"Reality","Exhibition feedback — the booth-staff version, kept separate from seminars","REGMKT","exhibition trade show tradeshow booth stand feedback event debrief conference expo"],
+[E,"Intent","The people and workforce plan, and how it serves the business strategy","PEOPLE","people plan workforce plan hr strategy people strategy headcount plan talent strategy organisation plan"],
+[E,"Intent","The 2027 plan and its objectives, as set rather than as communicated","EXEC","2027 plan business plan objectives okr targets annual plan corporate objectives budget goals"],
+[E,"Expectation","Employer value proposition and careers-site content","PEOPLE","evp employer value proposition careers site recruitment job adverts employer brand careers page hiring"],
+[E,"Expectation","Internal comms calendar, town hall decks and the CEO’s messages","PEOPLE","internal comms town hall all hands newsletter intranet ceo message employee communications comms calendar"],
+[E,"Expectation","The five priorities and the 2027 plan, as communicated internally","PEOPLE","internal communication cascade deck priorities communicated employee briefing strategy comms roadshow"],
+[E,"Reality","Employee engagement survey history — questionnaire, scale, results, action plans","PEOPLE","engagement survey employee survey pulse survey enps staff survey climate survey action plan questionnaire"],
+[E,"Reality","Exit interview records and themes","PEOPLE","exit interview leaver interview offboarding exit survey leaver feedback resignation"],
+[E,"Reality","Voluntary attrition by region, function and tenure; absence data","PEOPLE","attrition turnover retention leavers absence absenteeism sickness tenure hris headcount data"],
+[E,"Reality","Safety incidents, LTIFR and near-miss reporting","QHSE","ltifr trir safety incidents near miss accident reports injury rate lost time incident riddor ehs hse"],
+[D,"Intent","Channel strategy — which markets go direct, which go through partners, and why","CHANNEL","channel strategy route to market distribution strategy direct versus indirect partner strategy go to market"],
+[D,"Intent","Growth targets by channel","CHANNEL","growth targets sales targets channel targets budget quota forecast by channel volume targets"],
+[D,"Expectation","Distributor and partner agreements, and the terms inside them","CHANNEL","distributor agreement partner agreement contract terms and conditions reseller agreement distribution contract"],
+[D,"Expectation","Price lists, margin and rebate schedules","CHANNEL","price list pricing rebate rebates discount margin schedule tariff price book commercial terms"],
+[D,"Expectation","Service commitments: lead times, minimum orders, stocking terms","CHANNEL","lead times moq minimum order stocking terms service commitments sla availability order terms"],
+[D,"Reality","Distributor and partner satisfaction surveys","CHANNEL","distributor survey partner survey channel satisfaction partner nps reseller feedback dealer survey"],
+[D,"Reality","Annual joint business plans — what each side committed to, and delivered","CHANNEL","joint business plan jbp annual partner plan business review qbr partner commitments"],
+[D,"Reality","Sales through partner against target; share of wallet","CHANNEL","sell through sales through partner against target share of wallet partner performance revenue by partner"],
+[D,"Reality","On-time in-full performance to distributors","QHSE","otif on time in full distributor delivery performance shipping performance fill rate to distributors"],
+[I,"Intent","Technical service strategy — what field support Solmax offers, and where","TECHSVC","technical service strategy field service support strategy site support coverage after sales aftersales"],
+[I,"Intent","The certification strategy behind CEA — what it is for","CEA","cea certification strategy certified applicator accreditation installer certification training strategy"],
+[I,"Expectation","Installation manuals and method statements","TECHSVC","installation manual method statement rams installation guide work instruction welding guide handbook how to install"],
+[I,"Expectation","CEA training and certification content","CEA","cea training course material certification content curriculum e learning courseware training materials"],
+[I,"Expectation","Technical service commitments — what is promised, and how fast","TECHSVC","service commitments response time sla time to site technical support promise callout attendance promise"],
+[I,"Reality","CEA training feedback and exam results","CEA","training feedback exam results pass rate assessment scores training records course evaluation cea results"],
+[I,"Reality","Field technical service call logs — what they actually call about","TECHSVC","call logs service calls field reports callouts site visit reports technical enquiries case log field log"],
+[I,"Reality","Installation defect rates; rework and repair records","QHSE","defect rate rework repair records installation failures weld failures remediation warranty repairs snagging"],
+[I,"Reality","Site incident reports; time to site actually achieved","QHSE","site incident reports response time time to site attendance incident log site reports call out times"],
+[G,"Intent","The ESG and sustainability strategy, and its targets","QHSE","esg sustainability strategy net zero carbon targets csr climate strategy decarbonisation sustainability targets"],
+[G,"Intent","The environmental compliance strategy","QHSE","environmental compliance strategy regulatory compliance environmental policy compliance plan legal register"],
+[G,"Expectation","Environmental permits and the applications made to obtain them","QHSE","permit permits environmental permit licence license permit application consent discharge consent authorisation"],
+[G,"Expectation","ISO 14001 and 45001 policies and their scopes","QHSE","iso 14001 45001 9001 management system policy scope certificate accreditation certification audit"],
+[G,"Expectation","Sustainability report, ESG statements and EPDs","GLOBAL","epd environmental product declaration sustainability report esg report lca life cycle assessment carbon footprint"],
+[G,"Reality","Regulator correspondence and inspection notices — what they ask us for","QHSE","regulator correspondence inspection notice environment agency epa letters authority requests regulatory notices"],
+[G,"Reality","Complaints from neighbours: noise, odour, traffic, dust","QHSE","neighbour complaints community complaints noise odour smell dust traffic nuisance local residents"],
+[G,"Reality","Inspection reports, findings and any enforcement notices","QHSE","inspection report audit findings enforcement notice non compliance regulatory audit site inspection fines"],
+[G,"Reality","Emissions and discharge monitoring against permit limits","QHSE","emissions discharge monitoring air quality effluent water monitoring permit limits stack testing sampling"],
+[A,"Reality","CRM leads and conversion","CRM","crm leads conversion pipeline salesforce hubspot lead generation mql sql opportunities enquiries"],
+[A,"Reality","Website and search behaviour","DASH","web analytics google analytics ga4 search console seo traffic sessions bounce rate website data keywords"],
+[A,"Reality","Social engagement","DASH","social media linkedin engagement followers social analytics posts reach impressions social listening"],
+[A,"Expectation","Stakeholder personas and journeys","BRAND","personas customer journey journey map buyer persona stakeholder map touchpoints segmentation"]
+].map((r,i)=>({ref:"L"+String(i+1).padStart(2,"0"),rel:r[0],lens:r[1],ask:r[2],own:r[3],alt:r[4]||"",
+   hay:norm(r[2]+" "+r[1]+" "+r[0]+" "+(r[4]||""))}));
 
 const STATUS=[
   "","We have this — I can send it","We have this — someone else holds it","We have some of it",
   "It doesn’t exist","Not my area","I don’t know"
 ];
 const NEEDS_NAME=new Set(["We have this — someone else holds it","Not my area"]);
+/* "Not my area" is an honest escape hatch, so naming someone is offered there, never
+   demanded — two blank boxes push people towards "I don’t know", a worse answer. */
+const OPT_NAME=new Set(["Not my area"]);
 const TO="hello@missionctrl.agency";
 const OWNER_NAME="Dustin Lawrence";
 const DEADLINE="Friday 16 October";
@@ -737,29 +823,82 @@ const SHAREPOINT_URL = "";
 
 /* ============================ state ============================ */
 const KEY="solmax-audit-v1";
-let S={me:{name:"",email:"",role:""},rels:[],regions:[],ans:{}};
+let S={me:{name:"",email:"",role:""},rels:[],regions:[],ans:{},extra:[],step:1,showCentral:false};
 try{const r=localStorage.getItem(KEY); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
+if(!Array.isArray(S.extra)) S.extra=[];
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ===== things the respondent adds themselves ===== */
+function xNew(label){
+  let n=1; while(S.extra.some(x=>x.ref==="X"+String(n).padStart(2,"0"))) n++;
+  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",hname:"",hmail:"",note:null};
+  S.extra.push(x); save(); return x;
+}
+const xById=ref=>S.extra.find(x=>x.ref===ref);
+function extraRows(){
+  return S.extra.map(x=>({ref:x.ref,rel:"Things you added",lens:"Added",ask:x.label||"(unnamed item)",
+    status:x.status||"",hname:x.hname||"",hmail:x.hmail||"",note:x.note||""}));
+}
+const okMail=m=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(m||"").trim());
 
 $("dl-1").textContent=DEADLINE;
 $("dl-2").textContent=DEADLINE;
 
 /* ============================ steps ============================ */
 let step=1;
+/* The nav and the rail are both fixed, and the rail wraps to two rows on a phone,
+   so the sticky offsets are measured rather than guessed. */
+function stick(){
+  const rail=document.querySelector(".rail");
+  const top=rail?Math.round(rail.getBoundingClientRect().bottom):118;
+  const f=document.querySelector("#s4 .filters");
+  document.documentElement.style.setProperty("--stick-top",top+"px");
+  document.documentElement.style.setProperty("--stick-head",(top+(f?f.offsetHeight:0))+"px");
+}
 function show(n){
-  step=n;
+  step=n; S.step=n; save();
   for(let i=1;i<=5;i++) $("s"+i).hidden = (i!==n);
   [...$("steps").children].forEach(li=>{
     const s=+li.dataset.s;
     li.dataset.on = s===n ? "1":"0";
     li.dataset.done = s<n ? "1":"0";
   });
+  const host=$("s"+n).querySelector(".section-inner");
+  if(host && !$("resume").hidden) host.prepend($("resume"));
   window.scrollTo({top:0,behavior:"instant"});
-  if(n===4) paint();
+  if(n===4){ paint(); stick(); }
   if(n===5) summarise();
 }
+/* How far the answers so far allow them to go. */
+function furthest(){
+  if(!(S.me.name||"").trim()||!okMail(S.me.email)) return 1;
+  if(!S.rels.length) return 2;
+  if(!S.regions.length) return 3;
+  return 5;
+}
+const ERRS={
+  1:"We need your name and a working email before the rest of this makes sense \u2014 they are both on this step.",
+  2:"Tick at least one group \u2014 even loosely \u2014 so we can cut the list down to yours.",
+  3:"Pick at least one region, so we know which lines are usually held centrally for you."
+};
+/* The rail looked clickable and was inert. It navigates now, as far as the answers
+   allow, and says why when it cannot go further. */
+function goStep(n){
+  const f=furthest();
+  if(n<=f){ if($("e"+n)) $("e"+n).textContent=""; show(n); return; }
+  show(f);
+  if($("e"+f)) $("e"+f).textContent=ERRS[f]||"";
+}
+$("steps").addEventListener("click",e=>{
+  const li=e.target.closest("li"); if(li) goStep(+li.dataset.s);
+});
+$("steps").addEventListener("keydown",e=>{
+  const li=e.target.closest("li");
+  if(li&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); goStep(+li.dataset.s); }
+});
+window.addEventListener("resize",stick);
 
 /* ============================ step 1 ============================ */
 ["name","email","role"].forEach(k=>{
@@ -767,18 +906,49 @@ function show(n){
   el.addEventListener("input",()=>{S.me[k]=el.value; save();});
 });
 $("go2").onclick=()=>{
-  if(!S.me.name.trim()){$("me-name").focus(); return;}
-  show(2);
+  if(!S.me.name.trim()){
+    $("e1").textContent="Add your name first \u2014 we need to know who to thank, and who to come back to.";
+    $("me-name").focus(); return;
+  }
+  /* The email was optional here and mandatory at step five, which failed people
+     twenty minutes too late. It is asked for once, at the start. */
+  if(!okMail(S.me.email)){
+    $("e1").textContent="Add a working email \u2014 your return cannot be sent without one, and it is far easier to add now than at the end.";
+    $("me-email").focus(); return;
+  }
+  $("e1").textContent=""; show(2);
 };
+$("edit-me").onclick=()=>show(1);
 
 /* ============================ step 2 ============================ */
 $("rel-ticks").innerHTML = REL.map(([n,d],i)=>
   `<label class="tick"><input type="checkbox" id="rel${i}" value="${esc(n)}"${S.rels.includes(n)?" checked":""}>
    <span><b>${esc(n)}</b><small>${esc(d)}</small></span></label>`).join("");
 $("rel-ticks").addEventListener("change",()=>{
+  const was=S.rels.slice();
   S.rels=[...$("rel-ticks").querySelectorAll("input:checked")].map(i=>i.value); save();
+  /* Un-ticking a group used to drop its answered lines out of the return silently,
+     while the answers sat on in localStorage. Nothing is deleted now: scope() keeps
+     every answered line in the return, step four still shows it (tagged as outside
+     the picked groups) so it can be edited or cleared, and we say so here. Quietly
+     discarding work someone has already done is the one outcome nobody expects. */
+  const gone=was.filter(r=>!S.rels.includes(r))
+                .map(rel=>({rel,n:ROWS.filter(r=>r.rel===rel&&answered(r)).length}))
+                .filter(g=>g.n);
+  const w=$("rel-warn"), tot=gone.reduce((a,g)=>a+g.n,0);
+  if(tot){
+    w.hidden=false;
+    w.innerHTML='<span class="grow">You un-ticked <b>'+gone.map(g=>esc(g.rel)).join("</b> and <b>")+
+      '</b>, where you have already answered <b>'+tot+'</b> line'+(tot===1?"":"s")+
+      '. <b>Nothing has been deleted.</b> Those lines stay in your return, and step four still shows them marked '+
+      '&ldquo;outside the groups you picked&rdquo; so you can change or clear them.</span>';
+  }else w.hidden=true;
+  $("e2").textContent="";
 });
-$("go3").onclick=()=>{ if(!S.rels.length){ $("rel0").focus(); return;} show(3); };
+$("go3").onclick=()=>{
+  if(!S.rels.length){ $("e2").textContent=ERRS[2]; $("rel0").focus(); return; }
+  $("e2").textContent=""; show(3);
+};
 $("back1").onclick=()=>show(1);
 
 /* ============================ step 3 ============================ */
@@ -786,47 +956,124 @@ $("region-chips").innerHTML = REGIONS.map((r,i)=>
   `<label class="chip"><input type="checkbox" id="reg${i}" value="${esc(r)}"${S.regions.includes(r)?" checked":""}>${esc(r)}</label>`).join("");
 $("region-chips").addEventListener("change",()=>{
   S.regions=[...$("region-chips").querySelectorAll("input:checked")].map(i=>i.value); save();
+  $("e3").textContent="";
 });
-$("go4").onclick=()=>{ if(!S.regions.length){ $("reg0").focus(); return;} show(4); };
+$("go4").onclick=()=>{
+  if(!S.regions.length){ $("e3").textContent=ERRS[3]; $("reg0").focus(); return; }
+  $("e3").textContent=""; show(4);
+};
 $("back2").onclick=()=>show(2);
 
 /* ============================ step 4 ============================ */
-function mine(){
-  const set=new Set(S.rels);
-  return ROWS.filter(r=>set.has(r.rel)||r.rel===A);
-}
 function answered(r){const a=S.ans[r.ref]; return a&&a.status;}
 function isCentral(r){
   return CENTRAL.has(r.own) && S.regions.length && !S.regions.includes("Global / corporate");
 }
+/* Step three promises a regional respondent can skip the centrally held lines, so we
+   act on it: they are folded away behind a disclosure and left out of the count until
+   they ask for them. Reversible in one click, and never applied to a line already
+   answered \u2014 dropping them outright would lose the regions that do it differently,
+   which is the very thing step three says is worth knowing. */
+function skip(r){ return isCentral(r) && !S.showCentral && !answered(r); }
+function inMine(r,set){ set=set||new Set(S.rels); return (set.has(r.rel)||r.rel===A) && !skip(r); }
+/* Everything that belongs in this respondent\u2019s return: their picked groups, plus any
+   line they have answered from outside them \u2014 found by search, or left behind when
+   they un-ticked a group. Answers are never dropped for being out of scope. */
+function scope(){ const set=new Set(S.rels); return ROWS.filter(r=>inMine(r,set)||answered(r)); }
+function total(){ return scope().length+S.extra.length; }
+
+/* ===== search ===== */
+function terms(){ return norm($("f-q").value).split(" ").filter(Boolean); }
+/* Every word must land if any row can take them all ("engagement survey"); otherwise
+   any single word will do, so a half-remembered phrase still surfaces something. */
+function found(ts){
+  if(!ts.length) return null;
+  const all=ROWS.filter(r=>ts.every(t=>r.hay.indexOf(t)>-1));
+  return all.length?all:ROWS.filter(r=>ts.some(t=>r.hay.indexOf(t)>-1));
+}
+function xHit(x,ts){ return !ts.length || ts.some(t=>norm(x.label).indexOf(t)>-1); }
+
 function buildFilters(){
   const sel=$("f-rel"), cur=sel.value;
-  const rels=[...new Set(mine().map(r=>r.rel))];
+  const rels=[...new Set(scope().map(r=>r.rel))];
   sel.innerHTML='<option value="">All of mine</option>'+rels.map(r=>`<option>${esc(r)}</option>`).join("");
-  sel.value=cur||"";
+  sel.value=rels.includes(cur)?cur:"";
 }
 function countUp(){
-  const all=mine(), done=all.filter(answered).length;
-  $("tally").innerHTML=`<span class="${done===all.length?'ok':''}">${done} of ${all.length} answered</span>`;
+  const all=scope();
+  const n=all.length+S.extra.length;
+  const done=all.filter(answered).length+S.extra.filter(x=>x.status).length;
+  $("tally").innerHTML=`<span class="${done===n&&n?'ok':''}">${done} of ${n} answered</span>`;
+  /* Ten minutes was never true for an eighty-input list, so we say what this one is. */
+  const mins=Math.max(5,Math.ceil(n/3/5)*5);
+  $("s4-time").innerHTML=`Your list is <strong>${n}</strong> line${n===1?"":"s"} long &mdash; roughly ${mins} minutes at a steady pace, and less wherever &ldquo;not my area&rdquo; is the honest answer. Stop whenever you like; everything is saved as you go.`;
+}
+function noteHTML(a,label){
+  return a.note!=null
+    ? `<textarea class="j-note" aria-label="Note \u2014 ${esc(label)}" placeholder="Anything we have wrong, or worth knowing" style="margin-top:12px">${esc(a.note)}</textarea>`
+    : `<button class="notebtn j-addnote" type="button">+ add a note</button>`;
+}
+function answerHTML(a,label){
+  const st=a.status||"", needs=NEEDS_NAME.has(st), opt=OPT_NAME.has(st), has=!!(a.hname||a.hmail);
+  return `<div class="answer">
+      <select class="j-status" aria-label="Does this exist \u2014 ${esc(label)}">
+        ${STATUS.map(x=>`<option value="${esc(x)}"${st===x?" selected":""}>${x?esc(x):"\u2014 choose \u2014"}</option>`).join("")}
+      </select>
+      <button class="notebtn j-who" type="button"${needs&&opt&&!has?"":" hidden"}>+ name who does, if you happen to know</button>
+      <div class="who${needs&&(!opt||has)?" on":""}">
+        <p class="mini j-opt" style="grid-column:1/-1;margin:0"${opt?"":" hidden"}>Optional \u2014 only if you know who does own it.</p>
+        <input type="text" class="j-hname" aria-label="Name of the person who holds this \u2014 ${esc(label)}" placeholder="Their name" value="${esc(a.hname||"")}">
+        <input type="email" class="j-hmail" aria-label="Email of the person who holds this \u2014 ${esc(label)}" placeholder="Their email" value="${esc(a.hmail||"")}">
+      </div>
+    </div>`;
 }
 function paint(){
   buildFilters();
   const fR=$("f-rel").value, fL=$("f-lens").value, fT=$("f-todo").value;
-  const all=mine();
-  const list=all.filter(r=>
+  const ts=terms(), hit=found(ts);
+  const set=new Set(S.rels);
+  /* A search reaches all fifty-seven lines, not only the picked groups \u2014 people hold
+     documents from groups they never ticked. */
+  const base=hit||scope();
+  const list=base.filter(r=>
     (!fR||r.rel===fR)&&(!fL||r.lens===fL)&&
     (!fT|| (fT==="todo"? !answered(r) : !!answered(r))));
+  /* Added items answer to the search and to Show, but not to filters they have no value for. */
+  const xs=S.extra.filter(x=>xHit(x,ts)&&(!fT||(fT==="todo"?!x.status:!!x.status)));
 
   countUp();
 
+  const html=[];
+  if(xs.length) html.push(`<div class="group added">
+      <div class="group-head"><h3>Things you added</h3><span>${xs.length} line${xs.length===1?"":"s"}</span></div>
+      ${xs.map(x=>`<div class="item added${x.status?" done":""}" data-ref="${x.ref}">
+        <div>
+          <input type="text" class="j-xlabel" aria-label="What you hold that the list missed" placeholder="What is it? e.g. regional pricing agreements" value="${esc(x.label)}">
+          <div class="tags">
+            <span class="tag added">You added this</span>
+            <button class="notebtn del j-xdel" type="button">Remove</button>
+          </div>
+          ${noteHTML(x,x.label||"this item")}
+        </div>
+        ${answerHTML(x,x.label||"this item")}
+      </div>`).join("")}
+    </div>`);
+
+  const cenAll=ROWS.filter(r=>(set.has(r.rel)||r.rel===A)&&isCentral(r));
+  if(!ts.length&&cenAll.length) html.push(`<p class="banner${S.showCentral?" cool":""}">
+      <span class="grow">${S.showCentral
+        ? `Showing the <b>${cenAll.length}</b> lines that are usually held centrally. They are back in your count.`
+        : `<b>${cenAll.length}</b> lines are usually held centrally, so they are folded away and left out of your count \u2014 step three said you could skip them. Open them if your region does any of it differently.`}</span>
+      <button class="btn quiet tiny j-central" type="button">${S.showCentral?"Fold them away again":"Show them anyway"}</button>
+    </p>`);
+
   const groups={};
   list.forEach(r=>{(groups[r.rel]=groups[r.rel]||[]).push(r);});
-  $("rows").innerHTML = Object.keys(groups).length ? Object.entries(groups).map(([rel,rs])=>`
+  html.push(Object.entries(groups).map(([rel,rs])=>`
     <div class="group">
       <div class="group-head"><h3>${esc(rel)}</h3><span>${rs.length} line${rs.length===1?"":"s"}</span></div>
       ${rs.map(r=>{
         const a=S.ans[r.ref]||{};
-        const needs=NEEDS_NAME.has(a.status||"");
         return `<div class="item${answered(r)?" done":""}" data-ref="${r.ref}">
           <div>
             <div class="ask">${esc(r.ask)}</div>
@@ -834,23 +1081,39 @@ function paint(){
               <span class="tag lens">${esc(r.lens)}</span>
               <span class="tag">${esc(OWNERS[r.own]||r.own)}</span>
               ${isCentral(r)?'<span class="tag central">usually held centrally</span>':''}
+              ${inMine(r,set)?'':'<span class="tag out">outside the groups you picked</span>'}
             </div>
-            ${a.note!=null?`<textarea class="j-note" aria-label="Note — ${esc(r.ask)}" placeholder="Anything we have wrong, or worth knowing" style="margin-top:12px">${esc(a.note)}</textarea>`:
-              `<button class="notebtn j-addnote" type="button">+ add a note</button>`}
+            ${noteHTML(a,r.ask)}
           </div>
-          <div class="answer">
-            <select class="j-status" aria-label="Does this exist — ${esc(r.ask)}">
-              ${STATUS.map(s=>`<option value="${esc(s)}"${(a.status||"")===s?" selected":""}>${s?esc(s):"— choose —"}</option>`).join("")}
-            </select>
-            <div class="who${needs?" on":""}">
-              <input type="text" class="j-hname" aria-label="Name of the person who holds this — ${esc(r.ask)}" placeholder="Their name" value="${esc(a.hname||"")}">
-              <input type="email" class="j-hmail" aria-label="Email of the person who holds this — ${esc(r.ask)}" placeholder="Their email" value="${esc(a.hmail||"")}">
-            </div>
-          </div>
+          ${answerHTML(a,r.ask)}
         </div>`;}).join("")}
-    </div>`).join("") : `<p class="mini" style="margin-top:30px">Nothing matches that filter.</p>`;
+    </div>`).join(""));
+
+  $("rows").innerHTML = (list.length||xs.length) ? html.join("")
+    : html.join("")+`<p class="mini" style="margin-top:30px">Nothing matches that. Clear the search, or add what you hold as something we missed.</p>`;
+
+  /* ===== the search note: how many matched, and the way out when none did ===== */
+  const q=$("f-q").value.trim(), n=list.length+xs.length;
+  $("f-q-clear").hidden=!q;
+  $("q-note").classList.toggle("none",!!q&&n===0);
+  const cnt=$("q-count"), add=$("add-other");
+  if(!q){
+    cnt.innerHTML="Search the whole catalogue above &mdash; and if what you hold is not in it, add it yourself.";
+    add.textContent="+ Add something we missed";
+  }else if(n===0){
+    cnt.innerHTML="Nothing in the list matches <b>"+esc(q)+"</b>. If you hold it, add it \u2014 a document we missed is worth knowing about.";
+    add.textContent="+ Add \u201c"+q+"\u201d as something we missed";
+  }else{
+    cnt.innerHTML="<b>"+n+"</b> line"+(n===1?" matches":"s match")+" <b>"+esc(q)+"</b>. Not the one you hold?";
+    add.textContent="+ Add \u201c"+q+"\u201d as something we missed";
+  }
+  stick();
 }
+/* A status that hides the holder panel must drop anything left in it, or a colleague
+   stays under People named \u2014 and gets emailed \u2014 about a line the respondent owns. */
 function setAns(ref,patch){
+  if(patch.status!==undefined&&!NEEDS_NAME.has(patch.status)) patch=Object.assign({},patch,{hname:"",hmail:""});
+  if(ref.charAt(0)==="X"){ const x=xById(ref); if(x) Object.assign(x,patch); save(); return; }
   S.ans[ref]=Object.assign({},S.ans[ref],patch);
   if(!S.ans[ref].status && !S.ans[ref].note) delete S.ans[ref];
   save();
@@ -859,22 +1122,32 @@ $("rows").addEventListener("change",e=>{
   const item=e.target.closest(".item"); if(!item) return;
   const ref=item.dataset.ref;
   if(e.target.classList.contains("j-status")){
-    setAns(ref,{status:e.target.value});
-    item.querySelector(".who").classList.toggle("on",NEEDS_NAME.has(e.target.value));
-    item.classList.toggle("done",!!e.target.value);
+    const v=e.target.value, needs=NEEDS_NAME.has(v), opt=OPT_NAME.has(v);
+    setAns(ref,{status:v});
+    const who=item.querySelector(".who"), btn=item.querySelector(".j-who");
+    const nm=who.querySelector(".j-hname"), ml=who.querySelector(".j-hmail"), hint=who.querySelector(".j-opt");
+    if(!needs){ nm.value=""; ml.value=""; }
+    const has=!!(nm.value||ml.value);
+    who.classList.toggle("on",needs&&(!opt||has));
+    if(hint) hint.hidden=!opt;
+    if(btn) btn.hidden=!(needs&&opt&&!has);
+    item.classList.toggle("done",!!v);
     countUp();
   }
   if(e.target.classList.contains("j-hname")) setAns(ref,{hname:e.target.value});
   if(e.target.classList.contains("j-hmail")) setAns(ref,{hmail:e.target.value});
 });
 $("rows").addEventListener("input",e=>{
-  if(e.target.classList.contains("j-note")){
-    setAns(e.target.closest(".item").dataset.ref,{note:e.target.value});
+  const item=e.target.closest(".item"); if(!item) return;
+  if(e.target.classList.contains("j-note")) setAns(item.dataset.ref,{note:e.target.value});
+  if(e.target.classList.contains("j-xlabel")){
+    const x=xById(item.dataset.ref); if(x){ x.label=e.target.value; save(); }
   }
 });
 $("rows").addEventListener("click",e=>{
+  if(e.target.classList.contains("j-central")){ S.showCentral=!S.showCentral; save(); paint(); return; }
+  const item=e.target.closest(".item"); if(!item) return;
   if(e.target.classList.contains("j-addnote")){
-    const item=e.target.closest(".item");
     setAns(item.dataset.ref,{note:""});
     const ta=document.createElement("textarea");
     ta.className="j-note"; ta.placeholder="Anything we have wrong, or worth knowing";
@@ -882,19 +1155,38 @@ $("rows").addEventListener("click",e=>{
     ta.style.marginTop="12px";
     e.target.replaceWith(ta); ta.focus();
   }
+  if(e.target.classList.contains("j-who")){
+    item.querySelector(".who").classList.add("on");
+    e.target.hidden=true; item.querySelector(".j-hname").focus();
+  }
+  if(e.target.classList.contains("j-xdel")){
+    S.extra=S.extra.filter(x=>x.ref!==item.dataset.ref); save(); paint();
+  }
 });
 ["f-rel","f-lens","f-todo"].forEach(id=>$(id).addEventListener("change",paint));
+$("f-q").addEventListener("input",paint);
+$("f-q").addEventListener("keydown",e=>{ if(e.key==="Escape"){ $("f-q").value=""; paint(); } });
+$("f-q-clear").onclick=()=>{ $("f-q").value=""; paint(); $("f-q").focus(); };
+/* Never a dead end: whatever was typed becomes the start of an entry of their own. */
+$("add-other").onclick=()=>{
+  const x=xNew($("f-q").value.trim());
+  $("f-q").value=""; paint();
+  const el=$("rows").querySelector('[data-ref="'+x.ref+'"] .j-xlabel');
+  if(el){ el.scrollIntoView({behavior:"smooth",block:"center"}); el.focus(); }
+};
 $("go5").onclick=()=>show(5);
 $("back3").onclick=()=>show(3);
 $("back4").onclick=()=>show(4);
 
 /* ============================ step 5 ============================ */
 function rowsOut(){
-  return mine().filter(r=>S.ans[r.ref]).map(r=>{
+  /* Added items first, then every in-scope line with an answer on it \u2014 including the
+     ones outside the picked groups, which is the whole point of searching all fifty-seven. */
+  return extraRows().concat(scope().filter(r=>S.ans[r.ref]).map(r=>{
     const a=S.ans[r.ref];
     return {ref:r.ref,rel:r.rel,lens:r.lens,ask:r.ask,status:a.status||"",
             hname:a.hname||"",hmail:a.hmail||"",note:a.note||""};
-  });
+  }));
 }
 function contacts(){
   const seen=new Map();
@@ -907,14 +1199,18 @@ function contacts(){
   return [...seen.values()];
 }
 function summarise(){
-  const all=mine(), out=rowsOut(), cs=contacts();
+  const out=rowsOut(), cs=contacts(), n=total();
+  const done=out.filter(r=>r.status).length;
   const have=out.filter(r=>r.status.startsWith("We have")).length;
-  const none=out.filter(r=>r.status==="It doesn’t exist").length;
+  const none=out.filter(r=>r.status==="It doesn\u2019t exist").length;
   $("sum-tally").innerHTML=`
-    <div><b>${out.length}<i>/${all.length}</i></b><span>Lines answered</span></div>
+    <div><b>${done}<i>/${n}</i></b><span>Lines answered</span></div>
     <div><b>${have}</b><span>Solmax has</span></div>
     <div><b>${none}</b><span>Gaps found</span></div>
+    <div><b>${S.extra.length}</b><span>You added</span></div>
     <div><b>${cs.length}</b><span>People named</span></div>`;
+  $("send-as").innerHTML=esc(S.me.name||"(no name yet)")+
+    (okMail(S.me.email)?" &middot; "+esc(S.me.email):' &middot; <span style="color:#b0341f">no working email yet</span>');
   $("handoff-panel").hidden = cs.length===0;
   $("namelist").innerHTML = cs.length ? `<p>We will ask each of them directly:</p>`+cs.map(c=>
     `<div class="nameitem"><span>${esc(c.name||"(no name given)")}</span><code>${esc(c.mail||"no email")}</code>
@@ -1026,6 +1322,7 @@ function showSent(done,total,people){
   }
   $("sent-block").scrollIntoView({behavior:"smooth",block:"start"});
 }
+let sendAnyway=false;
 const auditForm=$("auditForm");
 if(auditForm) auditForm.addEventListener("submit",e=>{
   e.preventDefault();
@@ -1033,19 +1330,32 @@ if(auditForm) auditForm.addEventListener("submit",e=>{
   const nm=(S.me.name||"").trim(), em=(S.me.email||"").trim();
   if(!nm||!em){ err.textContent="We need your name and email before this can go anywhere \u2014 add them in step one."; return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ err.textContent="That email address does not look right \u2014 check it in step one."; return; }
-  const out=rowsOut(), all=mine(), cs=contacts();
+  const out=rowsOut(), n=total(), cs=contacts();
+  const done=out.filter(r=>r.status).length;
+  /* An empty or near-empty return is almost always a slip. Warned once, never blocked. */
+  if(done<3&&!sendAnyway){
+    sendAnyway=true;
+    err.textContent=done
+      ? "Only "+done+" line"+(done===1?" is":"s are")+" answered so far. Go back to your list if that is not right \u2014 or press send again and it goes as it is."
+      : "Nothing is answered yet, so this return would arrive empty. Go back to your list \u2014 or press send again and it goes as it is.";
+    $("sendBtn").textContent="Send it anyway \u2192";
+    return;
+  }
   $("hf-name").value=nm;
   $("hf-email").value=em;
   $("hf-role").value=S.me.role||"";
   $("hf-regions").value=S.regions.join("; ");
-  $("hf-lines-answered").value=String(out.length);
-  $("hf-lines-total").value=String(all.length);
+  $("hf-lines-answered").value=String(done);
+  $("hf-lines-total").value=String(n);
   $("hf-people-named").value=cs.map(c=>c.name+(c.mail?" <"+c.mail+">":"")).join("; ");
+  $("hf-other-count").value=String(S.extra.length);
+  $("hf-other").value=S.extra.map(x=>(x.label||"(unnamed)")+" \u2014 "+(x.status||"no status chosen")+
+    ((x.hname||x.hmail)?" ("+[x.hname,x.hmail].filter(Boolean).join(", ")+")":"")).join(" | ");
   $("hf-return").value=plain();
   const btn=$("sendBtn"); btn.disabled=true; btn.textContent="Sending\u2026";
   fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},
              body:new URLSearchParams(new FormData(auditForm)).toString()})
-    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); showSent(out.length,all.length,cs.length); })
+    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); showSent(done,n,cs.length); })
     .catch(()=>{
       btn.disabled=false; btn.textContent="Send my return to Dustin \u2192";
       err.textContent="That did not go through, so nothing has been sent. Use the email route below instead \u2014 it always works.";
@@ -1072,11 +1382,11 @@ $("email-them").onclick=()=>{
   const body=
 "Hello,\n\n"+
 "I am helping with the Solmax data audit, and your name came up as someone who holds part of what is being asked for.\n\n"+
-"Before anyone at Solmax is asked new questions, MissionCTRL are cataloguing what we already collect, so nothing gets rebuilt that already exists. They are not asking for files yet \u2014 just what exists and who owns it. It takes about ten minutes, and \"we don\'t have that\" is a useful answer.\n\n"+
+"Before anyone at Solmax is asked new questions, MissionCTRL are cataloguing what we already collect, so nothing gets rebuilt that already exists. They are not asking for files yet \u2014 just what exists and who owns it. You only see the lines that touch your own work, and \"we don\'t have that\" is a useful answer.\n\n"+
 "The page: "+PAGE_URL+"\n\n"+
 "They need it by "+DEADLINE+". Questions go to "+OWNER_NAME+" at "+TO+".\n\n"+
 "Thank you,\n"+(S.me.name||"")+"\n";
-  window.open(mailto(to,"Solmax data audit \u2014 ten minutes, if you can",body),"_self");
+  window.open(mailto(to,"Solmax data audit \u2014 a short list, if you can",body),"_self");
   $("them-status").innerHTML="An introduction has been opened in your mail client, addressed to the people you named. Read it before you send it.";
 };
 
@@ -1097,11 +1407,11 @@ $("share-go").onclick=()=>{
   const body=
 "Hello,\n\n"+
 "MissionCTRL are running a short data audit for Solmax. Before anyone here is asked new questions, they are cataloguing what we already collect \u2014 so nothing gets rebuilt that already exists.\n\n"+
-"You hold something they are asking about, or you will know who does. It takes about ten minutes, and \"we don\'t have that\" is a genuinely useful answer.\n\n"+
+"You hold something they are asking about, or you will know who does. You only see the lines that touch your own work, and \"we don\'t have that\" is a genuinely useful answer.\n\n"+
 PAGE_URL+"\n\n"+
 "They need it by "+DEADLINE+". Questions go to "+OWNER_NAME+" at "+TO+".\n\n"+
 "Thank you,\n"+(S.me.name||"")+"\n";
-  window.open(mailto(to,"Solmax data audit \u2014 ten minutes, if you can",body),"_self");
+  window.open(mailto(to,"Solmax data audit \u2014 a short list, if you can",body),"_self");
   $("share-status").textContent="An introduction to "+to+" has been opened in your mail client. Read it before you send it.";
 };
 $("share-copy").onclick=async()=>{
@@ -1114,7 +1424,27 @@ $("share-copy").onclick=async()=>{
 $("share-local").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); $("share-go").click(); } });
 
 /* ============================ boot ============================ */
-show(1);
+$("resume-x").onclick=()=>{ $("resume").hidden=true; };
+$("resume-clear").onclick=()=>{
+  if(!confirm("Start again? Everything answered in this browser will be cleared.")) return;
+  try{localStorage.removeItem(KEY);}catch(e){}
+  location.reload();
+};
+/* The step was the one piece of state never saved, so a reload dumped people back on
+   step one with no sign their answers had survived. Both are fixed: we return them to
+   where they were, as far as what they have filled in allows, and say what is saved. */
+function boot(){
+  /* the browser would otherwise restore the old scroll position on top of the step
+     we just opened, leaving the page half under the fixed nav */
+  if("scrollRestoration" in history) history.scrollRestoration="manual";
+  let n=Math.min(5,Math.max(1,+S.step||1)), f=furthest();
+  if(n>f) n=f;
+  const done=Object.keys(S.ans).filter(k=>S.ans[k]&&S.ans[k].status).length+S.extra.filter(x=>x.status).length;
+  if(done&&n>1){ $("resume-n").textContent=String(done); $("resume-w").textContent=done===1?"answer":"answers"; $("resume").hidden=false; }
+  show(n);
+  stick();
+}
+boot();
 </script>
 <!-- Consent-gated analytics (Microsoft Clarity) — see assets/mc-analytics.js.
      /navigator/* is excluded inside that file, so nothing loads here. -->
