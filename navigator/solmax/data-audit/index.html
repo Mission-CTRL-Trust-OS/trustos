@@ -348,7 +348,7 @@ button.linkish:hover{color:#3a6a7a}
 .tag.added{color:var(--trust-cool);border-color:rgba(90,138,154,.45);background:rgba(90,138,154,.07);opacity:1}
 .tag.out{color:var(--warn);border-color:rgba(154,106,30,.4);background:var(--warn-soft);opacity:1}
 
-/* ── STEP RAIL: clickable, and all five steps readable on a phone ── */
+/* ── STEP RAIL: clickable, and all six steps readable on a phone ── */
 .steps li{cursor:pointer}
 .steps li:hover{color:rgba(255,255,255,0.72)}
 .steps li:focus-visible{outline:2px solid var(--trust-cool);outline-offset:2px}
@@ -357,6 +357,45 @@ button.linkish:hover{color:#3a6a7a}
   .steps{flex-wrap:wrap;overflow:visible;gap:4px}
   .steps li{padding:4px 7px;letter-spacing:0.05em;font-size:0.56rem}
 }
+
+/* ===== STEP FIVE: THE PROOF LADDER, THE SEVENTEEN SOURCES, THE READINESS TIER ===== */
+.picks{display:flex;flex-direction:column;gap:1px;margin-top:4px;background:var(--hair-soft);border:1px solid var(--hair);border-radius:8px;overflow:hidden}
+button.pick{
+  font-family:'Sora',sans-serif;text-align:left;width:100%;
+  background:var(--white);border:0;cursor:pointer;padding:15px 18px;
+  display:flex;gap:14px;align-items:baseline;transition:background .15s;
+}
+button.pick:hover{background:#fafbfc}
+button.pick>span{flex:1 1 auto;min-width:0}
+button.pick i{font-style:normal;font-size:0.56rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--trust-slate);opacity:.4;flex:none;width:62px;padding-top:3px}
+button.pick b{display:block;font-size:0.92rem;font-weight:700;color:var(--trust-slate)}
+button.pick small{display:block;font-size:0.82rem;line-height:1.6;color:var(--trust-slate);opacity:.6;margin-top:3px}
+button.pick[aria-checked="true"]{background:rgba(90,138,154,0.08);box-shadow:inset 3px 0 0 var(--trust-cool)}
+button.pick[aria-checked="true"] b{color:var(--trust-cool)}
+button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
+@media(max-width:480px){button.pick{gap:10px;padding:14px 13px}button.pick i{width:44px;font-size:0.52rem}}
+
+/* Step four's group heads sit below its sticky filter bar; step five has no filter
+   bar, so they stick straight under the rail instead of floating mid-list. */
+#s5 .group-head{top:var(--stick-top,118px)}
+.group.reality .group-head{border-bottom-color:var(--trust-cool)}
+.group.reality .group-head h3{color:var(--trust-cool)}
+.group-lead{font-size:0.84rem;line-height:1.7;color:var(--trust-slate);opacity:.65;padding:12px 0 2px;max-width:640px}
+/* Everything after the first dropdown is revealed by it, so the fast path is
+   seventeen dropdowns and nothing else. */
+.srcwrap{display:none;flex-direction:column;gap:9px}
+.srcwrap.on{display:flex}
+.srclab{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--trust-cool)}
+.srcwrap .mini{margin-top:0}
+
+/* A readiness tier is not a trust band: a flat slab, deliberately nothing like the
+   ring and the bands the measured reads use. */
+.tier-out{margin-top:20px;padding:20px 22px;background:var(--system-grey);border:1px solid var(--hair);border-left:3px solid var(--trust-cool);border-radius:8px}
+.tier-out b{display:block;font-size:1.35rem;font-weight:800;letter-spacing:-0.03em;color:var(--trust-slate);line-height:1.2}
+.tier-out span{display:block;font-size:0.84rem;line-height:1.75;color:var(--trust-slate);opacity:.7;margin-top:8px;max-width:600px}
+.tier-out em{font-style:normal;font-weight:700;opacity:1}
+.tally b.word{font-size:1.05rem;letter-spacing:-0.02em;line-height:1.6}
+.share-split{border-top:1px solid var(--hair);margin-top:30px;padding-top:24px}
 </style>
 <!-- seo-ai:start -->
 <meta name="robots" content="noindex, nofollow" />
@@ -403,7 +442,8 @@ button.linkish:hover{color:#3a6a7a}
       <li data-s="2" role="button" tabindex="0">2 &middot; Groups</li>
       <li data-s="3" role="button" tabindex="0">3 &middot; Regions</li>
       <li data-s="4" role="button" tabindex="0">4 &middot; What exists</li>
-      <li data-s="5" role="button" tabindex="0">5 &middot; Send</li>
+      <li data-s="5" role="button" tabindex="0">5 &middot; Where from</li>
+      <li data-s="6" role="button" tabindex="0">6 &middot; Send</li>
     </ol>
     <a class="rail-share" href="#share">Share this page &rarr;</a>
   </div>
@@ -444,7 +484,10 @@ button.linkish:hover{color:#3a6a7a}
         <button type="button" class="btn quiet tiny" id="resume-clear">Start again</button>
         <button type="button" class="linkish" id="resume-x">Dismiss</button>
       </p>
-      <div class="section-label">Step one of five</div>
+      <p class="banner cool" id="own-1" hidden>
+        <span class="grow">You were sent here for the <b>&ldquo;where it comes from&rdquo;</b> step, and that is still the only part being asked of you. Your name and a working email are all we need from this page &mdash; they are what the return is signed with, and what Dustin comes back to.</span>
+      </p>
+      <div class="section-label">Step one of six</div>
       <h2 class="section-title">Who is filling this in</h2>
       <p class="lede">So we know who to thank, and who to come back to if something is unclear.</p>
       <div class="panel">
@@ -465,7 +508,7 @@ button.linkish:hover{color:#3a6a7a}
 <section id="s2" hidden>
   <div class="section" style="padding-top:150px">
     <div class="section-inner">
-      <div class="section-label">Step two of five</div>
+      <div class="section-label">Step two of six</div>
       <h2 class="section-title">Which of these do you deal with?</h2>
       <p class="lede">Solmax has five stakeholder relationships in this first wave, each measured on its own. Tick the ones you touch &mdash; even loosely. Everything else disappears from your list.</p>
       <p class="lede" style="font-size:0.9rem">Investors and lenders are not on this list on purpose: that relationship is read from financial and market evidence, gathered separately with Finance.</p>
@@ -486,7 +529,7 @@ button.linkish:hover{color:#3a6a7a}
 <section id="s3" hidden>
   <div class="section" style="padding-top:150px">
     <div class="section-inner">
-      <div class="section-label">Step three of five</div>
+      <div class="section-label">Step three of six</div>
       <h2 class="section-title">Where do you work?</h2>
       <p class="lede">Some of what we are after is held once, centrally. If you are regional we will mark those lines so you can skip them &mdash; unless your region does it differently, which is itself worth knowing.</p>
       <div class="panel">
@@ -505,7 +548,7 @@ button.linkish:hover{color:#3a6a7a}
 <section id="s4" hidden>
   <div class="section" style="padding-top:150px">
     <div class="section-inner">
-      <div class="section-label">Step four of five</div>
+      <div class="section-label">Step four of six</div>
       <h2 class="section-title">What exists</h2>
       <p class="lede">Three things per line at most, and only the lines you can speak to. If a line belongs to someone else, name them and we will ask them ourselves.</p>
       <p class="lede" id="s4-time" style="font-size:0.9rem;margin-top:10px">&mdash;</p>
@@ -540,23 +583,78 @@ button.linkish:hover{color:#3a6a7a}
       <div id="rows"></div>
 
       <div class="actions">
-        <button class="btn" id="go5">Review and send</button>
+        <button class="btn" id="go5">Next &mdash; where it comes from</button>
         <button class="btn quiet" id="back3">Back</button>
       </div>
-      <p class="mini">Your answers are saved <strong>in this browser only</strong>, so you can close the tab and come back &mdash; but finish on the same device and in the same browser, or you will start again. Nothing is sent anywhere until you send it yourself in step five.</p>
+      <p class="mini">Your answers are saved <strong>in this browser only</strong>, so you can close the tab and come back &mdash; but finish on the same device and in the same browser, or you will start again. Nothing is sent anywhere until you send it yourself in step six.</p>
     </div>
   </div>
 </section>
 
 <!-- ============ STEP 5 ============ -->
 <section id="s5" hidden>
+  <div class="section grey" style="padding-top:150px">
+    <div class="section-inner">
+      <p class="banner cool" id="own-5" hidden>
+        <span class="grow">You have been sent straight to this step, and this is the whole of it &mdash; <b>seventeen dropdowns</b> about where Solmax&rsquo;s signals are collected. The long list of documents on step four belongs to someone else; leave it alone. We will ask for your name and email on the way out, so we know whose answers these are.</span>
+      </p>
+      <div class="section-label">Step five of six</div>
+      <h2 class="section-title">Where it <em>comes from</em></h2>
+      <p class="lede">Step four asked whether a document exists and who holds it. This step asks something the audit has never asked: <strong>where a signal is collected today</strong> &mdash; and where it is not, <strong>where it could be</strong>. Seventeen sources, one dropdown each. &ldquo;No&rdquo; and &ldquo;I don&rsquo;t know&rdquo; are one click and move you straight on.</p>
+
+      <div class="panel">
+        <h2 id="proof-q">First, the honest one &mdash; asked once</h2>
+        <p class="sub">If the board asked you tomorrow to prove that Solmax is trusted by the people it depends on, what could you actually put in front of them? Pick the strongest thing that is true today, not the thing you wish were true.</p>
+        <div class="picks" id="proof" role="radiogroup" aria-labelledby="proof-q">
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Solid, measured data"><i>Strongest</i><span><b>Solid, measured data</b><small>Numbers we already collect, on a scale we could run again and compare against.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Case studies and anecdotes"><i></i><span><b>Case studies and anecdotes</b><small>Real, and true &mdash; but chosen by us, and not countable.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Activity metrics — what we did, not what landed"><i></i><span><b>Activity metrics &mdash; what we did, not what landed</b><small>Seminars run, tickets closed, posts published, tonnes shipped.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="We would commission research and wait"><i></i><span><b>We would commission research and wait</b><small>Nothing to hand. We would have to go and find out, and it would take months.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Honestly — nothing"><i>Weakest</i><span><b>Honestly &mdash; nothing</b><small>A useful answer, and more common than anyone admits.</small></span></button>
+        </div>
+        <p class="mini">No wrong answer. This is the one line in the whole return that is a judgement rather than a fact, and it is here to sanity-check the inventory below: if the list says the data exists and this says nothing could be shown, one of the two is wrong and we would rather know now.</p>
+      </div>
+
+      <div class="panel">
+        <h2>The seventeen sources</h2>
+        <p class="sub">The same three lenses as step four. <strong>Reality comes first</strong> &mdash; what people actually experience is what the readiness tier is calculated from, and what decides how much new survey work has to be paid for.</p>
+        <div class="lenses">
+          <div class="lens"><b>Reality</b><span>What people actually experience. Surveys, complaints, quality and safety records, behaviour in the systems.</span></div>
+          <div class="lens"><b>Intent</b><span>What Solmax set out to be. Strategy, priorities, objectives, targets &mdash; as decided, not as published.</span></div>
+          <div class="lens"><b>Expectation</b><span>Everything Solmax says and publishes. Website, datasheets, brand guidelines, decks, brochures, agreements, permits.</span></div>
+        </div>
+        <div id="src-rows"></div>
+      </div>
+
+      <div class="panel" id="tier-panel">
+        <h2>What that adds up to</h2>
+        <p class="sub">The Navigator worked out Solmax&rsquo;s <strong>data readiness</strong> from tick-boxes, before any of this was scoped or priced. This is the same calculation on real answers: the share of the <strong>seven Reality sources</strong> collected routinely, cut at the same two boundaries, so the two numbers can be put side by side.</p>
+        <div class="tier-out" id="tier-out"><b>&mdash;</b><span>Answer the Reality sources above and this fills itself in.</span></div>
+        <div class="tally" id="src-tally"></div>
+        <p class="mini" id="tier-note"></p>
+        <p class="mini"><strong>This is a data-readiness tier. It is not a trust score, and not a trust band.</strong> It says how much of the evidence already exists &mdash; nothing at all about how much Solmax is trusted. A composite trust score is only ever published for a read that has actually been measured, and no read has been measured yet.</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="go6">Review and send</button>
+        <button class="btn quiet" id="back4">Back to my list</button>
+      </div>
+      <p class="err" id="e5" role="status" aria-live="polite"></p>
+      <p class="mini">Saved in this browser as you go, the same as step four. Nothing is sent anywhere until you send it yourself on step six.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 6 ============ -->
+<section id="s6" hidden>
   <div class="section" style="padding-top:150px">
     <div class="section-inner">
-      <div class="section-label">Step five of five</div>
+      <div class="section-label">Step six of six</div>
       <h2 class="section-title">Send it back to <em>Dustin</em></h2>
-      <p class="lede" id="s5-lede">Here is what you have told us. Nothing has left your browser yet. Press send and it goes straight to Dustin &mdash; then we will tell you where the documents themselves should go.</p>
+      <p class="lede" id="s6-lede">Here is what you have told us. Nothing has left your browser yet. Press send and it goes straight to Dustin &mdash; then we will tell you where the documents themselves should go.</p>
 
       <div class="tally" id="sum-tally"></div>
+      <p class="mini" id="sum-src"></p>
 
       <div id="send-block">
         <div class="panel">
@@ -577,6 +675,10 @@ button.linkish:hover{color:#3a6a7a}
             <input type="hidden" name="people-named" id="hf-people-named">
             <input type="hidden" name="other-items-count" id="hf-other-count">
             <input type="hidden" name="other-items" id="hf-other">
+            <input type="hidden" name="readiness-tier" id="hf-tier">
+            <input type="hidden" name="sources-collected" id="hf-src-collected">
+            <input type="hidden" name="sources-could-collect" id="hf-src-could">
+            <input type="hidden" name="board-proof" id="hf-proof">
             <textarea class="hp" name="return" id="hf-return" rows="2" tabindex="-1" aria-hidden="true"></textarea>
             <div class="actions">
               <button class="btn" type="submit" id="sendBtn">Send my return to Dustin &rarr;</button>
@@ -646,7 +748,7 @@ button.linkish:hover{color:#3a6a7a}
 
       <p class="note">A blank line is not a failure. If Solmax does not hold something, that is a finding &mdash; it goes in the December 2026 baseline as a gap we have measured rather than a number we have guessed. Thank you for the time it took.</p>
       <p class="mini">Deadline: <strong id="dl-2">&mdash;</strong>. Questions: <strong>Dustin Lawrence</strong>, <a href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a>.</p>
-      <div class="actions"><button class="btn quiet" id="back4">Back to my list</button></div>
+      <div class="actions"><button class="btn quiet" id="back5">Back a step</button></div>
     </div>
   </div>
 </section>
@@ -665,6 +767,18 @@ button.linkish:hover{color:#3a6a7a}
       <button class="btn ghost" type="button" id="share-copy">Copy the link</button>
     </div>
     <p class="status-line" id="share-status"></p>
+
+    <div class="share-split">
+      <h2>Or just the systems owners</h2>
+      <p class="sub">If someone owns a system rather than a shelf of documents &mdash; CRM, HR, QHSE, the channel &mdash; send them this link instead. It opens the page <strong>straight on &ldquo;where it comes from&rdquo;</strong>, tells them the fifty-seven document lines are not theirs to fill in, and still collects the name and email the return has to be signed with.</p>
+      <div class="share-row">
+        <label class="share-input" style="flex:1 1 420px">
+          <input type="text" id="src-link" readonly spellcheck="false" aria-label="The link that opens the page on the sources step" value="">
+        </label>
+        <button class="btn ghost" type="button" id="src-copy">Copy the systems-owner link</button>
+        <button class="btn quiet" type="button" id="src-mail">Email it to the address above</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -808,10 +922,48 @@ const NEEDS_NAME=new Set(["We have this — someone else holds it","Not my area"
 /* "Not my area" is an honest escape hatch, so naming someone is offered there, never
    demanded — two blank boxes push people towards "I don’t know", a worse answer. */
 const OPT_NAME=new Set(["Not my area"]);
+
+/* ===== where the signals come from (step five) =====
+The seventeen rows below are the Navigator estimator's own REALITY / INTENT / EXPECT
+arrays, copied word for word from /navigator/solmax/index.html, so this step and the
+estimate Solmax was scoped and priced from share one taxonomy and one tier. Reality is
+first and counts: those seven are the tier's denominator, and the ones the survey
+fieldwork cost hangs on. The lens definitions shown on the step are this page's own
+(step four's .lenses block) \u2014 Reality here is what people actually experience, which
+is not how the Navigator's own label reads. */
+const SRC=[
+["Reality","Stakeholder / trust survey outputs"],
+["Reality","Employee engagement data"],
+["Reality","Retention data"],
+["Reality","NPS"],
+["Reality","CSAT"],
+["Reality","Media & social sentiment"],
+["Reality","Customer complaints / warranty / win-loss"],
+["Intent","Corporate strategy & leadership priorities"],
+["Intent","Strategic bets / growth plans"],
+["Intent","Stakeholder value framework"],
+["Intent","ESG & governance commitments"],
+["Intent","Annual report / investor materials"],
+["Expectation","Brand positioning & messaging"],
+["Expectation","Communications archive (press, case studies, sustainability, social)"],
+["Expectation","Tone & voice guidelines"],
+["Expectation","Brand & visual identity guidelines"],
+["Expectation","Regulatory submissions & disclosures"]
+].map((r,i)=>({ref:"S"+String(i+1).padStart(2,"0"),lens:r[0],name:r[1]}));
+const SRC_LENS=["Reality","Intent","Expectation"];
+const REALITY_N=SRC.filter(r=>r.lens==="Reality").length;   /* 7 \u2014 the tier denominator */
+const GOT=["","Yes, routinely","Sometimes, or only in some regions","No","Don\u2019t know"];
+const HELD="Yes, routinely", SOME="Sometimes, or only in some regions";
+/* Collected at all \u2014 the two answers that make "where does it live" worth asking. */
+const ANY=new Set([HELD,SOME]);
+const FREQ=["","Continuously","Monthly","Quarterly","Annually","Ad hoc","Don\u2019t know"];
+
 const TO="hello@missionctrl.agency";
 const OWNER_NAME="Dustin Lawrence";
 const DEADLINE="Friday 16 October";
 const PAGE_URL="https://trustos.missionctrl.agency/navigator/solmax/data-audit/";
+/* The link a systems owner is sent: it opens on step five and says so. */
+const SRC_URL=PAGE_URL+"#sources";
 const SHARE_DOMAIN="solmax.com";
 
 /* ── WHERE THE DOCUMENTS GO ───────────────────────────────────────────────
@@ -823,9 +975,15 @@ const SHAREPOINT_URL = "";
 
 /* ============================ state ============================ */
 const KEY="solmax-audit-v1";
-let S={me:{name:"",email:"",role:""},rels:[],regions:[],ans:{},extra:[],step:1,showCentral:false};
+let S={me:{name:"",email:"",role:""},rels:[],regions:[],ans:{},extra:[],step:1,showCentral:false,
+       src:{},proof:"",srcOnly:false};
 try{const r=localStorage.getItem(KEY); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
 if(!Array.isArray(S.extra)) S.extra=[];
+/* State written by the five-step version of this page has no sources on it, so the new
+   keys are rebuilt rather than trusted \u2014 an old return in the browser must still open. */
+if(!S.src||typeof S.src!=="object"||Array.isArray(S.src)) S.src={};
+if(typeof S.proof!=="string") S.proof="";
+S.srcOnly=!!S.srcOnly;
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -859,7 +1017,7 @@ function stick(){
 }
 function show(n){
   step=n; S.step=n; save();
-  for(let i=1;i<=5;i++) $("s"+i).hidden = (i!==n);
+  for(let i=1;i<=6;i++) $("s"+i).hidden = (i!==n);
   [...$("steps").children].forEach(li=>{
     const s=+li.dataset.s;
     li.dataset.on = s===n ? "1":"0";
@@ -869,19 +1027,26 @@ function show(n){
   if(host && !$("resume").hidden) host.prepend($("resume"));
   window.scrollTo({top:0,behavior:"instant"});
   if(n===4){ paint(); stick(); }
-  if(n===5) summarise();
+  if(n===5){ paintSrc(); stick(); }
+  if(n===6) summarise();
 }
 /* How far the answers so far allow them to go. */
 function furthest(){
-  if(!(S.me.name||"").trim()||!okMail(S.me.email)) return 1;
+  const id=!!(S.me.name||"").trim()&&okMail(S.me.email);
+  /* A systems owner arriving on the deep link never picked groups or regions, and is
+     not going to: their step is reachable without either, and only the send needs an
+     identity \u2014 which is asked for on the way out rather than blocking the way in. */
+  if(S.srcOnly) return id?6:5;
+  if(!id) return 1;
   if(!S.rels.length) return 2;
   if(!S.regions.length) return 3;
-  return 5;
+  return 6;
 }
 const ERRS={
   1:"We need your name and a working email before the rest of this makes sense \u2014 they are both on this step.",
   2:"Tick at least one group \u2014 even loosely \u2014 so we can cut the list down to yours.",
-  3:"Pick at least one region, so we know which lines are usually held centrally for you."
+  3:"Pick at least one region, so we know which lines are usually held centrally for you.",
+  5:"We need your name and a working email before any of this can be sent back \u2014 both are on step one, and they are the only other thing we ask of you."
 };
 /* The rail looked clickable and was inert. It navigates now, as far as the answers
    allow, and says why when it cannot go further. */
@@ -910,13 +1075,17 @@ $("go2").onclick=()=>{
     $("e1").textContent="Add your name first \u2014 we need to know who to thank, and who to come back to.";
     $("me-name").focus(); return;
   }
-  /* The email was optional here and mandatory at step five, which failed people
+  /* The email was optional here and mandatory at the send step, which failed people
      twenty minutes too late. It is asked for once, at the start. */
   if(!okMail(S.me.email)){
     $("e1").textContent="Add a working email \u2014 your return cannot be sent without one, and it is far easier to add now than at the end.";
     $("me-email").focus(); return;
   }
-  $("e1").textContent=""; show(2);
+  $("e1").textContent="";
+  /* A systems owner was sent to step one only for the identity the return is signed
+     with \u2014 back to their own step if it is unfinished, straight to the send if not. */
+  if(S.srcOnly){ show(Object.keys(S.src).some(k=>S.src[k]&&S.src[k].got)?6:5); return; }
+  show(2);
 };
 $("edit-me").onclick=()=>show(1);
 
@@ -1178,7 +1347,151 @@ $("go5").onclick=()=>show(5);
 $("back3").onclick=()=>show(3);
 $("back4").onclick=()=>show(4);
 
-/* ============================ step 5 ============================ */
+/* ============================ step 5 \u2014 where it comes from ============================ */
+const srcOf=ref=>S.src[ref]||{};
+/* A dropdown that hides a question has to drop what was in it, or a system name and a
+   refresh cycle sit on in the return under a source the respondent has just said is not
+   collected \u2014 the same orphan the holder panel had on step four. */
+function setSrc(ref,patch){
+  if(patch.got!==undefined){
+    if(!ANY.has(patch.got)) patch=Object.assign({},patch,{sys:"",freq:""});
+    /* Nothing collected routinely needs a "could we start" answer. */
+    if(patch.got===HELD) patch=Object.assign({},patch,{could:""});
+  }
+  const a=Object.assign({},S.src[ref],patch);
+  S.src[ref]=a;
+  if(!a.got&&!a.sys&&!a.freq&&!a.could) delete S.src[ref];
+  save();
+}
+/* The Navigator's tier(), unchanged: the share of the seven Reality sources held, cut
+   at 0.34 and 0.67. "Yes, routinely" is held \u2014 that is the Navigator's binary tick.
+   "Sometimes, or only in some regions" is reported next to it and never counted as a
+   half, because a silently rounded partial is a number nobody can check. */
+function srcStats(){
+  const g=r=>srcOf(r.ref).got||"";
+  const R=SRC.filter(r=>r.lens==="Reality");
+  const realHeld=R.filter(r=>g(r)===HELD).length, realSome=R.filter(r=>g(r)===SOME).length;
+  const frac=realHeld/REALITY_N;
+  return {realHeld:realHeld,realSome:realSome,frac:frac,
+    tier:frac<0.34?"Low":frac<0.67?"Medium":"High",
+    held:SRC.filter(r=>g(r)===HELD).length,
+    some:SRC.filter(r=>g(r)===SOME).length,
+    could:SRC.filter(r=>(srcOf(r.ref).could||"").trim()).length,
+    done:SRC.filter(r=>g(r)).length};
+}
+function srcOut(){
+  return SRC.filter(r=>{const a=srcOf(r.ref); return a.got||a.sys||a.freq||a.could;})
+    .map(r=>{const a=srcOf(r.ref);
+      return {ref:r.ref,lens:r.lens,name:r.name,got:a.got||"",
+              sys:a.sys||"",freq:a.freq||"",could:a.could||""};});
+}
+function srcRowHTML(r){
+  const a=srcOf(r.ref), any=ANY.has(a.got||""), could=!!a.got&&a.got!==HELD;
+  return `<div class="item${a.got?" done":""}" data-ref="${r.ref}">
+<div>
+<div class="ask">${esc(r.name)}</div>
+<div class="tags"><span class="tag lens">${esc(r.lens)}</span>${
+r.lens==="Reality"?'<span class="tag central">counts towards the tier</span>':''}</div>
+</div>
+<div class="answer">
+<select class="j-got" aria-label="Do we collect this today \u2014 ${esc(r.name)}">
+${GOT.map(x=>`<option value="${esc(x)}"${(a.got||"")===x?" selected":""}>${x?esc(x):"\u2014 do we collect this today? \u2014"}</option>`).join("")}
+</select>
+<div class="srcwrap j-live${any?" on":""}">
+<span class="srclab">Where it lives, and how often it is refreshed</span>
+<input type="text" class="j-sys" aria-label="The system this lives in \u2014 ${esc(r.name)}" placeholder="e.g. warranty claims, call-centre logs" value="${esc(a.sys||"")}">
+<select class="j-freq" aria-label="How often this is refreshed \u2014 ${esc(r.name)}">
+${FREQ.map(x=>`<option value="${esc(x)}"${(a.freq||"")===x?" selected":""}>${x?esc(x):"\u2014 how often is it refreshed? \u2014"}</option>`).join("")}
+</select>
+</div>
+<div class="srcwrap j-could${could?" on":""}">
+<span class="srclab">Could we pick this up at something we already run?</span>
+<input type="text" class="j-cd" aria-label="Something Solmax already runs where this could be collected \u2014 ${esc(r.name)}" placeholder="e.g. at the CEA sign-off, on the delivery note, in the distributor review" value="${esc(a.could||"")}">
+<p class="mini">Not a new survey. Somewhere Solmax already turns up \u2014 a course, a site visit, a quarterly review \u2014 where two questions would fit without anyone noticing.</p>
+</div>
+</div>
+</div>`;
+}
+function paintSrc(){
+  $("own-5").hidden=!S.srcOnly;
+  $("src-rows").innerHTML=SRC_LENS.map(L=>{
+    const rs=SRC.filter(r=>r.lens===L);
+    return `<div class="group${L==="Reality"?" reality":""}">
+<div class="group-head"><h3>${esc(L)}</h3><span>${rs.length} source${rs.length===1?"":"s"}</span></div>
+${L==="Reality"?'<p class="group-lead">These seven are what people actually experience, and the only ones the readiness tier is calculated from. If you answer nothing else on this step, answer these.</p>':''}
+${rs.map(srcRowHTML).join("")}
+</div>`;
+  }).join("");
+  paintProof();
+  tierUp();
+}
+function paintProof(){
+  [...$("proof").children].forEach(b=>
+    b.setAttribute("aria-checked", b.dataset.v===S.proof ? "true":"false"));
+}
+function tierUp(){
+  const t=srcStats();
+  $("tier-out").innerHTML="<b>"+t.tier+" data readiness</b><span><em>"+t.realHeld+" of "+REALITY_N+
+    "</em> Reality sources are collected routinely today"+
+    (t.realSome?", and <em>"+t.realSome+"</em> more sometimes or only in some regions":"")+"."+
+    (t.could?" You have named somewhere <em>"+t.could+"</em> source"+(t.could===1?"":"s")+
+      " could be picked up at something Solmax already runs \u2014 which is the finding this step exists for.":"")+
+    "</span>";
+  $("src-tally").innerHTML=
+    '<div><b class="word">'+t.tier+"</b><span>Data readiness</span></div>"+
+    "<div><b>"+t.realHeld+"<i>/"+REALITY_N+"</i></b><span>Reality, routinely</span></div>"+
+    "<div><b>"+t.realSome+"</b><span>Reality, sometimes</span></div>"+
+    "<div><b>"+t.could+"</b><span>Could be collected</span></div>"+
+    "<div><b>"+t.done+"<i>/"+SRC.length+"</i></b><span>Sources answered</span></div>";
+  $("tier-note").innerHTML="Counted the way the Navigator counts it, on the same seven and at the "+
+    "same two boundaries: under a third is <b>Low</b>, a third to two thirds is <b>Medium</b>, two thirds "+
+    "or more is <b>High</b>. A source counts as held only when it is collected <b>routinely</b>. "+
+    "<b>&ldquo;Sometimes, or only in some regions&rdquo; is reported separately and is never counted as a half</b>, "+
+    "so nothing here has been rounded up on your behalf.";
+}
+$("src-rows").addEventListener("change",e=>{
+  const item=e.target.closest(".item"); if(!item) return;
+  const ref=item.dataset.ref;
+  if(e.target.classList.contains("j-got")){
+    const v=e.target.value, any=ANY.has(v), could=!!v&&v!==HELD;
+    setSrc(ref,{got:v});
+    /* The boxes are emptied in the page as well as in the state, so what someone
+       typed never reappears if they change their mind back again. */
+    if(!any){ item.querySelector(".j-sys").value=""; item.querySelector(".j-freq").value=""; }
+    if(!could) item.querySelector(".j-cd").value="";
+    item.querySelector(".j-live").classList.toggle("on",any);
+    item.querySelector(".j-could").classList.toggle("on",could);
+    item.classList.toggle("done",!!v);
+  }
+  if(e.target.classList.contains("j-freq")) setSrc(ref,{freq:e.target.value});
+  if(e.target.classList.contains("j-sys")) setSrc(ref,{sys:e.target.value});
+  if(e.target.classList.contains("j-cd")) setSrc(ref,{could:e.target.value});
+  tierUp();
+});
+/* Typed answers are saved on the keystroke and never repaint the list \u2014 a repaint
+   here would take the cursor out of the box mid-sentence. */
+$("src-rows").addEventListener("input",e=>{
+  const item=e.target.closest(".item"); if(!item) return;
+  if(e.target.classList.contains("j-sys")) setSrc(item.dataset.ref,{sys:e.target.value});
+  if(e.target.classList.contains("j-cd")){ setSrc(item.dataset.ref,{could:e.target.value}); tierUp(); }
+});
+$("proof").addEventListener("click",e=>{
+  const b=e.target.closest(".pick"); if(!b) return;
+  S.proof = S.proof===b.dataset.v ? "" : b.dataset.v;   /* clicking it again un-picks it */
+  save(); paintProof();
+});
+$("go6").onclick=()=>{
+  if(!(S.me.name||"").trim()||!okMail(S.me.email)){
+    show(1);
+    $("e1").textContent=S.srcOnly
+      ? "That is your part done. All that is left is your name and a working email, so Dustin knows whose answers these are \u2014 then straight to sending."
+      : ERRS[1];
+    $("me-name").focus(); return;
+  }
+  $("e5").textContent=""; show(6);
+};
+
+/* ============================ step 6 ============================ */
 function rowsOut(){
   /* Added items first, then every in-scope line with an answer on it \u2014 including the
      ones outside the picked groups, which is the whole point of searching all fifty-seven. */
@@ -1199,7 +1512,7 @@ function contacts(){
   return [...seen.values()];
 }
 function summarise(){
-  const out=rowsOut(), cs=contacts(), n=total();
+  const out=rowsOut(), cs=contacts(), n=total(), t=srcStats();
   const done=out.filter(r=>r.status).length;
   const have=out.filter(r=>r.status.startsWith("We have")).length;
   const none=out.filter(r=>r.status==="It doesn\u2019t exist").length;
@@ -1208,7 +1521,15 @@ function summarise(){
     <div><b>${have}</b><span>Solmax has</span></div>
     <div><b>${none}</b><span>Gaps found</span></div>
     <div><b>${S.extra.length}</b><span>You added</span></div>
-    <div><b>${cs.length}</b><span>People named</span></div>`;
+    <div><b>${cs.length}</b><span>People named</span></div>
+    <div><b class="word">${t.tier}</b><span>Data readiness</span></div>
+    <div><b>${t.could}</b><span>Could be collected</span></div>`;
+  $("sum-src").innerHTML="<b>"+t.tier+" data readiness</b> &mdash; "+t.realHeld+" of "+REALITY_N+
+    " Reality sources collected routinely"+
+    (t.realSome?", and "+t.realSome+" more sometimes or only in some regions (reported separately, not counted as halves)":"")+
+    ". A data-readiness tier, not a trust score or a trust band. &ldquo;If the board asked tomorrow&rdquo;: <b>"+
+    esc(S.proof||"not answered")+"</b>. "+t.could+" source"+(t.could===1?"":"s")+
+    " could be collected at something Solmax already runs.";
   $("send-as").innerHTML=esc(S.me.name||"(no name yet)")+
     (okMail(S.me.email)?" &middot; "+esc(S.me.email):' &middot; <span style="color:#b0341f">no working email yet</span>');
   $("handoff-panel").hidden = cs.length===0;
@@ -1222,11 +1543,25 @@ function slug(){
 function csv(){
   const head=["Ref","Relationship","Lens","Item","Status","Holder name","Holder email","Note"];
   const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const t=srcStats();
   const meta=[["Name",S.me.name],["Email",S.me.email],["Role",S.me.role],
               ["Regions",S.regions.join("; ")],["Returned",new Date().toISOString().slice(0,10)]];
+  /* Two tables in one file: the document inventory, then where it comes from. The
+     readiness numbers sit above the second one so they are readable without a formula. */
+  const srcMeta=[["WHERE IT COMES FROM",""],
+    ["Data readiness tier (not a trust score)",t.tier],
+    ["Reality sources collected routinely",t.realHeld+" of "+REALITY_N],
+    ["Reality sources sometimes / only some regions",String(t.realSome)],
+    ["All sources collected routinely",t.held+" of "+SRC.length],
+    ["Sources that could be collected at an existing touchpoint",String(t.could)],
+    ["If the board asked tomorrow",S.proof||""]];
+  const srcHead=["Ref","Lens","Source","Collected today","Where it lives","Refreshed","Could be collected at"];
   return meta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
     [head.map(q).join(",")].concat(rowsOut().map(r=>
-      [r.ref,r.rel,r.lens,r.ask,r.status,r.hname,r.hmail,r.note].map(q).join(","))).join("\n");
+      [r.ref,r.rel,r.lens,r.ask,r.status,r.hname,r.hmail,r.note].map(q).join(","))).join("\n")+
+    "\n\n"+srcMeta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
+    [srcHead.map(q).join(",")].concat(srcOut().map(r=>
+      [r.ref,r.lens,r.name,r.got,r.sys,r.freq,r.could].map(q).join(","))).join("\n");
 }
 function plain(){
   const L=[];
@@ -1240,6 +1575,27 @@ function plain(){
     let line=r.ref+"  "+r.ask+"\n      -> "+r.status;
     if(r.hname||r.hmail) line+="  ("+[r.hname,r.hmail].filter(Boolean).join(", ")+")";
     if(r.note) line+="\n      note: "+r.note;
+    L.push(line);
+  });
+  /* Step five gets its own headed block \u2014 the tier, the judgement reading, the
+     could-be-collected count, then the seventeen sources under their lenses. */
+  const t=srcStats(), so=srcOut();
+  L.push("");
+  L.push("WHERE IT COMES FROM \u2014 DATA SOURCES");
+  L.push("Data readiness: "+t.tier+" \u2014 "+t.realHeld+" of "+REALITY_N+" Reality sources collected routinely"+
+    (t.realSome?"; "+t.realSome+" more sometimes or only in some regions, reported separately and not counted as halves":""));
+  L.push("This is a data-readiness tier, not a trust score and not a trust band.");
+  L.push("If the board asked tomorrow: "+(S.proof||"(not answered)"));
+  L.push("Could be collected at something Solmax already runs: "+t.could+" of "+SRC.length+" sources");
+  L.push("All seventeen sources: "+t.held+" collected routinely, "+t.some+" sometimes or only in some regions");
+  L.push("");
+  if(!so.length) L.push("(no sources answered)");
+  let lastLens="";
+  so.forEach(r=>{
+    if(r.lens!==lastLens){L.push("["+r.lens.toUpperCase()+"]"); lastLens=r.lens;}
+    let line=r.ref+"  "+r.name+"\n      -> "+(r.got||"(no answer)");
+    if(r.sys||r.freq) line+="\n      lives in: "+(r.sys||"not said")+"  \u00b7  refreshed: "+(r.freq||"not said");
+    if(r.could) line+="\n      could be collected at: "+r.could;
     L.push(line);
   });
   return L.join("\n");
@@ -1304,11 +1660,14 @@ function showSent(done,total,people){
   if(window.plausible) plausible("Data Audit Returned");
   $("send-block").hidden=true;
   $("sent-block").hidden=false;
-  $("s5-lede").textContent="Here is what you sent. It is with Dustin \u2014 the rest of this page is yours to keep or to pass on.";
+  $("s6-lede").textContent="Here is what you sent. It is with Dustin \u2014 the rest of this page is yours to keep or to pass on.";
   $("fallback-block").hidden=true;
+  const t=srcStats();
   $("sent-recap").innerHTML=
     "<b>"+done+" of "+total+"</b> lines answered &middot; <b>"+people+"</b> "+(people===1?"person":"people")+" named"+
-    (S.regions.length?" &middot; "+esc(S.regions.join(", ")):"");
+    (S.regions.length?" &middot; "+esc(S.regions.join(", ")):"")+
+    "<br><b>"+t.tier+" data readiness</b> &middot; "+t.realHeld+" of "+REALITY_N+" Reality sources routinely &middot; <b>"+
+    t.could+"</b> could be collected at something Solmax already runs";
   const box=$("sent-upload");
   if(SHAREPOINT_URL){
     box.innerHTML=
@@ -1351,6 +1710,14 @@ if(auditForm) auditForm.addEventListener("submit",e=>{
   $("hf-other-count").value=String(S.extra.length);
   $("hf-other").value=S.extra.map(x=>(x.label||"(unnamed)")+" \u2014 "+(x.status||"no status chosen")+
     ((x.hname||x.hmail)?" ("+[x.hname,x.hmail].filter(Boolean).join(", ")+")":"")).join(" | ");
+  const t=srcStats();
+  $("hf-tier").value=t.tier+" data readiness \u2014 "+t.realHeld+" of "+REALITY_N+
+    " Reality sources collected routinely"+(t.realSome?", "+t.realSome+" more sometimes or only in some regions":"")+
+    " (a data-readiness tier, not a trust score)";
+  $("hf-src-collected").value=t.held+" of "+SRC.length+" collected routinely; "+t.some+
+    " sometimes or only in some regions; "+t.done+" of "+SRC.length+" sources answered";
+  $("hf-src-could").value=String(t.could);
+  $("hf-proof").value=S.proof||"";
   $("hf-return").value=plain();
   const btn=$("sendBtn"); btn.disabled=true; btn.textContent="Sending\u2026";
   fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},
@@ -1377,6 +1744,7 @@ $("email-dx").onclick=()=>{
 };
 
 /* ============================ pass it on ============================ */
+$("back5").onclick=()=>show(5);
 $("email-them").onclick=()=>{
   const cs=contacts(), to=cs.map(c=>c.mail).filter(Boolean).join(",");
   const body=
@@ -1423,6 +1791,29 @@ $("share-copy").onclick=async()=>{
 };
 $("share-local").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); $("share-go").click(); } });
 
+/* ===== the systems-owner link \u2014 straight to step five ===== */
+$("src-link").value=SRC_URL;
+$("src-link").onclick=()=>$("src-link").select();
+$("src-copy").onclick=async()=>{
+  await copyText(SRC_URL);
+  const b=$("src-copy"); b.textContent="Copied";
+  const st=$("share-status"); st.classList.remove("bad");
+  st.innerHTML="The systems-owner link is on your clipboard. It opens on <b>step five</b> &mdash; seventeen dropdowns, and the document list left alone.";
+  setTimeout(()=>{b.textContent="Copy the systems-owner link";},1800);
+};
+$("src-mail").onclick=()=>{
+  const to=shareAddress(); if(!to) return;
+  const body=
+"Hello,\n\n"+
+"MissionCTRL are running a short data audit for Solmax, and there is one part of it only a systems owner can answer: where each of our signals is collected today, and \u2014 where it is not \u2014 whether we could pick it up at something we already run.\n\n"+
+"This link opens the page straight on that step. Seventeen dropdowns; \"no\" and \"I don't know\" are one click each. The long list of documents on the earlier step is not yours to fill in \u2014 ignore it.\n\n"+
+SRC_URL+"\n\n"+
+"They need it by "+DEADLINE+". Questions go to "+OWNER_NAME+" at "+TO+".\n\n"+
+"Thank you,\n"+(S.me.name||"")+"\n";
+  window.open(mailto(to,"Solmax data audit \u2014 one step, if you own a system",body),"_self");
+  $("share-status").textContent="An introduction to "+to+" has been opened in your mail client, with the systems-owner link in it. Read it before you send it.";
+};
+
 /* ============================ boot ============================ */
 $("resume-x").onclick=()=>{ $("resume").hidden=true; };
 $("resume-clear").onclick=()=>{
@@ -1433,11 +1824,23 @@ $("resume-clear").onclick=()=>{
 /* The step was the one piece of state never saved, so a reload dumped people back on
    step one with no sign their answers had survived. Both are fixed: we return them to
    where they were, as far as what they have filled in allows, and say what is saved. */
+/* A systems owner \u2014 CRM, HR, QHSE, channel \u2014 is sent the page on its own link and
+   opens on step five, never having to wade through the fifty-seven document lines.
+   Either form works, so a hash that survives a copy-paste and a query the mail client
+   cannot mangle are both honoured. */
+function srcLink(){
+  const h=norm((location.hash||"").replace(/^#/,""));
+  const p=norm(new URLSearchParams(location.search).get("step")||"");
+  return h==="sources"||p==="sources";
+}
 function boot(){
   /* the browser would otherwise restore the old scroll position on top of the step
      we just opened, leaving the page half under the fixed nav */
   if("scrollRestoration" in history) history.scrollRestoration="manual";
-  let n=Math.min(5,Math.max(1,+S.step||1)), f=furthest();
+  const deep=srcLink();
+  if(deep&&!S.srcOnly){ S.srcOnly=true; save(); }
+  $("own-1").hidden=!S.srcOnly;
+  let n=deep?5:Math.min(6,Math.max(1,+S.step||1)), f=furthest();
   if(n>f) n=f;
   const done=Object.keys(S.ans).filter(k=>S.ans[k]&&S.ans[k].status).length+S.extra.filter(x=>x.status).length;
   if(done&&n>1){ $("resume-n").textContent=String(done); $("resume-w").textContent=done===1?"answer":"answers"; $("resume").hidden=false; }
