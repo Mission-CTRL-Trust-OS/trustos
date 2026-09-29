@@ -396,6 +396,29 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
 .tier-out em{font-style:normal;font-weight:700;opacity:1}
 .tally b.word{font-size:1.05rem;letter-spacing:-0.02em;line-height:1.6}
 .share-split{border-top:1px solid var(--hair);margin-top:30px;padding-top:24px}
+
+/* ===== THE LAST SCREEN: thank you, Dustin, the next colleague, further reading =====
+   One block per thing to do, hairline-separated inside the same confirmation box, so
+   the whole screen still reads as one thank-you rather than a landing page. */
+.ty{border-top:1px solid rgba(34,197,94,0.28);margin-top:26px;padding-top:22px}
+.ty h4{font-size:0.95rem;font-weight:700;letter-spacing:-0.02em;color:var(--trust-slate)}
+.ty .share-row{margin-top:16px}
+.ty .share-input{flex:0 1 300px}
+.sent .status-line{max-width:640px}
+.sent .status-line.bad{color:#b0341f}
+/* The upload button and the "email Dustin" button are anchors, not buttons, so they
+   need the button skin spelled out once. */
+.sent a.btn{display:inline-block;font-family:'Sora',sans-serif;font-size:0.88rem;font-weight:600;
+  padding:14px 30px;border-radius:6px;background:var(--trust-cool);color:var(--white);
+  border:2px solid var(--trust-cool);transition:all .2s}
+.sent a.btn:hover{background:#4a7a8a;border-color:#4a7a8a;transform:translateY(-2px)}
+.sent a.btn.ghost{background:transparent;color:var(--trust-cool);font-size:0.82rem;padding:12px 26px}
+.sent a.btn.ghost:hover{background:transparent;color:#4a7a8a;border-color:#4a7a8a}
+/* Further reading is deliberately the quietest thing on the screen. */
+.ty-read ul{list-style:none;margin-top:8px;max-width:620px}
+.ty-read li{border-top:1px solid var(--hair-soft)}
+.ty-read li a{display:block;padding:9px 0;font-size:0.86rem;line-height:1.6;color:var(--trust-cool);text-decoration:underline}
+.ty-read li a:hover{color:#3a6a7a}
 </style>
 <!-- seo-ai:start -->
 <meta name="robots" content="noindex, nofollow" />
@@ -691,16 +714,43 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
         </div>
       </div>
 
+      <!-- ===== THE LAST SCREEN ===== the thank-you, where the documents go, Dustin
+           himself, the colleague who holds the rest, and — only once the ARTICLES
+           array in the script has entries in it — somewhere to read further. -->
       <div class="sent" id="sent-block" hidden>
-        <h3>Thank you &mdash; that is with Dustin.</h3>
-        <p id="sent-line">Your return has been received. <strong>Dustin Lawrence</strong> will read it and come back to you if anything needs a second look.</p>
+        <h3 id="sent-head">Thank you &mdash; that is with Dustin.</h3>
+        <p id="sent-line">Your return has been received.</p>
         <div class="recap" id="sent-recap"></div>
+        <p id="sent-next"></p>
         <div id="sent-upload"></div>
         <div class="actions">
           <button class="btn ghost" type="button" id="dl-post">Download a copy of my return</button>
           <button class="btn quiet" type="button" id="copy-post">Copy it as text</button>
         </div>
         <p class="status-line" id="sent-status"></p>
+
+        <div class="ty">
+          <h4>Talk to Dustin</h4>
+          <p>Something you remembered on the way out, a line you were not sure about, or a question about where any of this ends up. It goes to a person who will answer it, not to a support address.</p>
+          <div class="actions"><a class="btn ghost" id="ty-ask" href="mailto:hello@missionctrl.agency">Email Dustin Lawrence</a></div>
+        </div>
+
+        <div class="ty">
+          <h4>Pass it to whoever holds the rest</h4>
+          <p>You have just been through the whole list, so you know better than anyone who else holds a piece of this. Type the first part of their Solmax address &mdash; we add <strong>@solmax.com</strong> for you &mdash; and we will open a short introduction in your own mail client.</p>
+          <div class="share-row">
+            <label class="share-input">
+              <input type="text" id="ty-local" placeholder="first.last" autocomplete="off" spellcheck="false" aria-label="The first part of your colleague's Solmax email address">
+              <span class="share-suffix">@solmax.com</span>
+            </label>
+            <button class="btn ghost" type="button" id="ty-go">Share by email</button>
+            <button class="btn quiet" type="button" id="ty-copy">Copy the link</button>
+          </div>
+          <p class="status-line" id="ty-status"></p>
+          <p class="mini">If they own a system rather than a shelf of documents, <button type="button" class="linkish" id="ty-src">copy the systems-owner link</button> instead &mdash; it opens straight on &ldquo;where it comes from&rdquo;.</p>
+        </div>
+
+        <div id="ty-reading"></div>
       </div>
 
       <div id="fallback-block" hidden>
@@ -973,6 +1023,17 @@ const SHARE_DOMAIN="solmax.com";
    Dustin will email them the link instead — no dead button, no broken link. */
 const SHAREPOINT_URL = "";
 
+/* ── FURTHER READING: MISSIONCTRL ON CORPORATE EQ ──────────────────────
+   TO PUT THE "FURTHER READING" LIST ON THE THANK-YOU SCREEN, PASTE ONE
+   {title:"...", url:"https://..."} ENTRY PER ARTICLE BETWEEN THE BRACKETS
+   ON THE NEXT LINE. THAT IS THE ONLY EDIT NEEDED.
+   Left empty, nothing about that section is rendered at all — no heading,
+   no placeholder, no dead links. It is optional reading for someone who has
+   just finished an internal admin task, so it stays last and stays quiet. */
+const ARTICLES = [
+  /* {title:"Corporate EQ: why trust behaves like an asset", url:"https://missionctrl.agency/..."}, */
+];
+
 /* ============================ state ============================ */
 const KEY="solmax-audit-v1";
 let S={me:{name:"",email:"",role:""},rels:[],regions:[],ans:{},extra:[],step:1,showCentral:false,
@@ -1026,6 +1087,11 @@ function show(n){
   const host=$("s"+n).querySelector(".section-inner");
   if(host && !$("resume").hidden) host.prepend($("resume"));
   window.scrollTo({top:0,behavior:"instant"});
+  /* The thank-you screen carries its own colleague-share control, and two of them on
+     one screen is one too many — the standing section steps aside only while it is up. */
+  const sentUp = n===6 && $("sent-block") && !$("sent-block").hidden;
+  $("share").hidden=sentUp;
+  const rs=document.querySelector(".rail-share"); if(rs) rs.hidden=sentUp;
   if(n===4){ paint(); stick(); }
   if(n===5){ paintSrc(); stick(); }
   if(n===6) summarise();
@@ -1656,18 +1722,53 @@ wireCopy("copy-post","sent-status","Copy it as text");
 wireCopy("copy","copy-status","Copy to clipboard");
 
 /* ============================ send to Dustin ============================ */
+/* Only ever seen once the array above has entries in it: the container is filled from
+   nothing, so an empty array leaves no heading and no empty list behind in the DOM. */
+function renderArticles(){
+  const box=$("ty-reading"); if(!box) return;
+  const list=(Array.isArray(ARTICLES)?ARTICLES:[]).filter(a=>a&&a.title&&a.url);
+  if(!list.length){ box.className=""; box.innerHTML=""; return; }
+  box.className="ty ty-read";
+  box.innerHTML='<h4>If you want the thinking behind this</h4>'+
+    '<p class="mini">'+esc(OWNER_NAME)+' writes about Corporate EQ &mdash; why trust behaves like something a business can measure rather than something it hopes for. Nothing to do with your return; read it if it is useful.</p>'+
+    '<ul>'+list.map(a=>'<li><a href="'+esc(a.url)+'" target="_blank" rel="noopener">'+esc(a.title)+'</a></li>').join("")+'</ul>';
+}
 function showSent(done,total,people){
   if(window.plausible) plausible("Data Audit Returned");
   $("send-block").hidden=true;
   $("sent-block").hidden=false;
   $("s6-lede").textContent="Here is what you sent. It is with Dustin \u2014 the rest of this page is yours to keep or to pass on.";
   $("fallback-block").hidden=true;
+  $("share").hidden=true;
+  const rs=document.querySelector(".rail-share"); if(rs) rs.hidden=true;
   const t=srcStats();
+  /* Said back to them in their own numbers: what they answered, what they found was
+     missing, and who they put us on to \u2014 the three things only they could have done. */
+  const gaps=rowsOut().filter(r=>r.status==="It doesn\u2019t exist").length;
+  const first=(S.me.name||"").trim().split(/\s+/)[0]||"";
+  $("sent-head").textContent=first
+    ? "Thank you, "+first+" \u2014 that is with Dustin."
+    : "Thank you \u2014 that is with Dustin.";
+  $("sent-line").innerHTML=
+    "You answered <b>"+done+" of "+total+"</b> lines"+
+    (gaps?", found <b>"+gaps+"</b> thing"+(gaps===1?"":"s")+" Solmax does not have":"")+
+    (people?", and named <b>"+people+"</b> "+(people===1?"person who holds":"people who hold")+" part of the rest":"")+
+    ". None of that was on paper anywhere before you sat down with it.";
   $("sent-recap").innerHTML=
-    "<b>"+done+" of "+total+"</b> lines answered &middot; <b>"+people+"</b> "+(people===1?"person":"people")+" named"+
-    (S.regions.length?" &middot; "+esc(S.regions.join(", ")):"")+
-    "<br><b>"+t.tier+" data readiness</b> &middot; "+t.realHeld+" of "+REALITY_N+" Reality sources routinely &middot; <b>"+
-    t.could+"</b> could be collected at something Solmax already runs";
+    "<b>"+t.tier+" data readiness</b> &middot; "+t.realHeld+" of "+REALITY_N+
+    " Reality sources collected routinely &middot; <b>"+t.could+
+    "</b> could be collected at something Solmax already runs"+
+    (S.regions.length?"<br>"+esc(S.regions.join(", ")):"");
+  $("sent-next").innerHTML="<strong>"+esc(OWNER_NAME)+"</strong> reads every return himself. "+
+    "If a line needs a second look he will come back to you"+
+    (okMail(S.me.email)?" at "+esc(S.me.email):"")+
+    " \u2014 otherwise there is nothing else for you to do here.";
+  /* A mailto rather than a form: it opens in their own client, from their own address,
+     and they can see exactly what they are sending before they send it. */
+  $("ty-ask").href=mailto(TO,"Solmax data audit \u2014 a question for "+OWNER_NAME.split(" ")[0],
+    "Hi "+OWNER_NAME.split(" ")[0]+",\n\nI have just sent my Solmax data audit return.\n\n\n"+
+    (S.me.name||"")+(S.me.role?"\n"+S.me.role:"")+"\n");
+  renderArticles();
   const box=$("sent-upload");
   if(SHAREPOINT_URL){
     box.innerHTML=
@@ -1759,8 +1860,11 @@ $("email-them").onclick=()=>{
 };
 
 /* ============================ share with a colleague ============================ */
-function shareAddress(){
-  const el=$("share-local"), st=$("share-status");
+/* One implementation of the colleague share, offered in two places: the standing
+   section below, and the thank-you screen \u2014 where they have just worked out who else
+   holds things. Both call this; there is no second copy of the validation. */
+function shareAddress(localId,statusId){
+  const el=$(localId||"share-local"), st=$(statusId||"share-status");
   const v=(el.value||"").trim();
   const bad=m=>{ st.classList.add("bad"); st.textContent=m; el.focus(); return null; };
   st.classList.remove("bad"); st.textContent="";
@@ -1770,26 +1874,40 @@ function shareAddress(){
   if(!/^[A-Za-z0-9._%+-]+$/.test(v)) return bad("Letters, numbers, dots, dashes and underscores only.");
   return v+"@"+SHARE_DOMAIN;
 }
-$("share-go").onclick=()=>{
-  const to=shareAddress(); if(!to) return;
-  const body=
-"Hello,\n\n"+
+function shareIntro(){
+  return "Hello,\n\n"+
 "MissionCTRL are running a short data audit for Solmax. Before anyone here is asked new questions, they are cataloguing what we already collect \u2014 so nothing gets rebuilt that already exists.\n\n"+
 "You hold something they are asking about, or you will know who does. You only see the lines that touch your own work, and \"we don\'t have that\" is a genuinely useful answer.\n\n"+
 PAGE_URL+"\n\n"+
 "They need it by "+DEADLINE+". Questions go to "+OWNER_NAME+" at "+TO+".\n\n"+
 "Thank you,\n"+(S.me.name||"")+"\n";
-  window.open(mailto(to,"Solmax data audit \u2014 a short list, if you can",body),"_self");
-  $("share-status").textContent="An introduction to "+to+" has been opened in your mail client. Read it before you send it.";
+}
+function wireShare(localId,goId,copyId,statusId){
+  const el=$(localId), go=$(goId), cp=$(copyId);
+  if(!el||!go||!cp) return;
+  go.onclick=()=>{
+    const to=shareAddress(localId,statusId); if(!to) return;
+    window.open(mailto(to,"Solmax data audit \u2014 a short list, if you can",shareIntro()),"_self");
+    $(statusId).textContent="An introduction to "+to+" has been opened in your mail client. Read it before you send it.";
+  };
+  cp.onclick=async()=>{
+    await copyText(PAGE_URL);
+    const was=cp.textContent; cp.textContent="Copied";
+    const st=$(statusId); st.classList.remove("bad");
+    st.textContent="The link is on your clipboard \u2014 paste it into Teams, or anywhere else.";
+    setTimeout(()=>{cp.textContent=was;},1800);
+  };
+  el.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); go.click(); } });
+}
+wireShare("share-local","share-go","share-copy","share-status");
+wireShare("ty-local","ty-go","ty-copy","ty-status");
+/* The systems-owner link, kept within reach of the thank-you screen now that the
+   standing share section is out of the way there. */
+$("ty-src").onclick=async()=>{
+  await copyText(SRC_URL);
+  const st=$("ty-status"); st.classList.remove("bad");
+  st.innerHTML="The systems-owner link is on your clipboard. It opens on <b>step five</b> &mdash; seventeen dropdowns, and the document list left alone.";
 };
-$("share-copy").onclick=async()=>{
-  await copyText(PAGE_URL);
-  const b=$("share-copy"); b.textContent="Copied";
-  const st=$("share-status"); st.classList.remove("bad");
-  st.textContent="The link is on your clipboard \u2014 paste it into Teams, or anywhere else.";
-  setTimeout(()=>{b.textContent="Copy the link";},1800);
-};
-$("share-local").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); $("share-go").click(); } });
 
 /* ===== the systems-owner link \u2014 straight to step five ===== */
 $("src-link").value=SRC_URL;
