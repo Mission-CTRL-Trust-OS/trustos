@@ -714,30 +714,17 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
         </div>
       </div>
 
-      <!-- ===== THE LAST SCREEN ===== the thank-you, where the documents go, Dustin
-           himself, the colleague who holds the rest, and — only once the ARTICLES
-           array in the script has entries in it — somewhere to read further. -->
+      <!-- ===== THE LAST SCREEN ===== deliberately short. Their own numbers, the
+           colleague who holds the rest, and — only once the ARTICLES array in the
+           script has entries in it — somewhere to read further. -->
       <div class="sent" id="sent-block" hidden>
-        <h3 id="sent-head">Thank you &mdash; that is with Dustin.</h3>
+        <h3 id="sent-head">Thank you.</h3>
         <p id="sent-line">Your return has been received.</p>
         <div class="recap" id="sent-recap"></div>
-        <p id="sent-next"></p>
         <div id="sent-upload"></div>
-        <div class="actions">
-          <button class="btn ghost" type="button" id="dl-post">Download a copy of my return</button>
-          <button class="btn quiet" type="button" id="copy-post">Copy it as text</button>
-        </div>
-        <p class="status-line" id="sent-status"></p>
 
         <div class="ty">
-          <h4>Talk to Dustin</h4>
-          <p>Something you remembered on the way out, a line you were not sure about, or a question about where any of this ends up. It goes to a person who will answer it, not to a support address.</p>
-          <div class="actions"><a class="btn ghost" id="ty-ask" href="mailto:hello@missionctrl.agency">Email Dustin Lawrence</a></div>
-        </div>
-
-        <div class="ty">
-          <h4>Pass it to whoever holds the rest</h4>
-          <p>You have just been through the whole list, so you know better than anyone who else holds a piece of this. Type the first part of their Solmax address &mdash; we add <strong>@solmax.com</strong> for you &mdash; and we will open a short introduction in your own mail client.</p>
+          <h4>Who else holds a piece of this?</h4>
           <div class="share-row">
             <label class="share-input">
               <input type="text" id="ty-local" placeholder="first.last" autocomplete="off" spellcheck="false" aria-label="The first part of your colleague's Solmax email address">
@@ -747,7 +734,16 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
             <button class="btn quiet" type="button" id="ty-copy">Copy the link</button>
           </div>
           <p class="status-line" id="ty-status"></p>
-          <p class="mini">If they own a system rather than a shelf of documents, <button type="button" class="linkish" id="ty-src">copy the systems-owner link</button> instead &mdash; it opens straight on &ldquo;where it comes from&rdquo;.</p>
+          <p class="mini">Owns a system rather than documents? <button type="button" class="linkish" id="ty-src">Copy the systems-owner link</button> instead.</p>
+        </div>
+
+        <div class="ty">
+          <div class="actions">
+            <a class="btn ghost" id="ty-ask" href="mailto:hello@missionctrl.agency">Email Dustin</a>
+            <button class="btn quiet" type="button" id="dl-post">Download my return</button>
+            <button class="btn quiet" type="button" id="copy-post">Copy as text</button>
+          </div>
+          <p class="status-line" id="sent-status"></p>
         </div>
 
         <div id="ty-reading"></div>
@@ -1729,15 +1725,14 @@ function renderArticles(){
   const list=(Array.isArray(ARTICLES)?ARTICLES:[]).filter(a=>a&&a.title&&a.url);
   if(!list.length){ box.className=""; box.innerHTML=""; return; }
   box.className="ty ty-read";
-  box.innerHTML='<h4>If you want the thinking behind this</h4>'+
-    '<p class="mini">'+esc(OWNER_NAME)+' writes about Corporate EQ &mdash; why trust behaves like something a business can measure rather than something it hopes for. Nothing to do with your return; read it if it is useful.</p>'+
+  box.innerHTML='<h4>The thinking behind this</h4>'+
     '<ul>'+list.map(a=>'<li><a href="'+esc(a.url)+'" target="_blank" rel="noopener">'+esc(a.title)+'</a></li>').join("")+'</ul>';
 }
 function showSent(done,total,people){
   if(window.plausible) plausible("Data Audit Returned");
   $("send-block").hidden=true;
   $("sent-block").hidden=false;
-  $("s6-lede").textContent="Here is what you sent. It is with Dustin \u2014 the rest of this page is yours to keep or to pass on.";
+  $("s6-lede").textContent="Here is what you sent. It is with Dustin.";
   $("fallback-block").hidden=true;
   $("share").hidden=true;
   const rs=document.querySelector(".rail-share"); if(rs) rs.hidden=true;
@@ -1746,23 +1741,16 @@ function showSent(done,total,people){
      missing, and who they put us on to \u2014 the three things only they could have done. */
   const gaps=rowsOut().filter(r=>r.status==="It doesn\u2019t exist").length;
   const first=(S.me.name||"").trim().split(/\s+/)[0]||"";
-  $("sent-head").textContent=first
-    ? "Thank you, "+first+" \u2014 that is with Dustin."
-    : "Thank you \u2014 that is with Dustin.";
+  $("sent-head").textContent=first ? "Thank you, "+first+"." : "Thank you.";
   $("sent-line").innerHTML=
-    "You answered <b>"+done+" of "+total+"</b> lines"+
-    (gaps?", found <b>"+gaps+"</b> thing"+(gaps===1?"":"s")+" Solmax does not have":"")+
-    (people?", and named <b>"+people+"</b> "+(people===1?"person who holds":"people who hold")+" part of the rest":"")+
-    ". None of that was on paper anywhere before you sat down with it.";
+    "<b>"+done+" of "+total+"</b> lines answered"+
+    (gaps?" &middot; <b>"+gaps+"</b> gap"+(gaps===1?"":"s")+" found":"")+
+    (people?" &middot; <b>"+people+"</b> "+(people===1?"person":"people")+" named":"");
   $("sent-recap").innerHTML=
     "<b>"+t.tier+" data readiness</b> &middot; "+t.realHeld+" of "+REALITY_N+
     " Reality sources collected routinely &middot; <b>"+t.could+
     "</b> could be collected at something Solmax already runs"+
     (S.regions.length?"<br>"+esc(S.regions.join(", ")):"");
-  $("sent-next").innerHTML="<strong>"+esc(OWNER_NAME)+"</strong> reads every return himself. "+
-    "If a line needs a second look he will come back to you"+
-    (okMail(S.me.email)?" at "+esc(S.me.email):"")+
-    " \u2014 otherwise there is nothing else for you to do here.";
   /* A mailto rather than a form: it opens in their own client, from their own address,
      and they can see exactly what they are sending before they send it. */
   $("ty-ask").href=mailto(TO,"Solmax data audit \u2014 a question for "+OWNER_NAME.split(" ")[0],
@@ -1772,13 +1760,12 @@ function showSent(done,total,people){
   const box=$("sent-upload");
   if(SHAREPOINT_URL){
     box.innerHTML=
-      '<p>Now the documents themselves. They go to Solmax\u2019s own SharePoint, so they never leave your network \u2014 we read them where they sit.</p>'+
-      '<div class="actions"><a class="btn" href="'+esc(SHAREPOINT_URL)+'" target="_blank" rel="noopener">Upload your documents &rarr;</a></div>';
+      '<div class="actions"><a class="btn" href="'+esc(SHAREPOINT_URL)+'" target="_blank" rel="noopener">Upload your documents &rarr;</a></div>'+
+      '<p class="mini">They stay on the Solmax network.</p>';
   }else{
     box.innerHTML=
-      '<p>The documents themselves stay on the Solmax network. A SharePoint folder is being set up for them, and <strong>'+esc(OWNER_NAME)+
-      ' will email you the link</strong> at the address you gave. If you would rather not wait, email what you can to '+
-      '<a href="mailto:'+TO+'">'+TO+'</a>.</p>';
+      '<p class="mini">Documents stay on the Solmax network &mdash; '+esc(OWNER_NAME)+
+      ' will email you the SharePoint link. Or send what you can to <a href="mailto:'+TO+'">'+TO+'</a>.</p>';
   }
   $("sent-block").scrollIntoView({behavior:"smooth",block:"start"});
 }
