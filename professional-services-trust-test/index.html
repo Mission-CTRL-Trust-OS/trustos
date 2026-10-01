@@ -188,7 +188,7 @@
 
     /* ARTICLE BODY */
     .article-body {
-      max-width: 940px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 80px 5% 60px;
       font-size: 1.05rem;
@@ -224,7 +224,7 @@
 
     /* Headings */
     .article-body h2 {
-      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      font-size: clamp(1.45rem, 2.6vw, 1.8rem);
       font-weight: 800;
       line-height: 1.18;
       color: var(--white);
@@ -395,40 +395,6 @@
       display: inline-flex; align-items: center; gap: 10px;
     }
     .related-povs-label::before { content: ''; width: 24px; height: 2px; background: var(--trust-cool); display: block; }
-    .related-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    .related-card {
-      display: block;
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 10px;
-      padding: 24px 28px;
-      transition: background 0.25s, border-color 0.25s, transform 0.2s;
-    }
-    .related-card:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(90,138,154,0.4);
-      transform: translateY(-2px);
-    }
-    .related-card-eyebrow {
-      font-size: 0.6rem; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--trust-cool); margin-bottom: 10px;
-    }
-    .related-card h3 {
-      font-size: 1.1rem; font-weight: 700;
-      color: var(--white); letter-spacing: -0.015em;
-      margin-bottom: 8px;
-    }
-    .related-card p {
-      font-size: 0.85rem; color: rgba(255,255,255,0.5);
-      line-height: 1.55;
-      margin: 0;
-    }
-
     /* SOURCES */
     .sources {
       max-width: 740px;
@@ -589,6 +555,110 @@
 .bt.compact .bt-meaning,.bt.compact .bt-cap{display:none;}
 @media (max-width:760px){.bt-lab{font-size:0.44rem;letter-spacing:0.03em;}}
 @media (prefers-reduced-motion:reduce){.bt-seg{transition:none;}.bt-lab{transition:none;}}
+
+/* ══ POV layout components ══ beats · slice table · related list ══ */
+.beats { list-style: none; counter-reset: beat; margin: 1.6em 0 2.2em; }
+.beats li {
+  counter-increment: beat;
+  position: relative;
+  padding: 17px 0 17px 54px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.beats li:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.beats li::before {
+  content: counter(beat);
+  position: absolute; left: 0; top: 15px;
+  width: 34px; text-align: right;
+  font-size: 1.35rem; font-weight: 800; line-height: 1;
+  letter-spacing: -0.03em;
+  color: rgba(143,181,192,0.46);
+  font-variant-numeric: tabular-nums;
+}
+.beats .beat-h { display: block; color: var(--white); font-weight: 600; margin-bottom: 5px; }
+
+.slices {
+  width: 100%; border-collapse: collapse;
+  margin: 1.6em 0 2.2em;
+  font-size: 0.88rem; line-height: 1.6;
+}
+.slices th {
+  text-align: left;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  padding: 0 20px 11px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  vertical-align: bottom; white-space: nowrap;
+}
+.slices td {
+  padding: 17px 20px 17px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  vertical-align: top;
+  color: rgba(255,255,255,0.70);
+}
+.slices th:last-child, .slices td:last-child { padding-right: 0; }
+.slices .sl-name { width: 38%; color: var(--white); font-weight: 600; }
+.slices .sl-who {
+  display: block; margin-top: 6px;
+  font-size: 0.76rem; font-weight: 300; line-height: 1.5;
+  color: rgba(255,255,255,0.50);
+}
+.slices .sl-edge { display: block; margin-top: 7px; color: #8fb5c0; }
+@media (max-width: 720px) {
+  /* the beats need the width more than the numeral does */
+  .beats li { padding-left: 40px; }
+  .beats li::before { width: 26px; font-size: 1.2rem; }
+  /* give the driver bars a full-width track instead of a 60px stub */
+  .ds-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "name score" "bar bar";
+    gap: 8px 14px;
+  }
+  .ds-name  { grid-area: name; }
+  .ds-score { grid-area: score; }
+  .ds-bar-bg { grid-area: bar; }
+  .slices { display: block; font-size: 0.85rem; }
+  .slices thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .slices tbody, .slices tr, .slices td { display: block; width: auto; }
+  .slices tr { border-top: 1px solid rgba(255,255,255,0.14); padding: 16px 0 18px; }
+  .slices tr:last-child { border-bottom: 1px solid rgba(255,255,255,0.14); }
+  .slices td, .slices td.sl-name { border: 0; padding: 0; width: auto; }
+  .slices td + td { margin-top: 12px; }
+  .slices td[data-l]::before {
+    content: attr(data-l);
+    display: block;
+    font-size: 0.54rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.30);
+    margin-bottom: 5px;
+  }
+}
+
+.rel-list { list-style: none; }
+.rel-list li { border-top: 1px solid rgba(255,255,255,0.08); }
+.rel-list li:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.rel-list a { display: flex; align-items: baseline; gap: 22px; padding: 16px 2px; }
+.rel-list .rl-tag {
+  flex: 0 0 356px;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  transition: color 0.2s;
+}
+.rel-list .rl-title {
+  font-size: 0.98rem; font-weight: 500; line-height: 1.45;
+  color: rgba(255,255,255,0.82);
+  transition: color 0.2s;
+}
+.rel-list a:hover .rl-title { color: var(--trust-cool); }
+.rel-list a:hover .rl-tag { color: rgba(255,255,255,0.55); }
+@media (max-width: 900px) {
+  .rel-list a { flex-direction: column; gap: 7px; }
+  .rel-list .rl-tag { flex: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rel-list .rl-title, .rel-list .rl-tag { transition: none; }
+}
 </style>
 <!-- seo-ai:start -->
 <link rel="canonical" href="https://trustos.missionctrl.agency/professional-services-trust-test/" />
@@ -885,11 +955,11 @@ window.TrustShape = (function () {
 
   <h2>Why &#8220;the auditors are outnumbered&#8221; is a sector story, not a firm story</h2>
 
-  <p><strong>One.</strong> Clients and audit committees stop reading the firm&#8217;s brand promise in isolation and start reading the <em>trend line</em> of evidence between &#8220;trust us&#8221; and the engagement outcome.</p>
-
-  <p><strong>Two.</strong> The firm&#8217;s many faces re-price the cost of a Connection-gap event.</p>
-
-  <p><strong>Three.</strong> With ARGA paused, the scrutiny has moved from the statute book to the client, the journalist and the graduate choosing where to train.</p>
+  <ol class="beats">
+    <li>Clients and audit committees stop reading the firm&#8217;s brand promise in isolation and start reading the <em>trend line</em> of evidence between &#8220;trust us&#8221; and the engagement outcome.</li>
+    <li>The firm&#8217;s many faces re-price the cost of a Connection-gap event.</li>
+    <li>With ARGA paused, the scrutiny has moved from the statute book to the client, the journalist and the graduate choosing where to train.</li>
+  </ol>
 
   <p>None of this is unique to any one named firm.</p>
 
@@ -930,11 +1000,25 @@ window.TrustShape = (function () {
 
   <h2>Where this lands across the three professional-services slices</h2>
 
-  <p><strong>Audit &amp; assurance.</strong> The Big Four (EY, Deloitte, KPMG, PwC) and the mid-tier (BDO, Grant Thornton, Forvis Mazars, Baker Tilly, RSM) sit at the intersection of audit-quality enforcement, operational separation, and whether AI-assisted audit work is reviewable. Integrity is most exposed here, because assurance <em>is</em> the product.</p>
-
-  <p><strong>Consulting &amp; technology services.</strong> The Big Four advisory arms, Accenture, Capgemini, McKinsey, BCG, Bain and the systems integrators run on delivery credibility at scale, the government-consulting-spend backlash and AI&#8217;s disruption of the billable-hours model.</p>
-
-  <p><strong>Tax, legal &amp; specialist advisory.</strong> The tax practices, the legal arms and the specialist risk, deals and ESG-advisory units sit on a Confidence-gap defined by conflicts, confidentiality and the post-scandal reset.</p>
+  <table class="slices">
+    <thead>
+      <tr><th scope="col">Slice</th><th scope="col">What it runs on</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="sl-name">Audit &amp; assurance<span class="sl-who">The Big Four (EY, Deloitte, KPMG, PwC) and the mid-tier (BDO, Grant Thornton, Forvis Mazars, Baker Tilly, RSM)</span></td>
+        <td data-l="What it runs on">Audit-quality enforcement, operational separation, and whether AI-assisted audit work is reviewable.<span class="sl-edge">Integrity is most exposed here, because assurance <em>is</em> the product.</span></td>
+      </tr>
+      <tr>
+        <td class="sl-name">Consulting &amp; technology services<span class="sl-who">The Big Four advisory arms, Accenture, Capgemini, McKinsey, BCG, Bain and the systems integrators</span></td>
+        <td data-l="What it runs on">Delivery credibility at scale, the government-consulting-spend backlash and AI&#8217;s disruption of the billable-hours model.</td>
+      </tr>
+      <tr>
+        <td class="sl-name">Tax, legal &amp; specialist advisory<span class="sl-who">The tax practices, the legal arms and the specialist risk, deals and ESG-advisory units</span></td>
+        <td data-l="What it runs on">A Confidence-gap defined by conflicts, confidentiality and the post-scandal reset.</td>
+      </tr>
+    </tbody>
+  </table>
 
   <h2>The four operating moves</h2>
 
@@ -987,28 +1071,12 @@ window.TrustShape = (function () {
 <!-- RELATED POVS -->
 <section class="related-povs">
   <div class="related-povs-label">Related TrustOS POVs</div>
-  <div class="related-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-    <a href="/membership-bodies-trust-test/" class="related-card">
-      <div class="related-card-eyebrow">2026 Sector POV  ·  Membership &amp; Professional Bodies</div>
-      <h3>The profession is trusted. The institution is the question.</h3>
-      <p>Fragile band. Connection the weak edge. The institutions that certify these firms face the same Bill and the same AI pressure — the companion read, one step up the chain.</p>
-    </a>
-    <a href="/regtech-brand-trust/" class="related-card">
-      <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  RegTech</div>
-      <h3>When the rebrand is the question. The RegTech brand leader's trust test.</h3>
-      <p>Fragile band. Connection the weak edge. Three years on from the Adenza rebrand and the Nasdaq acquisition: where is the evidence-of-delivery layer underneath the brand promise?</p>
-    </a>
-    <a href="/healthcare-trust-test/" class="related-card">
-      <div class="related-card-eyebrow">2026 Sector POV  ·  Healthcare</div>
-      <h3>When the centre dissolves. Healthcare's trust test.</h3>
-      <p>Fragile band. Connection the weak edge. NHS England abolished, the 10-Year Plan live, earned autonomy making trust the currency that decides which providers get freedom.</p>
-    </a>
-    <a href="/ingo-brand-trust/" class="related-card">
-      <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  International NGO</div>
-      <h3>When the funding collapses. The INGO brand leader's trust test.</h3>
-      <p>Fragile band. Connection the weak edge. With USAID dismantled and the UK Global Fund cut, the question for every INGO Director of Communications, Fundraising or Brand.</p>
-    </a>
-  </div>
+  <ul class="rel-list">
+    <li><a href="/membership-bodies-trust-test/"><span class="rl-tag">2026 Sector POV  ·  Membership &amp; Professional Bodies</span><span class="rl-title">The profession is trusted. The institution is the question.</span></a></li>
+    <li><a href="/regtech-brand-trust/"><span class="rl-tag">2026 Buyer-Hero POV  ·  RegTech</span><span class="rl-title">When the rebrand is the question. The RegTech brand leader's trust test.</span></a></li>
+    <li><a href="/healthcare-trust-test/"><span class="rl-tag">2026 Sector POV  ·  Healthcare</span><span class="rl-title">When the centre dissolves. Healthcare's trust test.</span></a></li>
+    <li><a href="/ingo-brand-trust/"><span class="rl-tag">2026 Buyer-Hero POV  ·  International NGO</span><span class="rl-title">When the funding collapses. The INGO brand leader's trust test.</span></a></li>
+  </ul>
 </section>
 
 <!-- SOURCES -->

@@ -188,7 +188,7 @@
 
     /* ARTICLE BODY */
     .article-body {
-      max-width: 940px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 80px 5% 60px;
       font-size: 1.05rem;
@@ -224,7 +224,7 @@
 
     /* Headings */
     .article-body h2 {
-      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      font-size: clamp(1.45rem, 2.6vw, 1.8rem);
       font-weight: 800;
       line-height: 1.18;
       color: var(--white);
@@ -395,40 +395,6 @@
       display: inline-flex; align-items: center; gap: 10px;
     }
     .related-povs-label::before { content: ''; width: 24px; height: 2px; background: var(--trust-cool); display: block; }
-    .related-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    .related-card {
-      display: block;
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 10px;
-      padding: 24px 28px;
-      transition: background 0.25s, border-color 0.25s, transform 0.2s;
-    }
-    .related-card:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(90,138,154,0.4);
-      transform: translateY(-2px);
-    }
-    .related-card-eyebrow {
-      font-size: 0.6rem; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--trust-cool); margin-bottom: 10px;
-    }
-    .related-card h3 {
-      font-size: 1.1rem; font-weight: 700;
-      color: var(--white); letter-spacing: -0.015em;
-      margin-bottom: 8px;
-    }
-    .related-card p {
-      font-size: 0.85rem; color: rgba(255,255,255,0.5);
-      line-height: 1.55;
-      margin: 0;
-    }
-
     /* SOURCES */
     .sources {
       max-width: 740px;
@@ -589,6 +555,110 @@
 .bt.compact .bt-meaning,.bt.compact .bt-cap{display:none;}
 @media (max-width:760px){.bt-lab{font-size:0.44rem;letter-spacing:0.03em;}}
 @media (prefers-reduced-motion:reduce){.bt-seg{transition:none;}.bt-lab{transition:none;}}
+
+/* ══ POV layout components ══ beats · slice table · related list ══ */
+.beats { list-style: none; counter-reset: beat; margin: 1.6em 0 2.2em; }
+.beats li {
+  counter-increment: beat;
+  position: relative;
+  padding: 17px 0 17px 54px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.beats li:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.beats li::before {
+  content: counter(beat);
+  position: absolute; left: 0; top: 15px;
+  width: 34px; text-align: right;
+  font-size: 1.35rem; font-weight: 800; line-height: 1;
+  letter-spacing: -0.03em;
+  color: rgba(143,181,192,0.46);
+  font-variant-numeric: tabular-nums;
+}
+.beats .beat-h { display: block; color: var(--white); font-weight: 600; margin-bottom: 5px; }
+
+.slices {
+  width: 100%; border-collapse: collapse;
+  margin: 1.6em 0 2.2em;
+  font-size: 0.88rem; line-height: 1.6;
+}
+.slices th {
+  text-align: left;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  padding: 0 20px 11px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  vertical-align: bottom; white-space: nowrap;
+}
+.slices td {
+  padding: 17px 20px 17px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  vertical-align: top;
+  color: rgba(255,255,255,0.70);
+}
+.slices th:last-child, .slices td:last-child { padding-right: 0; }
+.slices .sl-name { width: 38%; color: var(--white); font-weight: 600; }
+.slices .sl-who {
+  display: block; margin-top: 6px;
+  font-size: 0.76rem; font-weight: 300; line-height: 1.5;
+  color: rgba(255,255,255,0.50);
+}
+.slices .sl-edge { display: block; margin-top: 7px; color: #8fb5c0; }
+@media (max-width: 720px) {
+  /* the beats need the width more than the numeral does */
+  .beats li { padding-left: 40px; }
+  .beats li::before { width: 26px; font-size: 1.2rem; }
+  /* give the driver bars a full-width track instead of a 60px stub */
+  .ds-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "name score" "bar bar";
+    gap: 8px 14px;
+  }
+  .ds-name  { grid-area: name; }
+  .ds-score { grid-area: score; }
+  .ds-bar-bg { grid-area: bar; }
+  .slices { display: block; font-size: 0.85rem; }
+  .slices thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .slices tbody, .slices tr, .slices td { display: block; width: auto; }
+  .slices tr { border-top: 1px solid rgba(255,255,255,0.14); padding: 16px 0 18px; }
+  .slices tr:last-child { border-bottom: 1px solid rgba(255,255,255,0.14); }
+  .slices td, .slices td.sl-name { border: 0; padding: 0; width: auto; }
+  .slices td + td { margin-top: 12px; }
+  .slices td[data-l]::before {
+    content: attr(data-l);
+    display: block;
+    font-size: 0.54rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.30);
+    margin-bottom: 5px;
+  }
+}
+
+.rel-list { list-style: none; }
+.rel-list li { border-top: 1px solid rgba(255,255,255,0.08); }
+.rel-list li:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.rel-list a { display: flex; align-items: baseline; gap: 22px; padding: 16px 2px; }
+.rel-list .rl-tag {
+  flex: 0 0 356px;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  transition: color 0.2s;
+}
+.rel-list .rl-title {
+  font-size: 0.98rem; font-weight: 500; line-height: 1.45;
+  color: rgba(255,255,255,0.82);
+  transition: color 0.2s;
+}
+.rel-list a:hover .rl-title { color: var(--trust-cool); }
+.rel-list a:hover .rl-tag { color: rgba(255,255,255,0.55); }
+@media (max-width: 900px) {
+  .rel-list a { flex-direction: column; gap: 7px; }
+  .rel-list .rl-tag { flex: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rel-list .rl-title, .rel-list .rl-tag { transition: none; }
+}
 </style>
 <!-- seo-ai:start -->
 <link rel="canonical" href="https://trustos.missionctrl.agency/regtech-brand-trust/" />
@@ -892,11 +962,11 @@ window.TrustShape = (function () {
 
   <h2>Why "the rebrand is three years old" is a sector story, not a vendor story</h2>
 
-  <p><strong>One.</strong> Procurement and audit committees stop reading vendor brand promise in isolation and start reading the <em>trend line</em> of evidence between the promise and the renewal.</p>
-
-  <p><strong>Two.</strong> Customer-success, professional-services and partnership organisations re-price the cost of a Connection-gap event.</p>
-
-  <p><strong>Three.</strong> The Forrester Wave, Chartis, Celent, IDC and Aite-Novarica grids are now more performance-evidenced than in 2022. The narrative-led vendor brand has a shelf-life that ends when the analyst asks for the dashboard.</p>
+  <ol class="beats">
+    <li>Procurement and audit committees stop reading vendor brand promise in isolation and start reading the <em>trend line</em> of evidence between the promise and the renewal.</li>
+    <li>Customer-success, professional-services and partnership organisations re-price the cost of a Connection-gap event.</li>
+    <li>The Forrester Wave, Chartis, Celent, IDC and Aite-Novarica grids are now more performance-evidenced than in 2022. The narrative-led vendor brand has a shelf-life that ends when the analyst asks for the dashboard.</li>
+  </ol>
 
   <p>None of this is unique to Adenza or the Nasdaq portfolio.</p>
 
@@ -937,11 +1007,25 @@ window.TrustShape = (function () {
 
   <h2>Where this lands across the three RegTech and capital-markets vendor slices</h2>
 
-  <p><strong>Regulatory-reporting and compliance platforms.</strong> AxiomSL (Nasdaq), Wolters Kluwer OneSumX, Bloomberg Regulatory Reporting, Moody's RegTech, S&amp;P Global Compliance, ComplyAdvantage and NICE Actimize sit at the intersection of regulator-grade reliability, BCBS 239 lineage requirements, FRTB internal-models-approach defensibility and ESG disclosure architecture.</p>
-
-  <p><strong>Capital-markets risk and trading infrastructure.</strong> Calypso (Nasdaq), Murex, FIS Capital Markets, ION, Bloomberg Trading Solutions and Numerix run on front-to-back integration credibility, low-latency-and-correctness, cloud-migration delivery and the FRTB capital-cost story.</p>
-
-  <p><strong>Buy-side, post-trade and treasury-tech.</strong> BlackRock Aladdin, SimCorp One, SS&amp;C, State Street Alpha, Charles River, FIS Investran and IHS Markit (S&amp;P Global) sit on a Confidence-gap that has, since 2023, been about delivery credibility at scale.</p>
+  <table class="slices">
+    <thead>
+      <tr><th scope="col">Slice</th><th scope="col">What it runs on</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="sl-name">Regulatory-reporting and compliance platforms<span class="sl-who">AxiomSL (Nasdaq), Wolters Kluwer OneSumX, Bloomberg Regulatory Reporting, Moody's RegTech, S&amp;P Global Compliance, ComplyAdvantage and NICE Actimize</span></td>
+        <td data-l="What it runs on">Regulator-grade reliability, BCBS 239 lineage requirements, FRTB internal-models-approach defensibility and ESG disclosure architecture.</td>
+      </tr>
+      <tr>
+        <td class="sl-name">Capital-markets risk and trading infrastructure<span class="sl-who">Calypso (Nasdaq), Murex, FIS Capital Markets, ION, Bloomberg Trading Solutions and Numerix</span></td>
+        <td data-l="What it runs on">Front-to-back integration credibility, low-latency-and-correctness, cloud-migration delivery and the FRTB capital-cost story.</td>
+      </tr>
+      <tr>
+        <td class="sl-name">Buy-side, post-trade and treasury-tech<span class="sl-who">BlackRock Aladdin, SimCorp One, SS&amp;C, State Street Alpha, Charles River, FIS Investran and IHS Markit (S&amp;P Global)</span></td>
+        <td data-l="What it runs on">A Confidence-gap that has, since 2023, been about delivery credibility at scale.</td>
+      </tr>
+    </tbody>
+  </table>
 
   <h2>The four operating moves</h2>
 
@@ -994,23 +1078,11 @@ window.TrustShape = (function () {
 <!-- RELATED POVS -->
 <section class="related-povs">
   <div class="related-povs-label">Related TrustOS POVs</div>
-  <div class="related-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-    <a href="/ingo-brand-trust/" class="related-card">
-      <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  International NGO</div>
-      <h3>When the funding collapses. The INGO brand leader's trust test.</h3>
-      <p>Fragile band. Connection the weak edge. With USAID dismantled and the UK Global Fund cut, the question for every INGO Director of Communications, Fundraising or Brand.</p>
-    </a>
-    <a href="/energy-integrity-test/" class="related-card">
-      <div class="related-card-eyebrow">2026 Sector POV  ·  Energy</div>
-      <h3>When the chair falls. Energy's Integrity test.</h3>
-      <p>Functional band. Connection the weak edge. BP just fired its chair — Energy's Integrity foundation became visible the moment the conduct went public.</p>
-    </a>
-    <a href="/mining-trust-window/" class="related-card">
-      <div class="related-card-eyebrow">2026 Sector POV  ·  Mining</div>
-      <h3>When the merger clears. Mining's architecture test.</h3>
-      <p>Functional band. Connection the weak edge. Anglo Teck cleared Canada last month — the approval reveals what every other major's deal architecture will now be measured against.</p>
-    </a>
-  </div>
+  <ul class="rel-list">
+    <li><a href="/ingo-brand-trust/"><span class="rl-tag">2026 Buyer-Hero POV  ·  International NGO</span><span class="rl-title">When the funding collapses. The INGO brand leader's trust test.</span></a></li>
+    <li><a href="/energy-integrity-test/"><span class="rl-tag">2026 Sector POV  ·  Energy</span><span class="rl-title">When the chair falls. Energy's Integrity test.</span></a></li>
+    <li><a href="/mining-trust-window/"><span class="rl-tag">2026 Sector POV  ·  Mining</span><span class="rl-title">When the merger clears. Mining's architecture test.</span></a></li>
+  </ul>
 </section>
 
 <!-- SOURCES -->
