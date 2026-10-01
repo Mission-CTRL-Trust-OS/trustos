@@ -1,0 +1,1979 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<title>Solmax Data Audit — TrustOS Navigator</title>
+<meta name="description" content="TrustOS data audit for Solmax — what already exists, before anyone is asked a new question.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap">
+<style>
+:root{
+  --trust-slate:#2d3a4a;
+  --trust-cool:#5a8a9a;
+  --trust-ice:#6da0b8;
+  --trust-mid:#8fb5c0;
+  --system-grey:#f4f4f6;
+  --deep:#0a0f1a;
+  --white:#ffffff;
+  --hair:#e2e5e9;
+  --hair-soft:#edeff2;
+  --warn:#9a6a1e;
+  --warn-soft:#faf2e2;
+  --good:#22c55e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:150px}
+body{font-family:'Sora',sans-serif;color:var(--trust-slate);background:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:72px;
+  background:rgba(10,15,26,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.nav-left{display:flex;align-items:center}
+.nav-wordmark{font-size:1.3rem;font-weight:800;letter-spacing:-0.03em;display:flex;align-items:center;gap:10px}
+.nav-wordmark .trust{color:#8fb5c0}
+.nav-wordmark .os{color:var(--trust-cool)}
+.nav-product-link{font-size:0.62rem;font-weight:500;color:rgba(255,255,255,0.35);margin-left:16px;transition:color .2s;display:inline-flex;align-items:center;gap:5px}
+.nav-product-link:hover{color:var(--trust-cool)}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{font-size:0.82rem;font-weight:500;color:rgba(255,255,255,0.55);transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{font-size:0.88rem;font-weight:600;padding:10px 22px;background:var(--trust-cool);color:var(--white);border-radius:6px;transition:background .2s,transform .15s}
+.nav-cta:hover{background:#4a7a8a;transform:translateY(-1px)}
+
+/* ── STEP RAIL ── */
+.rail{
+  position:fixed;top:72px;left:0;right:0;z-index:99;
+  background:rgba(45,58,74,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.rail-in{max-width:1200px;margin:0 auto;padding:0 5%;height:46px;display:flex;align-items:center}
+.steps{display:flex;gap:6px;list-style:none;overflow-x:auto;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.steps li{
+  font-size:0.63rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);padding:5px 12px;border-radius:6px;white-space:nowrap;
+  border:1px solid transparent;transition:.2s;
+}
+.steps li[data-on="1"]{color:var(--white);background:rgba(90,138,154,0.22);border-color:rgba(90,138,154,0.5)}
+.steps li[data-done="1"]{color:var(--trust-mid)}
+@media(max-width:620px){.steps li{padding:5px 8px;letter-spacing:0.1em}}
+
+/* ── SECTIONS ── */
+.section{padding:88px 5%}
+.section-inner{max-width:1200px;margin:0 auto}
+.narrow{max-width:780px}
+.section-label{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.63rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--trust-cool);margin-bottom:14px;
+}
+.section-label::before{content:'';width:20px;height:2px;background:var(--trust-cool);display:block}
+.section-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;line-height:1.12;color:var(--trust-slate);letter-spacing:-0.03em;max-width:720px}
+.section-title em{font-style:normal;color:var(--trust-cool)}
+.lede{font-size:1rem;line-height:1.85;color:var(--trust-slate);opacity:.7;max-width:640px;margin-top:18px}
+.lede strong{opacity:1;font-weight:600}
+.grey{background:var(--system-grey)}
+
+/* dark hero */
+.hero{background:var(--deep);position:relative;overflow:clip;padding:150px 5% 88px}
+.hero .section-inner{position:relative;z-index:2}
+.hero h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;line-height:1.1;color:var(--white);letter-spacing:-0.04em;max-width:880px}
+.hero h1 em{font-style:normal;color:var(--trust-cool)}
+.hero-sub{font-size:1rem;line-height:1.85;color:rgba(255,255,255,0.45);max-width:620px;margin-top:22px}
+.hero-sub strong{color:rgba(255,255,255,0.85);font-weight:600}
+
+/* explainer */
+.explain{margin-top:44px;max-width:900px}
+.explain-quote{
+  font-size:1.05rem;font-weight:700;line-height:1.6;color:rgba(255,255,255,0.85);
+  max-width:620px;margin-top:26px;padding-left:18px;border-left:2px solid var(--trust-cool);
+}
+.explain-quote em{font-style:normal;color:var(--trust-cool)}
+.drivers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px;max-width:900px}
+.driver{padding:22px 20px;background:rgba(90,138,154,0.06);border:1px solid rgba(90,138,154,0.15);border-radius:10px;transition:border-color .3s,transform .3s}
+.driver:hover{border-color:rgba(90,138,154,0.35);transform:translateY(-2px)}
+.driver b{display:block;font-size:0.8rem;font-weight:700;color:var(--trust-cool);margin-bottom:8px}
+.driver span{display:block;font-size:0.76rem;line-height:1.7;color:rgba(255,255,255,0.4)}
+@media(max-width:780px){.drivers{grid-template-columns:1fr}}
+
+.askbox{
+  margin-top:34px;max-width:620px;padding:20px 24px;
+  background:rgba(90,138,154,0.08);border:1px solid rgba(90,138,154,0.2);border-radius:8px;
+}
+.askbox p{font-size:0.86rem;line-height:1.75;color:rgba(255,255,255,0.55)}
+.askbox strong{color:rgba(255,255,255,0.85);font-weight:600}
+.askbox a{color:var(--trust-cool);text-decoration:underline}
+
+/* ── PANELS / FORM ── */
+.panel{background:var(--white);border:1px solid var(--hair);border-radius:8px;padding:30px 32px;margin-top:30px}
+.panel.on-grey{background:var(--white)}
+.panel h2{font-size:1.05rem;font-weight:700;letter-spacing:-0.02em;color:var(--trust-slate)}
+.panel .sub{font-size:0.86rem;line-height:1.7;color:var(--trust-slate);opacity:.6;margin-top:6px}
+@media(max-width:560px){.panel{padding:22px 18px}}
+
+.field{display:flex;flex-direction:column;gap:7px;margin-top:18px}
+.field label{font-size:0.63rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--trust-slate);opacity:.55}
+.field label .opt{text-transform:none;letter-spacing:0;font-weight:500;opacity:.8}
+input[type=text],input[type=email],select,textarea{
+  font-family:'Sora',sans-serif;font-size:0.9rem;color:var(--trust-slate);
+  background:var(--white);border:1px solid var(--hair);border-radius:6px;
+  padding:11px 13px;width:100%;transition:border-color .18s,box-shadow .18s;
+}
+input:hover,select:hover,textarea:hover{border-color:#c9d0d8}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--trust-cool);box-shadow:0 0 0 3px rgba(90,138,154,.14)}
+textarea{resize:vertical;min-height:62px;line-height:1.6}
+::placeholder{color:#9aa4ae}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.row2{grid-template-columns:1fr}}
+
+/* ── TICKS / CHIPS ── */
+.ticks{display:flex;flex-direction:column;gap:1px;margin-top:4px;background:var(--hair-soft);border:1px solid var(--hair);border-radius:8px;overflow:hidden}
+.tick{display:flex;gap:14px;padding:16px 18px;background:var(--white);cursor:pointer;align-items:flex-start;transition:background .15s}
+.tick:hover{background:#fafbfc}
+.tick input{margin:3px 0 0;accent-color:var(--trust-cool);width:16px;height:16px;flex:none}
+.tick b{display:block;color:var(--trust-slate);font-weight:700;font-size:0.92rem}
+.tick small{display:block;font-size:0.82rem;line-height:1.6;color:var(--trust-slate);opacity:.6;margin-top:3px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:1px solid var(--hair);border-radius:6px;padding:11px 16px;background:var(--white);font-size:0.88rem;font-weight:500;transition:.18s}
+.chip:hover{border-color:var(--trust-cool)}
+.chip input{accent-color:var(--trust-cool);margin:0}
+.chip:has(input:checked){background:rgba(90,138,154,0.08);border-color:var(--trust-cool);color:var(--trust-cool);font-weight:600}
+
+/* ── LENSES ── */
+.lenses{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:8px;overflow:hidden;margin-top:30px}
+.lens{background:var(--white);padding:20px 22px}
+.lens b{display:block;font-size:0.63rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--trust-cool);margin-bottom:8px}
+.lens span{font-size:0.82rem;line-height:1.7;color:var(--trust-slate);opacity:.6}
+@media(max-width:780px){.lenses{grid-template-columns:1fr}}
+
+/* ── FILTERS / SEARCH ── */
+.filters{
+  display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;
+  padding:14px 20px;background:var(--white);border:1px solid var(--hair);border-radius:8px;margin-top:22px;
+  position:sticky;top:var(--stick-top,118px);z-index:40;
+  box-shadow:0 12px 26px -20px rgba(10,15,26,.55);
+}
+.filters .field{margin:0;flex:1 1 190px}
+.count{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--trust-slate);opacity:.55;padding-bottom:12px;white-space:nowrap}
+.count .ok{color:#1c7a4a;opacity:1}
+.searchwrap{position:relative;display:flex}
+.searchwrap input{padding-right:36px}
+.clearq{
+  position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  background:none;border:0;font-family:'Sora',sans-serif;font-size:1.1rem;line-height:1;
+  color:var(--trust-slate);opacity:.45;cursor:pointer;padding:5px 7px;border-radius:4px;
+}
+.clearq:hover{opacity:1;color:var(--trust-cool)}
+.qnote{
+  flex:1 1 100%;display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+  font-size:0.8rem;line-height:1.6;color:var(--trust-slate);opacity:.8;
+  border-top:1px solid var(--hair-soft);padding-top:10px;margin-top:0;
+}
+.qnote .grow{flex:1 1 240px}
+.qnote b{font-weight:700}
+.qnote.none{color:var(--warn);opacity:1}
+button.btn.tiny{font-size:0.72rem;padding:9px 15px;border-width:1px;white-space:nowrap}
+
+/* ── ROWS ── */
+.group{margin-top:34px}
+.group-head{display:flex;align-items:baseline;gap:12px;padding:12px 0 10px;border-bottom:2px solid var(--trust-slate);position:sticky;top:var(--stick-head,200px);background:var(--white);z-index:20}
+.group-head h3{font-size:0.95rem;font-weight:700;letter-spacing:-0.01em;color:var(--trust-slate)}
+.group-head span{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--trust-slate);opacity:.4;margin-left:auto}
+.item{border-bottom:1px solid var(--hair-soft);padding:18px 0;display:grid;grid-template-columns:1fr 310px;gap:22px;align-items:start}
+@media(max-width:820px){.item{grid-template-columns:1fr;gap:12px}}
+.item.done{background:linear-gradient(90deg,rgba(90,138,154,0.07),transparent 65%);margin-inline:-12px;padding-inline:12px}
+.item .ask{font-size:0.92rem;line-height:1.55;color:var(--trust-slate)}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px;align-items:center}
+.tag{font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--trust-slate);opacity:.55;border:1px solid var(--hair);padding:3px 8px;border-radius:4px}
+.tag.lens{color:var(--trust-cool);border-color:rgba(90,138,154,.45);background:rgba(90,138,154,.07);opacity:1}
+.tag.central{color:var(--warn);border-color:rgba(154,106,30,.4);background:var(--warn-soft);opacity:1}
+.answer{display:flex;flex-direction:column;gap:9px}
+.who{display:none;grid-template-columns:1fr 1fr;gap:9px}
+.who.on{display:grid}
+@media(max-width:560px){.who.on{grid-template-columns:1fr}}
+.notebtn{background:none;border:0;font-family:'Sora',sans-serif;color:var(--trust-cool);font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;padding:4px 0;text-align:left}
+.notebtn:hover{color:#3a6a7a}
+
+/* ── BUTTONS ── */
+.actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;align-items:center}
+button.btn{
+  font-family:'Sora',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;
+  padding:14px 30px;border-radius:6px;
+  background:var(--trust-cool);color:var(--white);border:2px solid var(--trust-cool);
+  transition:all .2s;
+}
+button.btn:hover{background:#4a7a8a;border-color:#4a7a8a;transform:translateY(-2px)}
+button.btn:active{background:#3a6a7a;border-color:#3a6a7a}
+button.btn.ghost{background:transparent;color:var(--trust-cool);border:2px solid var(--trust-cool);font-size:0.82rem;padding:12px 26px}
+button.btn.ghost:hover{border-color:#4a7a8a;color:#4a7a8a;background:transparent}
+button.btn.quiet{background:transparent;color:var(--trust-slate);border:2px solid var(--hair);font-size:0.82rem;padding:12px 26px;opacity:.8}
+button.btn.quiet:hover{border-color:var(--trust-slate);background:transparent;color:var(--trust-slate);opacity:1}
+button.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--trust-cool);outline-offset:2px}
+
+/* ── SEND SEQUENCE ── */
+.seq{display:flex;flex-direction:column;gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:8px;overflow:hidden;margin-top:26px}
+.seq-step{background:var(--white);padding:26px 28px;display:grid;grid-template-columns:44px 1fr;gap:20px;align-items:start}
+@media(max-width:620px){.seq-step{grid-template-columns:1fr;gap:12px;padding:22px 18px}}
+.seq-num{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;font-weight:700;color:var(--white);background:var(--trust-cool);
+}
+.seq-step h3{font-size:0.95rem;font-weight:700;color:var(--trust-slate);letter-spacing:-0.01em}
+.seq-step p{font-size:0.86rem;line-height:1.75;color:var(--trust-slate);opacity:.65;margin-top:6px;max-width:560px}
+.seq-step .actions{margin-top:16px}
+.seq-step.secondary .seq-num{background:transparent;color:var(--trust-slate);border:1px solid var(--hair);opacity:.6}
+.status-line{font-size:0.82rem;line-height:1.7;color:var(--trust-cool);font-weight:500;margin-top:12px;min-height:1px}
+.status-line b{font-weight:700}
+
+/* ── TALLY ── */
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:8px;margin-top:20px;overflow:hidden}
+.tally div{background:var(--white);padding:18px 20px}
+.tally b{display:block;font-size:1.9rem;font-weight:800;color:var(--trust-slate);letter-spacing:-0.04em;line-height:1.1;font-variant-numeric:tabular-nums}
+.tally b i{font-style:normal;font-size:0.95rem;font-weight:600;color:var(--trust-slate);opacity:.35}
+.tally span{display:block;font-size:0.6rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--trust-slate);opacity:.5;margin-top:4px}
+.namelist{margin-top:20px;border-top:1px solid var(--hair);padding-top:16px}
+.namelist>p{font-size:0.86rem;color:var(--trust-slate);opacity:.6;margin-bottom:10px}
+.nameitem{display:flex;gap:10px;align-items:baseline;padding:7px 0;font-size:0.88rem;color:var(--trust-slate);border-bottom:1px solid var(--hair-soft)}
+.nameitem code{font-family:'Sora',sans-serif;font-size:0.8rem;opacity:.55}
+.nameitem .n{margin-left:auto;font-size:0.75rem;opacity:.45}
+
+/* ── NOTES ── */
+.note{font-size:0.95rem;line-height:1.8;color:var(--trust-slate);opacity:.75;border-left:2px solid var(--trust-cool);padding-left:18px;margin-top:30px;max-width:640px}
+.mini{font-size:0.78rem;line-height:1.7;color:var(--trust-slate);opacity:.5;margin-top:14px;max-width:640px}
+.mini a{color:var(--trust-cool);text-decoration:underline}
+
+/* ── FOOTER ── */
+footer{background:var(--deep);padding:48px 5% 36px}
+.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;padding-bottom:32px}
+.footer-col h4{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:18px}
+.footer-wordmark{font-size:1.1rem;font-weight:800}
+.footer-wordmark .trust{color:#8fb5c0}
+.footer-wordmark .os{color:var(--trust-cool)}
+.footer-brand-tagline{font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:6px;display:flex;align-items:center;gap:6px}
+.footer-brand-desc{font-size:0.76rem;line-height:1.65;color:rgba(255,255,255,0.3);margin-top:10px}
+.footer-brand-desc a{color:var(--trust-cool);text-decoration:underline}
+.footer-nav-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-nav-list a{font-size:0.82rem;color:rgba(255,255,255,0.4);transition:color .2s}
+.footer-nav-list a:hover{color:var(--trust-cool)}
+.footer-connect-item{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.footer-connect-item svg{flex-shrink:0}
+.footer-connect-item a{font-size:0.82rem;color:rgba(255,255,255,0.4);transition:color .2s}
+.footer-connect-item a:hover{color:var(--trust-cool)}
+.footer-legal{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);font-size:0.72rem;color:rgba(255,255,255,0.25);line-height:1.8}
+.footer-legal a{color:rgba(255,255,255,0.35)}
+.footer-legal a:hover{color:var(--trust-cool)}
+
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-product-link{display:none}
+  .footer-grid{grid-template-columns:1fr;gap:32px}
+}
+@media(max-width:480px){
+  .section{padding:56px 4%}
+  .hero{padding:140px 4% 60px}
+}
+
+/* ── SHARE BAR ── */
+.rail-share{margin-left:auto;font-size:0.63rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--trust-mid);padding:5px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:6px;white-space:nowrap;transition:.2s}
+.rail-share:hover{color:var(--white);border-color:rgba(143,181,192,0.6)}
+@media(max-width:620px){.rail-share{display:none}}
+.share{background:var(--system-grey);border-top:1px solid var(--hair);padding:52px 5%}
+.share-in{max-width:1200px;margin:0 auto}
+.share h2{font-size:1.35rem;font-weight:700;letter-spacing:-0.02em}
+.share .sub{font-size:0.9rem;line-height:1.75;color:var(--trust-slate);opacity:.62;margin-top:8px;max-width:620px}
+.share-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.share-input{display:flex;align-items:stretch;background:var(--white);border:1px solid var(--hair);border-radius:8px;overflow:hidden;flex:0 1 330px}
+.share-input input{border:none!important;border-radius:0!important;background:transparent!important;min-width:0;flex:1}
+.share-input input:focus{outline:none;box-shadow:none}
+.share-input:focus-within{border-color:var(--trust-cool);box-shadow:0 0 0 3px rgba(90,138,154,0.14)}
+.share-suffix{display:flex;align-items:center;padding:0 14px;font-size:0.86rem;font-weight:600;color:var(--trust-slate);opacity:.55;background:var(--hair-soft);border-left:1px solid var(--hair);white-space:nowrap}
+.share .status-line{max-width:640px}
+.share .status-line.bad{color:#b0341f}
+
+/* ── NETLIFY HONEYPOT / MACHINE-ONLY FIELDS ── */
+.hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
+/* ── SENT CONFIRMATION ── */
+.sent{border:1px solid rgba(34,197,94,0.35);background:rgba(34,197,94,0.06);border-radius:14px;padding:30px 32px;margin-top:34px}
+.sent h3{font-size:1.15rem;font-weight:700;letter-spacing:-0.02em}
+.sent p{font-size:0.9rem;line-height:1.75;color:var(--trust-slate);opacity:.72;margin-top:10px;max-width:640px}
+.sent .recap{font-size:0.82rem;line-height:1.9;color:var(--trust-slate);opacity:.62;margin-top:14px;border-left:2px solid rgba(34,197,94,0.4);padding-left:14px}
+.sent .recap b{font-weight:700;opacity:1}
+.sent p a{color:var(--trust-cool);text-decoration:underline}
+.err{font-size:0.86rem;line-height:1.7;color:#b0341f;font-weight:600;margin-top:12px;min-height:1px}
+@media(max-width:480px){.sent{padding:24px 20px}}
+
+/* ── BANNERS (resume · un-ticked groups · centrally held lines) ── */
+.banner{
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+  font-size:0.84rem;line-height:1.65;color:var(--trust-slate);
+  background:var(--warn-soft);border:1px solid rgba(154,106,30,.28);
+  border-radius:8px;padding:13px 16px;margin-top:18px;
+}
+.banner .grow{flex:1 1 260px}
+.banner b{font-weight:700}
+.banner.cool{background:rgba(90,138,154,0.08);border-color:rgba(90,138,154,0.28)}
+button.linkish{background:none;border:0;font-family:'Sora',sans-serif;font-size:inherit;color:var(--trust-cool);text-decoration:underline;cursor:pointer;padding:0}
+button.linkish:hover{color:#3a6a7a}
+.err[aria-live]{font-weight:600}
+
+/* ── ADDED ITEMS ("other documents" the 57 lines missed) ── */
+.group.added .group-head{border-bottom-color:var(--trust-cool)}
+.group.added .group-head h3{color:var(--trust-cool)}
+.item.added input.j-xlabel{font-size:0.92rem;font-weight:600}
+.notebtn.del{color:#b0341f}
+.notebtn.del:hover{color:#8a2718}
+.tag.added{color:var(--trust-cool);border-color:rgba(90,138,154,.45);background:rgba(90,138,154,.07);opacity:1}
+.tag.out{color:var(--warn);border-color:rgba(154,106,30,.4);background:var(--warn-soft);opacity:1}
+
+/* ── STEP RAIL: clickable, and all six steps readable on a phone ── */
+.steps li{cursor:pointer}
+.steps li:hover{color:rgba(255,255,255,0.72)}
+.steps li:focus-visible{outline:2px solid var(--trust-cool);outline-offset:2px}
+@media(max-width:620px){
+  .rail-in{height:auto;min-height:46px;padding:6px 4%}
+  .steps{flex-wrap:wrap;overflow:visible;gap:4px}
+  .steps li{padding:4px 7px;letter-spacing:0.05em;font-size:0.56rem}
+}
+
+/* ===== STEP FIVE: THE PROOF LADDER, THE SEVENTEEN SOURCES, THE READINESS TIER ===== */
+.picks{display:flex;flex-direction:column;gap:1px;margin-top:4px;background:var(--hair-soft);border:1px solid var(--hair);border-radius:8px;overflow:hidden}
+button.pick{
+  font-family:'Sora',sans-serif;text-align:left;width:100%;
+  background:var(--white);border:0;cursor:pointer;padding:15px 18px;
+  display:flex;gap:14px;align-items:baseline;transition:background .15s;
+}
+button.pick:hover{background:#fafbfc}
+button.pick>span{flex:1 1 auto;min-width:0}
+button.pick i{font-style:normal;font-size:0.56rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--trust-slate);opacity:.4;flex:none;width:62px;padding-top:3px}
+button.pick b{display:block;font-size:0.92rem;font-weight:700;color:var(--trust-slate)}
+button.pick small{display:block;font-size:0.82rem;line-height:1.6;color:var(--trust-slate);opacity:.6;margin-top:3px}
+button.pick[aria-checked="true"]{background:rgba(90,138,154,0.08);box-shadow:inset 3px 0 0 var(--trust-cool)}
+button.pick[aria-checked="true"] b{color:var(--trust-cool)}
+button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
+@media(max-width:480px){button.pick{gap:10px;padding:14px 13px}button.pick i{width:44px;font-size:0.52rem}}
+
+/* Step four's group heads sit below its sticky filter bar; step five has no filter
+   bar, so they stick straight under the rail instead of floating mid-list. */
+#s5 .group-head{top:var(--stick-top,118px)}
+.group.reality .group-head{border-bottom-color:var(--trust-cool)}
+.group.reality .group-head h3{color:var(--trust-cool)}
+.group-lead{font-size:0.84rem;line-height:1.7;color:var(--trust-slate);opacity:.65;padding:12px 0 2px;max-width:640px}
+/* Everything after the first dropdown is revealed by it, so the fast path is
+   seventeen dropdowns and nothing else. */
+.srcwrap{display:none;flex-direction:column;gap:9px}
+.srcwrap.on{display:flex}
+.srclab{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--trust-cool)}
+.srcwrap .mini{margin-top:0}
+
+/* A readiness tier is not a trust band: a flat slab, deliberately nothing like the
+   ring and the bands the measured reads use. */
+.tier-out{margin-top:20px;padding:20px 22px;background:var(--system-grey);border:1px solid var(--hair);border-left:3px solid var(--trust-cool);border-radius:8px}
+.tier-out b{display:block;font-size:1.35rem;font-weight:800;letter-spacing:-0.03em;color:var(--trust-slate);line-height:1.2}
+.tier-out span{display:block;font-size:0.84rem;line-height:1.75;color:var(--trust-slate);opacity:.7;margin-top:8px;max-width:600px}
+.tier-out em{font-style:normal;font-weight:700;opacity:1}
+.tally b.word{font-size:1.05rem;letter-spacing:-0.02em;line-height:1.6}
+.share-split{border-top:1px solid var(--hair);margin-top:30px;padding-top:24px}
+
+/* ===== THE LAST SCREEN: thank you, Dustin, the next colleague, further reading =====
+   One block per thing to do, hairline-separated inside the same confirmation box, so
+   the whole screen still reads as one thank-you rather than a landing page. */
+.ty{border-top:1px solid rgba(34,197,94,0.28);margin-top:26px;padding-top:22px}
+.ty h4{font-size:0.95rem;font-weight:700;letter-spacing:-0.02em;color:var(--trust-slate)}
+.ty .share-row{margin-top:16px}
+.ty .share-input{flex:0 1 300px}
+.sent .status-line{max-width:640px}
+.sent .status-line.bad{color:#b0341f}
+/* The upload button and the "email Dustin" button are anchors, not buttons, so they
+   need the button skin spelled out once. */
+.sent a.btn{display:inline-block;font-family:'Sora',sans-serif;font-size:0.88rem;font-weight:600;
+  padding:14px 30px;border-radius:6px;background:var(--trust-cool);color:var(--white);
+  border:2px solid var(--trust-cool);transition:all .2s}
+.sent a.btn:hover{background:#4a7a8a;border-color:#4a7a8a;transform:translateY(-2px)}
+.sent a.btn.ghost{background:transparent;color:var(--trust-cool);font-size:0.82rem;padding:12px 26px}
+.sent a.btn.ghost:hover{background:transparent;color:#4a7a8a;border-color:#4a7a8a}
+/* Further reading is deliberately the quietest thing on the screen. */
+.ty-read ul{list-style:none;margin-top:8px;max-width:620px}
+.ty-read li{border-top:1px solid var(--hair-soft)}
+.ty-read li a{display:block;padding:9px 0;font-size:0.86rem;line-height:1.6;color:var(--trust-cool);text-decoration:underline}
+.ty-read li a:hover{color:#3a6a7a}
+</style>
+<!-- seo-ai:start -->
+<meta name="robots" content="noindex, nofollow" />
+<link rel="canonical" href="https://trustos.missionctrl.agency/navigator/solmax/data-audit/" />
+<meta property="og:title" content="Solmax Data Audit — TrustOS" />
+<meta property="og:description" content="TrustOS data audit for Solmax — what already exists, before anyone is asked a new question." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://trustos.missionctrl.agency/navigator/solmax/data-audit/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Solmax Data Audit — TrustOS" />
+<meta name="twitter:description" content="TrustOS data audit for Solmax — what already exists, before anyone is asked a new question." />
+<!-- seo-ai:end -->
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="/" class="nav-wordmark">
+      <svg width="22" height="27" viewBox="0 0 120 148" fill="none" style="flex-shrink:0" aria-hidden="true"><defs><linearGradient id="nv-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient><linearGradient id="nv-ml" x1="60" y1="12" x2="60" y2="140"><stop offset="0%" stop-color="#5a8a9a" stop-opacity="0.5"/><stop offset="100%" stop-color="#5a8a9a" stop-opacity="0.03"/></linearGradient><filter id="nv-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter></defs><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="url(#nv-ml)"/><polygon points="30,12 90,12 60,88" fill="#6da0b8" filter="url(#nv-glow)"/><polygon points="30,12 90,12 60,88" fill="url(#nv-tg)"/></svg>
+      <span><span class="trust">Trust</span><span class="os">OS</span></span>
+    </a>
+    <a href="https://missionctrl.agency" class="nav-product-link" target="_blank" rel="noopener">
+      <svg width="10" height="12" viewBox="0 0 120 148" fill="none" aria-hidden="true"><defs><linearGradient id="nv-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="nv-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#nv-mg)" clip-path="url(#nv-mlc)"/></svg>
+      A MissionCTRL product &rarr;
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/methodology/">How it works</a></li>
+    <li><a href="/faq/">FAQ</a></li>
+  </ul>
+  <a href="/" class="nav-cta">TrustOS site &rarr;</a>
+</nav>
+
+<div class="rail">
+  <div class="rail-in">
+    <ol class="steps" id="steps">
+      <li data-s="1" role="button" tabindex="0">1 &middot; You</li>
+      <li data-s="2" role="button" tabindex="0">2 &middot; Groups</li>
+      <li data-s="3" role="button" tabindex="0">3 &middot; Regions</li>
+      <li data-s="4" role="button" tabindex="0">4 &middot; What exists</li>
+      <li data-s="5" role="button" tabindex="0">5 &middot; Where from</li>
+      <li data-s="6" role="button" tabindex="0">6 &middot; Send</li>
+    </ol>
+    <a class="rail-share" href="#share">Share this page &rarr;</a>
+  </div>
+</div>
+
+<!-- ============ STEP 1 ============ -->
+<section id="s1">
+  <div class="hero">
+    <div class="grid-bg"></div>
+    <div class="section-inner">
+      <div class="section-label">Solmax data audit &middot; nothing to prepare</div>
+      <h1>What Solmax <em>already</em> knows</h1>
+      <p class="hero-sub">Before we ask anyone at Solmax a single new question, we are working out what the business already holds. This page asks you <strong>what exists</strong> &mdash; not for the files, and not for anything you would have to go and build.</p>
+      <p class="hero-sub">You will see only the lines that touch your work. &ldquo;We don&rsquo;t have that&rdquo;, &ldquo;not my area&rdquo; and &ldquo;I don&rsquo;t know&rdquo; are real answers here, and each takes one click.</p>
+
+      <div class="explain">
+        <div class="section-label" style="margin-top:14px">What TrustOS is</div>
+        <p class="hero-sub" style="max-width:660px;margin-top:6px">Solmax measures almost everything it <strong>does</strong> &mdash; and almost nothing about how it is <strong>experienced</strong>. TrustOS fixes that. It asks every group Solmax depends on the same questions, then turns the answers into <strong>a single 0&ndash;100 score</strong> you can track, so you can see where trust is strong and where it is leaking before the numbers move.</p>
+        <p class="explain-quote">Reputation is what people say about what you&rsquo;ve <em>done</em>. Trust is whether they believe in what you do <em>next</em>.</p>
+        <div class="drivers">
+          <div class="driver"><b>Clarity</b><span>What&rsquo;s said &mdash; the promises, the messages, the published word.</span></div>
+          <div class="driver"><b>Connection</b><span>What stakeholders actually experience when they deal with Solmax.</span></div>
+          <div class="driver"><b>Confidence</b><span>What can be proved &mdash; the evidence behind the claims.</span></div>
+        </div>
+        <p class="hero-sub" style="max-width:660px;margin-top:26px"><strong>This page is the first step.</strong> Before one round of measurement can start, we agree which stakeholder groups to measure and which data sources to read. That means cataloguing what Solmax already has. Nothing here asks you to create anything new.</p>
+      </div>
+
+      <div class="askbox">
+        <p><strong>Dustin Lawrence</strong> at MissionCTRL is running this audit for Solmax. Anything unclear, ask him directly at <a href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a>.<br>Please have your answers back by <strong id="dl-1">&mdash;</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section grey">
+    <div class="section-inner narrow">
+      <p class="banner cool" id="resume" role="status" hidden>
+        <span class="grow">You have <b id="resume-n">0</b> <span id="resume-w">answers</span> saved in this browser from earlier &mdash; carry on where you left off.</span>
+        <button type="button" class="btn quiet tiny" id="resume-clear">Start again</button>
+        <button type="button" class="linkish" id="resume-x">Dismiss</button>
+      </p>
+      <p class="banner cool" id="own-1" hidden>
+        <span class="grow">You were sent here for the <b>&ldquo;where it comes from&rdquo;</b> step, and that is still the only part being asked of you. Your name and a working email are all we need from this page &mdash; they are what the return is signed with, and what Dustin comes back to.</span>
+      </p>
+      <div class="section-label">Step one of six</div>
+      <h2 class="section-title">Who is filling this in</h2>
+      <p class="lede">So we know who to thank, and who to come back to if something is unclear. The email you signed in with is already below &mdash; correct it if it is wrong.</p>
+      <div class="panel">
+        <div class="row2">
+          <div class="field"><label for="me-name">Your name</label><input type="text" id="me-name" autocomplete="name" placeholder="Your full name"></div>
+          <div class="field"><label for="me-email">Your email</label><input type="email" id="me-email" autocomplete="email" placeholder="you@solmax.com"></div>
+        </div>
+        <div class="field"><label for="me-role">Your role <span class="opt">&mdash; optional</span></label><input type="text" id="me-role" placeholder="e.g. Marketing Manager, Asia Pacific"></div>
+        <div class="actions"><button class="btn" id="go2">Continue</button></div>
+        <p class="err" id="e1" role="status" aria-live="polite"></p>
+        <p class="mini">Your answers stay in this browser until you choose to send them. If you name a colleague as holding something, we collect their name and email so Dustin can ask them directly &mdash; nothing else, and nothing is shared outside the Solmax audit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 2 ============ -->
+<section id="s2" hidden>
+  <div class="section" style="padding-top:150px">
+    <div class="section-inner">
+      <div class="section-label">Step two of six</div>
+      <h2 class="section-title">Which of these do you deal with?</h2>
+      <p class="lede">Solmax has five stakeholder relationships in this first wave, each measured on its own. Tick the ones you touch &mdash; even loosely. Everything else disappears from your list.</p>
+      <p class="lede" style="font-size:0.9rem">Investors and lenders are not on this list on purpose: that relationship is read from financial and market evidence, gathered separately with Finance.</p>
+      <div class="panel">
+        <div class="ticks" id="rel-ticks"></div>
+        <p class="banner" id="rel-warn" role="status" aria-live="polite" hidden></p>
+        <div class="actions">
+          <button class="btn" id="go3">Continue</button>
+          <button class="btn quiet" id="back1">Back</button>
+        </div>
+        <p class="err" id="e2" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 3 ============ -->
+<section id="s3" hidden>
+  <div class="section" style="padding-top:150px">
+    <div class="section-inner">
+      <div class="section-label">Step three of six</div>
+      <h2 class="section-title">Where do you work?</h2>
+      <p class="lede">Some of what we are after is held once, centrally. If you are regional we will mark those lines so you can skip them &mdash; unless your region does it differently, which is itself worth knowing.</p>
+      <div class="panel">
+        <div class="chips" id="region-chips"></div>
+        <div class="actions">
+          <button class="btn" id="go4">See my list</button>
+          <button class="btn quiet" id="back2">Back</button>
+        </div>
+        <p class="err" id="e3" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 4 ============ -->
+<section id="s4" hidden>
+  <div class="section" style="padding-top:150px">
+    <div class="section-inner">
+      <div class="section-label">Step four of six</div>
+      <h2 class="section-title">What exists</h2>
+      <p class="lede">Three things per line at most, and only the lines you can speak to. If a line belongs to someone else, name them and we will ask them ourselves.</p>
+      <p class="lede" id="s4-time" style="font-size:0.9rem;margin-top:10px">&mdash;</p>
+
+      <div class="lenses">
+        <div class="lens"><b>Intent</b><span>What Solmax set out to be. Strategy, priorities, objectives, targets &mdash; as decided, not as published.</span></div>
+        <div class="lens"><b>Expectation</b><span>Everything Solmax says and publishes. Website, datasheets, brand guidelines, decks, brochures, agreements, permits.</span></div>
+        <div class="lens"><b>Reality</b><span>What people actually experience. Surveys, complaints, quality and safety records, behaviour in the systems.</span></div>
+      </div>
+
+      <div class="filters">
+        <div class="field" style="flex:2 1 250px"><label for="f-q">Search for what you hold</label>
+          <span class="searchwrap">
+            <input type="text" id="f-q" placeholder="e.g. TDS, engagement survey, permit, rebates" autocomplete="off" spellcheck="false" aria-describedby="q-note">
+            <button type="button" class="clearq" id="f-q-clear" aria-label="Clear the search" hidden>&times;</button>
+          </span>
+        </div>
+        <div class="field"><label for="f-rel">Filter by relationship</label><select id="f-rel"></select></div>
+        <div class="field"><label for="f-lens">Filter by lens</label><select id="f-lens">
+          <option value="">All three</option><option>Intent</option><option>Expectation</option><option>Reality</option>
+        </select></div>
+        <div class="field" style="flex:0 1 190px"><label for="f-todo">Show</label><select id="f-todo">
+          <option value="">Everything</option><option value="todo">Not yet answered</option><option value="done">Answered</option>
+        </select></div>
+        <div class="count" id="tally">&mdash;</div>
+        <p class="qnote" id="q-note" role="status" aria-live="polite">
+          <span class="grow" id="q-count">Search the whole catalogue above &mdash; and if what you hold is not in it, add it yourself.</span>
+          <button type="button" class="btn quiet tiny" id="add-other">+ Add something we missed</button>
+        </p>
+      </div>
+
+      <div id="rows"></div>
+
+      <div class="actions">
+        <button class="btn" id="go5">Next &mdash; where it comes from</button>
+        <button class="btn quiet" id="back3">Back</button>
+      </div>
+      <p class="mini">Your answers are saved <strong>in this browser only</strong>, so you can close the tab and come back &mdash; but finish on the same device and in the same browser, or you will start again. Nothing is sent anywhere until you send it yourself in step six.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 5 ============ -->
+<section id="s5" hidden>
+  <div class="section grey" style="padding-top:150px">
+    <div class="section-inner">
+      <p class="banner cool" id="own-5" hidden>
+        <span class="grow">You have been sent straight to this step, and this is the whole of it &mdash; <b>seventeen dropdowns</b> about where Solmax&rsquo;s signals are collected. The long list of documents on step four belongs to someone else; leave it alone. We will ask for your name and email on the way out, so we know whose answers these are.</span>
+      </p>
+      <div class="section-label">Step five of six</div>
+      <h2 class="section-title">Where it <em>comes from</em></h2>
+      <p class="lede">Step four asked whether a document exists and who holds it. This step asks something the audit has never asked: <strong>where a signal is collected today</strong> &mdash; and where it is not, <strong>where it could be</strong>. Seventeen sources, one dropdown each. &ldquo;No&rdquo; and &ldquo;I don&rsquo;t know&rdquo; are one click and move you straight on.</p>
+
+      <div class="panel">
+        <h2 id="proof-q">First, the honest one &mdash; asked once</h2>
+        <p class="sub">If the board asked you tomorrow to prove that Solmax is trusted by the people it depends on, what could you actually put in front of them? Pick the strongest thing that is true today, not the thing you wish were true.</p>
+        <div class="picks" id="proof" role="radiogroup" aria-labelledby="proof-q">
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Solid, measured data"><i>Strongest</i><span><b>Solid, measured data</b><small>Numbers we already collect, on a scale we could run again and compare against.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Case studies and anecdotes"><i></i><span><b>Case studies and anecdotes</b><small>Real, and true &mdash; but chosen by us, and not countable.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Activity metrics — what we did, not what landed"><i></i><span><b>Activity metrics &mdash; what we did, not what landed</b><small>Seminars run, tickets closed, posts published, tonnes shipped.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="We would commission research and wait"><i></i><span><b>We would commission research and wait</b><small>Nothing to hand. We would have to go and find out, and it would take months.</small></span></button>
+          <button type="button" class="pick" role="radio" aria-checked="false" data-v="Honestly — nothing"><i>Weakest</i><span><b>Honestly &mdash; nothing</b><small>A useful answer, and more common than anyone admits.</small></span></button>
+        </div>
+        <p class="mini">No wrong answer. This is the one line in the whole return that is a judgement rather than a fact, and it is here to sanity-check the inventory below: if the list says the data exists and this says nothing could be shown, one of the two is wrong and we would rather know now.</p>
+      </div>
+
+      <div class="panel">
+        <h2>The seventeen sources</h2>
+        <p class="sub">The same three lenses as step four. <strong>Reality comes first</strong> &mdash; what people actually experience is what the readiness tier is calculated from, and what decides how much new survey work has to be paid for.</p>
+        <div class="lenses">
+          <div class="lens"><b>Reality</b><span>What people actually experience. Surveys, complaints, quality and safety records, behaviour in the systems.</span></div>
+          <div class="lens"><b>Intent</b><span>What Solmax set out to be. Strategy, priorities, objectives, targets &mdash; as decided, not as published.</span></div>
+          <div class="lens"><b>Expectation</b><span>Everything Solmax says and publishes. Website, datasheets, brand guidelines, decks, brochures, agreements, permits.</span></div>
+        </div>
+        <div id="src-rows"></div>
+      </div>
+
+      <div class="panel" id="tier-panel">
+        <h2>What that adds up to</h2>
+        <p class="sub">The Navigator worked out Solmax&rsquo;s <strong>data readiness</strong> from tick-boxes, before any of this was scoped or priced. This is the same calculation on real answers: the share of the <strong>seven Reality sources</strong> collected routinely, cut at the same two boundaries, so the two numbers can be put side by side.</p>
+        <div class="tier-out" id="tier-out"><b>&mdash;</b><span>Answer the Reality sources above and this fills itself in.</span></div>
+        <div class="tally" id="src-tally"></div>
+        <p class="mini" id="tier-note"></p>
+        <p class="mini"><strong>This is a data-readiness tier. It is not a trust score, and not a trust band.</strong> It says how much of the evidence already exists &mdash; nothing at all about how much Solmax is trusted. A composite trust score is only ever published for a read that has actually been measured, and no read has been measured yet.</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="go6">Review and send</button>
+        <button class="btn quiet" id="back4">Back to my list</button>
+      </div>
+      <p class="err" id="e5" role="status" aria-live="polite"></p>
+      <p class="mini">Saved in this browser as you go, the same as step four. Nothing is sent anywhere until you send it yourself on step six.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 6 ============ -->
+<section id="s6" hidden>
+  <div class="section" style="padding-top:150px">
+    <div class="section-inner">
+      <div class="section-label">Step six of six</div>
+      <h2 class="section-title">Send it back to <em>Dustin</em></h2>
+      <p class="lede" id="s6-lede">Here is what you have told us. Nothing has left your browser yet. Press send and it goes straight to Dustin &mdash; then we will tell you where the documents themselves should go.</p>
+
+      <div class="tally" id="sum-tally"></div>
+      <p class="mini" id="sum-src"></p>
+
+      <div id="send-block">
+        <div class="panel">
+          <h2>Send it to Dustin</h2>
+          <p class="sub">This posts the list itself &mdash; what exists, what does not, and who holds it &mdash; straight to <strong>Dustin Lawrence</strong> at MissionCTRL. No documents are uploaded here. Once it is in, we tell you exactly where the documents should go.</p>
+          <form name="solmax-data-audit" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/" id="auditForm">
+            <input type="hidden" name="form-name" value="solmax-data-audit">
+            <p class="hp"><label>Leave this field blank <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+            <!-- Netlify only accepts fields it saw in the built HTML, so every field
+                 it stores is declared statically here and filled in by the submit
+                 handler below. Never create a named input from JavaScript. -->
+            <input type="hidden" name="name" id="hf-name">
+            <input type="hidden" name="email" id="hf-email">
+            <input type="hidden" name="role" id="hf-role">
+            <input type="hidden" name="regions" id="hf-regions">
+            <input type="hidden" name="lines-answered" id="hf-lines-answered">
+            <input type="hidden" name="lines-total" id="hf-lines-total">
+            <input type="hidden" name="people-named" id="hf-people-named">
+            <input type="hidden" name="other-items-count" id="hf-other-count">
+            <input type="hidden" name="other-items" id="hf-other">
+            <input type="hidden" name="readiness-tier" id="hf-tier">
+            <input type="hidden" name="sources-collected" id="hf-src-collected">
+            <input type="hidden" name="sources-could-collect" id="hf-src-could">
+            <input type="hidden" name="board-proof" id="hf-proof">
+            <textarea class="hp" name="return" id="hf-return" rows="2" tabindex="-1" aria-hidden="true"></textarea>
+            <div class="actions">
+              <button class="btn" type="submit" id="sendBtn">Send my return to Dustin &rarr;</button>
+              <button class="btn ghost" type="button" id="dl-pre">Keep a copy for myself</button>
+            </div>
+            <p class="err" id="send-err"></p>
+            <p class="status-line" id="dl-status"></p>
+          </form>
+          <p class="mini">Sending as <b id="send-as">&mdash;</b>. <button type="button" class="linkish" id="edit-me">Change your name or email</button> &mdash; your answers are kept. Nothing you typed is sent anywhere until you press the button.</p>
+        </div>
+      </div>
+
+      <!-- ===== THE LAST SCREEN ===== deliberately short. Their own numbers, the
+           colleague who holds the rest, and — only once the ARTICLES array in the
+           script has entries in it — somewhere to read further. -->
+      <div class="sent" id="sent-block" hidden>
+        <h3 id="sent-head">Thank you.</h3>
+        <p id="sent-line">Your return has been received.</p>
+        <div class="recap" id="sent-recap"></div>
+        <div id="sent-upload"></div>
+
+        <div class="ty">
+          <h4>Who else holds a piece of this?</h4>
+          <div class="share-row">
+            <label class="share-input">
+              <input type="text" id="ty-local" placeholder="first.last" autocomplete="off" spellcheck="false" aria-label="The first part of your colleague's Solmax email address">
+              <span class="share-suffix">@solmax.com</span>
+            </label>
+            <button class="btn ghost" type="button" id="ty-go">Share by email</button>
+            <button class="btn quiet" type="button" id="ty-copy">Copy the link</button>
+          </div>
+          <p class="status-line" id="ty-status"></p>
+          <p class="mini">Owns a system rather than documents? <button type="button" class="linkish" id="ty-src">Copy the systems-owner link</button> instead.</p>
+        </div>
+
+        <div class="ty">
+          <div class="actions">
+            <a class="btn ghost" id="ty-ask" href="mailto:hello@missionctrl.agency">Email Dustin</a>
+            <button class="btn quiet" type="button" id="dl-post">Download my return</button>
+            <button class="btn quiet" type="button" id="copy-post">Copy as text</button>
+          </div>
+          <p class="status-line" id="sent-status"></p>
+        </div>
+
+        <div id="ty-reading"></div>
+      </div>
+
+      <div id="fallback-block" hidden>
+        <h3 style="margin-top:34px;font-size:1.15rem;font-weight:700;letter-spacing:-0.02em">Send it by email instead</h3>
+        <p class="sub" style="margin-top:8px">The direct send did not go through, so nothing has reached Dustin yet. This route always works: download the file, then email it.</p>
+      <div class="seq">
+        <div class="seq-step">
+          <div class="seq-num">1</div>
+          <div>
+            <h3>Download your return</h3>
+            <p>A spreadsheet of everything you have recorded here, saved to your computer. Keep it &mdash; you will attach it to the email in the next step.</p>
+            <div class="actions"><button class="btn" id="dl">Download my return</button></div>
+            <p class="status-line" id="dl-status-fb"></p>
+          </div>
+        </div>
+        <div class="seq-step">
+          <div class="seq-num">2</div>
+          <div>
+            <h3>Email it to Dustin, with your documents</h3>
+            <p>This opens a short, pre-written email to <strong>hello@missionctrl.agency</strong> in your own mail client. <strong>Attach the file you just downloaded</strong>, plus any of the documents themselves that you are able to send. Read it before you send it &mdash; nothing goes anywhere until you press send.</p>
+            <div class="actions"><button class="btn" id="email-dx">Email Dustin</button></div>
+            <p class="status-line" id="send-status"></p>
+          </div>
+        </div>
+        <div class="seq-step secondary">
+          <div class="seq-num">3</div>
+          <div>
+            <h3>Or copy it as text</h3>
+            <p>If you would rather paste your answers straight into an email, or your mail client did not open, copy the whole return to your clipboard and send it to <strong>hello@missionctrl.agency</strong> yourself.</p>
+            <div class="actions"><button class="btn ghost" id="copy">Copy to clipboard</button></div>
+            <p class="status-line" id="copy-status"></p>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="panel" id="handoff-panel">
+        <h2>Pass it on</h2>
+        <p class="sub">You named these people as the ones who hold something. We can write the introduction for you &mdash; it opens in your mail client, from you, and explains what we are doing and why.</p>
+        <div class="namelist" id="namelist"></div>
+        <div class="actions"><button class="btn ghost" id="email-them">Write to them</button></div>
+        <p class="status-line" id="them-status"></p>
+        <p class="mini">A forward from you carries more weight than a cold email from us, which is the only reason we are asking you to press the button rather than doing it ourselves.</p>
+      </div>
+
+      <p class="note">A blank line is not a failure. If Solmax does not hold something, that is a finding &mdash; it goes in the December 2026 baseline as a gap we have measured rather than a number we have guessed. Thank you for the time it took.</p>
+      <p class="mini">Deadline: <strong id="dl-2">&mdash;</strong>. Questions: <strong>Dustin Lawrence</strong>, <a href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a>.</p>
+      <div class="actions"><button class="btn quiet" id="back5">Back a step</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHARE (visible on every step) ============ -->
+<section class="share" id="share">
+  <div class="share-in">
+    <h2>Someone else at Solmax should see this</h2>
+    <p class="sub">If a colleague holds something you do not, pass it on. Type the first part of their Solmax email address &mdash; we add <strong>@solmax.com</strong> for you &mdash; and we will open a short introduction in your own mail client for you to read and send.</p>
+    <div class="share-row">
+      <label class="share-input">
+        <input type="text" id="share-local" placeholder="first.last" autocomplete="off" spellcheck="false" aria-label="The first part of your colleague's Solmax email address">
+        <span class="share-suffix" id="share-suffix">@solmax.com</span>
+      </label>
+      <button class="btn" type="button" id="share-go">Share by email</button>
+      <button class="btn ghost" type="button" id="share-copy">Copy the link</button>
+    </div>
+    <p class="status-line" id="share-status"></p>
+
+    <div class="share-split">
+      <h2>Or just the systems owners</h2>
+      <p class="sub">If someone owns a system rather than a shelf of documents &mdash; CRM, HR, QHSE, the channel &mdash; send them this link instead. It opens the page <strong>straight on &ldquo;where it comes from&rdquo;</strong>, tells them the fifty-seven document lines are not theirs to fill in, and still collects the name and email the return has to be signed with.</p>
+      <div class="share-row">
+        <label class="share-input" style="flex:1 1 420px">
+          <input type="text" id="src-link" readonly spellcheck="false" aria-label="The link that opens the page on the sources step" value="">
+        </label>
+        <button class="btn ghost" type="button" id="src-copy">Copy the systems-owner link</button>
+        <button class="btn quiet" type="button" id="src-mail">Email it to the address above</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <svg width="24" height="30" viewBox="0 0 120 148" fill="none">
+          <defs>
+            <linearGradient id="ft-tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#6da0b8"/><stop offset="100%" stop-color="#5a8a9a"/></linearGradient>
+            <filter id="ft-glow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z" fill="#ffffff" opacity="0.06"/>
+          <polygon points="30,12 90,12 60,88" fill="url(#ft-tg)" filter="url(#ft-glow)"/>
+        </svg>
+        <span class="footer-wordmark"><span class="trust">Trust</span><span class="os">OS</span></span>
+      </div>
+      <p class="footer-brand-tagline" style="display:flex;align-items:center;gap:6px;">
+        <svg width="10" height="12" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="ft-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="ft-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ft-mg)" clip-path="url(#ft-mlc)"/></svg>
+        A MissionCTRL product
+      </p>
+      <p class="footer-brand-desc" style="font-size:0.76rem;color:rgba(255,255,255,0.3);line-height:1.65;">TrustOS is the trust-intelligence layer of the Brand Effect — MissionCTRL's methodology for turning purpose-led brands into movements. <a href="https://missionctrl.agency" style="color:var(--trust-cool);text-decoration:underline;" target="_blank" rel="noopener">Learn about the Brand Effect at missionctrl.agency</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul class="footer-nav-list">
+        <li><a href="/explorer/">What it measures</a></li>
+        
+        <li><a href="/methodology/">How it works</a></li>
+        <li><a href="/insights/">Sector Insights</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="https://missionctrl.agency" target="_blank" rel="noopener">MissionCTRL Solutions</a></li>
+        <li><a href="/?request=navigator">Request a Navigator</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <div class="footer-connect-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        <a href="https://www.linkedin.com/showcase/trust-os/" target="_blank" rel="noopener">Follow TrustOS on LinkedIn</a>
+      </div>
+      <div class="footer-connect-item">
+        <a href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-legal">
+    &copy; 2026 TrustOS &middot; A MissionCTRL product &middot; MissionCTRL Ltd &middot; Company No. 17018199 &middot; Registered in England &amp; Wales &middot; <a href="/privacy-policy/">Privacy Policy</a> &middot; <a href="/cookie-policy/">Cookie Policy</a> &middot; <a href="/terms/">Terms &amp; Conditions</a>
+  </div>
+</footer>
+
+<script>
+/* ============================ data ============================ */
+const REL = [
+  ["Customers, Specifiers & Engineers","The people who buy, and the design and consulting engineers who decide what gets specified."],
+  ["Distributors & Channel Partners","The channel — distributors, agents and partners who sell on your behalf."],
+  ["Installers","The contractors who put the product in the ground, and the field service behind them."],
+  ["Employees","Everyone on the payroll, in every region."],
+  ["Communities & Regulators","Everyone near a Solmax site, and everyone able to stop one operating."],
+];
+const REGIONS = ["Americas","EMEA","Asia Pacific","Global / corporate"];
+const CENTRAL = new Set(["EXEC","GLOBAL","BRAND","DASH"]);
+const OWNERS = {
+  REGMKT:"Regional marketing", GLOBAL:"Global marketing & comms", BRAND:"Brand & digital",
+  DASH:"Dashboards & analytics", CRM:"CRM", CEA:"CEA & technical training", CHANNEL:"Channel",
+  PEOPLE:"Talent & culture", QHSE:"QHSE", TECHSVC:"Technical service", EXEC:"Executive / board"
+};
+/* Lower-cased, accent-stripped, punctuation-flattened — what the search compares.
+   The fifth element of each row below is that row's search vocabulary: the words a
+   Solmax employee would actually type, abbreviations and regional variants included. */
+const norm=s=>String(s==null?"":s).toLowerCase().normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+const C="Customers, Specifiers & Engineers", D="Distributors & Channel Partners", I="Installers",
+      E="Employees", G="Communities & Regulators", A="Across all five";
+const ROWS=[
+[C,"Intent","The five marketing priorities, as they landed on 16 September 2026","EXEC","marketing priorities five priorities marketing strategy strategic priorities marketing plan priority list"],
+[C,"Intent","“Let’s build infrastructure better” and the four pillars — as strategy, not as copy","EXEC","build infrastructure better four pillars brand platform positioning purpose narrative strategy pillars tagline"],
+[C,"Intent","Supplier to solution provider: the CEO’s stated direction, August 2026","EXEC","ceo direction solution provider supplier to solution transformation vision statement business strategy direction"],
+[C,"Expectation","Corporate website and industry pages, in every language published","BRAND","website corporate website web pages industry pages site content languages translations sitemap online"],
+[C,"Expectation","Regionally adapted website and campaign content, in local languages","REGMKT","regional website local website campaign content localised localized landing pages campaigns local language"],
+[C,"Expectation","Product datasheets, technical data sheets, and the specification text we write","GLOBAL","datasheet data sheet tds technical data sheet spec sheet specification product spec pds product literature"],
+[C,"Expectation","Brand guidelines and the messaging framework","GLOBAL","brand guidelines brand book style guide messaging framework tone of voice logo visual identity brand manual"],
+[C,"Expectation","Sales decks — the template or the best example. Not every deck.","REGMKT","sales deck pitch deck presentation powerpoint slides capability deck sales presentation template"],
+[C,"Expectation","Brochures and printed literature as used in your region","REGMKT","brochure leaflet flyer printed literature catalogue catalog print collateral marketing material"],
+[C,"Expectation","The design tools and calculators — their claims and assumptions","BRAND","design tool calculator sizing tool design software engineering calculator assumptions claims app modelling"],
+[C,"Reality","Customer survey — the results, most recent two years","REGMKT","customer survey satisfaction survey csat nps net promoter voice of the customer voc survey results feedback"],
+[C,"Reality","The questionnaire used for each survey run, and the rating scale","REGMKT","questionnaire survey questions rating scale survey instrument question set nps scale survey methodology"],
+[C,"Reality","Customer complaints and claims register","QHSE","complaints complaint log claims register warranty claims customer complaints escalations grievances"],
+[C,"Reality","On-time in-full delivery, non-conformances, returns and credit notes","QHSE","otif on time in full delivery performance non conformance ncr returns credit notes rma logistics fill rate"],
+[C,"Reality","Technical support tickets; lead response time out of the CRM","CRM","support tickets helpdesk technical support crm salesforce lead response time service desk enquiries cases"],
+[C,"Reality","2026 seminar feedback — the form, and the response rate even where it is low","REGMKT","seminar feedback event feedback webinar feedback lunch and learn response rate evaluation form cpd"],
+[C,"Reality","Exhibition feedback — the booth-staff version, kept separate from seminars","REGMKT","exhibition trade show tradeshow booth stand feedback event debrief conference expo"],
+[E,"Intent","The people and workforce plan, and how it serves the business strategy","PEOPLE","people plan workforce plan hr strategy people strategy headcount plan talent strategy organisation plan"],
+[E,"Intent","The 2027 plan and its objectives, as set rather than as communicated","EXEC","2027 plan business plan objectives okr targets annual plan corporate objectives budget goals"],
+[E,"Expectation","Employer value proposition and careers-site content","PEOPLE","evp employer value proposition careers site recruitment job adverts employer brand careers page hiring"],
+[E,"Expectation","Internal comms calendar, town hall decks and the CEO’s messages","PEOPLE","internal comms town hall all hands newsletter intranet ceo message employee communications comms calendar"],
+[E,"Expectation","The five priorities and the 2027 plan, as communicated internally","PEOPLE","internal communication cascade deck priorities communicated employee briefing strategy comms roadshow"],
+[E,"Reality","Employee engagement survey history — questionnaire, scale, results, action plans","PEOPLE","engagement survey employee survey pulse survey enps staff survey climate survey action plan questionnaire"],
+[E,"Reality","Exit interview records and themes","PEOPLE","exit interview leaver interview offboarding exit survey leaver feedback resignation"],
+[E,"Reality","Voluntary attrition by region, function and tenure; absence data","PEOPLE","attrition turnover retention leavers absence absenteeism sickness tenure hris headcount data"],
+[E,"Reality","Safety incidents, LTIFR and near-miss reporting","QHSE","ltifr trir safety incidents near miss accident reports injury rate lost time incident riddor ehs hse"],
+[D,"Intent","Channel strategy — which markets go direct, which go through partners, and why","CHANNEL","channel strategy route to market distribution strategy direct versus indirect partner strategy go to market"],
+[D,"Intent","Growth targets by channel","CHANNEL","growth targets sales targets channel targets budget quota forecast by channel volume targets"],
+[D,"Expectation","Distributor and partner agreements, and the terms inside them","CHANNEL","distributor agreement partner agreement contract terms and conditions reseller agreement distribution contract"],
+[D,"Expectation","Price lists, margin and rebate schedules","CHANNEL","price list pricing rebate rebates discount margin schedule tariff price book commercial terms"],
+[D,"Expectation","Service commitments: lead times, minimum orders, stocking terms","CHANNEL","lead times moq minimum order stocking terms service commitments sla availability order terms"],
+[D,"Reality","Distributor and partner satisfaction surveys","CHANNEL","distributor survey partner survey channel satisfaction partner nps reseller feedback dealer survey"],
+[D,"Reality","Annual joint business plans — what each side committed to, and delivered","CHANNEL","joint business plan jbp annual partner plan business review qbr partner commitments"],
+[D,"Reality","Sales through partner against target; share of wallet","CHANNEL","sell through sales through partner against target share of wallet partner performance revenue by partner"],
+[D,"Reality","On-time in-full performance to distributors","QHSE","otif on time in full distributor delivery performance shipping performance fill rate to distributors"],
+[I,"Intent","Technical service strategy — what field support Solmax offers, and where","TECHSVC","technical service strategy field service support strategy site support coverage after sales aftersales"],
+[I,"Intent","The certification strategy behind CEA — what it is for","CEA","cea certification strategy certified applicator accreditation installer certification training strategy"],
+[I,"Expectation","Installation manuals and method statements","TECHSVC","installation manual method statement rams installation guide work instruction welding guide handbook how to install"],
+[I,"Expectation","CEA training and certification content","CEA","cea training course material certification content curriculum e learning courseware training materials"],
+[I,"Expectation","Technical service commitments — what is promised, and how fast","TECHSVC","service commitments response time sla time to site technical support promise callout attendance promise"],
+[I,"Reality","CEA training feedback and exam results","CEA","training feedback exam results pass rate assessment scores training records course evaluation cea results"],
+[I,"Reality","Field technical service call logs — what they actually call about","TECHSVC","call logs service calls field reports callouts site visit reports technical enquiries case log field log"],
+[I,"Reality","Installation defect rates; rework and repair records","QHSE","defect rate rework repair records installation failures weld failures remediation warranty repairs snagging"],
+[I,"Reality","Site incident reports; time to site actually achieved","QHSE","site incident reports response time time to site attendance incident log site reports call out times"],
+[G,"Intent","The ESG and sustainability strategy, and its targets","QHSE","esg sustainability strategy net zero carbon targets csr climate strategy decarbonisation sustainability targets"],
+[G,"Intent","The environmental compliance strategy","QHSE","environmental compliance strategy regulatory compliance environmental policy compliance plan legal register"],
+[G,"Expectation","Environmental permits and the applications made to obtain them","QHSE","permit permits environmental permit licence license permit application consent discharge consent authorisation"],
+[G,"Expectation","ISO 14001 and 45001 policies and their scopes","QHSE","iso 14001 45001 9001 management system policy scope certificate accreditation certification audit"],
+[G,"Expectation","Sustainability report, ESG statements and EPDs","GLOBAL","epd environmental product declaration sustainability report esg report lca life cycle assessment carbon footprint"],
+[G,"Reality","Regulator correspondence and inspection notices — what they ask us for","QHSE","regulator correspondence inspection notice environment agency epa letters authority requests regulatory notices"],
+[G,"Reality","Complaints from neighbours: noise, odour, traffic, dust","QHSE","neighbour complaints community complaints noise odour smell dust traffic nuisance local residents"],
+[G,"Reality","Inspection reports, findings and any enforcement notices","QHSE","inspection report audit findings enforcement notice non compliance regulatory audit site inspection fines"],
+[G,"Reality","Emissions and discharge monitoring against permit limits","QHSE","emissions discharge monitoring air quality effluent water monitoring permit limits stack testing sampling"],
+[A,"Reality","CRM leads and conversion","CRM","crm leads conversion pipeline salesforce hubspot lead generation mql sql opportunities enquiries"],
+[A,"Reality","Website and search behaviour","DASH","web analytics google analytics ga4 search console seo traffic sessions bounce rate website data keywords"],
+[A,"Reality","Social engagement","DASH","social media linkedin engagement followers social analytics posts reach impressions social listening"],
+[A,"Expectation","Stakeholder personas and journeys","BRAND","personas customer journey journey map buyer persona stakeholder map touchpoints segmentation"]
+].map((r,i)=>({ref:"L"+String(i+1).padStart(2,"0"),rel:r[0],lens:r[1],ask:r[2],own:r[3],alt:r[4]||"",
+   hay:norm(r[2]+" "+r[1]+" "+r[0]+" "+(r[4]||""))}));
+
+const STATUS=[
+  "","We have this — I can send it","We have this — someone else holds it","We have some of it",
+  "It doesn’t exist","Not my area","I don’t know"
+];
+const NEEDS_NAME=new Set(["We have this — someone else holds it","Not my area"]);
+/* "Not my area" is an honest escape hatch, so naming someone is offered there, never
+   demanded — two blank boxes push people towards "I don’t know", a worse answer. */
+const OPT_NAME=new Set(["Not my area"]);
+
+/* ===== where the signals come from (step five) =====
+The seventeen rows below are the Navigator estimator's own REALITY / INTENT / EXPECT
+arrays, copied word for word from /navigator/solmax/index.html, so this step and the
+estimate Solmax was scoped and priced from share one taxonomy and one tier. Reality is
+first and counts: those seven are the tier's denominator, and the ones the survey
+fieldwork cost hangs on. The lens definitions shown on the step are this page's own
+(step four's .lenses block) \u2014 Reality here is what people actually experience, which
+is not how the Navigator's own label reads. */
+const SRC=[
+["Reality","Stakeholder / trust survey outputs"],
+["Reality","Employee engagement data"],
+["Reality","Retention data"],
+["Reality","NPS"],
+["Reality","CSAT"],
+["Reality","Media & social sentiment"],
+["Reality","Customer complaints / warranty / win-loss"],
+["Intent","Corporate strategy & leadership priorities"],
+["Intent","Strategic bets / growth plans"],
+["Intent","Stakeholder value framework"],
+["Intent","ESG & governance commitments"],
+["Intent","Annual report / investor materials"],
+["Expectation","Brand positioning & messaging"],
+["Expectation","Communications archive (press, case studies, sustainability, social)"],
+["Expectation","Tone & voice guidelines"],
+["Expectation","Brand & visual identity guidelines"],
+["Expectation","Regulatory submissions & disclosures"]
+].map((r,i)=>({ref:"S"+String(i+1).padStart(2,"0"),lens:r[0],name:r[1]}));
+const SRC_LENS=["Reality","Intent","Expectation"];
+const REALITY_N=SRC.filter(r=>r.lens==="Reality").length;   /* 7 \u2014 the tier denominator */
+const GOT=["","Yes, routinely","Sometimes, or only in some regions","No","Don\u2019t know"];
+const HELD="Yes, routinely", SOME="Sometimes, or only in some regions";
+/* Collected at all \u2014 the two answers that make "where does it live" worth asking. */
+const ANY=new Set([HELD,SOME]);
+const FREQ=["","Continuously","Monthly","Quarterly","Annually","Ad hoc","Don\u2019t know"];
+
+const TO="hello@missionctrl.agency";
+const OWNER_NAME="Dustin Lawrence";
+const DEADLINE="Friday 16 October";
+const PAGE_URL="https://trustos.missionctrl.agency/navigator/solmax/data-audit/";
+/* The link a systems owner is sent: it opens on step five and says so. */
+const SRC_URL=PAGE_URL+"#sources";
+const SHARE_DOMAIN="solmax.com";
+
+/* ── WHERE THE DOCUMENTS GO ───────────────────────────────────────────────
+   TO MAKE THE UPLOAD BUTTON LIVE, PASTE THE SOLMAX SHAREPOINT UPLOAD LINK
+   BETWEEN THE QUOTES ON THE NEXT LINE. THAT IS THE ONLY EDIT NEEDED.
+   Left empty, the page hides the button entirely and tells people that
+   Dustin will email them the link instead — no dead button, no broken link. */
+const SHAREPOINT_URL = "";
+
+/* ── FURTHER READING: MISSIONCTRL ON CORPORATE EQ ──────────────────────
+   TO PUT THE "FURTHER READING" LIST ON THE THANK-YOU SCREEN, PASTE ONE
+   {title:"...", url:"https://..."} ENTRY PER ARTICLE BETWEEN THE BRACKETS
+   ON THE NEXT LINE. THAT IS THE ONLY EDIT NEEDED.
+   Left empty, nothing about that section is rendered at all — no heading,
+   no placeholder, no dead links. It is optional reading for someone who has
+   just finished an internal admin task, so it stays last and stays quiet. */
+const ARTICLES = [
+  /* {title:"Corporate EQ: why trust behaves like an asset", url:"https://missionctrl.agency/..."}, */
+];
+
+/* ============================ state ============================ */
+const KEY="solmax-audit-v1";
+let S={me:{name:"",email:"",role:""},rels:[],regions:[],ans:{},extra:[],step:1,showCentral:false,
+       src:{},proof:"",srcOnly:false,gate:""};
+try{const r=localStorage.getItem(KEY); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
+if(!Array.isArray(S.extra)) S.extra=[];
+/* State written by the five-step version of this page has no sources on it, so the new
+   keys are rebuilt rather than trusted \u2014 an old return in the browser must still open. */
+if(!S.src||typeof S.src!=="object"||Array.isArray(S.src)) S.src={};
+if(typeof S.proof!=="string") S.proof="";
+S.srcOnly=!!S.srcOnly;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ===== things the respondent adds themselves ===== */
+function xNew(label){
+  let n=1; while(S.extra.some(x=>x.ref==="X"+String(n).padStart(2,"0"))) n++;
+  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",hname:"",hmail:"",note:null};
+  S.extra.push(x); save(); return x;
+}
+const xById=ref=>S.extra.find(x=>x.ref===ref);
+function extraRows(){
+  return S.extra.map(x=>({ref:x.ref,rel:"Things you added",lens:"Added",ask:x.label||"(unnamed item)",
+    status:x.status||"",hname:x.hname||"",hmail:x.hmail||"",note:x.note||""}));
+}
+const okMail=m=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(m||"").trim());
+
+$("dl-1").textContent=DEADLINE;
+$("dl-2").textContent=DEADLINE;
+
+/* ============================ steps ============================ */
+let step=1;
+/* The nav and the rail are both fixed, and the rail wraps to two rows on a phone,
+   so the sticky offsets are measured rather than guessed. */
+function stick(){
+  const rail=document.querySelector(".rail");
+  const top=rail?Math.round(rail.getBoundingClientRect().bottom):118;
+  const f=document.querySelector("#s4 .filters");
+  document.documentElement.style.setProperty("--stick-top",top+"px");
+  document.documentElement.style.setProperty("--stick-head",(top+(f?f.offsetHeight:0))+"px");
+}
+function show(n){
+  step=n; S.step=n; save();
+  for(let i=1;i<=6;i++) $("s"+i).hidden = (i!==n);
+  [...$("steps").children].forEach(li=>{
+    const s=+li.dataset.s;
+    li.dataset.on = s===n ? "1":"0";
+    li.dataset.done = s<n ? "1":"0";
+  });
+  const host=$("s"+n).querySelector(".section-inner");
+  if(host && !$("resume").hidden) host.prepend($("resume"));
+  window.scrollTo({top:0,behavior:"instant"});
+  /* The thank-you screen carries its own colleague-share control, and two of them on
+     one screen is one too many — the standing section steps aside only while it is up. */
+  const sentUp = n===6 && $("sent-block") && !$("sent-block").hidden;
+  $("share").hidden=sentUp;
+  const rs=document.querySelector(".rail-share"); if(rs) rs.hidden=sentUp;
+  if(n===4){ paint(); stick(); }
+  if(n===5){ paintSrc(); stick(); }
+  if(n===6) summarise();
+}
+/* How far the answers so far allow them to go. */
+function furthest(){
+  const id=!!(S.me.name||"").trim()&&okMail(S.me.email);
+  /* A systems owner arriving on the deep link never picked groups or regions, and is
+     not going to: their step is reachable without either, and only the send needs an
+     identity \u2014 which is asked for on the way out rather than blocking the way in. */
+  if(S.srcOnly) return id?6:5;
+  if(!id) return 1;
+  if(!S.rels.length) return 2;
+  if(!S.regions.length) return 3;
+  return 6;
+}
+const ERRS={
+  1:"We need your name and a working email before the rest of this makes sense \u2014 they are both on this step.",
+  2:"Tick at least one group \u2014 even loosely \u2014 so we can cut the list down to yours.",
+  3:"Pick at least one region, so we know which lines are usually held centrally for you.",
+  5:"We need your name and a working email before any of this can be sent back \u2014 both are on step one, and they are the only other thing we ask of you."
+};
+/* The rail looked clickable and was inert. It navigates now, as far as the answers
+   allow, and says why when it cannot go further. */
+function goStep(n){
+  const f=furthest();
+  if(n<=f){ if($("e"+n)) $("e"+n).textContent=""; show(n); return; }
+  show(f);
+  if($("e"+f)) $("e"+f).textContent=ERRS[f]||"";
+}
+$("steps").addEventListener("click",e=>{
+  const li=e.target.closest("li"); if(li) goStep(+li.dataset.s);
+});
+$("steps").addEventListener("keydown",e=>{
+  const li=e.target.closest("li");
+  if(li&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); goStep(+li.dataset.s); }
+});
+window.addEventListener("resize",stick);
+
+/* ===== the address they gave at the door =====
+   The branded sign-in (netlify/edge-functions/solmax-audit-gate.js) asks for a Solmax
+   email before this page is served and leaves it in a readable cookie, so step one
+   starts already filled in rather than asking for it a second time. This has to run
+   before the binding below, which copies S.me into the fields once, on load. */
+function fromGate(){
+  let v="";
+  try{
+    const hit=(document.cookie||"").split(/;\s*/).find(c=>c.indexOf("solmax_audit_email=")===0);
+    if(hit) v=decodeURIComponent(hit.slice("solmax_audit_email=".length));
+  }catch(e){}
+  /* S.gate remembers which address the door has already handed over: the door wins the
+     first time it is seen, but a typo corrected in step one then stands, instead of
+     every reload quietly putting the original back. */
+  if(v&&okMail(v)&&v!==S.gate){ S.me.email=v; S.gate=v; save(); }
+}
+fromGate();
+
+/* ============================ step 1 ============================ */
+["name","email","role"].forEach(k=>{
+  const el=$("me-"+k); el.value=S.me[k]||"";
+  el.addEventListener("input",()=>{S.me[k]=el.value; save();});
+});
+$("go2").onclick=()=>{
+  if(!S.me.name.trim()){
+    $("e1").textContent="Add your name first \u2014 we need to know who to thank, and who to come back to.";
+    $("me-name").focus(); return;
+  }
+  /* The email was optional here and mandatory at the send step, which failed people
+     twenty minutes too late. It is asked for once, at the start. */
+  if(!okMail(S.me.email)){
+    $("e1").textContent="Add a working email \u2014 your return cannot be sent without one, and it is far easier to add now than at the end.";
+    $("me-email").focus(); return;
+  }
+  $("e1").textContent="";
+  /* A systems owner was sent to step one only for the identity the return is signed
+     with \u2014 back to their own step if it is unfinished, straight to the send if not. */
+  if(S.srcOnly){ show(Object.keys(S.src).some(k=>S.src[k]&&S.src[k].got)?6:5); return; }
+  show(2);
+};
+$("edit-me").onclick=()=>show(1);
+
+/* ============================ step 2 ============================ */
+$("rel-ticks").innerHTML = REL.map(([n,d],i)=>
+  `<label class="tick"><input type="checkbox" id="rel${i}" value="${esc(n)}"${S.rels.includes(n)?" checked":""}>
+   <span><b>${esc(n)}</b><small>${esc(d)}</small></span></label>`).join("");
+$("rel-ticks").addEventListener("change",()=>{
+  const was=S.rels.slice();
+  S.rels=[...$("rel-ticks").querySelectorAll("input:checked")].map(i=>i.value); save();
+  /* Un-ticking a group used to drop its answered lines out of the return silently,
+     while the answers sat on in localStorage. Nothing is deleted now: scope() keeps
+     every answered line in the return, step four still shows it (tagged as outside
+     the picked groups) so it can be edited or cleared, and we say so here. Quietly
+     discarding work someone has already done is the one outcome nobody expects. */
+  const gone=was.filter(r=>!S.rels.includes(r))
+                .map(rel=>({rel,n:ROWS.filter(r=>r.rel===rel&&answered(r)).length}))
+                .filter(g=>g.n);
+  const w=$("rel-warn"), tot=gone.reduce((a,g)=>a+g.n,0);
+  if(tot){
+    w.hidden=false;
+    w.innerHTML='<span class="grow">You un-ticked <b>'+gone.map(g=>esc(g.rel)).join("</b> and <b>")+
+      '</b>, where you have already answered <b>'+tot+'</b> line'+(tot===1?"":"s")+
+      '. <b>Nothing has been deleted.</b> Those lines stay in your return, and step four still shows them marked '+
+      '&ldquo;outside the groups you picked&rdquo; so you can change or clear them.</span>';
+  }else w.hidden=true;
+  $("e2").textContent="";
+});
+$("go3").onclick=()=>{
+  if(!S.rels.length){ $("e2").textContent=ERRS[2]; $("rel0").focus(); return; }
+  $("e2").textContent=""; show(3);
+};
+$("back1").onclick=()=>show(1);
+
+/* ============================ step 3 ============================ */
+$("region-chips").innerHTML = REGIONS.map((r,i)=>
+  `<label class="chip"><input type="checkbox" id="reg${i}" value="${esc(r)}"${S.regions.includes(r)?" checked":""}>${esc(r)}</label>`).join("");
+$("region-chips").addEventListener("change",()=>{
+  S.regions=[...$("region-chips").querySelectorAll("input:checked")].map(i=>i.value); save();
+  $("e3").textContent="";
+});
+$("go4").onclick=()=>{
+  if(!S.regions.length){ $("e3").textContent=ERRS[3]; $("reg0").focus(); return; }
+  $("e3").textContent=""; show(4);
+};
+$("back2").onclick=()=>show(2);
+
+/* ============================ step 4 ============================ */
+function answered(r){const a=S.ans[r.ref]; return a&&a.status;}
+function isCentral(r){
+  return CENTRAL.has(r.own) && S.regions.length && !S.regions.includes("Global / corporate");
+}
+/* Step three promises a regional respondent can skip the centrally held lines, so we
+   act on it: they are folded away behind a disclosure and left out of the count until
+   they ask for them. Reversible in one click, and never applied to a line already
+   answered \u2014 dropping them outright would lose the regions that do it differently,
+   which is the very thing step three says is worth knowing. */
+function skip(r){ return isCentral(r) && !S.showCentral && !answered(r); }
+function inMine(r,set){ set=set||new Set(S.rels); return (set.has(r.rel)||r.rel===A) && !skip(r); }
+/* Everything that belongs in this respondent\u2019s return: their picked groups, plus any
+   line they have answered from outside them \u2014 found by search, or left behind when
+   they un-ticked a group. Answers are never dropped for being out of scope. */
+function scope(){ const set=new Set(S.rels); return ROWS.filter(r=>inMine(r,set)||answered(r)); }
+function total(){ return scope().length+S.extra.length; }
+
+/* ===== search ===== */
+function terms(){ return norm($("f-q").value).split(" ").filter(Boolean); }
+/* Every word must land if any row can take them all ("engagement survey"); otherwise
+   any single word will do, so a half-remembered phrase still surfaces something. */
+function found(ts){
+  if(!ts.length) return null;
+  const all=ROWS.filter(r=>ts.every(t=>r.hay.indexOf(t)>-1));
+  return all.length?all:ROWS.filter(r=>ts.some(t=>r.hay.indexOf(t)>-1));
+}
+function xHit(x,ts){ return !ts.length || ts.some(t=>norm(x.label).indexOf(t)>-1); }
+
+function buildFilters(){
+  const sel=$("f-rel"), cur=sel.value;
+  const rels=[...new Set(scope().map(r=>r.rel))];
+  sel.innerHTML='<option value="">All of mine</option>'+rels.map(r=>`<option>${esc(r)}</option>`).join("");
+  sel.value=rels.includes(cur)?cur:"";
+}
+function countUp(){
+  const all=scope();
+  const n=all.length+S.extra.length;
+  const done=all.filter(answered).length+S.extra.filter(x=>x.status).length;
+  $("tally").innerHTML=`<span class="${done===n&&n?'ok':''}">${done} of ${n} answered</span>`;
+  /* Ten minutes was never true for an eighty-input list, so we say what this one is. */
+  const mins=Math.max(5,Math.ceil(n/3/5)*5);
+  $("s4-time").innerHTML=`Your list is <strong>${n}</strong> line${n===1?"":"s"} long &mdash; roughly ${mins} minutes at a steady pace, and less wherever &ldquo;not my area&rdquo; is the honest answer. Stop whenever you like; everything is saved as you go.`;
+}
+function noteHTML(a,label){
+  return a.note!=null
+    ? `<textarea class="j-note" aria-label="Note \u2014 ${esc(label)}" placeholder="Anything we have wrong, or worth knowing" style="margin-top:12px">${esc(a.note)}</textarea>`
+    : `<button class="notebtn j-addnote" type="button">+ add a note</button>`;
+}
+function answerHTML(a,label){
+  const st=a.status||"", needs=NEEDS_NAME.has(st), opt=OPT_NAME.has(st), has=!!(a.hname||a.hmail);
+  return `<div class="answer">
+      <select class="j-status" aria-label="Does this exist \u2014 ${esc(label)}">
+        ${STATUS.map(x=>`<option value="${esc(x)}"${st===x?" selected":""}>${x?esc(x):"\u2014 choose \u2014"}</option>`).join("")}
+      </select>
+      <button class="notebtn j-who" type="button"${needs&&opt&&!has?"":" hidden"}>+ name who does, if you happen to know</button>
+      <div class="who${needs&&(!opt||has)?" on":""}">
+        <p class="mini j-opt" style="grid-column:1/-1;margin:0"${opt?"":" hidden"}>Optional \u2014 only if you know who does own it.</p>
+        <input type="text" class="j-hname" aria-label="Name of the person who holds this \u2014 ${esc(label)}" placeholder="Their name" value="${esc(a.hname||"")}">
+        <input type="email" class="j-hmail" aria-label="Email of the person who holds this \u2014 ${esc(label)}" placeholder="Their email" value="${esc(a.hmail||"")}">
+      </div>
+    </div>`;
+}
+function paint(){
+  buildFilters();
+  const fR=$("f-rel").value, fL=$("f-lens").value, fT=$("f-todo").value;
+  const ts=terms(), hit=found(ts);
+  const set=new Set(S.rels);
+  /* A search reaches all fifty-seven lines, not only the picked groups \u2014 people hold
+     documents from groups they never ticked. */
+  const base=hit||scope();
+  const list=base.filter(r=>
+    (!fR||r.rel===fR)&&(!fL||r.lens===fL)&&
+    (!fT|| (fT==="todo"? !answered(r) : !!answered(r))));
+  /* Added items answer to the search and to Show, but not to filters they have no value for. */
+  const xs=S.extra.filter(x=>xHit(x,ts)&&(!fT||(fT==="todo"?!x.status:!!x.status)));
+
+  countUp();
+
+  const html=[];
+  if(xs.length) html.push(`<div class="group added">
+      <div class="group-head"><h3>Things you added</h3><span>${xs.length} line${xs.length===1?"":"s"}</span></div>
+      ${xs.map(x=>`<div class="item added${x.status?" done":""}" data-ref="${x.ref}">
+        <div>
+          <input type="text" class="j-xlabel" aria-label="What you hold that the list missed" placeholder="What is it? e.g. regional pricing agreements" value="${esc(x.label)}">
+          <div class="tags">
+            <span class="tag added">You added this</span>
+            <button class="notebtn del j-xdel" type="button">Remove</button>
+          </div>
+          ${noteHTML(x,x.label||"this item")}
+        </div>
+        ${answerHTML(x,x.label||"this item")}
+      </div>`).join("")}
+    </div>`);
+
+  const cenAll=ROWS.filter(r=>(set.has(r.rel)||r.rel===A)&&isCentral(r));
+  if(!ts.length&&cenAll.length) html.push(`<p class="banner${S.showCentral?" cool":""}">
+      <span class="grow">${S.showCentral
+        ? `Showing the <b>${cenAll.length}</b> lines that are usually held centrally. They are back in your count.`
+        : `<b>${cenAll.length}</b> lines are usually held centrally, so they are folded away and left out of your count \u2014 step three said you could skip them. Open them if your region does any of it differently.`}</span>
+      <button class="btn quiet tiny j-central" type="button">${S.showCentral?"Fold them away again":"Show them anyway"}</button>
+    </p>`);
+
+  const groups={};
+  list.forEach(r=>{(groups[r.rel]=groups[r.rel]||[]).push(r);});
+  html.push(Object.entries(groups).map(([rel,rs])=>`
+    <div class="group">
+      <div class="group-head"><h3>${esc(rel)}</h3><span>${rs.length} line${rs.length===1?"":"s"}</span></div>
+      ${rs.map(r=>{
+        const a=S.ans[r.ref]||{};
+        return `<div class="item${answered(r)?" done":""}" data-ref="${r.ref}">
+          <div>
+            <div class="ask">${esc(r.ask)}</div>
+            <div class="tags">
+              <span class="tag lens">${esc(r.lens)}</span>
+              <span class="tag">${esc(OWNERS[r.own]||r.own)}</span>
+              ${isCentral(r)?'<span class="tag central">usually held centrally</span>':''}
+              ${inMine(r,set)?'':'<span class="tag out">outside the groups you picked</span>'}
+            </div>
+            ${noteHTML(a,r.ask)}
+          </div>
+          ${answerHTML(a,r.ask)}
+        </div>`;}).join("")}
+    </div>`).join(""));
+
+  $("rows").innerHTML = (list.length||xs.length) ? html.join("")
+    : html.join("")+`<p class="mini" style="margin-top:30px">Nothing matches that. Clear the search, or add what you hold as something we missed.</p>`;
+
+  /* ===== the search note: how many matched, and the way out when none did ===== */
+  const q=$("f-q").value.trim(), n=list.length+xs.length;
+  $("f-q-clear").hidden=!q;
+  $("q-note").classList.toggle("none",!!q&&n===0);
+  const cnt=$("q-count"), add=$("add-other");
+  if(!q){
+    cnt.innerHTML="Search the whole catalogue above &mdash; and if what you hold is not in it, add it yourself.";
+    add.textContent="+ Add something we missed";
+  }else if(n===0){
+    cnt.innerHTML="Nothing in the list matches <b>"+esc(q)+"</b>. If you hold it, add it \u2014 a document we missed is worth knowing about.";
+    add.textContent="+ Add \u201c"+q+"\u201d as something we missed";
+  }else{
+    cnt.innerHTML="<b>"+n+"</b> line"+(n===1?" matches":"s match")+" <b>"+esc(q)+"</b>. Not the one you hold?";
+    add.textContent="+ Add \u201c"+q+"\u201d as something we missed";
+  }
+  stick();
+}
+/* A status that hides the holder panel must drop anything left in it, or a colleague
+   stays under People named \u2014 and gets emailed \u2014 about a line the respondent owns. */
+function setAns(ref,patch){
+  if(patch.status!==undefined&&!NEEDS_NAME.has(patch.status)) patch=Object.assign({},patch,{hname:"",hmail:""});
+  if(ref.charAt(0)==="X"){ const x=xById(ref); if(x) Object.assign(x,patch); save(); return; }
+  S.ans[ref]=Object.assign({},S.ans[ref],patch);
+  if(!S.ans[ref].status && !S.ans[ref].note) delete S.ans[ref];
+  save();
+}
+$("rows").addEventListener("change",e=>{
+  const item=e.target.closest(".item"); if(!item) return;
+  const ref=item.dataset.ref;
+  if(e.target.classList.contains("j-status")){
+    const v=e.target.value, needs=NEEDS_NAME.has(v), opt=OPT_NAME.has(v);
+    setAns(ref,{status:v});
+    const who=item.querySelector(".who"), btn=item.querySelector(".j-who");
+    const nm=who.querySelector(".j-hname"), ml=who.querySelector(".j-hmail"), hint=who.querySelector(".j-opt");
+    if(!needs){ nm.value=""; ml.value=""; }
+    const has=!!(nm.value||ml.value);
+    who.classList.toggle("on",needs&&(!opt||has));
+    if(hint) hint.hidden=!opt;
+    if(btn) btn.hidden=!(needs&&opt&&!has);
+    item.classList.toggle("done",!!v);
+    countUp();
+  }
+  if(e.target.classList.contains("j-hname")) setAns(ref,{hname:e.target.value});
+  if(e.target.classList.contains("j-hmail")) setAns(ref,{hmail:e.target.value});
+});
+$("rows").addEventListener("input",e=>{
+  const item=e.target.closest(".item"); if(!item) return;
+  if(e.target.classList.contains("j-note")) setAns(item.dataset.ref,{note:e.target.value});
+  if(e.target.classList.contains("j-xlabel")){
+    const x=xById(item.dataset.ref); if(x){ x.label=e.target.value; save(); }
+  }
+});
+$("rows").addEventListener("click",e=>{
+  if(e.target.classList.contains("j-central")){ S.showCentral=!S.showCentral; save(); paint(); return; }
+  const item=e.target.closest(".item"); if(!item) return;
+  if(e.target.classList.contains("j-addnote")){
+    setAns(item.dataset.ref,{note:""});
+    const ta=document.createElement("textarea");
+    ta.className="j-note"; ta.placeholder="Anything we have wrong, or worth knowing";
+    ta.setAttribute("aria-label","Note");
+    ta.style.marginTop="12px";
+    e.target.replaceWith(ta); ta.focus();
+  }
+  if(e.target.classList.contains("j-who")){
+    item.querySelector(".who").classList.add("on");
+    e.target.hidden=true; item.querySelector(".j-hname").focus();
+  }
+  if(e.target.classList.contains("j-xdel")){
+    S.extra=S.extra.filter(x=>x.ref!==item.dataset.ref); save(); paint();
+  }
+});
+["f-rel","f-lens","f-todo"].forEach(id=>$(id).addEventListener("change",paint));
+$("f-q").addEventListener("input",paint);
+$("f-q").addEventListener("keydown",e=>{ if(e.key==="Escape"){ $("f-q").value=""; paint(); } });
+$("f-q-clear").onclick=()=>{ $("f-q").value=""; paint(); $("f-q").focus(); };
+/* Never a dead end: whatever was typed becomes the start of an entry of their own. */
+$("add-other").onclick=()=>{
+  const x=xNew($("f-q").value.trim());
+  $("f-q").value=""; paint();
+  const el=$("rows").querySelector('[data-ref="'+x.ref+'"] .j-xlabel');
+  if(el){ el.scrollIntoView({behavior:"smooth",block:"center"}); el.focus(); }
+};
+$("go5").onclick=()=>show(5);
+$("back3").onclick=()=>show(3);
+$("back4").onclick=()=>show(4);
+
+/* ============================ step 5 \u2014 where it comes from ============================ */
+const srcOf=ref=>S.src[ref]||{};
+/* A dropdown that hides a question has to drop what was in it, or a system name and a
+   refresh cycle sit on in the return under a source the respondent has just said is not
+   collected \u2014 the same orphan the holder panel had on step four. */
+function setSrc(ref,patch){
+  if(patch.got!==undefined){
+    if(!ANY.has(patch.got)) patch=Object.assign({},patch,{sys:"",freq:""});
+    /* Nothing collected routinely needs a "could we start" answer. */
+    if(patch.got===HELD) patch=Object.assign({},patch,{could:""});
+  }
+  const a=Object.assign({},S.src[ref],patch);
+  S.src[ref]=a;
+  if(!a.got&&!a.sys&&!a.freq&&!a.could) delete S.src[ref];
+  save();
+}
+/* The Navigator's tier(), unchanged: the share of the seven Reality sources held, cut
+   at 0.34 and 0.67. "Yes, routinely" is held \u2014 that is the Navigator's binary tick.
+   "Sometimes, or only in some regions" is reported next to it and never counted as a
+   half, because a silently rounded partial is a number nobody can check. */
+function srcStats(){
+  const g=r=>srcOf(r.ref).got||"";
+  const R=SRC.filter(r=>r.lens==="Reality");
+  const realHeld=R.filter(r=>g(r)===HELD).length, realSome=R.filter(r=>g(r)===SOME).length;
+  const frac=realHeld/REALITY_N;
+  return {realHeld:realHeld,realSome:realSome,frac:frac,
+    tier:frac<0.34?"Low":frac<0.67?"Medium":"High",
+    held:SRC.filter(r=>g(r)===HELD).length,
+    some:SRC.filter(r=>g(r)===SOME).length,
+    could:SRC.filter(r=>(srcOf(r.ref).could||"").trim()).length,
+    done:SRC.filter(r=>g(r)).length};
+}
+function srcOut(){
+  return SRC.filter(r=>{const a=srcOf(r.ref); return a.got||a.sys||a.freq||a.could;})
+    .map(r=>{const a=srcOf(r.ref);
+      return {ref:r.ref,lens:r.lens,name:r.name,got:a.got||"",
+              sys:a.sys||"",freq:a.freq||"",could:a.could||""};});
+}
+function srcRowHTML(r){
+  const a=srcOf(r.ref), any=ANY.has(a.got||""), could=!!a.got&&a.got!==HELD;
+  return `<div class="item${a.got?" done":""}" data-ref="${r.ref}">
+<div>
+<div class="ask">${esc(r.name)}</div>
+<div class="tags"><span class="tag lens">${esc(r.lens)}</span>${
+r.lens==="Reality"?'<span class="tag central">counts towards the tier</span>':''}</div>
+</div>
+<div class="answer">
+<select class="j-got" aria-label="Do we collect this today \u2014 ${esc(r.name)}">
+${GOT.map(x=>`<option value="${esc(x)}"${(a.got||"")===x?" selected":""}>${x?esc(x):"\u2014 do we collect this today? \u2014"}</option>`).join("")}
+</select>
+<div class="srcwrap j-live${any?" on":""}">
+<span class="srclab">Where it lives, and how often it is refreshed</span>
+<input type="text" class="j-sys" aria-label="The system this lives in \u2014 ${esc(r.name)}" placeholder="e.g. warranty claims, call-centre logs" value="${esc(a.sys||"")}">
+<select class="j-freq" aria-label="How often this is refreshed \u2014 ${esc(r.name)}">
+${FREQ.map(x=>`<option value="${esc(x)}"${(a.freq||"")===x?" selected":""}>${x?esc(x):"\u2014 how often is it refreshed? \u2014"}</option>`).join("")}
+</select>
+</div>
+<div class="srcwrap j-could${could?" on":""}">
+<span class="srclab">Could we pick this up at something we already run?</span>
+<input type="text" class="j-cd" aria-label="Something Solmax already runs where this could be collected \u2014 ${esc(r.name)}" placeholder="e.g. at the CEA sign-off, on the delivery note, in the distributor review" value="${esc(a.could||"")}">
+<p class="mini">Not a new survey. Somewhere Solmax already turns up \u2014 a course, a site visit, a quarterly review \u2014 where two questions would fit without anyone noticing.</p>
+</div>
+</div>
+</div>`;
+}
+function paintSrc(){
+  $("own-5").hidden=!S.srcOnly;
+  $("src-rows").innerHTML=SRC_LENS.map(L=>{
+    const rs=SRC.filter(r=>r.lens===L);
+    return `<div class="group${L==="Reality"?" reality":""}">
+<div class="group-head"><h3>${esc(L)}</h3><span>${rs.length} source${rs.length===1?"":"s"}</span></div>
+${L==="Reality"?'<p class="group-lead">These seven are what people actually experience, and the only ones the readiness tier is calculated from. If you answer nothing else on this step, answer these.</p>':''}
+${rs.map(srcRowHTML).join("")}
+</div>`;
+  }).join("");
+  paintProof();
+  tierUp();
+}
+function paintProof(){
+  [...$("proof").children].forEach(b=>
+    b.setAttribute("aria-checked", b.dataset.v===S.proof ? "true":"false"));
+}
+function tierUp(){
+  const t=srcStats();
+  $("tier-out").innerHTML="<b>"+t.tier+" data readiness</b><span><em>"+t.realHeld+" of "+REALITY_N+
+    "</em> Reality sources are collected routinely today"+
+    (t.realSome?", and <em>"+t.realSome+"</em> more sometimes or only in some regions":"")+"."+
+    (t.could?" You have named somewhere <em>"+t.could+"</em> source"+(t.could===1?"":"s")+
+      " could be picked up at something Solmax already runs \u2014 which is the finding this step exists for.":"")+
+    "</span>";
+  $("src-tally").innerHTML=
+    '<div><b class="word">'+t.tier+"</b><span>Data readiness</span></div>"+
+    "<div><b>"+t.realHeld+"<i>/"+REALITY_N+"</i></b><span>Reality, routinely</span></div>"+
+    "<div><b>"+t.realSome+"</b><span>Reality, sometimes</span></div>"+
+    "<div><b>"+t.could+"</b><span>Could be collected</span></div>"+
+    "<div><b>"+t.done+"<i>/"+SRC.length+"</i></b><span>Sources answered</span></div>";
+  $("tier-note").innerHTML="Counted the way the Navigator counts it, on the same seven and at the "+
+    "same two boundaries: under a third is <b>Low</b>, a third to two thirds is <b>Medium</b>, two thirds "+
+    "or more is <b>High</b>. A source counts as held only when it is collected <b>routinely</b>. "+
+    "<b>&ldquo;Sometimes, or only in some regions&rdquo; is reported separately and is never counted as a half</b>, "+
+    "so nothing here has been rounded up on your behalf.";
+}
+$("src-rows").addEventListener("change",e=>{
+  const item=e.target.closest(".item"); if(!item) return;
+  const ref=item.dataset.ref;
+  if(e.target.classList.contains("j-got")){
+    const v=e.target.value, any=ANY.has(v), could=!!v&&v!==HELD;
+    setSrc(ref,{got:v});
+    /* The boxes are emptied in the page as well as in the state, so what someone
+       typed never reappears if they change their mind back again. */
+    if(!any){ item.querySelector(".j-sys").value=""; item.querySelector(".j-freq").value=""; }
+    if(!could) item.querySelector(".j-cd").value="";
+    item.querySelector(".j-live").classList.toggle("on",any);
+    item.querySelector(".j-could").classList.toggle("on",could);
+    item.classList.toggle("done",!!v);
+  }
+  if(e.target.classList.contains("j-freq")) setSrc(ref,{freq:e.target.value});
+  if(e.target.classList.contains("j-sys")) setSrc(ref,{sys:e.target.value});
+  if(e.target.classList.contains("j-cd")) setSrc(ref,{could:e.target.value});
+  tierUp();
+});
+/* Typed answers are saved on the keystroke and never repaint the list \u2014 a repaint
+   here would take the cursor out of the box mid-sentence. */
+$("src-rows").addEventListener("input",e=>{
+  const item=e.target.closest(".item"); if(!item) return;
+  if(e.target.classList.contains("j-sys")) setSrc(item.dataset.ref,{sys:e.target.value});
+  if(e.target.classList.contains("j-cd")){ setSrc(item.dataset.ref,{could:e.target.value}); tierUp(); }
+});
+$("proof").addEventListener("click",e=>{
+  const b=e.target.closest(".pick"); if(!b) return;
+  S.proof = S.proof===b.dataset.v ? "" : b.dataset.v;   /* clicking it again un-picks it */
+  save(); paintProof();
+});
+$("go6").onclick=()=>{
+  if(!(S.me.name||"").trim()||!okMail(S.me.email)){
+    show(1);
+    $("e1").textContent=S.srcOnly
+      ? "That is your part done. All that is left is your name and a working email, so Dustin knows whose answers these are \u2014 then straight to sending."
+      : ERRS[1];
+    $("me-name").focus(); return;
+  }
+  $("e5").textContent=""; show(6);
+};
+
+/* ============================ step 6 ============================ */
+function rowsOut(){
+  /* Added items first, then every in-scope line with an answer on it \u2014 including the
+     ones outside the picked groups, which is the whole point of searching all fifty-seven. */
+  return extraRows().concat(scope().filter(r=>S.ans[r.ref]).map(r=>{
+    const a=S.ans[r.ref];
+    return {ref:r.ref,rel:r.rel,lens:r.lens,ask:r.ask,status:a.status||"",
+            hname:a.hname||"",hmail:a.hmail||"",note:a.note||""};
+  }));
+}
+function contacts(){
+  const seen=new Map();
+  rowsOut().forEach(r=>{
+    if(!r.hname && !r.hmail) return;
+    const k=(r.hmail||r.hname).toLowerCase();
+    if(!seen.has(k)) seen.set(k,{name:r.hname,mail:r.hmail,items:[]});
+    seen.get(k).items.push(r.ask);
+  });
+  return [...seen.values()];
+}
+function summarise(){
+  const out=rowsOut(), cs=contacts(), n=total(), t=srcStats();
+  const done=out.filter(r=>r.status).length;
+  const have=out.filter(r=>r.status.startsWith("We have")).length;
+  const none=out.filter(r=>r.status==="It doesn\u2019t exist").length;
+  $("sum-tally").innerHTML=`
+    <div><b>${done}<i>/${n}</i></b><span>Lines answered</span></div>
+    <div><b>${have}</b><span>Solmax has</span></div>
+    <div><b>${none}</b><span>Gaps found</span></div>
+    <div><b>${S.extra.length}</b><span>You added</span></div>
+    <div><b>${cs.length}</b><span>People named</span></div>
+    <div><b class="word">${t.tier}</b><span>Data readiness</span></div>
+    <div><b>${t.could}</b><span>Could be collected</span></div>`;
+  $("sum-src").innerHTML="<b>"+t.tier+" data readiness</b> &mdash; "+t.realHeld+" of "+REALITY_N+
+    " Reality sources collected routinely"+
+    (t.realSome?", and "+t.realSome+" more sometimes or only in some regions (reported separately, not counted as halves)":"")+
+    ". A data-readiness tier, not a trust score or a trust band. &ldquo;If the board asked tomorrow&rdquo;: <b>"+
+    esc(S.proof||"not answered")+"</b>. "+t.could+" source"+(t.could===1?"":"s")+
+    " could be collected at something Solmax already runs.";
+  $("send-as").innerHTML=esc(S.me.name||"(no name yet)")+
+    (okMail(S.me.email)?" &middot; "+esc(S.me.email):' &middot; <span style="color:#b0341f">no working email yet</span>');
+  $("handoff-panel").hidden = cs.length===0;
+  $("namelist").innerHTML = cs.length ? `<p>We will ask each of them directly:</p>`+cs.map(c=>
+    `<div class="nameitem"><span>${esc(c.name||"(no name given)")}</span><code>${esc(c.mail||"no email")}</code>
+     <span class="n">${c.items.length} line${c.items.length===1?"":"s"}</span></div>`).join("") : "";
+}
+function slug(){
+  return (S.me.name||"return").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
+function csv(){
+  const head=["Ref","Relationship","Lens","Item","Status","Holder name","Holder email","Note"];
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const t=srcStats();
+  const meta=[["Name",S.me.name],["Email",S.me.email],["Role",S.me.role],
+              ["Regions",S.regions.join("; ")],["Returned",new Date().toISOString().slice(0,10)]];
+  /* Two tables in one file: the document inventory, then where it comes from. The
+     readiness numbers sit above the second one so they are readable without a formula. */
+  const srcMeta=[["WHERE IT COMES FROM",""],
+    ["Data readiness tier (not a trust score)",t.tier],
+    ["Reality sources collected routinely",t.realHeld+" of "+REALITY_N],
+    ["Reality sources sometimes / only some regions",String(t.realSome)],
+    ["All sources collected routinely",t.held+" of "+SRC.length],
+    ["Sources that could be collected at an existing touchpoint",String(t.could)],
+    ["If the board asked tomorrow",S.proof||""]];
+  const srcHead=["Ref","Lens","Source","Collected today","Where it lives","Refreshed","Could be collected at"];
+  return meta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
+    [head.map(q).join(",")].concat(rowsOut().map(r=>
+      [r.ref,r.rel,r.lens,r.ask,r.status,r.hname,r.hmail,r.note].map(q).join(","))).join("\n")+
+    "\n\n"+srcMeta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
+    [srcHead.map(q).join(",")].concat(srcOut().map(r=>
+      [r.ref,r.lens,r.name,r.got,r.sys,r.freq,r.could].map(q).join(","))).join("\n");
+}
+function plain(){
+  const L=[];
+  L.push("SOLMAX DATA AUDIT — RETURN");
+  L.push(S.me.name+(S.me.role?" · "+S.me.role:"")+(S.me.email?" · "+S.me.email:""));
+  if(S.regions.length) L.push("Regions: "+S.regions.join(", "));
+  L.push("");
+  let lastRel="";
+  rowsOut().forEach(r=>{
+    if(r.rel!==lastRel){L.push("["+r.rel.toUpperCase()+"]"); lastRel=r.rel;}
+    let line=r.ref+"  "+r.ask+"\n      -> "+r.status;
+    if(r.hname||r.hmail) line+="  ("+[r.hname,r.hmail].filter(Boolean).join(", ")+")";
+    if(r.note) line+="\n      note: "+r.note;
+    L.push(line);
+  });
+  /* Step five gets its own headed block \u2014 the tier, the judgement reading, the
+     could-be-collected count, then the seventeen sources under their lenses. */
+  const t=srcStats(), so=srcOut();
+  L.push("");
+  L.push("WHERE IT COMES FROM \u2014 DATA SOURCES");
+  L.push("Data readiness: "+t.tier+" \u2014 "+t.realHeld+" of "+REALITY_N+" Reality sources collected routinely"+
+    (t.realSome?"; "+t.realSome+" more sometimes or only in some regions, reported separately and not counted as halves":""));
+  L.push("This is a data-readiness tier, not a trust score and not a trust band.");
+  L.push("If the board asked tomorrow: "+(S.proof||"(not answered)"));
+  L.push("Could be collected at something Solmax already runs: "+t.could+" of "+SRC.length+" sources");
+  L.push("All seventeen sources: "+t.held+" collected routinely, "+t.some+" sometimes or only in some regions");
+  L.push("");
+  if(!so.length) L.push("(no sources answered)");
+  let lastLens="";
+  so.forEach(r=>{
+    if(r.lens!==lastLens){L.push("["+r.lens.toUpperCase()+"]"); lastLens=r.lens;}
+    let line=r.ref+"  "+r.name+"\n      -> "+(r.got||"(no answer)");
+    if(r.sys||r.freq) line+="\n      lives in: "+(r.sys||"not said")+"  \u00b7  refreshed: "+(r.freq||"not said");
+    if(r.could) line+="\n      could be collected at: "+r.could;
+    L.push(line);
+  });
+  return L.join("\n");
+}
+function mailto(to,subject,body){
+  return "mailto:"+encodeURIComponent(to)+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+}
+function copyText(t){
+  const legacy=()=>{
+    const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta);
+    ta.select(); try{document.execCommand("copy");}catch(e){} ta.remove();
+    return Promise.resolve();
+  };
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText)
+      return navigator.clipboard.writeText(t).catch(legacy);
+  }catch(e){}
+  return legacy();
+}
+function copyOut(){ return copyText(plain()); }
+
+/* ============================ download ============================ */
+function downloadCSV(){
+  const blob=new Blob([csv()],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download="solmax-data-audit-"+slug()+".csv"; a.style.display="none";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function wireDownload(btnId,statusId){
+  const b=$(btnId); if(!b) return;
+  b.onclick=async()=>{
+    const st=$(statusId);
+    try{
+      downloadCSV();
+      if(st) st.innerHTML="Saved to your downloads as <b>solmax-data-audit-"+slug()+".csv</b>.";
+    }catch(e){
+      await copyOut();
+      if(st) st.innerHTML="That download could not be offered, so your return is <b>on your clipboard</b> instead \u2014 paste it into an email to "+TO+".";
+    }
+  };
+}
+function wireCopy(btnId,statusId,label){
+  const b=$(btnId); if(!b) return;
+  b.onclick=async()=>{
+    await copyOut();
+    const was=b.textContent; b.textContent="Copied";
+    const st=$(statusId);
+    if(st) st.innerHTML="Your full return is on the clipboard \u2014 paste it into an email to <b>"+TO+"</b>.";
+    setTimeout(()=>{b.textContent=label||was;},1800);
+  };
+}
+wireDownload("dl-pre","dl-status");     /* before sending  */
+wireDownload("dl-post","sent-status");  /* after sending   */
+wireDownload("dl","dl-status-fb");        /* email fallback  */
+wireCopy("copy-post","sent-status","Copy as text");
+wireCopy("copy","copy-status","Copy to clipboard");
+
+/* ============================ send to Dustin ============================ */
+/* Only ever seen once the array above has entries in it: the container is filled from
+   nothing, so an empty array leaves no heading and no empty list behind in the DOM. */
+function renderArticles(){
+  const box=$("ty-reading"); if(!box) return;
+  const list=(Array.isArray(ARTICLES)?ARTICLES:[]).filter(a=>a&&a.title&&a.url);
+  if(!list.length){ box.className=""; box.innerHTML=""; return; }
+  box.className="ty ty-read";
+  box.innerHTML='<h4>The thinking behind this</h4>'+
+    '<ul>'+list.map(a=>'<li><a href="'+esc(a.url)+'" target="_blank" rel="noopener">'+esc(a.title)+'</a></li>').join("")+'</ul>';
+}
+function showSent(done,total,people){
+  if(window.plausible) plausible("Data Audit Returned");
+  $("send-block").hidden=true;
+  $("sent-block").hidden=false;
+  $("s6-lede").textContent="Here is what you sent. It is with Dustin.";
+  $("fallback-block").hidden=true;
+  $("share").hidden=true;
+  const rs=document.querySelector(".rail-share"); if(rs) rs.hidden=true;
+  const t=srcStats();
+  /* Said back to them in their own numbers: what they answered, what they found was
+     missing, and who they put us on to \u2014 the three things only they could have done. */
+  const gaps=rowsOut().filter(r=>r.status==="It doesn\u2019t exist").length;
+  const first=(S.me.name||"").trim().split(/\s+/)[0]||"";
+  $("sent-head").textContent=first ? "Thank you, "+first+"." : "Thank you.";
+  $("sent-line").innerHTML=
+    "<b>"+done+" of "+total+"</b> lines answered"+
+    (gaps?" &middot; <b>"+gaps+"</b> gap"+(gaps===1?"":"s")+" found":"")+
+    (people?" &middot; <b>"+people+"</b> "+(people===1?"person":"people")+" named":"");
+  $("sent-recap").innerHTML=
+    "<b>"+t.tier+" data readiness</b> &middot; "+t.realHeld+" of "+REALITY_N+
+    " Reality sources collected routinely &middot; <b>"+t.could+
+    "</b> could be collected at something Solmax already runs"+
+    (S.regions.length?"<br>"+esc(S.regions.join(", ")):"");
+  /* A mailto rather than a form: it opens in their own client, from their own address,
+     and they can see exactly what they are sending before they send it. */
+  $("ty-ask").href=mailto(TO,"Solmax data audit \u2014 a question for "+OWNER_NAME.split(" ")[0],
+    "Hi "+OWNER_NAME.split(" ")[0]+",\n\nI have just sent my Solmax data audit return.\n\n\n"+
+    (S.me.name||"")+(S.me.role?"\n"+S.me.role:"")+"\n");
+  renderArticles();
+  const box=$("sent-upload");
+  if(SHAREPOINT_URL){
+    box.innerHTML=
+      '<div class="actions"><a class="btn" href="'+esc(SHAREPOINT_URL)+'" target="_blank" rel="noopener">Upload your documents &rarr;</a></div>'+
+      '<p class="mini">They stay on the Solmax network.</p>';
+  }else{
+    box.innerHTML=
+      '<p class="mini">Documents stay on the Solmax network &mdash; '+esc(OWNER_NAME)+
+      ' will email you the SharePoint link. Or send what you can to <a href="mailto:'+TO+'">'+TO+'</a>.</p>';
+  }
+  $("sent-block").scrollIntoView({behavior:"smooth",block:"start"});
+}
+let sendAnyway=false;
+const auditForm=$("auditForm");
+if(auditForm) auditForm.addEventListener("submit",e=>{
+  e.preventDefault();
+  const err=$("send-err"); err.textContent="";
+  const nm=(S.me.name||"").trim(), em=(S.me.email||"").trim();
+  if(!nm||!em){ err.textContent="We need your name and email before this can go anywhere \u2014 add them in step one."; return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ err.textContent="That email address does not look right \u2014 check it in step one."; return; }
+  const out=rowsOut(), n=total(), cs=contacts();
+  const done=out.filter(r=>r.status).length;
+  /* An empty or near-empty return is almost always a slip. Warned once, never blocked. */
+  if(done<3&&!sendAnyway){
+    sendAnyway=true;
+    err.textContent=done
+      ? "Only "+done+" line"+(done===1?" is":"s are")+" answered so far. Go back to your list if that is not right \u2014 or press send again and it goes as it is."
+      : "Nothing is answered yet, so this return would arrive empty. Go back to your list \u2014 or press send again and it goes as it is.";
+    $("sendBtn").textContent="Send it anyway \u2192";
+    return;
+  }
+  $("hf-name").value=nm;
+  $("hf-email").value=em;
+  $("hf-role").value=S.me.role||"";
+  $("hf-regions").value=S.regions.join("; ");
+  $("hf-lines-answered").value=String(done);
+  $("hf-lines-total").value=String(n);
+  $("hf-people-named").value=cs.map(c=>c.name+(c.mail?" <"+c.mail+">":"")).join("; ");
+  $("hf-other-count").value=String(S.extra.length);
+  $("hf-other").value=S.extra.map(x=>(x.label||"(unnamed)")+" \u2014 "+(x.status||"no status chosen")+
+    ((x.hname||x.hmail)?" ("+[x.hname,x.hmail].filter(Boolean).join(", ")+")":"")).join(" | ");
+  const t=srcStats();
+  $("hf-tier").value=t.tier+" data readiness \u2014 "+t.realHeld+" of "+REALITY_N+
+    " Reality sources collected routinely"+(t.realSome?", "+t.realSome+" more sometimes or only in some regions":"")+
+    " (a data-readiness tier, not a trust score)";
+  $("hf-src-collected").value=t.held+" of "+SRC.length+" collected routinely; "+t.some+
+    " sometimes or only in some regions; "+t.done+" of "+SRC.length+" sources answered";
+  $("hf-src-could").value=String(t.could);
+  $("hf-proof").value=S.proof||"";
+  $("hf-return").value=plain();
+  const btn=$("sendBtn"); btn.disabled=true; btn.textContent="Sending\u2026";
+  fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},
+             body:new URLSearchParams(new FormData(auditForm)).toString()})
+    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); showSent(done,n,cs.length); })
+    .catch(()=>{
+      btn.disabled=false; btn.textContent="Send my return to Dustin \u2192";
+      err.textContent="That did not go through, so nothing has been sent. Use the email route below instead \u2014 it always works.";
+      $("fallback-block").hidden=false;
+      $("fallback-block").scrollIntoView({behavior:"smooth",block:"start"});
+    });
+});
+
+/* fallback 2 \u2014 short fixed email, never carries the return */
+$("email-dx").onclick=()=>{
+  const who=S.me.name||"a colleague";
+  const body=
+"Hi "+OWNER_NAME+",\n\n"+
+"Here is my Solmax data audit return. The file I downloaded from the audit page is attached.\n\n"+
+"I have also attached the documents I am able to share. Anything I could not attach is noted in the file.\n\n"+
+(S.me.name||"")+(S.me.role?"\n"+S.me.role:"")+"\n";
+  window.open(mailto(TO,"Solmax data audit \u2014 return from "+who,body),"_self");
+  $("send-status").innerHTML="Your mail client should have opened with a short message to <b>"+TO+"</b>. Attach your downloaded file and any documents, then press send. If nothing opened, use step 3.";
+};
+
+/* ============================ pass it on ============================ */
+$("back5").onclick=()=>show(5);
+$("email-them").onclick=()=>{
+  const cs=contacts(), to=cs.map(c=>c.mail).filter(Boolean).join(",");
+  const body=
+"Hello,\n\n"+
+"I am helping with the Solmax data audit, and your name came up as someone who holds part of what is being asked for.\n\n"+
+"Before anyone at Solmax is asked new questions, MissionCTRL are cataloguing what we already collect, so nothing gets rebuilt that already exists. They are not asking for files yet \u2014 just what exists and who owns it. You only see the lines that touch your own work, and \"we don\'t have that\" is a useful answer.\n\n"+
+"The page: "+PAGE_URL+"\n\n"+
+"They need it by "+DEADLINE+". Questions go to "+OWNER_NAME+" at "+TO+".\n\n"+
+"Thank you,\n"+(S.me.name||"")+"\n";
+  window.open(mailto(to,"Solmax data audit \u2014 a short list, if you can",body),"_self");
+  $("them-status").innerHTML="An introduction has been opened in your mail client, addressed to the people you named. Read it before you send it.";
+};
+
+/* ============================ share with a colleague ============================ */
+/* One implementation of the colleague share, offered in two places: the standing
+   section below, and the thank-you screen \u2014 where they have just worked out who else
+   holds things. Both call this; there is no second copy of the validation. */
+function shareAddress(localId,statusId){
+  const el=$(localId||"share-local"), st=$(statusId||"share-status");
+  const v=(el.value||"").trim();
+  const bad=m=>{ st.classList.add("bad"); st.textContent=m; el.focus(); return null; };
+  st.classList.remove("bad"); st.textContent="";
+  if(!v) return bad("Add the first part of their Solmax address \u2014 the bit before the @.");
+  if(v.indexOf("@")>-1) return bad("Leave the @"+SHARE_DOMAIN+" off \u2014 we add it for you. Just the part before it.");
+  if(/\s/.test(v)) return bad("An email address cannot contain a space.");
+  if(!/^[A-Za-z0-9._%+-]+$/.test(v)) return bad("Letters, numbers, dots, dashes and underscores only.");
+  return v+"@"+SHARE_DOMAIN;
+}
+function shareIntro(){
+  return "Hello,\n\n"+
+"MissionCTRL are running a short data audit for Solmax. Before anyone here is asked new questions, they are cataloguing what we already collect \u2014 so nothing gets rebuilt that already exists.\n\n"+
+"You hold something they are asking about, or you will know who does. You only see the lines that touch your own work, and \"we don\'t have that\" is a genuinely useful answer.\n\n"+
+PAGE_URL+"\n\n"+
+"They need it by "+DEADLINE+". Questions go to "+OWNER_NAME+" at "+TO+".\n\n"+
+"Thank you,\n"+(S.me.name||"")+"\n";
+}
+function wireShare(localId,goId,copyId,statusId){
+  const el=$(localId), go=$(goId), cp=$(copyId);
+  if(!el||!go||!cp) return;
+  go.onclick=()=>{
+    const to=shareAddress(localId,statusId); if(!to) return;
+    window.open(mailto(to,"Solmax data audit \u2014 a short list, if you can",shareIntro()),"_self");
+    $(statusId).textContent="An introduction to "+to+" has been opened in your mail client. Read it before you send it.";
+  };
+  cp.onclick=async()=>{
+    await copyText(PAGE_URL);
+    const was=cp.textContent; cp.textContent="Copied";
+    const st=$(statusId); st.classList.remove("bad");
+    st.textContent="The link is on your clipboard \u2014 paste it into Teams, or anywhere else.";
+    setTimeout(()=>{cp.textContent=was;},1800);
+  };
+  el.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); go.click(); } });
+}
+wireShare("share-local","share-go","share-copy","share-status");
+wireShare("ty-local","ty-go","ty-copy","ty-status");
+/* The systems-owner link, kept within reach of the thank-you screen now that the
+   standing share section is out of the way there. */
+$("ty-src").onclick=async()=>{
+  await copyText(SRC_URL);
+  const st=$("ty-status"); st.classList.remove("bad");
+  st.innerHTML="The systems-owner link is on your clipboard. It opens on <b>step five</b> &mdash; seventeen dropdowns, and the document list left alone.";
+};
+
+/* ===== the systems-owner link \u2014 straight to step five ===== */
+$("src-link").value=SRC_URL;
+$("src-link").onclick=()=>$("src-link").select();
+$("src-copy").onclick=async()=>{
+  await copyText(SRC_URL);
+  const b=$("src-copy"); b.textContent="Copied";
+  const st=$("share-status"); st.classList.remove("bad");
+  st.innerHTML="The systems-owner link is on your clipboard. It opens on <b>step five</b> &mdash; seventeen dropdowns, and the document list left alone.";
+  setTimeout(()=>{b.textContent="Copy the systems-owner link";},1800);
+};
+$("src-mail").onclick=()=>{
+  const to=shareAddress(); if(!to) return;
+  const body=
+"Hello,\n\n"+
+"MissionCTRL are running a short data audit for Solmax, and there is one part of it only a systems owner can answer: where each of our signals is collected today, and \u2014 where it is not \u2014 whether we could pick it up at something we already run.\n\n"+
+"This link opens the page straight on that step. Seventeen dropdowns; \"no\" and \"I don't know\" are one click each. The long list of documents on the earlier step is not yours to fill in \u2014 ignore it.\n\n"+
+SRC_URL+"\n\n"+
+"They need it by "+DEADLINE+". Questions go to "+OWNER_NAME+" at "+TO+".\n\n"+
+"Thank you,\n"+(S.me.name||"")+"\n";
+  window.open(mailto(to,"Solmax data audit \u2014 one step, if you own a system",body),"_self");
+  $("share-status").textContent="An introduction to "+to+" has been opened in your mail client, with the systems-owner link in it. Read it before you send it.";
+};
+
+/* ============================ boot ============================ */
+$("resume-x").onclick=()=>{ $("resume").hidden=true; };
+$("resume-clear").onclick=()=>{
+  if(!confirm("Start again? Everything answered in this browser will be cleared.")) return;
+  try{localStorage.removeItem(KEY);}catch(e){}
+  location.reload();
+};
+/* The step was the one piece of state never saved, so a reload dumped people back on
+   step one with no sign their answers had survived. Both are fixed: we return them to
+   where they were, as far as what they have filled in allows, and say what is saved. */
+/* A systems owner \u2014 CRM, HR, QHSE, channel \u2014 is sent the page on its own link and
+   opens on step five, never having to wade through the fifty-seven document lines.
+   Either form works, so a hash that survives a copy-paste and a query the mail client
+   cannot mangle are both honoured. */
+function srcLink(){
+  const h=norm((location.hash||"").replace(/^#/,""));
+  const p=norm(new URLSearchParams(location.search).get("step")||"");
+  return h==="sources"||p==="sources";
+}
+function boot(){
+  /* the browser would otherwise restore the old scroll position on top of the step
+     we just opened, leaving the page half under the fixed nav */
+  if("scrollRestoration" in history) history.scrollRestoration="manual";
+  const deep=srcLink();
+  if(deep&&!S.srcOnly){ S.srcOnly=true; save(); }
+  $("own-1").hidden=!S.srcOnly;
+  let n=deep?5:Math.min(6,Math.max(1,+S.step||1)), f=furthest();
+  if(n>f) n=f;
+  const done=Object.keys(S.ans).filter(k=>S.ans[k]&&S.ans[k].status).length+S.extra.filter(x=>x.status).length;
+  if(done&&n>1){ $("resume-n").textContent=String(done); $("resume-w").textContent=done===1?"answer":"answers"; $("resume").hidden=false; }
+  show(n);
+  stick();
+}
+boot();
+</script>
+<!-- Consent-gated analytics (Microsoft Clarity) — see assets/mc-analytics.js.
+     /navigator/* is excluded inside that file, so nothing loads here. -->
+<script defer src="/assets/mc-analytics.js"></script>
+</body>
+</html>

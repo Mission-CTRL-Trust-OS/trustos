@@ -10,6 +10,13 @@
  */
 export default async (request, context) => {
   const url = new URL(request.url);
+  // The Solmax data audit collector carries its own branded gate
+  // (solmax-audit-gate.js) which checks this same password, so the browser
+  // dialog must not fire over the top of it. The match below is deliberately
+  // the same path set as that gate's own config.path, so no sibling path can
+  // slip between the two gates.
+  const audit = "/navigator/solmax/data-audit";
+  if (url.pathname === audit || url.pathname.startsWith(audit + "/")) return context.next();
   const m = url.pathname.match(/^\/navigator\/([^\/]+)/);
   if (!m || m[1] === "index.html") return context.next();
 
