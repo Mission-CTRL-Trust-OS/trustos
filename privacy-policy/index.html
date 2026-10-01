@@ -113,7 +113,10 @@
   .nav-mobile > summary::marker { content: ""; }
   .nav-mobile[open] > summary { color: #fff; border-color: rgba(109,160,184,0.6); }
   .nav-mobile-panel {
-    position: absolute; top: calc(100% + 14px); left: 0; min-width: 234px;
+    /* Anchored from the right: the summary sits at the right-hand end of the
+       header, so a left anchor pushed the labels ~76px off the right edge. */
+    position: absolute; top: calc(100% + 14px); right: 0; left: auto;
+    min-width: 234px; max-width: calc(100vw - 32px);
     background: rgba(10,15,26,0.98); border: 1px solid rgba(255,255,255,0.1);
     border-radius: 12px; padding: 8px; display: flex; flex-direction: column;
     box-shadow: 0 18px 40px rgba(0,0,0,0.45); z-index: 200;
@@ -123,6 +126,17 @@
     border-radius: 8px; text-decoration: none;
   }
   .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
+  /* The header CTA wrapped to three lines on a phone. It is the last item in
+     the panel above, so below 420px drop it and the product endorsement and
+     let the wordmark and Menu have the width. */
+  @media (min-width: 561px) and (max-width: 900px) {
+    nav > .nav-cta { white-space: nowrap; font-size: 0.74rem; padding: 10px 14px; }
+  }
+  @media (max-width: 560px) {
+    nav > .nav-cta { display: none; }
+    .nav-left .nav-product-link, .nl .endorse { display: none; }
+    nav { padding: 12px 18px; }
+  }
   @media (max-width: 900px) { .nav-mobile { display: block; } }
   @media (min-width: 901px) { .nav-mobile { display: none !important; } }
 </style>
