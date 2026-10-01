@@ -1292,6 +1292,18 @@
     input.hc-slider:focus-visible { outline:3px solid #8fb5c0; outline-offset:2px; border-radius:6px; }
     label.hc-q-driver { cursor:pointer; }
 
+    /* Share the result */
+    .hc-share { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; }
+    .hc-copy-btn {
+      font-family: inherit; font-size: 0.78rem; font-weight: 600;
+      color: #cfe0e6; background: rgba(90,138,154,0.14);
+      border: 1px solid rgba(143,181,192,0.45); border-radius: 7px;
+      padding: 12px 18px; min-height: 44px; cursor: pointer; transition: background 0.2s;
+    }
+    .hc-copy-btn:hover { background: rgba(90,138,154,0.24); }
+    .hc-share-note { font-size: 0.68rem; color: rgba(255,255,255,0.55); line-height: 1.55; margin-top: 9px; }
+    .hc-share-status { font-size: 0.72rem; font-weight: 600; color: #8fb5c0; margin-top: 6px; min-height: 1em; }
+
     /* Right panel: triangle + score + insights */
     .hc-right { position: sticky; top: 88px; }
     .hc-result-panel {
@@ -1973,10 +1985,11 @@ window.TrustShape = (function () {
             <div id="hc-insights"></div>
           </div>
 
-          <!-- Share buttons -->
-          <div style="display:none;">
-            
-            
+          <!-- Share -->
+          <div class="hc-share">
+            <button type="button" id="hc-copy" class="hc-copy-btn">Copy your trust shape</button>
+            <p class="hc-share-note">Copies a link that reopens this page with your three scores already set.</p>
+            <p class="hc-share-status" id="hc-copy-status" role="status" aria-live="polite"></p>
           </div>
 
         </div>
@@ -2443,10 +2456,96 @@ window.TrustShape = (function () {
     if (el) el.addEventListener('input', update);
   });
 
-  // Init
-  if (document.getElementById('hc-poly')) {
-    update();
+  /* ── Shareable result state ──────────────────────────────────────────────
+     The three slider values live in the query string, so a result is a URL
+     somebody can paste. Anything unparseable is ignored and the tool opens
+     on its defaults; with no JS the markup already shows the default state. */
+  var HC_PARAM = { c: 'hc-clarity', n: 'hc-connection', f: 'hc-confidence' };
+
+  function hcClamp(raw) {
+    if (raw === null || raw === '' || !/^\d{1,3}$/.test(raw)) return null;
+    var v = parseInt(raw, 10);
+    return (v >= 0 && v <= 100) ? v : null;
   }
+
+  function hcQuery() {
+    try { return new URLSearchParams(window.location.search); }
+    catch (e) { return null; }
+  }
+
+  function hcRestoreFromUrl() {
+    var q = hcQuery();
+    if (!q) return false;
+    var any = false;
+    Object.keys(HC_PARAM).forEach(function (k) {
+      var el = document.getElementById(HC_PARAM[k]);
+      var v = hcClamp(q.get(k));
+      if (el && v !== null) { el.value = v; any = true; }
+    });
+    var sel = document.getElementById('hc-sector');
+    var sec = q.get('s');
+    if (sel && sec && Object.prototype.hasOwnProperty.call(SECTORS, sec)) { sel.value = sec; any = true; }
+    return any;
+  }
+
+  function hcShareUrl() {
+    var parts = [];
+    Object.keys(HC_PARAM).forEach(function (k) {
+      var el = document.getElementById(HC_PARAM[k]);
+      if (el) parts.push(k + '=' + encodeURIComponent(el.value));
+    });
+    var sel = document.getElementById('hc-sector');
+    if (sel && sel.value) parts.push('s=' + encodeURIComponent(sel.value));
+    return window.location.origin + window.location.pathname + '?' + parts.join('&');
+  }
+
+  function hcSyncUrl() {
+    if (!window.history || !window.history.replaceState) return;
+    try { window.history.replaceState(null, '', hcShareUrl()); } catch (e) {}
+  }
+
+  function hcCopyShareLink() {
+    var url = hcShareUrl();
+    var status = document.getElementById('hc-copy-status');
+    function done(ok) {
+      if (!status) return;
+      status.textContent = ok ? 'Link copied — paste it anywhere.' : url;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); });
+      return;
+    }
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = url;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:absolute;left:-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      done(ok);
+    } catch (e) { done(false); }
+  }
+
+  (function () {
+    var btn = document.getElementById('hc-copy');
+    if (btn) btn.addEventListener('click', hcCopyShareLink);
+  })();
+
+  ['hc-clarity', 'hc-connection', 'hc-confidence'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', hcSyncUrl);
+  });
+  (function () {
+    var sel = document.getElementById('hc-sector');
+    if (sel) sel.addEventListener('change', hcSyncUrl);
+  })();
+
+  // Init. (The old guard tested for #hc-poly, an element that no longer
+  // exists, so the result panel stayed empty until the first slider move.)
+  hcRestoreFromUrl();
+  update();
 })();
 </script>
 <script>
