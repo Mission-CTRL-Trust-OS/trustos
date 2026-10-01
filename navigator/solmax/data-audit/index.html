@@ -512,7 +512,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
       </p>
       <div class="section-label">Step one of six</div>
       <h2 class="section-title">Who is filling this in</h2>
-      <p class="lede">So we know who to thank, and who to come back to if something is unclear.</p>
+      <p class="lede">So we know who to thank, and who to come back to if something is unclear. The email you signed in with is already below &mdash; correct it if it is wrong.</p>
       <div class="panel">
         <div class="row2">
           <div class="field"><label for="me-name">Your name</label><input type="text" id="me-name" autocomplete="name" placeholder="Your full name"></div>
@@ -1033,7 +1033,7 @@ const ARTICLES = [
 /* ============================ state ============================ */
 const KEY="solmax-audit-v1";
 let S={me:{name:"",email:"",role:""},rels:[],regions:[],ans:{},extra:[],step:1,showCentral:false,
-       src:{},proof:"",srcOnly:false};
+       src:{},proof:"",srcOnly:false,gate:""};
 try{const r=localStorage.getItem(KEY); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
 if(!Array.isArray(S.extra)) S.extra=[];
 /* State written by the five-step version of this page has no sources on it, so the new
@@ -1126,6 +1126,24 @@ $("steps").addEventListener("keydown",e=>{
   if(li&&(e.key==="Enter"||e.key===" ")){ e.preventDefault(); goStep(+li.dataset.s); }
 });
 window.addEventListener("resize",stick);
+
+/* ===== the address they gave at the door =====
+   The branded sign-in (netlify/edge-functions/solmax-audit-gate.js) asks for a Solmax
+   email before this page is served and leaves it in a readable cookie, so step one
+   starts already filled in rather than asking for it a second time. This has to run
+   before the binding below, which copies S.me into the fields once, on load. */
+function fromGate(){
+  let v="";
+  try{
+    const hit=(document.cookie||"").split(/;\s*/).find(c=>c.indexOf("solmax_audit_email=")===0);
+    if(hit) v=decodeURIComponent(hit.slice("solmax_audit_email=".length));
+  }catch(e){}
+  /* S.gate remembers which address the door has already handed over: the door wins the
+     first time it is seen, but a typo corrected in step one then stands, instead of
+     every reload quietly putting the original back. */
+  if(v&&okMail(v)&&v!==S.gate){ S.me.email=v; S.gate=v; save(); }
+}
+fromGate();
 
 /* ============================ step 1 ============================ */
 ["name","email","role"].forEach(k=>{
