@@ -1267,12 +1267,30 @@
     .hc-q-text strong { color: rgba(255,255,255,0.88); font-weight: 600; }
     .hc-q-labels { display: flex; justify-content: space-between; font-size: 0.56rem; color: rgba(255,255,255,0.22); font-weight: 500; margin-top: 7px; }
 
-    input.hc-slider { -webkit-appearance:none; width:100%; height:3px; border-radius:2px; outline:none; cursor:pointer; }
-    input.hc-slider::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; cursor:pointer; transition:transform 0.15s; }
+    /* The visible bar stays 3px; the control itself is 44px tall and
+       transparent, so the whole band is a touch target rather than a 3px
+       sliver. The fill gradient is handed in by JS as --hc-fill so the track
+       pseudo-element can paint it. */
+    input.hc-slider {
+      -webkit-appearance:none; appearance:none; width:100%; height:44px;
+      background:transparent; border:0; margin:0; padding:0;
+      outline:none; cursor:pointer; display:block;
+      --hc-fill: rgba(255,255,255,0.08);
+    }
+    input.hc-slider::-webkit-slider-runnable-track { height:3px; border-radius:2px; background:var(--hc-fill); border:0; }
+    input.hc-slider::-moz-range-track             { height:3px; border-radius:2px; background:var(--hc-fill); border:0; }
+    input.hc-slider::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:16px; height:16px; margin-top:-6.5px; border:0; border-radius:50%; cursor:pointer; transition:transform 0.15s; }
+    input.hc-slider::-moz-range-thumb     { width:16px; height:16px; border:0; border-radius:50%; cursor:pointer; transition:transform 0.15s; }
     input.hc-slider::-webkit-slider-thumb:hover { transform:scale(1.2); }
+    input.hc-slider::-moz-range-thumb:hover     { transform:scale(1.2); }
     input#hc-clarity::-webkit-slider-thumb    { background:#5a8a9a; }
     input#hc-connection::-webkit-slider-thumb { background:#7cc4a8; }
     input#hc-confidence::-webkit-slider-thumb { background:#a78bdb; }
+    input#hc-clarity::-moz-range-thumb        { background:#5a8a9a; }
+    input#hc-connection::-moz-range-thumb     { background:#7cc4a8; }
+    input#hc-confidence::-moz-range-thumb     { background:#a78bdb; }
+    input.hc-slider:focus-visible { outline:3px solid #8fb5c0; outline-offset:2px; border-radius:6px; }
+    label.hc-q-driver { cursor:pointer; }
 
     /* Right panel: triangle + score + insights */
     .hc-right { position: sticky; top: 88px; }
@@ -1870,31 +1888,34 @@ window.TrustShape = (function () {
 
         <div class="hc-question">
           <div class="hc-q-head">
-            <span class="hc-q-driver clarity">Clarity</span>
+            <label class="hc-q-driver clarity" for="hc-clarity">Clarity</label>
             <span class="hc-q-val clarity" id="hc-val-clarity">50</span>
           </div>
-          <p class="hc-q-text"><strong>How well do your stakeholders understand what your organisation stands for?</strong><br/>Think about whether your frontline teams would describe your purpose the same way your leadership team does.</p>
-          <input type="range" class="hc-slider" id="hc-clarity" min="0" max="100" value="50" step="1">
+          <p class="hc-q-text" id="hc-qt-clarity"><strong>How well do your stakeholders understand what your organisation stands for?</strong><br/>Think about whether your frontline teams would describe your purpose the same way your leadership team does.</p>
+          <input type="range" class="hc-slider" id="hc-clarity" min="0" max="100" value="50" step="1"
+                 aria-describedby="hc-qt-clarity" aria-valuetext="Clarity 50 out of 100">
           <div class="hc-q-labels"><span>Disconnected</span><span>Crystal clear</span></div>
         </div>
 
         <div class="hc-question">
           <div class="hc-q-head">
-            <span class="hc-q-driver connection">Connection</span>
+            <label class="hc-q-driver connection" for="hc-connection">Connection</label>
             <span class="hc-q-val connection" id="hc-val-connection">50</span>
           </div>
-          <p class="hc-q-text"><strong>How consistent is the experience your stakeholders have of your organisation?</strong><br/>Does what they experience across teams, channels, and touchpoints match what you promise?</p>
-          <input type="range" class="hc-slider" id="hc-connection" min="0" max="100" value="50" step="1">
+          <p class="hc-q-text" id="hc-qt-connection"><strong>How consistent is the experience your stakeholders have of your organisation?</strong><br/>Does what they experience across teams, channels, and touchpoints match what you promise?</p>
+          <input type="range" class="hc-slider" id="hc-connection" min="0" max="100" value="50" step="1"
+                 aria-describedby="hc-qt-connection" aria-valuetext="Connection 50 out of 100">
           <div class="hc-q-labels"><span>Highly inconsistent</span><span>Completely coherent</span></div>
         </div>
 
         <div class="hc-question">
           <div class="hc-q-head">
-            <span class="hc-q-driver confidence">Confidence</span>
+            <label class="hc-q-driver confidence" for="hc-confidence">Confidence</label>
             <span class="hc-q-val confidence" id="hc-val-confidence">50</span>
           </div>
-          <p class="hc-q-text"><strong>How clearly can your stakeholders see your brand&#8217;s distinctive advantage?</strong><br/>Can they point to proof &#8212; outcomes, evidence, and the specific qualities that make you credibly different?</p>
-          <input type="range" class="hc-slider" id="hc-confidence" min="0" max="100" value="50" step="1">
+          <p class="hc-q-text" id="hc-qt-confidence"><strong>How clearly can your stakeholders see your brand&#8217;s distinctive advantage?</strong><br/>Can they point to proof &#8212; outcomes, evidence, and the specific qualities that make you credibly different?</p>
+          <input type="range" class="hc-slider" id="hc-confidence" min="0" max="100" value="50" step="1"
+                 aria-describedby="hc-qt-confidence" aria-valuetext="Confidence 50 out of 100">
           <div class="hc-q-labels"><span>No visible distinction</span><span>Clear &amp; proven edge</span></div>
         </div>
 
@@ -2316,8 +2337,14 @@ window.TrustShape = (function () {
 
   function updateTrack(id, val, color) {
     var el = document.getElementById(id);
-    if (el) el.style.background = 'linear-gradient(to right,' + color + ' ' + val + '%,rgba(255,255,255,0.08) ' + val + '%)';
+    if (!el) return;
+    /* --hc-fill feeds ::-webkit-slider-runnable-track / ::-moz-range-track, so the
+       bar stays 3px while the input itself is a 44px touch target. */
+    el.style.setProperty('--hc-fill',
+      'linear-gradient(to right,' + color + ' ' + val + '%,rgba(255,255,255,0.08) ' + val + '%)');
+    el.setAttribute('aria-valuetext', DRIVER_NAME[id] + ' ' + val + ' out of 100');
   }
+  var DRIVER_NAME = { 'hc-clarity': 'Clarity', 'hc-connection': 'Connection', 'hc-confidence': 'Confidence' };
 
   /* Triangle geometry – downward-pointing to match TrustOS mark */
   var FC = {x:145, y:110}, FR = 105;
