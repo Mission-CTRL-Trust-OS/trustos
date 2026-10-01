@@ -95,6 +95,32 @@
 </script>
 <!-- Consent-gated analytics (Microsoft Clarity) — see assets/mc-analytics.js -->
 <script defer src="/assets/mc-analytics.js"></script>
+<style>
+  /* Mobile navigation — below 900px the desktop .nav-links are display:none,
+     which left phones and tablets with no navigation at all. */
+  .nav-mobile { display: none; position: relative; }
+  .nav-mobile > summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 7px;
+    font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.72);
+    padding: 8px 14px; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px;
+  }
+  .nav-mobile > summary::-webkit-details-marker { display: none; }
+  .nav-mobile > summary::marker { content: ""; }
+  .nav-mobile[open] > summary { color: #fff; border-color: rgba(109,160,184,0.6); }
+  .nav-mobile-panel {
+    position: absolute; top: calc(100% + 14px); left: 0; min-width: 234px;
+    background: rgba(10,15,26,0.98); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 8px; display: flex; flex-direction: column;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.45); z-index: 200;
+  }
+  .nav-mobile-panel a {
+    font-size: 0.92rem; color: rgba(255,255,255,0.78); padding: 12px 14px;
+    border-radius: 8px; text-decoration: none;
+  }
+  .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
+  @media (max-width: 900px) { .nav-mobile { display: block; } }
+  @media (min-width: 901px) { .nav-mobile { display: none !important; } }
+</style>
 </head>
 <body>
 
@@ -109,6 +135,16 @@
       A MissionCTRL product &rarr;
     </a>
   </div>
+  <details class="nav-mobile" id="navMobile">
+    <summary aria-label="Open navigation">Menu</summary>
+    <div class="nav-mobile-panel">
+      <a href="/navigator/" onclick="this.closest('details').open=false">Request a Navigator</a>
+      <a href="/methodology/" onclick="this.closest('details').open=false">How it works</a>
+      <a href="/insights/" onclick="this.closest('details').open=false">Sector Insights</a>
+      <a href="/faq/" onclick="this.closest('details').open=false">FAQ</a>
+      <a href="/explorer/" onclick="this.closest('details').open=false">Try the Explorer &mdash; free</a>
+    </div>
+  </details>
   <ul class="nav-links">
     <li><a href="/navigator/">Request a Navigator</a></li>
     <li><a href="/methodology/">How it works</a></li>
