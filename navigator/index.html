@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -23,7 +23,7 @@
   :root{
     --trust-slate:#2d3a4a; --trust-cool:#5a8a9a; --trust-ice:#6da0b8; --trust-mid:#8fb5c0;
     --deep:#0a0f1a; --navy:#0a1d2e; --white:#fff;
-    --ink2:rgba(255,255,255,.6); --ink3:rgba(255,255,255,.36); --rule:rgba(255,255,255,.08);
+    --ink2:rgba(255,255,255,.8); --ink3:rgba(255,255,255,.68); --rule:rgba(255,255,255,.08);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
@@ -55,9 +55,14 @@
   .sub{font-size:clamp(1rem,1.7vw,1.18rem);font-weight:300;color:var(--ink2);max-width:620px;margin:0 auto 34px;}
   .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
   .btn{display:inline-block;font-weight:600;border-radius:7px;transition:transform .15s,background .2s,border-color .2s;}
-  .btn-primary{background:var(--trust-cool);color:#fff;font-size:.92rem;padding:15px 34px;}
+  .nr-field{display:flex;flex-direction:column;gap:5px;}
+  .nr-label{font-size:.74rem;font-weight:600;color:rgba(255,255,255,.78);letter-spacing:.01em;}
+  .nr-label .nr-req{color:#8fb5c0;}
+  .nr-label .nr-opt{font-weight:500;color:rgba(255,255,255,.66);}
+  #navReqForm input::placeholder{color:rgba(255,255,255,.62);}
+  .btn-primary{background:var(--trust-cool);color:#0a0f1a;font-size:.92rem;padding:15px 34px;}
   .btn-primary:hover{background:#4a7a8a;transform:translateY(-2px);}
-  .btn-ghost{border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.85);font-size:.86rem;padding:14px 24px;}
+  .btn-ghost{border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,0.925);font-size:.86rem;padding:14px 24px;}
   .btn-ghost:hover{border-color:var(--trust-mid);}
   .micro{margin-top:18px;font-size:.7rem;color:var(--ink3);}
 
@@ -72,7 +77,7 @@
   .card h3{font-size:1.02rem;font-weight:700;letter-spacing:-.01em;margin-bottom:10px;}
   .card p{font-size:.84rem;color:var(--ink2);font-weight:300;line-height:1.7;}
   .getlist{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:0;}
-  .getlist li{list-style:none;display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--rule);font-size:.92rem;color:rgba(255,255,255,.78);}
+  .getlist li{list-style:none;display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--rule);font-size:.92rem;color:rgba(255,255,255,0.89);}
   .getlist li::before{content:'';width:9px;height:9px;margin-top:7px;flex:none;background:linear-gradient(180deg,var(--trust-ice),var(--trust-cool));clip-path:polygon(0 0,100% 0,50% 100%);}
 
   .why{text-align:center;background:linear-gradient(180deg,var(--deep),var(--navy));}
@@ -102,7 +107,7 @@
   .nav-mobile { display: none; position: relative; }
   .nav-mobile > summary {
     list-style: none; cursor: pointer; display: flex; align-items: center; gap: 7px;
-    font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.72);
+    font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.86);
     padding: 8px 14px; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px;
   }
   .nav-mobile > summary::-webkit-details-marker { display: none; }
@@ -118,7 +123,7 @@
     box-shadow: 0 18px 40px rgba(0,0,0,0.45); z-index: 200;
   }
   .nav-mobile-panel a {
-    font-size: 0.92rem; color: rgba(255,255,255,0.78); padding: 12px 14px;
+    font-size: 0.92rem; color: rgba(255,255,255,0.89); padding: 12px 14px;
     border-radius: 8px; text-decoration: none;
   }
   .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
@@ -129,15 +134,35 @@
     nav > .nav-cta { white-space: nowrap; font-size: 0.74rem; padding: 10px 14px; }
   }
   @media (max-width: 560px) {
-    nav > .nav-cta { display: none; }
-    .nav-left .nav-product-link, .nl .endorse { display: none; }
+    /* !important because these two carry an inline display declaration. */
+    nav > .nav-cta { display: none !important; }
+    .nav-left .nav-product-link, .nl .endorse { display: none !important; }
     nav { padding: 12px 18px; }
   }
   @media (max-width: 900px) { .nav-mobile { display: block; } }
   @media (min-width: 901px) { .nav-mobile { display: none !important; } }
 </style>
+<style>
+  /* Accessibility: a bypass link, a main landmark to bypass to, one visible
+     focus ring, and tap targets that clear 44px. */
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 999;
+    background: #0a0f1a; color: #fff; padding: 14px 20px;
+    border: 1px solid rgba(143,181,192,0.6); border-radius: 0 0 6px 0;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none;
+  }
+  .skip-link:focus { left: 0; outline: 3px solid #8fb5c0; outline-offset: 2px; }
+  #main { scroll-margin-top: 88px; }
+  /* :focus-visible only, so a pointer user never sees it — which is why
+     outline:none was reached for in the first place. */
+  :focus-visible { outline: 3px solid #8fb5c0; outline-offset: 2px; border-radius: 3px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible,
+  input:focus-visible, textarea:focus-visible, select:focus-visible,
+  [type="range"]:focus-visible { outline: 3px solid #8fb5c0; outline-offset: 2px; }
+</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <!-- NAV -->
 <nav>
@@ -163,6 +188,8 @@
   <a href="/explorer/" class="nav-cta">Try the Explorer &mdash; free</a>
 </nav>
 
+
+<main id="main">
 <!-- HERO -->
 <header class="hero" id="top">
   <div class="gb"></div>
@@ -229,14 +256,26 @@
       <p>A no-cost read of how far your organisation is set up to be trusted — from public signals alone. Tell us who you are and we'll prepare yours.</p>
       <form id="navReqForm" name="trustos-navigator" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:13px;text-align:left;">
         <input type="hidden" name="form-name" value="trustos-navigator">
-        <p style="position:absolute;left:-9999px;"><label>Leave blank <input name="bot-field"></label></p>
-        <input type="text" name="name" required placeholder="Your name" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;outline:none;">
-        <input type="email" name="email" required placeholder="you@organisation.com" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;outline:none;">
-        <input type="text" name="organisation" required placeholder="Your organisation" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;outline:none;">
-        <input type="text" name="role" placeholder="Your role (optional)" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;outline:none;">
+        <p style="position:absolute;left:-9999px;" aria-hidden="true"><label>Leave blank <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <div class="nr-field">
+          <label class="nr-label" for="nr-name">Your name <span class="nr-req" aria-hidden="true">*</span></label>
+          <input type="text" id="nr-name" name="name" required placeholder="Your name" autocomplete="name" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.42);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;">
+        </div>
+        <div class="nr-field">
+          <label class="nr-label" for="nr-email">Work email <span class="nr-req" aria-hidden="true">*</span></label>
+          <input type="email" id="nr-email" name="email" required placeholder="you@organisation.com" autocomplete="email" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.42);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;">
+        </div>
+        <div class="nr-field">
+          <label class="nr-label" for="nr-organisation">Your organisation <span class="nr-req" aria-hidden="true">*</span></label>
+          <input type="text" id="nr-organisation" name="organisation" required placeholder="Your organisation" autocomplete="organization" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.42);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;">
+        </div>
+        <div class="nr-field">
+          <label class="nr-label" for="nr-role">Your role <span class="nr-opt">(optional)</span></label>
+          <input type="text" id="nr-role" name="role" placeholder="Your role" autocomplete="organization-title" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.42);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;">
+        </div>
         <button type="submit" class="btn btn-primary" id="navReqBtn" style="width:100%;cursor:pointer;">Request my TrustOS Navigator &rarr;</button>
-        <p id="navReqErr" style="display:none;color:#e08f7c;font-size:0.82rem;margin:0;"></p>
-        <p id="navReqOk" style="display:none;color:#7cc4a8;font-size:0.9rem;margin:0;text-align:center;">Thanks &mdash; we&rsquo;ve got your request and we&rsquo;ll send your TrustOS Navigator shortly.</p>
+        <p id="navReqErr" role="alert" aria-live="assertive" style="display:none;color:#e08f7c;font-size:0.82rem;margin:0;"></p>
+        <p id="navReqOk" role="status" aria-live="polite" style="display:none;color:#7cc4a8;font-size:0.9rem;margin:0;text-align:center;">Thanks &mdash; we&rsquo;ve got your request and we&rsquo;ll send your TrustOS Navigator shortly.</p>
       </form>
       <script>
       document.getElementById('navReqForm').addEventListener('submit', function(e){
@@ -269,11 +308,34 @@
   </div>
 </section>
 
+</main>
 <footer>
   <span class="wm" style="font-size:.85rem;"><span class="t">Trust</span><span class="o">OS</span></span> · A MissionCTRL product ·
   <a class="lk" href="https://trustos.missionctrl.agency/">trustos.missionctrl.agency</a><br/>
   © 2026 TrustOS · MissionCTRL Ltd · Company No. 17018199 · Registered in England &amp; Wales
 </footer>
 
+<style>
+  /* Tap targets. Padding only — nothing moves, the targets just stop being
+     14px tall. This block sits at the end of the document because several of
+     these rules are declared in <style> blocks inside the body.
+     The footers matter most: on a phone they were the only navigation. */
+  @media (max-width: 900px) {
+    footer a, footer button,
+    .si-all-links a, .breadcrumb a, .article-meta-item a,
+    .faq-toc-list a, .doc a.inline, .callout a.inline,
+    nav .nl > a, .nav-wordmark {
+      display: inline-block; padding-top: 15px; padding-bottom: 15px;
+    }
+    .nav-mobile > summary, .nav-mobile-panel a,
+    .si-opt, .sector-pill, .si-cta-ghost, .si-cta-primary,
+    .faq-toggle-all, .faq-linkbtn, .faq-toc-email, .faq-toc-call,
+    .hc-sector-select, .faq-ef-input, .hc-copy-btn, .btn-ghost {
+      padding-top: 14px; padding-bottom: 14px;
+    }
+    .nav-product-link { display: inline-flex; padding-top: 16px; padding-bottom: 16px; }
+    .md-dot { padding: 22px 12px; background-clip: content-box; }
+  }
+</style>
 </body>
 </html>
