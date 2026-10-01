@@ -1616,9 +1616,9 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:type" content="image/png" />
-<meta property="og:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line "Make trust your North Star", on a dark background." />
+<meta property="og:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line “Make trust your North Star”, on a dark background." />
 <meta name="twitter:image" content="https://trustos.missionctrl.agency/og-image.png" />
-<meta name="twitter:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line "Make trust your North Star", on a dark background." />
+<meta name="twitter:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line “Make trust your North Star”, on a dark background." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="TrustOS Explorer — Map your trust in 60 seconds" />
 <meta name="twitter:description" content="A free, 60-second trust self-check: move three sliders, see your trust shape, compare it to your sector, and find your biggest gap." />
@@ -1797,8 +1797,9 @@ window.TrustShape = (function () {
   }
   .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
   /* The header CTA wrapped to three lines on a phone. It is the last item in
-     the panel above, so below 420px drop it and the product endorsement and
-     let the wordmark and Menu have the width. */
+     the panel above, so below 560px drop it and the product endorsement and
+     let the wordmark and Menu have the width; between 561 and 900px keep it
+     but stop it wrapping. */
   @media (min-width: 561px) and (max-width: 900px) {
     nav > .nav-cta { white-space: nowrap; font-size: 0.74rem; padding: 10px 14px; }
   }
@@ -1881,7 +1882,7 @@ window.TrustShape = (function () {
     </a>
   </div>
   <details class="nav-mobile" id="navMobile">
-    <summary aria-label="Open navigation">Menu</summary>
+    <summary>Menu</summary>
     <div class="nav-mobile-panel">
       <a href="?request=navigator" onclick="this.closest('details').open=false;openNav(event)">Request a Navigator</a>
       <a href="/methodology/" onclick="this.closest('details').open=false">How it works</a>
@@ -2730,7 +2731,22 @@ window.TrustShape = (function () {
 
   function hcSyncUrl() {
     if (!window.history || !window.history.replaceState) return;
-    try { window.history.replaceState(null, '', hcShareUrl()); } catch (e) {}
+    /* Update the address bar in place, keeping any parameter we did not put
+       there (utm_*, gclid and the like). hcShareUrl stays clean, so the link
+       the visitor copies carries their scores and nothing else. */
+    var q = hcQuery();
+    if (!q) return;
+    Object.keys(HC_PARAM).forEach(function (k) {
+      var el = document.getElementById(HC_PARAM[k]);
+      if (el) q.set(k, el.value);
+    });
+    var sel = document.getElementById('hc-sector');
+    if (sel && sel.value) q.set('s', sel.value); else q.delete('s');
+    var qs = q.toString();
+    try {
+      window.history.replaceState(null, '',
+        window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+    } catch (e) {}
   }
 
   function hcCopyShareLink() {
@@ -2738,7 +2754,9 @@ window.TrustShape = (function () {
     var status = document.getElementById('hc-copy-status');
     function done(ok) {
       if (!status) return;
-      status.textContent = ok ? 'Link copied — paste it anywhere.' : url;
+      status.textContent = ok
+        ? 'Link copied \u2014 paste it anywhere.'
+        : 'Copy this link: ' + url;
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(function () { done(true); }, function () { done(false); });

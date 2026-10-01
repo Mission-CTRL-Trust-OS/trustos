@@ -816,8 +816,9 @@ window.TrustShape = (function () {
   }
   .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
   /* The header CTA wrapped to three lines on a phone. It is the last item in
-     the panel above, so below 420px drop it and the product endorsement and
-     let the wordmark and Menu have the width. */
+     the panel above, so below 560px drop it and the product endorsement and
+     let the wordmark and Menu have the width; between 561 and 900px keep it
+     but stop it wrapping. */
   @media (min-width: 561px) and (max-width: 900px) {
     nav > .nav-cta { white-space: nowrap; font-size: 0.74rem; padding: 10px 14px; }
   }
@@ -877,7 +878,7 @@ window.TrustShape = (function () {
     </a>
   </div>
   <details class="nav-mobile" id="navMobile">
-    <summary aria-label="Open navigation">Menu</summary>
+    <summary>Menu</summary>
     <div class="nav-mobile-panel">
       <a href="/navigator/" onclick="this.closest('details').open=false">Request a Navigator</a>
       <a href="/methodology/" onclick="this.closest('details').open=false">How it works</a>

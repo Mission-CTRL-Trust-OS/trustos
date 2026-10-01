@@ -18,7 +18,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:type" content="image/png" />
-<meta property="og:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line "Make trust your North Star", on a dark background." />
+<meta property="og:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line “Make trust your North Star”, on a dark background." />
 <meta name="twitter:card" content="summary_large_image" />
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
@@ -126,8 +126,9 @@
   }
   .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
   /* The header CTA wrapped to three lines on a phone. It is the last item in
-     the panel above, so below 420px drop it and the product endorsement and
-     let the wordmark and Menu have the width. */
+     the panel above, so below 560px drop it and the product endorsement and
+     let the wordmark and Menu have the width; between 561 and 900px keep it
+     but stop it wrapping. */
   @media (min-width: 561px) and (max-width: 900px) {
     nav > .nav-cta { white-space: nowrap; font-size: 0.74rem; padding: 10px 14px; }
   }
@@ -174,7 +175,7 @@
     </a>
   </div>
   <details class="nav-mobile" id="navMobile">
-    <summary aria-label="Open navigation">Menu</summary>
+    <summary>Menu</summary>
     <div class="nav-mobile-panel">
       <a href="/navigator/" onclick="this.closest('details').open=false">Request a Navigator</a>
       <a href="/methodology/" onclick="this.closest('details').open=false">How it works</a>
@@ -192,13 +193,14 @@
   <a href="/explorer/" class="nav-cta">Try the Explorer &mdash; free</a>
 </nav>
 
+<main id="main">
 <header class="doc-hero">
   <div class="eyebrow">Legal</div>
   <h1>Cookie Policy</h1>
   <p class="doc-meta"><strong>Last updated:</strong> 3 September 2026 &nbsp;·&nbsp; <strong>Applies to:</strong> trustos.missionctrl.agency and missionctrl.agency</p>
 </header>
 
-<main class="doc" id="main">
+<div class="doc">
 
   <p>This Cookie Policy explains how <strong>MissionCTRL Ltd</strong> ("we", "us" or "our") uses cookies and similar technologies on our websites <strong>trustos.missionctrl.agency</strong> and <strong>missionctrl.agency</strong> (together, "the sites"). TrustOS is a product of MissionCTRL Ltd. It should be read alongside our <a class="inline" href="/privacy-policy/">Privacy Policy</a>.</p>
 
@@ -248,6 +250,7 @@
     <li>Email: <a class="inline" href="mailto:hello@missionctrl.agency">hello@missionctrl.agency</a></li>
   </ul>
 
+</div>
 </main>
 
 <footer>

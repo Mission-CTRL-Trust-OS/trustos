@@ -16,12 +16,12 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:type" content="image/png" />
-<meta property="og:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line "Make trust your North Star", on a dark background." />
+<meta property="og:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line “Make trust your North Star”, on a dark background." />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="TrustOS Sector Insights" />
 <meta name="twitter:description" content="Live trust events, run through the TrustOS methodology — sector POVs across Energy, Mining, and more." />
 <meta name="twitter:image" content="https://trustos.missionctrl.agency/og-image.png" />
-<meta name="twitter:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line "Make trust your North Star", on a dark background." />
+<meta name="twitter:image:alt" content="TrustOS by MissionCTRL: the TrustOS mark over the line “Make trust your North Star”, on a dark background." />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -569,8 +569,9 @@ window.TrustShape = (function () {
   }
   .nav-mobile-panel a:hover, .nav-mobile-panel a:focus { background: rgba(255,255,255,0.06); color: #fff; }
   /* The header CTA wrapped to three lines on a phone. It is the last item in
-     the panel above, so below 420px drop it and the product endorsement and
-     let the wordmark and Menu have the width. */
+     the panel above, so below 560px drop it and the product endorsement and
+     let the wordmark and Menu have the width; between 561 and 900px keep it
+     but stop it wrapping. */
   @media (min-width: 561px) and (max-width: 900px) {
     nav > .nav-cta { white-space: nowrap; font-size: 0.74rem; padding: 10px 14px; }
   }
@@ -630,7 +631,7 @@ window.TrustShape = (function () {
     </a>
   </div>
   <details class="nav-mobile" id="navMobile">
-    <summary aria-label="Open navigation">Menu</summary>
+    <summary>Menu</summary>
     <div class="nav-mobile-panel">
       <a href="/navigator/" onclick="this.closest('details').open=false">Request a Navigator</a>
       <a href="/methodology/" onclick="this.closest('details').open=false">How it works</a>
