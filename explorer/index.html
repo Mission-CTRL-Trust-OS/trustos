@@ -1292,6 +1292,39 @@
     input.hc-slider:focus-visible { outline:3px solid #8fb5c0; outline-offset:2px; border-radius:6px; }
     label.hc-q-driver { cursor:pointer; }
 
+    /* Reference copy — the strings the tool computes, as readable text */
+    .hc-ref { margin-top: 56px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .hc-ref-h2 { font-size: 1.3rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .hc-ref-h3 { font-size: 1.05rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin: 34px 0 12px; }
+    .hc-ref-driver { margin-top: 26px; }
+    .hc-ref-driver-name { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; }
+    .hc-ref-driver-name.clarity    { color: #8fb5c0; }
+    .hc-ref-driver-name.connection { color: #7cc4a8; }
+    .hc-ref-driver-name.confidence { color: #a78bdb; }
+    .hc-ref-state { padding: 14px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+    .hc-ref-state-head { display: flex; align-items: center; gap: 9px; margin-bottom: 6px; }
+    .hc-ref-range { font-size: 0.68rem; font-weight: 600; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; }
+    .hc-ref-title { font-size: 0.92rem; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 5px; line-height: 1.35; }
+    .hc-ref-body { font-size: 0.84rem; line-height: 1.7; color: rgba(255,255,255,0.62); }
+    .hc-ref-action { font-size: 0.8rem; font-weight: 600; color: #8fb5c0; margin-top: 7px; }
+    .hc-ref-action::before { content: '\2192  '; }
+    .hc-ref-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .hc-ref-table caption { text-align: left; font-size: 0.74rem; color: rgba(255,255,255,0.55); line-height: 1.6; padding-bottom: 10px; }
+    .hc-ref-table th, .hc-ref-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .hc-ref-table thead th { font-size: 0.66rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.62); }
+    .hc-ref-table tbody th { font-weight: 600; color: rgba(255,255,255,0.86); }
+    .hc-ref-table tbody td { color: rgba(255,255,255,0.68); font-variant-numeric: tabular-nums; }
+    .hc-ref-bands { font-size: 0.84rem; line-height: 1.7; }
+    .hc-ref-bands dt { font-weight: 700; color: rgba(255,255,255,0.88); margin-top: 10px; }
+    .hc-ref-bands dd { color: rgba(255,255,255,0.62); }
+    @media (max-width: 640px) {
+      .hc-ref-table, .hc-ref-table thead, .hc-ref-table tbody, .hc-ref-table tr, .hc-ref-table th, .hc-ref-table td { display: block; }
+      .hc-ref-table thead { display: none; }
+      .hc-ref-table tbody tr { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .hc-ref-table tbody th, .hc-ref-table tbody td { border: 0; padding: 2px 0; }
+      .hc-ref-table tbody td::before { content: attr(data-label) ': '; color: rgba(255,255,255,0.5); }
+    }
+
     /* Share the result */
     .hc-share { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px; }
     .hc-copy-btn {
@@ -1770,6 +1803,30 @@ window.TrustShape = (function () {
   @media (max-width: 900px) { .nav-mobile { display: block; } }
   @media (min-width: 901px) { .nav-mobile { display: none !important; } }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "@id": "https://trustos.missionctrl.agency/explorer/#app",
+  "name": "TrustOS Explorer",
+  "url": "https://trustos.missionctrl.agency/explorer/",
+  "applicationCategory": "BusinessApplication",
+  "applicationSubCategory": "Trust and reputation measurement",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "description": "A free 60-second trust self-assessment: set three sliders for Clarity, Connection and Confidence, see your trust shape, compare it with your sector benchmark, and identify your largest trust gap.",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
+  "publisher": { "@id": "https://trustos.missionctrl.agency/#org" },
+  "isPartOf": { "@id": "https://trustos.missionctrl.agency/#website" },
+  "featureList": [
+    "Three-driver trust self-score (Clarity, Connection, Confidence)",
+    "Sector benchmark comparison",
+    "Largest-gap diagnosis",
+    "0\u2013100 Trust Index estimate"
+  ]
+}
+</script>
 </head>
 
 <body>
@@ -1982,7 +2039,26 @@ window.TrustShape = (function () {
           <!-- Insight cards -->
           <div>
             <div class="hc-insights-label">What TrustOS flags for your organisation</div>
-            <div id="hc-insights"></div>
+            <div id="hc-insights">
+              <div class="hc-insight-card hc-primary">
+                <div class="hc-ic-head"><span class="hc-ic-type watch">~ Watch</span><span class="hc-ic-driver clarity">Clarity &mdash; 50</span></div>
+                <div class="hc-ic-title">Clarity is developing but not yet anchored</div>
+                <div class="hc-ic-body">Your core story is understood at senior levels. The risk is that it fades in translation across teams, regions, or channels.</div>
+                <div class="hc-ic-action">Test message recognition with mid-management and client-facing teams.</div>
+              </div>
+              <div class="hc-insight-card">
+                <div class="hc-ic-head"><span class="hc-ic-type watch">~ Watch</span><span class="hc-ic-driver connection">Connection &mdash; 50</span></div>
+                <div class="hc-ic-title">Connection is inconsistent across touchpoints</div>
+                <div class="hc-ic-body">Some stakeholder groups experience you well; others less so. The risk is that loyalty is relationship-dependent rather than institutionally embedded.</div>
+                <div class="hc-ic-action">Identify which touchpoints are strongest and replicate those behaviours systematically.</div>
+              </div>
+              <div class="hc-insight-card">
+                <div class="hc-ic-head"><span class="hc-ic-type watch">~ Watch</span><span class="hc-ic-driver confidence">Confidence &mdash; 50</span></div>
+                <div class="hc-ic-title">Evidence exists but isn&#8217;t structured for impact</div>
+                <div class="hc-ic-body">You have outcomes and credentials &mdash; but they&#8217;re not systematically surfaced where decisions are made. The gap between &#8220;we deliver&#8221; and &#8220;they believe it&#8221; is still open.</div>
+                <div class="hc-ic-action">Build a brand distinction narrative: specific, evidenced, and used consistently in all stakeholder communications.</div>
+              </div>
+            </div>
           </div>
 
           <!-- Share -->
@@ -1995,6 +2071,101 @@ window.TrustShape = (function () {
         </div>
       </div>
     </div>
+
+
+    <!-- The same strings the live panel above is built from, rendered as text so
+         they exist for a reader and a crawler, not only for the script. -->
+    <section class="hc-ref" id="hc-reference" aria-labelledby="hc-ref-h">
+      <h2 id="hc-ref-h" class="hc-ref-h2">What TrustOS flags for your organisation</h2>
+      <div class="hc-ref-driver">
+        <h3 class="hc-ref-driver-name clarity">Clarity</h3>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type leak">&darr; Gap</span> <span class="hc-ref-range">0&ndash;44</span></p>
+          <h4 class="hc-ref-title">Leadership story isn&#8217;t landing consistently</h4>
+          <p class="hc-ref-body">When frontline teams describe the organisation differently to how the board does, strategic alignment breaks down. Clarity is your most urgent gap.</p>
+          <p class="hc-ref-action">Align on one clear strategic narrative &mdash; and cascade it explicitly.</p>
+        </div>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type watch">~ Watch</span> <span class="hc-ref-range">45&ndash;71</span></p>
+          <h4 class="hc-ref-title">Clarity is developing but not yet anchored</h4>
+          <p class="hc-ref-body">Your core story is understood at senior levels. The risk is that it fades in translation across teams, regions, or channels.</p>
+          <p class="hc-ref-action">Test message recognition with mid-management and client-facing teams.</p>
+        </div>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type opp">&uarr; Strength</span> <span class="hc-ref-range">72&ndash;100</span></p>
+          <h4 class="hc-ref-title">Your strategic clarity is a real differentiator</h4>
+          <p class="hc-ref-body">Stakeholders understand what you stand for. This is a genuine competitive edge &mdash; most organisations score far lower here.</p>
+          <p class="hc-ref-action">Turn this into proof: case studies, leadership content, and partner communications that anchor the narrative.</p>
+        </div>
+      </div>
+      <div class="hc-ref-driver">
+        <h3 class="hc-ref-driver-name connection">Connection</h3>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type leak">&darr; Gap</span> <span class="hc-ref-range">0&ndash;44</span></p>
+          <h4 class="hc-ref-title">Experience isn&#8217;t matching what you promise</h4>
+          <p class="hc-ref-body">The gap between your stated commitments and what stakeholders actually encounter day-to-day is where trust erodes fastest &mdash; quietly, before it shows in numbers.</p>
+          <p class="hc-ref-action">Map the experience gap: where do touchpoints diverge from the promise? Fix the top two.</p>
+        </div>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type watch">~ Watch</span> <span class="hc-ref-range">45&ndash;71</span></p>
+          <h4 class="hc-ref-title">Connection is inconsistent across touchpoints</h4>
+          <p class="hc-ref-body">Some stakeholder groups experience you well; others less so. The risk is that loyalty is relationship-dependent rather than institutionally embedded.</p>
+          <p class="hc-ref-action">Identify which touchpoints are strongest and replicate those behaviours systematically.</p>
+        </div>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type opp">&uarr; Strength</span> <span class="hc-ref-range">72&ndash;100</span></p>
+          <h4 class="hc-ref-title">Stakeholder relationships are a core strength</h4>
+          <p class="hc-ref-body">Your Connection score suggests people experience you as coherent and reliable. This is hard to build and easy to lose &mdash; it deserves to be measured and protected.</p>
+          <p class="hc-ref-action">Quantify and communicate this strength: retention data, relationship depth, consistency metrics.</p>
+        </div>
+      </div>
+      <div class="hc-ref-driver">
+        <h3 class="hc-ref-driver-name confidence">Confidence</h3>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type leak">&darr; Gap</span> <span class="hc-ref-range">0&ndash;44</span></p>
+          <h4 class="hc-ref-title">Your brand&#8217;s distinctive advantage isn&#8217;t visible</h4>
+          <p class="hc-ref-body">Good work is happening, but it isn&#8217;t being claimed. Stakeholders can&#8217;t verify claims, see progress, or point to evidence. This makes loyalty transactional.</p>
+          <p class="hc-ref-action">Identify your three strongest proof points and make them visible &mdash; in every channel, consistently.</p>
+        </div>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type watch">~ Watch</span> <span class="hc-ref-range">45&ndash;71</span></p>
+          <h4 class="hc-ref-title">Evidence exists but isn&#8217;t structured for impact</h4>
+          <p class="hc-ref-body">You have outcomes and credentials &mdash; but they&#8217;re not systematically surfaced where decisions are made. The gap between &#8220;we deliver&#8221; and &#8220;they believe it&#8221; is still open.</p>
+          <p class="hc-ref-action">Build a brand distinction narrative: specific, evidenced, and used consistently in all stakeholder communications.</p>
+        </div>
+        <div class="hc-ref-state">
+          <p class="hc-ref-state-head"><span class="hc-ic-type opp">&uarr; Strength</span> <span class="hc-ref-range">72&ndash;100</span></p>
+          <h4 class="hc-ref-title">Your brand&#8217;s distinction is clear and credible</h4>
+          <p class="hc-ref-body">Your Confidence score shows stakeholders can verify your claims and trust your accountability. This is where institutional trust is built &mdash; it compounds over time.</p>
+          <p class="hc-ref-action">Turn your brand&#8217;s distinction into a repeatable story &mdash; case studies, proof points, and a narrative that makes your edge undeniable.</p>
+        </div>
+      </div>
+      <h3 class="hc-ref-h3">Compare to your sector</h3>
+      <table class="hc-ref-table" id="hc-sector-table">
+        <caption>Published sector reads &mdash; public-signal estimates. A TrustOS Snapshot confirms your real number with primary stakeholder research.</caption>
+        <thead><tr><th scope="col">Sector</th><th scope="col">Clarity</th><th scope="col">Connection</th><th scope="col">Confidence</th><th scope="col">Trust band</th></tr></thead>
+        <tbody>
+          <tr data-sector="energy"><th scope="row">Energy</th><td data-label="Clarity">74</td><td data-label="Connection">53</td><td data-label="Confidence">54</td><td data-label="Trust band">Functional</td></tr>
+          <tr data-sector="mining"><th scope="row">Mining &amp; metals</th><td data-label="Clarity">81</td><td data-label="Connection">58</td><td data-label="Confidence">62</td><td data-label="Trust band">Functional</td></tr>
+          <tr data-sector="council"><th scope="row">Local government</th><td data-label="Clarity">50</td><td data-label="Connection">40</td><td data-label="Confidence">45</td><td data-label="Trust band">Fragile</td></tr>
+          <tr data-sector="education"><th scope="row">Higher education</th><td data-label="Clarity">68</td><td data-label="Connection">52</td><td data-label="Confidence">50</td><td data-label="Trust band">Functional</td></tr>
+          <tr data-sector="socialcare"><th scope="row">Social care</th><td data-label="Clarity">62</td><td data-label="Connection">48</td><td data-label="Confidence">52</td><td data-label="Trust band">Fragile</td></tr>
+          <tr data-sector="healthcare"><th scope="row">Healthcare</th><td data-label="Clarity">67</td><td data-label="Connection">45</td><td data-label="Confidence">50</td><td data-label="Trust band">Fragile</td></tr>
+          <tr data-sector="profsvc"><th scope="row">Professional services</th><td data-label="Clarity">70</td><td data-label="Connection">44</td><td data-label="Confidence">50</td><td data-label="Trust band">Functional</td></tr>
+          <tr data-sector="regtech"><th scope="row">Technology / RegTech</th><td data-label="Clarity">60</td><td data-label="Connection">45</td><td data-label="Confidence">50</td><td data-label="Trust band">Fragile</td></tr>
+          <tr data-sector="ingo"><th scope="row">International NGO</th><td data-label="Clarity">55</td><td data-label="Connection">42</td><td data-label="Confidence">48</td><td data-label="Trust band">Fragile</td></tr>
+          <tr data-sector="netzero"><th scope="row">Net-zero delivery</th><td data-label="Clarity">78</td><td data-label="Connection">52</td><td data-label="Confidence">56</td><td data-label="Trust band">Functional</td></tr>
+        </tbody>
+      </table>
+      <h3 class="hc-ref-h3">Your indicative trust band</h3>
+      <dl class="hc-ref-bands">
+        <dt>Exposed</dt><dd>Trust does no work for you. Claims are discounted on arrival.</dd>
+        <dt>Fragile</dt><dd>Trust exists but is not load-bearing. It gives way under pressure or change.</dd>
+        <dt>Functional</dt><dd>Trust is real, but uneven. Some relationships carry the business; others quietly cost it.</dd>
+        <dt>Resilient</dt><dd>Trust absorbs shocks. You get the benefit of the doubt; claims land first time.</dd>
+        <dt>Defining</dt><dd>Trust is an asset others measure themselves against.</dd>
+      </dl>
+    </section>
 
     <!-- RESULT-AWARE NEXT STEP -->
         <div style="margin-top:52px;padding:32px 34px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;text-align:center;">
@@ -2303,19 +2474,24 @@ window.TrustShape = (function () {
     renderCompare();
   }
 
-  /* Published sector reads (public-signal estimates) — same scores as the homepage selector */
-  var SECTORS = {
-    energy:    {label:'Energy',                 cl:74, cn:53, cf:54},
-    mining:    {label:'Mining & metals',        cl:81, cn:58, cf:62},
-    council:   {label:'Local government',       cl:50, cn:40, cf:45},
-    education: {label:'Higher education',       cl:68, cn:52, cf:50},
-    socialcare:{label:'Social care',            cl:62, cn:48, cf:52},
-    healthcare:{label:'Healthcare',             cl:67, cn:45, cf:50},
-    profsvc:   {label:'Professional services',  cl:70, cn:44, cf:50},
-    regtech:   {label:'Technology / RegTech',   cl:60, cn:45, cf:50},
-    ingo:      {label:'International NGO',       cl:55, cn:42, cf:48},
-    netzero:   {label:'Net-zero delivery',      cl:78, cn:52, cf:56}
-  };
+  /* Published sector reads (public-signal estimates) — read from the table in
+     the markup above so the page and the tool cannot drift apart. */
+  var SECTORS = (function () {
+    var out = {};
+    var rows = document.querySelectorAll('#hc-sector-table tbody tr[data-sector]');
+    for (var i = 0; i < rows.length; i++) {
+      var tr = rows[i];
+      var td = tr.getElementsByTagName('td');
+      if (td.length < 3) continue;
+      out[tr.getAttribute('data-sector')] = {
+        label: tr.getElementsByTagName('th')[0].textContent.trim(),
+        cl: parseInt(td[0].textContent, 10),
+        cn: parseInt(td[1].textContent, 10),
+        cf: parseInt(td[2].textContent, 10)
+      };
+    }
+    return out;
+  })();
 
   function cmpDelta(u, s) {
     var d = u - s;
@@ -2423,6 +2599,7 @@ window.TrustShape = (function () {
   function renderInsights(cl, cn, cf) {
     var container = document.getElementById('hc-insights');
     if (!container) return;
+    var cards = container.getElementsByClassName('hc-insight-card');
     var drivers = [
       {key:'clarity', score:cl, label:'Clarity'},
       {key:'connection', score:cn, label:'Connection'},
@@ -2430,24 +2607,22 @@ window.TrustShape = (function () {
     ];
     // Sort by urgency: lowest score first
     drivers.sort(function(a,b){return a.score-b.score;});
-    var html = '';
+    if (cards.length < drivers.length) return;   // markup is the source of truth
     drivers.forEach(function(d, i) {
-      var level = getLevel(d.score);
-      var ins = INSIGHTS[d.key][level];
-      var typeClass = ins.type;
+      var card = cards[i];
+      var ins = INSIGHTS[d.key][getLevel(d.score)];
       var typeLabel = ins.type === 'leak' ? '↓ Gap' : ins.type === 'watch' ? '~ Watch' : '↑ Strength';
-      var driverClass = d.key;
-      html += '<div class="hc-insight-card' + (i===0?' hc-primary':'') + '">' +
-        '<div class="hc-ic-head">' +
-          '<span class="hc-ic-type ' + typeClass + '">' + typeLabel + '</span>' +
-          '<span class="hc-ic-driver ' + driverClass + '">' + d.label + ' &mdash; ' + d.score + '</span>' +
-        '</div>' +
-        '<div class="hc-ic-title">' + ins.title + '</div>' +
-        '<div class="hc-ic-body">' + ins.body + '</div>' +
-        '<div class="hc-ic-action">' + ins.action + '</div>' +
-      '</div>';
+      card.className = 'hc-insight-card' + (i===0 ? ' hc-primary' : '');
+      var type = card.querySelector('.hc-ic-type');
+      type.className = 'hc-ic-type ' + ins.type;
+      type.textContent = typeLabel;
+      var drv = card.querySelector('.hc-ic-driver');
+      drv.className = 'hc-ic-driver ' + d.key;
+      drv.innerHTML = d.label + ' &mdash; ' + d.score;
+      card.querySelector('.hc-ic-title').innerHTML = ins.title;
+      card.querySelector('.hc-ic-body').innerHTML = ins.body;
+      card.querySelector('.hc-ic-action').innerHTML = ins.action;
     });
-    container.innerHTML = html;
   }
 
   // Bind sliders
