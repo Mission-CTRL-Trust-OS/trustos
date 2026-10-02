@@ -188,7 +188,7 @@
 
     /* ARTICLE BODY */
     .article-body {
-      max-width: 940px;
+      max-width: 780px;
       margin: 0 auto;
       padding: 80px 5% 60px;
       font-size: 1.05rem;
@@ -224,7 +224,7 @@
 
     /* Headings */
     .article-body h2 {
-      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      font-size: clamp(1.45rem, 2.6vw, 1.8rem);
       font-weight: 800;
       line-height: 1.18;
       color: var(--white);
@@ -395,40 +395,6 @@
       display: inline-flex; align-items: center; gap: 10px;
     }
     .related-povs-label::before { content: ''; width: 24px; height: 2px; background: var(--trust-cool); display: block; }
-    .related-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    .related-card {
-      display: block;
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 10px;
-      padding: 24px 28px;
-      transition: background 0.25s, border-color 0.25s, transform 0.2s;
-    }
-    .related-card:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(90,138,154,0.4);
-      transform: translateY(-2px);
-    }
-    .related-card-eyebrow {
-      font-size: 0.6rem; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--trust-cool); margin-bottom: 10px;
-    }
-    .related-card h3 {
-      font-size: 1.1rem; font-weight: 700;
-      color: var(--white); letter-spacing: -0.015em;
-      margin-bottom: 8px;
-    }
-    .related-card p {
-      font-size: 0.85rem; color: rgba(255,255,255,0.5);
-      line-height: 1.55;
-      margin: 0;
-    }
-
     /* SOURCES */
     .sources {
       max-width: 740px;
@@ -591,6 +557,110 @@
 /* Reduced motion: everything below still renders in its final state — the trust
    shape, the band track and the charts are drawn, they just do not animate. */
 @media (prefers-reduced-motion:reduce){.bt-seg,.bt-lab{transition:none;}.ts-svg,.ts-svg *{transition:none!important;animation:none!important;}.btn-primary:hover,.nav-cta:hover,.related-card:hover{transform:none!important;}}
+
+/* ══ POV layout components ══ beats · slice table · related list ══ */
+.beats { list-style: none; counter-reset: beat; margin: 1.6em 0 2.2em; }
+.beats li {
+  counter-increment: beat;
+  position: relative;
+  padding: 17px 0 17px 54px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.beats li:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.beats li::before {
+  content: counter(beat);
+  position: absolute; left: 0; top: 15px;
+  width: 34px; text-align: right;
+  font-size: 1.35rem; font-weight: 800; line-height: 1;
+  letter-spacing: -0.03em;
+  color: rgba(143,181,192,0.46);
+  font-variant-numeric: tabular-nums;
+}
+.beats .beat-h { display: block; color: var(--white); font-weight: 600; margin-bottom: 5px; }
+
+.slices {
+  width: 100%; border-collapse: collapse;
+  margin: 1.6em 0 2.2em;
+  font-size: 0.88rem; line-height: 1.6;
+}
+.slices th {
+  text-align: left;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  padding: 0 20px 11px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  vertical-align: bottom; white-space: nowrap;
+}
+.slices td {
+  padding: 17px 20px 17px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  vertical-align: top;
+  color: rgba(255,255,255,0.70);
+}
+.slices th:last-child, .slices td:last-child { padding-right: 0; }
+.slices .sl-name { width: 38%; color: var(--white); font-weight: 600; }
+.slices .sl-who {
+  display: block; margin-top: 6px;
+  font-size: 0.76rem; font-weight: 300; line-height: 1.5;
+  color: rgba(255,255,255,0.50);
+}
+.slices .sl-edge { display: block; margin-top: 7px; color: #8fb5c0; }
+@media (max-width: 720px) {
+  /* the beats need the width more than the numeral does */
+  .beats li { padding-left: 40px; }
+  .beats li::before { width: 26px; font-size: 1.2rem; }
+  /* give the driver bars a full-width track instead of a 60px stub */
+  .ds-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "name score" "bar bar";
+    gap: 8px 14px;
+  }
+  .ds-name  { grid-area: name; }
+  .ds-score { grid-area: score; }
+  .ds-bar-bg { grid-area: bar; }
+  .slices { display: block; font-size: 0.85rem; }
+  .slices thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .slices tbody, .slices tr, .slices td { display: block; width: auto; }
+  .slices tr { border-top: 1px solid rgba(255,255,255,0.14); padding: 16px 0 18px; }
+  .slices tr:last-child { border-bottom: 1px solid rgba(255,255,255,0.14); }
+  .slices td, .slices td.sl-name { border: 0; padding: 0; width: auto; }
+  .slices td + td { margin-top: 12px; }
+  .slices td[data-l]::before {
+    content: attr(data-l);
+    display: block;
+    font-size: 0.54rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.30);
+    margin-bottom: 5px;
+  }
+}
+
+.rel-list { list-style: none; }
+.rel-list li { border-top: 1px solid rgba(255,255,255,0.08); }
+.rel-list li:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.rel-list a { display: flex; align-items: baseline; gap: 22px; padding: 16px 2px; }
+.rel-list .rl-tag {
+  flex: 0 0 356px;
+  font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  transition: color 0.2s;
+}
+.rel-list .rl-title {
+  font-size: 0.98rem; font-weight: 500; line-height: 1.45;
+  color: rgba(255,255,255,0.82);
+  transition: color 0.2s;
+}
+.rel-list a:hover .rl-title { color: var(--trust-cool); }
+.rel-list a:hover .rl-tag { color: rgba(255,255,255,0.55); }
+@media (max-width: 900px) {
+  .rel-list a { flex-direction: column; gap: 7px; }
+  .rel-list .rl-tag { flex: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rel-list .rl-title, .rel-list .rl-tag { transition: none; }
+}
 </style>
 <!-- seo-ai:start -->
 <link rel="canonical" href="https://trustos.missionctrl.agency/healthcare-trust-test/" />
@@ -888,11 +958,11 @@ window.TrustShape = (function () {
 
   <h2>Why &#8220;NHS England is abolished&#8221; is a sector story, not a structural one</h2>
 
-  <p><strong>One.</strong> Every provider re-reads its trust architecture against the bar earned autonomy now sets. Trusts, ICBs and emerging IHOs that can evidence safe, well-governed, equitable care will price differently in regulatory freedom, funding allocation and public confidence.</p>
-
-  <p><strong>Two.</strong> Patients, clinicians, the public and commissioners re-price the claim about universal care once the central architecture that assured consistency is dismantled. 42 ICBs, neighbourhood health centres and whole-population IHOs become the unit of trust.</p>
-
-  <p><strong>Three.</strong> Regulators, Government and the public re-set what they will permit and fund: the CQC&#8217;s assessment, the duty-of-candour test and the new earned-autonomy criteria convert &#8220;trust us&#8221; into a measurable condition.</p>
+  <ol class="beats">
+    <li>Every provider re-reads its trust architecture against the bar earned autonomy now sets. Trusts, ICBs and emerging IHOs that can evidence safe, well-governed, equitable care will price differently in regulatory freedom, funding allocation and public confidence.</li>
+    <li>Patients, clinicians, the public and commissioners re-price the claim about universal care once the central architecture that assured consistency is dismantled. 42 ICBs, neighbourhood health centres and whole-population IHOs become the unit of trust.</li>
+    <li>Regulators, Government and the public re-set what they will permit and fund: the CQC&#8217;s assessment, the duty-of-candour test and the new earned-autonomy criteria convert &#8220;trust us&#8221; into a measurable condition.</li>
+  </ol>
 
   <p>None of this is unique to any one trust, ICB, pharma company or private provider.</p>
 
@@ -934,11 +1004,25 @@ window.TrustShape = (function () {
 
   <h2>Where this lands across the three healthcare slices</h2>
 
-  <p><strong>NHS providers and systems.</strong> Acute trusts, mental-health and community providers, the new Foundation Trusts, the 42 ICBs, neighbourhood health centres and the first Integrated Health Organisations sit at the intersection of earned autonomy, the duty of candour and equity of access. Clinical Trust is most exposed here, because care <em>is</em> the product.</p>
-
-  <p><strong>Pharma and life sciences.</strong> AstraZeneca, GSK, Bayer, ViiV and the wider pharma sector run on the credibility of evidence, clinical-trial transparency and the access-and-pricing relationship with the NHS (the voluntary scheme / VPAG).</p>
-
-  <p><strong>Medtech, digital health and private care.</strong> Philips, Swisslog, the AI-diagnostics and digital-health vendors, the private hospital groups, AXA Health and CareTech sit on a Confidence-gap defined by the analogue-to-digital shift, data trust and AI-in-diagnostics safety; the question is whether the technology behind care can be evidenced as safe.</p>
+  <table class="slices">
+    <thead>
+      <tr><th scope="col">Slice</th><th scope="col">What it runs on</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="sl-name">NHS providers and systems<span class="sl-who">Acute trusts, mental-health and community providers, the new Foundation Trusts, the 42 ICBs, neighbourhood health centres and the first Integrated Health Organisations</span></td>
+        <td data-l="What it runs on">Earned autonomy, the duty of candour and equity of access.<span class="sl-edge">Clinical Trust is most exposed here, because care <em>is</em> the product.</span></td>
+      </tr>
+      <tr>
+        <td class="sl-name">Pharma and life sciences<span class="sl-who">AstraZeneca, GSK, Bayer, ViiV and the wider pharma sector</span></td>
+        <td data-l="What it runs on">The credibility of evidence, clinical-trial transparency and the access-and-pricing relationship with the NHS (the voluntary scheme / VPAG).</td>
+      </tr>
+      <tr>
+        <td class="sl-name">Medtech, digital health and private care<span class="sl-who">Philips, Swisslog, the AI-diagnostics and digital-health vendors, the private hospital groups, AXA Health and CareTech</span></td>
+        <td data-l="What it runs on">A Confidence-gap defined by the analogue-to-digital shift, data trust and AI-in-diagnostics safety.<span class="sl-edge">The question is whether the technology behind care can be evidenced as safe.</span></td>
+      </tr>
+    </tbody>
+  </table>
 
   <h2>The four operating moves</h2>
 
@@ -995,23 +1079,11 @@ window.TrustShape = (function () {
 <!-- RELATED POVS -->
 <section class="related-povs">
   <div class="related-povs-label">Related TrustOS POVs</div>
-  <div class="related-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-    <a href="/social-care-workforce-test/" class="related-card">
-      <div class="related-card-eyebrow">2026 Sector POV  ·  Social Care</div>
-      <h3>When the pipeline closes. Social Care's workforce trust test.</h3>
-      <p>Fragile band. Connection the weak edge. The Casey Commission reports into a sector that has just lost its workforce pipeline.</p>
-    </a>
-    <a href="/professional-services-trust-test/" class="related-card">
-      <div class="related-card-eyebrow">2026 Buyer-Hero POV  ·  Professional Services</div>
-      <h3>When the auditors are outnumbered. The brand leader's trust test.</h3>
-      <p>Functional band. Connection the weak edge. Audit reform dropped, AI hiring overtakes auditors &mdash; the sector whose product is trust is hollowing its assurance layer.</p>
-    </a>
-    <a href="/education-public-purpose-test/" class="related-card">
-      <div class="related-card-eyebrow">2026 Sector POV  ·  Education</div>
-      <h3>When the courses close. Education's public-purpose test.</h3>
-      <p>Functional band. Connection the weak edge. Queen Mary just cut 295 modules &mdash; the moment Education's public-purpose foundation became visible.</p>
-    </a>
-  </div>
+  <ul class="rel-list">
+    <li><a href="/social-care-workforce-test/"><span class="rl-tag">2026 Sector POV  ·  Social Care</span><span class="rl-title">When the pipeline closes. Social Care's workforce trust test.</span></a></li>
+    <li><a href="/professional-services-trust-test/"><span class="rl-tag">2026 Buyer-Hero POV  ·  Professional Services</span><span class="rl-title">When the auditors are outnumbered. The brand leader's trust test.</span></a></li>
+    <li><a href="/education-public-purpose-test/"><span class="rl-tag">2026 Sector POV  ·  Education</span><span class="rl-title">When the courses close. Education's public-purpose test.</span></a></li>
+  </ul>
 </section>
 
 <!-- SOURCES -->
