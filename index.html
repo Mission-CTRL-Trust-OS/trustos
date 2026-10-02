@@ -1538,7 +1538,7 @@ window.TrustShape = (function () {
       <p style="font-size:0.9rem;color:rgba(255,255,255,0.775);line-height:1.75;margin:0 0 14px;">In eleven of the twelve sectors we&#8217;ve read, Connection is the weakest layer &#8212; consistently behind what organisations say about themselves. It&#8217;s the say-do gap <strong style="color:rgba(255,255,255,0.9);font-weight:600;">no single function owns</strong>: where trust leaks, and the first thing a TrustOS read makes visible.</p>
       <div style="margin-top:22px;padding-top:20px;border-top:1px solid rgba(124,196,168,0.18);">
         <p style="font-size:0.88rem;color:rgba(255,255,255,0.8);line-height:1.7;margin:0 0 15px;">That gap has a name. It&#8217;s the <strong style="color:rgba(255,255,255,0.925);font-weight:600;">alignment problem</strong> &#8212; the distance between what an organisation believes and says, and what its stakeholders actually experience. Measuring it is what TrustOS does. <strong style="color:rgba(255,255,255,0.925);font-weight:600;">Closing it is what MissionCTRL does.</strong></p>
-        <a href="https://missionctrl.agency" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:600;color:var(--trust-cool);text-decoration:none;border-bottom:1px solid rgba(90,138,154,0.4);padding-bottom:2px;transition:color 0.2s,border-color 0.2s;" onmouseover="this.style.color='#6da0b8';this.style.borderColor='#6da0b8';" onmouseout="this.style.color='var(--trust-cool)';this.style.borderColor='rgba(90,138,154,0.4)';">See how MissionCTRL closes the alignment gap &#8594;</a>
+        <a href="https://missionctrl.agency" class="mc-text-link" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:600;color:var(--trust-cool);text-decoration:none;border-bottom:1px solid rgba(90,138,154,0.4);padding-bottom:2px;transition:color 0.2s,border-color 0.2s;" onmouseover="this.style.color='#6da0b8';this.style.borderColor='#6da0b8';" onmouseout="this.style.color='var(--trust-cool)';this.style.borderColor='rgba(90,138,154,0.4)';">See how MissionCTRL closes the alignment gap &#8594;</a>
       </div>
     </div>
 
@@ -1997,6 +1997,16 @@ window.TrustShape = (function () {
     }
     .nav-product-link { display: inline-flex; padding-top: 16px; padding-bottom: 16px; }
     .md-dot { padding: 22px 12px; background-clip: content-box; }
+    /* #47's two text links (hero POV link, MissionCTRL link). Their underline
+       is a border, which padding would push away from the text, so on a phone
+       it becomes a text underline in the same colour and the padding grows
+       the target instead. */
+    .hero-pov a, .mc-text-link {
+      display: inline-block; padding-top: 14px !important; padding-bottom: 14px !important;
+      border-bottom: 0 !important;
+      text-decoration: underline; text-decoration-color: rgba(90,138,154,0.4) !important;
+      text-decoration-thickness: 1px; text-underline-offset: 5px;
+    }
   }
 </style>
 </body>
