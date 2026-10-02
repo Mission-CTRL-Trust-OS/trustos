@@ -92,6 +92,10 @@
 
   footer{padding:28px 24px;text-align:center;border-top:1px solid var(--rule);font-size:.66rem;color:var(--ink3);}
   footer .lk{color:var(--ink2);}
+
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.btn-primary:hover,.nav-cta:hover{transform:none!important;}}
 </style>
 <!-- Privacy-friendly analytics by Plausible -->
 <script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>

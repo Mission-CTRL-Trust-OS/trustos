@@ -2,11 +2,11 @@
  * Edge Function: passcode gate for the ViiV campaign pages (/viiv/*).
  *
  * Client work — not public. Unlike /navigator/* (browser Basic Auth), this
- * serves a BRANDED gate, because the passcode is part of the campaign: the
- * word is "Unmute", and typing it is the first act of the idea.
+ * serves a BRANDED gate, because the passcode is part of the campaign: typing
+ * the word is the first act of the idea.
  *
- * Set the passcode in: Netlify -> Site configuration -> Environment variables
- *   VIIV_PASSCODE = Unmute
+ * The passcode itself is never stored in this repo. Set it in:
+ * Netlify -> Site configuration -> Environment variables -> VIIV_PASSCODE
  * Comparison is case-insensitive and trims whitespace.
  *
  * On success a cookie holding a SHA-256 of the passcode is set for 30 days,

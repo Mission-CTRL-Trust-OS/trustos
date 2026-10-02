@@ -236,6 +236,10 @@
   .pageb-sub{font-size:0.95rem;color:var(--text-body);line-height:1.6;max-width:720px;margin-top:14px;}
   .back-link{display:inline-block;margin-top:18px;font-size:0.78rem;font-weight:600;color:var(--pale);text-decoration:none;border-bottom:1px dotted var(--cool-dark);}
   @media(max-width:760px){.subnav .sn-brand{display:none;}}
+
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.btn-mctrl:hover,.nav-cta:hover{transform:none!important;}}
 </style>
 <!-- seo-ai:start -->
 <meta name="robots" content="noindex, follow" />

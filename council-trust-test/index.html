@@ -6,7 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <title>When the Council Flips &mdash; The Comms Leader's Trust Test | TrustOS Buyer-Hero POV</title>
+  <title>When the Council Flips &mdash; The Comms Leader's Trust Test | TrustOS by MissionCTRL</title>
   <meta name="description" content="A 2026 buyer-hero POV from TrustOS. Waltham Forest’s £19m EFS loan and the May 2026 elections rewrote the council trust contract in one fiscal year.">
   <meta property="og:title" content="When the Council Flips — The Council Comms Leader's Trust Test" />
   <meta property="og:description" content="I'm a Waltham Forest resident. My council just took a £19m EFS loan to balance its 2026/27 budget. It didn't flip in May. But its trust architecture did. And it isn't alone." />
@@ -588,7 +588,9 @@
 .bt.compact .bt-lab .of{color:rgba(255,255,255,0.22);font-weight:600;letter-spacing:0.04em;}
 .bt.compact .bt-meaning,.bt.compact .bt-cap{display:none;}
 @media (max-width:760px){.bt-lab{font-size:0.44rem;letter-spacing:0.03em;}}
-@media (prefers-reduced-motion:reduce){.bt-seg{transition:none;}.bt-lab{transition:none;}}
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.bt-seg,.bt-lab{transition:none;}.ts-svg,.ts-svg *{transition:none!important;animation:none!important;}.btn-primary:hover,.nav-cta:hover,.related-card:hover{transform:none!important;}}
 </style>
 <!-- seo-ai:start -->
 <link rel="canonical" href="https://trustos.missionctrl.agency/council-trust-test/" />

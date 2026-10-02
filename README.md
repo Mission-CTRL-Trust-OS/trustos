@@ -1,6 +1,6 @@
 # TrustOS — trustos.missionctrl.agency
 
-The measurement intelligence layer of the Brand Effect — MissionCTRL's methodology for turning purpose-led brands into movements.
+The trust-intelligence layer of the Brand Effect — MissionCTRL's methodology for turning purpose-led brands into movements.
 
 A MissionCTRL product. © 2026 MissionCTRL Ltd.
 
@@ -8,50 +8,70 @@ A MissionCTRL product. © 2026 MissionCTRL Ltd.
 
 ## Site structure
 
+Pure static HTML. No build step, no framework, no external stylesheet — each
+page carries its own `<style>` block. Netlify publishes the repo root
+(`publish = "."`), so **the repo is the deployed site**.
+
+23 public pages, 12 of them sector POVs, plus 14 gated pages.
+
 ```
 .
-├── index.html                          # Main landing page
-├── results.html                        # Demo-form submission result page
-├── netlify.toml                        # Netlify build config (publish from root)
+├── index.html                     # Homepage
+├── 404.html
+├── netlify.toml                   # publish = "."; security headers; apex redirect
+├── robots.txt  sitemap.xml  _redirects
+├── favicon.svg  favicon-32.png  apple-touch-icon.png  og-image.png
 │
-├── insights/
-│   └── index.html                      # Sector Insights hub — lists all POVs
+├── assets/                        # mc-analytics.js, mc-goals.js (cookieless)
 │
-├── energy-integrity-test/
-│   ├── index.html                      # Energy sector POV — "When the Chair Falls"
-│   ├── banner.png                      # Hero banner (1280×720, on-brand)
-│   └── banner@2x.png                   # Retina banner (2560×1440)
+├── explorer/                      # The TrustOS Explorer — 3-slider self-check
+├── methodology/                   # How the index is built
+├── faq/                           # FAQ (+ netlify/functions/faq-ask.mjs)
+├── insights/                      # Sector Insights hub
+│   └── brand-growth-in-an-insular-world-measured/
+├── privacy-policy/  cookie-policy/  terms/
+├── notrack/                       # Analytics opt-out (noindex)
 │
-└── mining-trust-window/
-    ├── index.html                      # Mining sector POV — "Mining's Trust Window 2026–2030"
-    ├── banner.png                      # Hero banner (1280×720, on-brand)
-    └── banner@2x.png                   # Retina banner (2560×1440)
+├── <12 sector POVs>/              # One folder each, e.g. energy-integrity-test/
+│   ├── index.html                 #   index.html, and where present
+│   ├── banner.png                 #   banner.png (1280×720) + banner@2x.png
+│   └── banner@2x.png
+│
+├── navigator/
+│   ├── index.html                 # Public "Request a Navigator" page
+│   └── <client>/                  # GATED — Basic Auth, per-client password
+│       ├── index.html             #   the Navigator
+│       └── solutions/index.html   #   the MissionCTRL Solutions read
+│
+├── viiv/                          # GATED — passcode gate, client campaign
+│   ├── index.html
+│   └── more/index.html
+│
+└── netlify/
+    ├── edge-functions/
+    │   ├── navigator-auth.js      # Basic Auth on /navigator/<client>/*
+    │   └── viiv-passcode.js       # Branded passcode gate on /viiv/*
+    └── functions/faq-ask.mjs
 ```
 
-## What's new in this revision (May 2026)
+### The 12 sector POVs
 
-### 1. New Energy sector POV
-- Article: `/energy-integrity-test/index.html`
-- Headline: *When the chair falls. Energy's Integrity test.*
-- Trust diagnostic scores: Clarity 74, Connection 55, Confidence 54, Composite 61
-- Anchored on the 26 May 2026 BP chair firing event
-- Cites Brandpie's *Clarity through Complexity* energy report alongside Bloomberg, FT, McKinsey and IEA
+`council-trust-test` · `education-public-purpose-test` · `energy-integrity-test` ·
+`healthcare-trust-test` · `ingo-brand-trust` · `membership-bodies-trust-test` ·
+`mining-trust-window` · `netzero-consent-test` · `private-capital-trust-test` ·
+`professional-services-trust-test` · `regtech-brand-trust` ·
+`social-care-workforce-test`
 
-### 2. Mining POV redesigned
-- Article: `/mining-trust-window/index.html` (replaces previous version)
-- Same design language as the new Energy POV — hero banner image, lede, diagnostic strip, pullquotes, related-POV card, sources
-- Same trust diagnostic scores (Clarity 81, Connection 58, Confidence 62, Composite 65)
-- All substantive content preserved from the previous version, presentation refreshed
+## Gating
 
-### 3. Sector Insights hub
-- New page: `/insights/index.html`
-- Lists both Mining and Energy POVs with banner thumbnails, scores chips, and read-time meta
-- Coming-soon strip flags Local Government, Healthcare, Higher Education, Financial Services, Social Housing
+| Path | Gate | Secret lives in |
+|------|------|-----------------|
+| `/navigator/<client>/*` | Basic Auth (any username) | `NAVIGATOR_PASSWORD_<CLIENT>` |
+| `/viiv/*` | Branded passcode form | `VIIV_PASSCODE` |
 
-### 4. Main page updates
-- `index.html` Sector Insights section now shows both POVs in a 2-column responsive grid (auto-fit, min 320px)
-- Each card has a banner image at the top + scores chips + metadata
-- "Browse all Sector POVs →" link added at the bottom of the section, pointing to `/insights/`
+Both are Netlify environment variables, set under **Site configuration →
+Environment variables**. Neither secret belongs in this repo. `/navigator/`
+itself is public — the auth edge function only matches `/navigator/<something>/`.
 
 ## Brand identity (canonical)
 
@@ -66,41 +86,39 @@ A MissionCTRL product. © 2026 MissionCTRL Ltd.
 | Connection       | `#7cc4a8`      | Driver 2 (Expectation↔Reality) |
 | Confidence       | `#a78bdb`      | Driver 3 (Intent↔Reality)      |
 
-Typography: **Sora** (weights 200, 300, 400, 500, 600, 700, 800), loaded from Google Fonts.
+Typography: **Sora**, loaded from Google Fonts.
 
-## Deploy
+The product name is written **TrustOS** — one word, no space.
 
-Netlify is configured to publish from the repo root (`publish = "."`).
-
-Local preview:
+## Local preview
 
 ```bash
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-GitHub upload:
-
-1. Initialise a git repo at the root of this folder (or push into your existing TrustOS repo).
-2. The Netlify build picks up `netlify.toml` automatically.
-3. No build step required — pure static HTML.
+Netlify picks up `netlify.toml` automatically. No build step.
 
 ## Adding the next sector POV
 
-When the next sector POV is ready:
-
-1. Create a folder at the root, named for the POV slug (e.g. `/local-government-trust-test/`).
-2. Copy `/energy-integrity-test/index.html` as the template.
-3. Replace title, hero, lede, body, diagnostic scores, sources.
-4. Drop the new banner.png + banner@2x.png into the same folder.
-5. Add a new card on `/insights/index.html` (mirror the existing card markup, point at the new folder).
-6. Add a new card on the main `index.html` Sector Insights grid (the grid auto-fits, no layout changes needed).
-7. Update the "Related Sector POVs" card on each of the other sector POVs to cross-link.
-8. Move the new sector from the "coming-soon" list on `/insights/index.html` into a published card.
+1. Create a root folder named for the POV slug (e.g. `local-government-trust-test/`).
+2. Copy `energy-integrity-test/index.html` as the template.
+3. Replace title, hero, lede, body, diagnostic scores and sources. Keep the
+   `<title>` in the form *Headline | TrustOS by MissionCTRL*.
+4. Drop `banner.png` + `banner@2x.png` into the same folder.
+5. Add a card on `insights/index.html` and move the sector out of its
+   coming-soon strip.
+6. Add the sector to the selector data in `index.html` (`SECTORS`) and to the
+   `SECTORS` map in `explorer/index.html` so the benchmark matches.
+7. Cross-link it from the "Related Sector POVs" cards on the other POVs.
+8. Add the new URL to `sitemap.xml`.
 
 ## Methodology
 
-The TrustOS methodology runs Intent / Expectation / Reality, plus the three trust enablers (Clarity / Connection / Confidence) on a foundation of Integrity. See the main `index.html` "How it works" and "What it measures" sections for the canonical model.
+TrustOS runs Intent / Expectation / Reality, plus the three trust drivers
+(Clarity / Connection / Confidence) on a foundation of Integrity. Public
+surfaces publish a **band**, never a composite score. See `/methodology/` for
+the canonical model.
 
 ---
 

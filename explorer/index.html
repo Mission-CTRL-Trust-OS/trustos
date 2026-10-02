@@ -19,7 +19,7 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Sora', sans-serif; color: var(--trust-slate); background: var(--white); overflow-x: hidden; }
+    body { font-family: 'Sora', sans-serif; color: var(--trust-slate); background: var(--deep); overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
 
     /* ── GRID BACKGROUND ── */
@@ -1304,6 +1304,7 @@
     .hc-score-meta { flex: 1; }
     .hc-score-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 4px; }
     .hc-status { font-size: 0.7rem; font-weight: 700; }
+    .hc-status.idle { color: rgba(255,255,255,0.32); font-weight: 500; }
     .hc-status.good { color: #4ade80; }
     .hc-status.mid  { color: #5a8a9a; }
     .hc-status.risk { color: #f87171; }
@@ -1326,6 +1327,7 @@
       color: rgba(255,255,255,0.22); margin-bottom: 6px;
     }
     #hc-insights { display: flex; flex-direction: column; gap: 8px; }
+    .hc-insights-idle { font-size: 0.7rem; color: rgba(255,255,255,0.28); line-height: 1.6; margin: 0; }
     .hc-insight-card {
       background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
       border-radius: 8px; padding: 12px 14px;
@@ -1727,13 +1729,13 @@ window.TrustShape = (function () {
     </a>
   </div>
   <ul class="nav-links">
-    <li><a href="?request=navigator" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
+    <li><a href="/navigator/" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
     
     <li><a href="/methodology/">How it works</a></li>
     <li><a href="/insights/">Sector Insights</a></li>
     <li><a href="/faq/">FAQ</a></li>
   </ul>
-  <a href="?request=demo" onclick="openDemo(event)" class="nav-cta" style="cursor:pointer;">Book a Demo</a>
+  <a href="/?book=demo" onclick="openDemo(event)" class="nav-cta" style="cursor:pointer;">Book a Demo</a>
 </nav>
 
 <div style="background:var(--deep);padding:64px 5% 0;text-align:center;position:relative;">
@@ -1798,7 +1800,9 @@ window.TrustShape = (function () {
 .bt.compact .bt-lab .of{color:rgba(255,255,255,0.22);font-weight:600;letter-spacing:0.04em;}
 .bt.compact .bt-meaning,.bt.compact .bt-cap{display:none;}
 @media (max-width:760px){.bt-lab{font-size:0.44rem;letter-spacing:0.03em;}}
-@media (prefers-reduced-motion:reduce){.bt-seg{transition:none;}.bt-lab{transition:none;}}
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.bt-seg,.bt-lab{transition:none;}.ts-svg,.ts-svg *{transition:none!important;animation:none!important;}.btn-light:hover,.btn-next:hover,.btn-primary:hover,.df-step-advance-btn:hover,.hero-pillar:hover,.nav-cta:hover{transform:none!important;}input.gap-range::-webkit-slider-thumb:hover,input.hc-slider::-webkit-slider-thumb:hover{transform:none!important;}}
 </style>
 
 <!-- HEALTH CHECK -->
@@ -1861,13 +1865,13 @@ window.TrustShape = (function () {
           <!-- Score row -->
           <div class="hc-score-row">
             <div class="hc-ring" id="hc-ring">
-              <span id="hc-overall">Fragile</span>
+              <span id="hc-overall">Unread</span>
             </div>
             <div class="hc-score-meta">
               <div class="hc-score-label">Your indicative trust band</div>
-              <div class="hc-status mid" id="hc-status">Gaps detected</div>
+              <div class="hc-status idle" id="hc-status">Move a slider to begin</div>
             </div>
-            <p class="hc-score-note" style="font-size:0.6rem;color:rgba(255,255,255,0.22);line-height:1.5;max-width:120px;">Based on your inputs. Adjust sliders to refine.</p>
+            <p class="hc-score-note" id="hc-score-note" style="font-size:0.6rem;color:rgba(255,255,255,0.22);line-height:1.5;max-width:120px;">Your band appears once you move a slider.</p>
           </div>
 
           <!-- Triangle -->
@@ -1899,7 +1903,7 @@ window.TrustShape = (function () {
           <!-- Insight cards -->
           <div>
             <div class="hc-insights-label">What TrustOS flags for your organisation</div>
-            <div id="hc-insights"></div>
+            <div id="hc-insights"><p class="hc-insights-idle">Your three drivers rank here &#8212; lowest first &#8212; once you move a slider.</p></div>
           </div>
 
           <!-- Share buttons -->
@@ -1918,8 +1922,8 @@ window.TrustShape = (function () {
           <p id="hc-cta-line" style="font-size:1.08rem;font-weight:700;color:#fff;line-height:1.4;margin-bottom:8px;">See where your trust really stands — beyond self-assessment.</p>
           <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.65;max-width:540px;margin:0 auto 22px;">Request a free TrustOS Navigator or book a 30-minute demo — either way, your Explorer results come with you, so we start from where you are.</p>
           <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-            <a href="?request=navigator" onclick="openNav(event)" class="btn-primary" style="font-size:0.88rem;padding:14px 30px;cursor:pointer;">Request your TrustOS Navigator</a>
-            <a href="?request=demo" onclick="openDemo(event)" class="btn-ghost" style="font-size:0.85rem;padding:13px 24px;cursor:pointer;">Book a Demo</a>
+            <a href="/navigator/" onclick="openNav(event)" class="btn-primary" style="font-size:0.88rem;padding:14px 30px;cursor:pointer;">Request your TrustOS Navigator</a>
+            <a href="/?book=demo" onclick="openDemo(event)" class="btn-ghost" style="font-size:0.85rem;padding:13px 24px;cursor:pointer;">Book a Demo</a>
           </div>
         </div>
 
@@ -1957,7 +1961,7 @@ window.TrustShape = (function () {
         <li><a href="/insights/">Sector Insights</a></li>
         <li><a href="/faq/">FAQ</a></li>
         <li><a href="https://missionctrl.agency" target="_blank" rel="noopener">MissionCTRL Solutions</a></li>
-        <li><a href="?request=navigator" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
+        <li><a href="/navigator/" onclick="openNav(event)" style="cursor:pointer;">Request a Navigator</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -2177,6 +2181,10 @@ window.TrustShape = (function () {
     return 'high';
   }
 
+  /* The visitor has not judged themselves until they move something. Until then
+     we draw the default shape but publish no band and no status. */
+  var touched = false;
+
   function update() {
     var cl = parseInt(document.getElementById('hc-clarity').value);
     var cn = parseInt(document.getElementById('hc-connection').value);
@@ -2195,25 +2203,31 @@ window.TrustShape = (function () {
 
     // Overall score
     var overall = Math.round((cl + cn + cf) / 3);
-    // Published output is a band, never the composite score (no-published-numbers rule).
-    // Boundaries are internal calibration: 40 / 55 / 70 / 85. The 70 threshold below is preserved.
-    var bandName = overall < 40 ? 'Exposed' : overall < 55 ? 'Fragile' : overall < 70 ? 'Functional' : overall < 85 ? 'Resilient' : 'Defining';
-    document.getElementById('hc-overall').textContent = bandName;
 
-    // Score ring colour
-    var ring = document.getElementById('hc-ring');
-    ring.style.borderTopColor = overall >= 70 ? '#4ade80' : overall >= 50 ? '#5a8a9a' : '#f87171';
+    if (touched) {
+      // Published output is a band, never the composite score (no-published-numbers rule).
+      // Boundaries are internal calibration: 40 / 55 / 70 / 85. The 70 threshold below is preserved.
+      var bandName = overall < 40 ? 'Exposed' : overall < 55 ? 'Fragile' : overall < 70 ? 'Functional' : overall < 85 ? 'Resilient' : 'Defining';
+      document.getElementById('hc-overall').textContent = bandName;
 
-    // Status label
-    var status = overall >= 70 ? 'Trust building' : overall >= 50 ? 'Gaps detected' : 'Urgent gaps';
-    document.getElementById('hc-status').textContent = status;
-    document.getElementById('hc-status').className = 'hc-status ' + (overall >= 70 ? 'good' : overall >= 50 ? 'mid' : 'risk');
+      // Score ring colour
+      var ring = document.getElementById('hc-ring');
+      ring.style.borderTopColor = overall >= 70 ? '#4ade80' : overall >= 50 ? '#5a8a9a' : '#f87171';
 
-    // Update morphing triangle
+      // Status label
+      var status = overall >= 70 ? 'Trust building' : overall >= 50 ? 'Gaps detected' : 'Urgent gaps';
+      document.getElementById('hc-status').textContent = status;
+      document.getElementById('hc-status').className = 'hc-status ' + (overall >= 70 ? 'good' : overall >= 50 ? 'mid' : 'risk');
+
+      var note = document.getElementById('hc-score-note');
+      if (note) note.textContent = 'Based on your inputs. Adjust sliders to refine.';
+    }
+
+    // Update morphing triangle — always drawn, so the panel is never empty
     updateTriangle(cl, cn, cf);
 
     // Render insight cards
-    renderInsights(cl, cn, cf);
+    if (touched) renderInsights(cl, cn, cf);
 
     // Sector comparison strip
     renderCompare();
@@ -2327,7 +2341,8 @@ window.TrustShape = (function () {
     if(!window.TrustShape) return;
     var comp = (cl + cn + cf) / 3;
     window.TrustShape.paint(document.getElementById('hc-shape'), cl, cn, cf, 'Trust Index', 'Your');
-    window.TrustShape.track(document.getElementById('hc-track'), comp, false);
+    // The band track names a band, so it stays empty until the visitor has moved a slider.
+    if (touched) window.TrustShape.track(document.getElementById('hc-track'), comp, false);
   }
 
   function renderInsights(cl, cn, cf) {
@@ -2363,11 +2378,14 @@ window.TrustShape = (function () {
   // Bind sliders
   ['hc-clarity','hc-connection','hc-confidence'].forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) el.addEventListener('input', update);
+    if (el) el.addEventListener('input', function() { touched = true; window.hcTouched = true; update(); });
   });
 
-  // Init
-  if (document.getElementById('hc-poly')) {
+  // Init — draw the default shape from the starting slider values using the same
+  // render path a slider move takes. (The old guard looked for #hc-poly, which the
+  // shared TrustShape component does not create, so this never ran and the panel
+  // loaded empty.)
+  if (document.getElementById('hc-shape')) {
     update();
   }
 })();
@@ -2394,7 +2412,8 @@ window.TrustShape = (function () {
   window.hcFill=function(){var s=hcState();[['f-hc-c',s.c],['f-hc-n',s.n],['f-hc-f',s.f],['f-hc-s',s.avg],['d-hc-c',s.c],['d-hc-n',s.n],['d-hc-f',s.f],['d-hc-s',s.avg]].forEach(function(p){var el=document.getElementById(p[0]);if(el)el.value=p[1];});};
   function hcCta(){var s=hcState(),el=document.getElementById('hc-cta-line');if(!el)return;var m=Math.min(s.c,s.n,s.f);var name=m===s.c?'Clarity':(m===s.n?'Connection':'Confidence');
     el.textContent = m>=70 ? 'Strong shape — now test it against what stakeholders actually say.' : 'Your biggest gap is '+name+' — a Navigator would show you where it\u2019s leaking.';}
-  ['hc-clarity','hc-connection','hc-confidence'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',hcCta);});hcCta();
+  ['hc-clarity','hc-connection','hc-confidence'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',function(){window.hcTouched=true;hcCta();});});
+  if(window.hcTouched)hcCta();
   window.handleNavSubmit = function(e){
     e.preventDefault(); if(typeof hcFill==='function')hcFill();
     var name=document.getElementById('nav-name').value.trim();

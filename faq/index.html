@@ -639,6 +639,10 @@
     .faq-ask-row { flex-direction:column; }
     .faq-ask-btn { padding:13px; }
   }
+
+/* Reduced motion: everything below still renders in its final state — the trust
+   shape, the band track and the charts are drawn, they just do not animate. */
+@media (prefers-reduced-motion:reduce){.btn-primary:hover,.faq-ask-btn:hover,.nav-cta:hover,.related-card:hover{transform:none!important;}}
 </style>
 <!-- seo-ai:start -->
 <link rel="canonical" href="https://trustos.missionctrl.agency/faq/" />
