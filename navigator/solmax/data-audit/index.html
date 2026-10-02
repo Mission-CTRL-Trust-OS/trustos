@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -53,12 +53,12 @@ nav{
 .nav-wordmark{font-size:1.3rem;font-weight:800;letter-spacing:-0.03em;display:flex;align-items:center;gap:10px}
 .nav-wordmark .trust{color:#8fb5c0}
 .nav-wordmark .os{color:var(--trust-cool)}
-.nav-product-link{font-size:0.62rem;font-weight:500;color:rgba(255,255,255,0.35);margin-left:16px;transition:color .2s;display:inline-flex;align-items:center;gap:5px}
+.nav-product-link{font-size:0.62rem;font-weight:500;color:rgba(255,255,255,0.675);margin-left:16px;transition:color .2s;display:inline-flex;align-items:center;gap:5px}
 .nav-product-link:hover{color:var(--trust-cool)}
 .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
-.nav-links a{font-size:0.82rem;font-weight:500;color:rgba(255,255,255,0.55);transition:color .2s}
+.nav-links a{font-size:0.82rem;font-weight:500;color:rgba(255,255,255,0.775);transition:color .2s}
 .nav-links a:hover{color:var(--white)}
-.nav-cta{font-size:0.88rem;font-weight:600;padding:10px 22px;background:var(--trust-cool);color:var(--white);border-radius:6px;transition:background .2s,transform .15s}
+.nav-cta{font-size:0.88rem;font-weight:600;padding:10px 22px;background:var(--trust-cool);color:var(--deep);border-radius:6px;transition:background .2s,transform .15s}
 .nav-cta:hover{background:#4a7a8a;transform:translateY(-1px)}
 
 /* ── STEP RAIL ── */
@@ -72,7 +72,7 @@ nav{
 .steps::-webkit-scrollbar{display:none}
 .steps li{
   font-size:0.63rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
-  color:rgba(255,255,255,0.3);padding:5px 12px;border-radius:6px;white-space:nowrap;
+  color:rgba(255,255,255,0.65);padding:5px 12px;border-radius:6px;white-space:nowrap;
   border:1px solid transparent;transition:.2s;
 }
 .steps li[data-on="1"]{color:var(--white);background:rgba(90,138,154,0.22);border-color:rgba(90,138,154,0.5)}
@@ -100,13 +100,13 @@ nav{
 .hero .section-inner{position:relative;z-index:2}
 .hero h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;line-height:1.1;color:var(--white);letter-spacing:-0.04em;max-width:880px}
 .hero h1 em{font-style:normal;color:var(--trust-cool)}
-.hero-sub{font-size:1rem;line-height:1.85;color:rgba(255,255,255,0.45);max-width:620px;margin-top:22px}
-.hero-sub strong{color:rgba(255,255,255,0.85);font-weight:600}
+.hero-sub{font-size:1rem;line-height:1.85;color:rgba(255,255,255,0.725);max-width:620px;margin-top:22px}
+.hero-sub strong{color:rgba(255,255,255,0.925);font-weight:600}
 
 /* explainer */
 .explain{margin-top:44px;max-width:900px}
 .explain-quote{
-  font-size:1.05rem;font-weight:700;line-height:1.6;color:rgba(255,255,255,0.85);
+  font-size:1.05rem;font-weight:700;line-height:1.6;color:rgba(255,255,255,0.925);
   max-width:620px;margin-top:26px;padding-left:18px;border-left:2px solid var(--trust-cool);
 }
 .explain-quote em{font-style:normal;color:var(--trust-cool)}
@@ -114,15 +114,15 @@ nav{
 .driver{padding:22px 20px;background:rgba(90,138,154,0.06);border:1px solid rgba(90,138,154,0.15);border-radius:10px;transition:border-color .3s,transform .3s}
 .driver:hover{border-color:rgba(90,138,154,0.35);transform:translateY(-2px)}
 .driver b{display:block;font-size:0.8rem;font-weight:700;color:var(--trust-cool);margin-bottom:8px}
-.driver span{display:block;font-size:0.76rem;line-height:1.7;color:rgba(255,255,255,0.4)}
+.driver span{display:block;font-size:0.76rem;line-height:1.7;color:rgba(255,255,255,0.7)}
 @media(max-width:780px){.drivers{grid-template-columns:1fr}}
 
 .askbox{
   margin-top:34px;max-width:620px;padding:20px 24px;
   background:rgba(90,138,154,0.08);border:1px solid rgba(90,138,154,0.2);border-radius:8px;
 }
-.askbox p{font-size:0.86rem;line-height:1.75;color:rgba(255,255,255,0.55)}
-.askbox strong{color:rgba(255,255,255,0.85);font-weight:600}
+.askbox p{font-size:0.86rem;line-height:1.75;color:rgba(255,255,255,0.775)}
+.askbox strong{color:rgba(255,255,255,0.925);font-weight:600}
 .askbox a{color:var(--trust-cool);text-decoration:underline}
 
 /* ── PANELS / FORM ── */
@@ -220,7 +220,7 @@ button.btn.tiny{font-size:0.72rem;padding:9px 15px;border-width:1px;white-space:
 button.btn{
   font-family:'Sora',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;
   padding:14px 30px;border-radius:6px;
-  background:var(--trust-cool);color:var(--white);border:2px solid var(--trust-cool);
+  background:var(--trust-cool);color:var(--deep);border:2px solid var(--trust-cool);
   transition:all .2s;
 }
 button.btn:hover{background:#4a7a8a;border-color:#4a7a8a;transform:translateY(-2px)}
@@ -267,22 +267,22 @@ button.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visibl
 /* ── FOOTER ── */
 footer{background:var(--deep);padding:48px 5% 36px}
 .footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;padding-bottom:32px}
-.footer-col h4{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:18px}
+.footer-col h4{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:18px}
 .footer-wordmark{font-size:1.1rem;font-weight:800}
 .footer-wordmark .trust{color:#8fb5c0}
 .footer-wordmark .os{color:var(--trust-cool)}
-.footer-brand-tagline{font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:6px;display:flex;align-items:center;gap:6px}
-.footer-brand-desc{font-size:0.76rem;line-height:1.65;color:rgba(255,255,255,0.3);margin-top:10px}
+.footer-brand-tagline{font-size:0.78rem;color:rgba(255,255,255,0.675);margin-top:6px;display:flex;align-items:center;gap:6px}
+.footer-brand-desc{font-size:0.76rem;line-height:1.65;color:rgba(255,255,255,0.65);margin-top:10px}
 .footer-brand-desc a{color:var(--trust-cool);text-decoration:underline}
 .footer-nav-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.footer-nav-list a{font-size:0.82rem;color:rgba(255,255,255,0.4);transition:color .2s}
+.footer-nav-list a{font-size:0.82rem;color:rgba(255,255,255,0.7);transition:color .2s}
 .footer-nav-list a:hover{color:var(--trust-cool)}
 .footer-connect-item{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .footer-connect-item svg{flex-shrink:0}
-.footer-connect-item a{font-size:0.82rem;color:rgba(255,255,255,0.4);transition:color .2s}
+.footer-connect-item a{font-size:0.82rem;color:rgba(255,255,255,0.7);transition:color .2s}
 .footer-connect-item a:hover{color:var(--trust-cool)}
-.footer-legal{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);font-size:0.72rem;color:rgba(255,255,255,0.25);line-height:1.8}
-.footer-legal a{color:rgba(255,255,255,0.35)}
+.footer-legal{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);font-size:0.72rem;color:rgba(255,255,255,0.625);line-height:1.8}
+.footer-legal a{color:rgba(255,255,255,0.675)}
 .footer-legal a:hover{color:var(--trust-cool)}
 
 @media(max-width:900px){
@@ -350,7 +350,7 @@ button.linkish:hover{color:#3a6a7a}
 
 /* ── STEP RAIL: clickable, and all six steps readable on a phone ── */
 .steps li{cursor:pointer}
-.steps li:hover{color:rgba(255,255,255,0.72)}
+.steps li:hover{color:rgba(255,255,255,0.86)}
 .steps li:focus-visible{outline:2px solid var(--trust-cool);outline-offset:2px}
 @media(max-width:620px){
   .rail-in{height:auto;min-height:46px;padding:6px 4%}
@@ -409,7 +409,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
 /* The upload button and the "email Dustin" button are anchors, not buttons, so they
    need the button skin spelled out once. */
 .sent a.btn{display:inline-block;font-family:'Sora',sans-serif;font-size:0.88rem;font-weight:600;
-  padding:14px 30px;border-radius:6px;background:var(--trust-cool);color:var(--white);
+  padding:14px 30px;border-radius:6px;background:var(--trust-cool);color:var(--deep);
   border:2px solid var(--trust-cool);transition:all .2s}
 .sent a.btn:hover{background:#4a7a8a;border-color:#4a7a8a;transform:translateY(-2px)}
 .sent a.btn.ghost{background:transparent;color:var(--trust-cool);font-size:0.82rem;padding:12px 26px}
@@ -846,7 +846,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
         <svg width="10" height="12" viewBox="0 0 120 148" fill="none"><defs><linearGradient id="ft-mg" x1="0" y1="148" x2="120" y2="0"><stop offset="0%" stop-color="#ff6b2b"/><stop offset="100%" stop-color="#ffad3b"/></linearGradient><clipPath id="ft-mlc"><path d="M4,140 L30,12 L60,88 L90,12 L116,140 Z"/></clipPath></defs><rect width="120" height="148" fill="url(#ft-mg)" clip-path="url(#ft-mlc)"/></svg>
         A MissionCTRL product
       </p>
-      <p class="footer-brand-desc" style="font-size:0.76rem;color:rgba(255,255,255,0.3);line-height:1.65;">TrustOS is the trust-intelligence layer of the Brand Effect — MissionCTRL's methodology for turning purpose-led brands into movements. <a href="https://missionctrl.agency" style="color:var(--trust-cool);text-decoration:underline;" target="_blank" rel="noopener">Learn about the Brand Effect at missionctrl.agency</a></p>
+      <p class="footer-brand-desc" style="font-size:0.76rem;color:rgba(255,255,255,0.65);line-height:1.65;">TrustOS is the trust-intelligence layer of the Brand Effect — MissionCTRL's methodology for turning purpose-led brands into movements. <a href="https://missionctrl.agency" style="color:var(--trust-cool);text-decoration:underline;" target="_blank" rel="noopener">Learn about the Brand Effect at missionctrl.agency</a></p>
     </div>
     <div class="footer-col">
       <h4>Navigate</h4>

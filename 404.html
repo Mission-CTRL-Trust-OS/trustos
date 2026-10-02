@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,18 +11,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Sora', system-ui, sans-serif; background: #0a0f1a; color: rgba(255,255,255,0.78); min-height: 100vh; display: flex; align-items: center; justify-content: center; font-weight: 300; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Sora', system-ui, sans-serif; background: #0a0f1a; color: rgba(255,255,255,0.89); min-height: 100vh; display: flex; align-items: center; justify-content: center; font-weight: 300; line-height: 1.65; -webkit-font-smoothing: antialiased; }
     .wrap { text-align: center; padding: 48px 24px; max-width: 560px; }
     .tri { margin: 0 auto 28px; opacity: 0.9; }
     h1 { color: #fff; font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -0.03em; margin-bottom: 12px; }
-    p { color: rgba(255,255,255,0.6); margin-bottom: 30px; }
+    p { color: rgba(255,255,255,0.8); margin-bottom: 30px; }
     .btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .btn-primary { display: inline-block; background: linear-gradient(135deg, #6da0b8, #5a8a9a); color: #fff; font-weight: 600; font-size: 0.9rem; padding: 13px 30px; border-radius: 8px; text-decoration: none; }
     .btn-primary:hover { filter: brightness(1.1); }
-    .btn-ghost { display: inline-block; border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.8); font-weight: 600; font-size: 0.9rem; padding: 13px 30px; border-radius: 8px; text-decoration: none; }
+    .btn-ghost { display: inline-block; border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.9); font-weight: 600; font-size: 0.9rem; padding: 13px 30px; border-radius: 8px; text-decoration: none; }
     .btn-ghost:hover { border-color: rgba(255,255,255,0.4); }
-    .foot { margin-top: 40px; font-size: 0.72rem; color: rgba(255,255,255,0.3); }
-    .foot a { color: rgba(255,255,255,0.45); text-decoration: none; }
+    .foot { margin-top: 40px; font-size: 0.72rem; color: rgba(255,255,255,0.65); }
+    .foot a { color: rgba(255,255,255,0.725); text-decoration: none; }
   </style>
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-KQ0lt2TsPlWmFkUuKy011.js"></script>
@@ -32,9 +32,28 @@
   </script>
 <!-- Consent-gated analytics (Microsoft Clarity) — see assets/mc-analytics.js -->
 <script defer src="/assets/mc-analytics.js"></script>
+<style>
+  /* Accessibility: a bypass link, a main landmark to bypass to, one visible
+     focus ring, and tap targets that clear 44px. */
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 999;
+    background: #0a0f1a; color: #fff; padding: 14px 20px;
+    border: 1px solid rgba(143,181,192,0.6); border-radius: 0 0 6px 0;
+    font-size: 0.9rem; font-weight: 600; text-decoration: none;
+  }
+  .skip-link:focus { left: 0; outline: 3px solid #8fb5c0; outline-offset: 2px; }
+  #main { scroll-margin-top: 88px; }
+  /* :focus-visible only, so a pointer user never sees it — which is why
+     outline:none was reached for in the first place. */
+  :focus-visible { outline: 3px solid #8fb5c0; outline-offset: 2px; border-radius: 3px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible,
+  input:focus-visible, textarea:focus-visible, select:focus-visible,
+  [type="range"]:focus-visible { outline: 3px solid #8fb5c0; outline-offset: 2px; }
+</style>
 </head>
 <body>
-  <div class="wrap">
+<a class="skip-link" href="#main">Skip to main content</a>
+  <main id="main" class="wrap">
     <svg class="tri" width="72" height="89" viewBox="0 0 120 148" fill="none" aria-hidden="true">
       <defs>
         <linearGradient id="tg" x1="60" y1="12" x2="60" y2="88"><stop offset="0%" stop-color="#7fb4cc"/><stop offset="100%" stop-color="#4d7a8a"/></linearGradient>
@@ -50,6 +69,28 @@
       <a href="/" class="btn-ghost">Back to TrustOS</a>
     </div>
     <p class="foot">TrustOS &middot; A MissionCTRL product &middot; <a href="/insights/">Sector Insights</a> &middot; <a href="/faq/">FAQ</a></p>
-  </div>
+  </main>
+<style>
+  /* Tap targets. Padding only — nothing moves, the targets just stop being
+     14px tall. This block sits at the end of the document because several of
+     these rules are declared in <style> blocks inside the body.
+     The footers matter most: on a phone they were the only navigation. */
+  @media (max-width: 900px) {
+    footer a, footer button,
+    .si-all-links a, .breadcrumb a, .article-meta-item a,
+    .faq-toc-list a, .doc a.inline, .callout a.inline,
+    nav .nl > a, .nav-wordmark {
+      display: inline-block; padding-top: 15px; padding-bottom: 15px;
+    }
+    .nav-mobile > summary, .nav-mobile-panel a,
+    .si-opt, .sector-pill, .si-cta-ghost, .si-cta-primary,
+    .faq-toggle-all, .faq-linkbtn, .faq-toc-email, .faq-toc-call,
+    .hc-sector-select, .faq-ef-input, .hc-copy-btn, .btn-ghost {
+      padding-top: 14px; padding-bottom: 14px;
+    }
+    .nav-product-link { display: inline-flex; padding-top: 16px; padding-bottom: 16px; }
+    .md-dot { padding: 22px 12px; background-clip: content-box; }
+  }
+</style>
 </body>
 </html>
