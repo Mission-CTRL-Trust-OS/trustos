@@ -211,6 +211,10 @@ button.btn.tiny{font-size:0.72rem;padding:9px 15px;border-width:1px;white-space:
 .answer{display:flex;flex-direction:column;gap:9px}
 .who{display:none;grid-template-columns:1fr 1fr;gap:9px}
 .who.on{display:grid}
+/* Shown only for the three "we have this" answers. A plain text box on purpose:
+   a half-remembered folder path is still worth having, so nothing is validated away. */
+.linkbox{display:none}
+.linkbox.on{display:block}
 @media(max-width:560px){.who.on{grid-template-columns:1fr}}
 .notebtn{background:none;border:0;font-family:'Sora',sans-serif;color:var(--trust-cool);font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;padding:4px 0;text-align:left}
 .notebtn:hover{color:#3a6a7a}
@@ -346,6 +350,9 @@ button.linkish:hover{color:#3a6a7a}
 .notebtn.del{color:#b0341f}
 .notebtn.del:hover{color:#8a2718}
 .tag.added{color:var(--trust-cool);border-color:rgba(90,138,154,.45);background:rgba(90,138,154,.07);opacity:1}
+/* The reference is the handle: it is what a filename is prefixed with, and what a
+   return is matched back to. It has to be on screen for either to be asked for. */
+.tag.ref{font-variant-numeric:tabular-nums;letter-spacing:0.08em;font-weight:700;opacity:.85}
 .tag.out{color:var(--warn);border-color:rgba(154,106,30,.4);background:var(--warn-soft);opacity:1}
 
 /* ── STEP RAIL: clickable, and all six steps readable on a phone ── */
@@ -608,8 +615,11 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
       <div class="actions">
         <button class="btn" id="go5">Next &mdash; where it comes from</button>
         <button class="btn quiet" id="back3">Back</button>
+        <button class="btn ghost" type="button" id="s4-send">Send what I have so far</button>
+        <button class="btn quiet" type="button" id="s4-copy">Keep a copy</button>
       </div>
-      <p class="mini">Your answers are saved <strong>in this browser only</strong>, so you can close the tab and come back &mdash; but finish on the same device and in the same browser, or you will start again. Nothing is sent anywhere until you send it yourself in step six.</p>
+      <p class="status-line" id="s4-send-status"></p>
+      <p class="mini">Your answers are saved <strong>in this browser only</strong>, so you can close the tab and come back &mdash; but finish on the same device and in the same browser, or you will start again. If you are not going to finish in one go, <strong>send what you have</strong> &mdash; a part-way return is far better than a lost one, and you can send again as often as you like. Nothing goes anywhere unless you press one of those two buttons.</p>
     </div>
   </div>
 </section>
@@ -661,9 +671,12 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
       <div class="actions">
         <button class="btn" id="go6">Review and send</button>
         <button class="btn quiet" id="back4">Back to my list</button>
+        <button class="btn ghost" type="button" id="s5-send">Send what I have so far</button>
+        <button class="btn quiet" type="button" id="s5-copy">Keep a copy</button>
       </div>
+      <p class="status-line" id="s5-send-status"></p>
       <p class="err" id="e5" role="status" aria-live="polite"></p>
-      <p class="mini">Saved in this browser as you go, the same as step four. Nothing is sent anywhere until you send it yourself on step six.</p>
+      <p class="mini">Saved in this browser as you go, the same as step four &mdash; and the same applies: if you are stopping, send what you have rather than risk losing it. Nothing goes anywhere unless you press a send button.</p>
     </div>
   </div>
 </section>
@@ -674,7 +687,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
     <div class="section-inner">
       <div class="section-label">Step six of six</div>
       <h2 class="section-title">Send it back to <em>Dustin</em></h2>
-      <p class="lede" id="s6-lede">Here is what you have told us. Nothing has left your browser yet. Press send and it goes straight to Dustin &mdash; then we will tell you where the documents themselves should go.</p>
+      <p class="lede" id="s6-lede">Here is what you have told us. Press send and the finished version goes straight to Dustin &mdash; then we will tell you where the documents themselves should go. If you sent a part-way return earlier, this one replaces it.</p>
 
       <div class="tally" id="sum-tally"></div>
       <p class="mini" id="sum-src"></p>
@@ -702,6 +715,13 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
             <input type="hidden" name="sources-collected" id="hf-src-collected">
             <input type="hidden" name="sources-could-collect" id="hf-src-could">
             <input type="hidden" name="board-proof" id="hf-proof">
+            <input type="hidden" name="catalogue" id="hf-catalogue">
+            <input type="hidden" name="stage" id="hf-stage">
+            <input type="hidden" name="links-given" id="hf-links">
+            <!-- The machine-readable copy of the same return. plain() above is for reading;
+                 this is the one the analysis is built from, so nobody has to re-key a
+                 downloaded file. Two tables, same shape as the download. -->
+            <textarea class="hp" name="return-csv" id="hf-csv" rows="2" tabindex="-1" aria-hidden="true"></textarea>
             <textarea class="hp" name="return" id="hf-return" rows="2" tabindex="-1" aria-hidden="true"></textarea>
             <div class="actions">
               <button class="btn" type="submit" id="sendBtn">Send my return to Dustin &rarr;</button>
@@ -965,6 +985,10 @@ const STATUS=[
   "It doesn’t exist","Not my area","I don’t know"
 ];
 const NEEDS_NAME=new Set(["We have this — someone else holds it","Not my area"]);
+/* The three answers that mean the thing exists. Only these show the link box: a link
+   is worth more than an upload here because it answers "where does it live" as well
+   as "does it exist", and an uploaded copy throws the location away. */
+const HAS_IT=new Set(["We have this — I can send it","We have this — someone else holds it","We have some of it"]);
 /* "Not my area" is an honest escape hatch, so naming someone is offered there, never
    demanded — two blank boxes push people towards "I don’t know", a worse answer. */
 const OPT_NAME=new Set(["Not my area"]);
@@ -1006,7 +1030,11 @@ const FREQ=["","Continuously","Monthly","Quarterly","Annually","Ad hoc","Don\u20
 
 const TO="hello@missionctrl.agency";
 const OWNER_NAME="Dustin Lawrence";
-const DEADLINE="Friday 16 October";
+const DEADLINE="Friday 13 November";
+/* Frozen at send. Returns taken under different catalogue versions are not directly
+   comparable — the refs move — so every return carries the version it was answered
+   against. Bump it in one place if the fifty-seven lines or the seventeen sources change. */
+const CATALOGUE_VERSION="v1 · 2026-10-05 · 57 lines · 17 sources";
 const PAGE_URL="https://trustos.missionctrl.agency/navigator/solmax/data-audit/";
 /* The link a systems owner is sent: it opens on step five and says so. */
 const SRC_URL=PAGE_URL+"#sources";
@@ -1048,13 +1076,13 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 /* ===== things the respondent adds themselves ===== */
 function xNew(label){
   let n=1; while(S.extra.some(x=>x.ref==="X"+String(n).padStart(2,"0"))) n++;
-  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",hname:"",hmail:"",note:null};
+  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",hname:"",hmail:"",link:"",note:null};
   S.extra.push(x); save(); return x;
 }
 const xById=ref=>S.extra.find(x=>x.ref===ref);
 function extraRows(){
   return S.extra.map(x=>({ref:x.ref,rel:"Things you added",lens:"Added",ask:x.label||"(unnamed item)",
-    status:x.status||"",hname:x.hname||"",hmail:x.hmail||"",note:x.note||""}));
+    status:x.status||"",hname:x.hname||"",hmail:x.hmail||"",link:x.link||"",note:x.note||""}));
 }
 const okMail=m=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(m||"").trim());
 
@@ -1274,6 +1302,9 @@ function answerHTML(a,label){
         <input type="text" class="j-hname" aria-label="Name of the person who holds this \u2014 ${esc(label)}" placeholder="Their name" value="${esc(a.hname||"")}">
         <input type="email" class="j-hmail" aria-label="Email of the person who holds this \u2014 ${esc(label)}" placeholder="Their email" value="${esc(a.hmail||"")}">
       </div>
+      <div class="linkbox${HAS_IT.has(st)?" on":""}">
+        <input type="text" class="j-link" aria-label="Link to it, if there is one \u2014 ${esc(label)}" placeholder="Link, if it is somewhere you can point us to \u2014 optional" value="${esc(a.link||"")}" autocomplete="off" spellcheck="false">
+      </div>
     </div>`;
 }
 function paint(){
@@ -1299,6 +1330,7 @@ function paint(){
         <div>
           <input type="text" class="j-xlabel" aria-label="What you hold that the list missed" placeholder="What is it? e.g. regional pricing agreements" value="${esc(x.label)}">
           <div class="tags">
+            <span class="tag ref">${esc(x.ref)}</span>
             <span class="tag added">You added this</span>
             <button class="notebtn del j-xdel" type="button">Remove</button>
           </div>
@@ -1327,6 +1359,7 @@ function paint(){
           <div>
             <div class="ask">${esc(r.ask)}</div>
             <div class="tags">
+              <span class="tag ref">${esc(r.ref)}</span>
               <span class="tag lens">${esc(r.lens)}</span>
               <span class="tag">${esc(OWNERS[r.own]||r.own)}</span>
               ${isCentral(r)?'<span class="tag central">usually held centrally</span>':''}
@@ -1362,6 +1395,9 @@ function paint(){
    stays under People named \u2014 and gets emailed \u2014 about a line the respondent owns. */
 function setAns(ref,patch){
   if(patch.status!==undefined&&!NEEDS_NAME.has(patch.status)) patch=Object.assign({},patch,{hname:"",hmail:""});
+  /* Same reasoning for the link: a status that says it does not exist must not keep
+     a link pointing at something that does. */
+  if(patch.status!==undefined&&!HAS_IT.has(patch.status)) patch=Object.assign({},patch,{link:""});
   if(ref.charAt(0)==="X"){ const x=xById(ref); if(x) Object.assign(x,patch); save(); return; }
   S.ans[ref]=Object.assign({},S.ans[ref],patch);
   if(!S.ans[ref].status && !S.ans[ref].note) delete S.ans[ref];
@@ -1380,6 +1416,8 @@ $("rows").addEventListener("change",e=>{
     who.classList.toggle("on",needs&&(!opt||has));
     if(hint) hint.hidden=!opt;
     if(btn) btn.hidden=!(needs&&opt&&!has);
+    const lb=item.querySelector(".linkbox"), li=lb&&lb.querySelector(".j-link");
+    if(lb){ const want=HAS_IT.has(v); if(!want&&li) li.value=""; lb.classList.toggle("on",want); }
     item.classList.toggle("done",!!v);
     countUp();
   }
@@ -1389,6 +1427,7 @@ $("rows").addEventListener("change",e=>{
 $("rows").addEventListener("input",e=>{
   const item=e.target.closest(".item"); if(!item) return;
   if(e.target.classList.contains("j-note")) setAns(item.dataset.ref,{note:e.target.value});
+  if(e.target.classList.contains("j-link")) setAns(item.dataset.ref,{link:e.target.value});
   if(e.target.classList.contains("j-xlabel")){
     const x=xById(item.dataset.ref); if(x){ x.label=e.target.value; save(); }
   }
@@ -1578,7 +1617,7 @@ function rowsOut(){
   return extraRows().concat(scope().filter(r=>S.ans[r.ref]).map(r=>{
     const a=S.ans[r.ref];
     return {ref:r.ref,rel:r.rel,lens:r.lens,ask:r.ask,status:a.status||"",
-            hname:a.hname||"",hmail:a.hmail||"",note:a.note||""};
+            hname:a.hname||"",hmail:a.hmail||"",link:a.link||"",note:a.note||""};
   }));
 }
 function contacts(){
@@ -1621,11 +1660,12 @@ function slug(){
   return (S.me.name||"return").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 }
 function csv(){
-  const head=["Ref","Relationship","Lens","Item","Status","Holder name","Holder email","Note"];
+  const head=["Ref","Relationship","Lens","Item","Status","Holder name","Holder email","Link","Note"];
   const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
   const t=srcStats();
   const meta=[["Name",S.me.name],["Email",S.me.email],["Role",S.me.role],
-              ["Regions",S.regions.join("; ")],["Returned",new Date().toISOString().slice(0,10)]];
+              ["Regions",S.regions.join("; ")],["Returned",new Date().toISOString().slice(0,10)],
+              ["Catalogue",CATALOGUE_VERSION]];
   /* Two tables in one file: the document inventory, then where it comes from. The
      readiness numbers sit above the second one so they are readable without a formula. */
   const srcMeta=[["WHERE IT COMES FROM",""],
@@ -1638,7 +1678,7 @@ function csv(){
   const srcHead=["Ref","Lens","Source","Collected today","Where it lives","Refreshed","Could be collected at"];
   return meta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
     [head.map(q).join(",")].concat(rowsOut().map(r=>
-      [r.ref,r.rel,r.lens,r.ask,r.status,r.hname,r.hmail,r.note].map(q).join(","))).join("\n")+
+      [r.ref,r.rel,r.lens,r.ask,r.status,r.hname,r.hmail,r.link,r.note].map(q).join(","))).join("\n")+
     "\n\n"+srcMeta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
     [srcHead.map(q).join(",")].concat(srcOut().map(r=>
       [r.ref,r.lens,r.name,r.got,r.sys,r.freq,r.could].map(q).join(","))).join("\n");
@@ -1648,12 +1688,14 @@ function plain(){
   L.push("SOLMAX DATA AUDIT — RETURN");
   L.push(S.me.name+(S.me.role?" · "+S.me.role:"")+(S.me.email?" · "+S.me.email:""));
   if(S.regions.length) L.push("Regions: "+S.regions.join(", "));
+  L.push("Catalogue: "+CATALOGUE_VERSION);
   L.push("");
   let lastRel="";
   rowsOut().forEach(r=>{
     if(r.rel!==lastRel){L.push("["+r.rel.toUpperCase()+"]"); lastRel=r.rel;}
     let line=r.ref+"  "+r.ask+"\n      -> "+r.status;
     if(r.hname||r.hmail) line+="  ("+[r.hname,r.hmail].filter(Boolean).join(", ")+")";
+    if(r.link) line+="\n      link: "+r.link;
     if(r.note) line+="\n      note: "+r.note;
     L.push(line);
   });
@@ -1779,11 +1821,13 @@ function showSent(done,total,people){
   if(SHAREPOINT_URL){
     box.innerHTML=
       '<div class="actions"><a class="btn" href="'+esc(SHAREPOINT_URL)+'" target="_blank" rel="noopener">Upload your documents &rarr;</a></div>'+
-      '<p class="mini">They stay on the Solmax network.</p>';
+      '<p class="mini">They stay on the Solmax network. <b>If you can, start each filename with the reference from your list</b> \u2014 the short code on each line, like L04 or L23. It is what matches a document back to the line it answers, and it saves us guessing.</p>';
   }else{
     box.innerHTML=
       '<p class="mini">Documents stay on the Solmax network &mdash; '+esc(OWNER_NAME)+
-      ' will email you the SharePoint link. Or send what you can to <a href="mailto:'+TO+'">'+TO+'</a>.</p>';
+      ' will email you the SharePoint link. Or send what you can to <a href="mailto:'+TO+'">'+TO+'</a>. '+
+      '<b>If you can, start each filename with the reference from your list</b> \u2014 the short code on each line, like L04 or L23. '+
+      'It is what matches a document back to the line it answers.</p>';
   }
   $("sent-block").scrollIntoView({behavior:"smooth",block:"start"});
 }
@@ -1806,6 +1850,21 @@ if(auditForm) auditForm.addEventListener("submit",e=>{
     $("sendBtn").textContent="Send it anyway \u2192";
     return;
   }
+  fillHidden(nm,em,done,n,cs,"final");
+  const btn=$("sendBtn"); btn.disabled=true; btn.textContent="Sending\u2026";
+  postReturn()
+    .then(()=>{ showSent(done,n,cs.length); })
+    .catch(()=>{
+      btn.disabled=false; btn.textContent="Send my return to Dustin \u2192";
+      err.textContent="That did not go through, so nothing has been sent. Use the email route below instead \u2014 it always works.";
+      $("fallback-block").hidden=false;
+      $("fallback-block").scrollIntoView({behavior:"smooth",block:"start"});
+    });
+});
+
+/* Everything the form carries, filled in one place so the final send and a part-way
+   send can never drift apart. */
+function fillHidden(nm,em,done,n,cs,stage){
   $("hf-name").value=nm;
   $("hf-email").value=em;
   $("hf-role").value=S.me.role||"";
@@ -1824,18 +1883,50 @@ if(auditForm) auditForm.addEventListener("submit",e=>{
     " sometimes or only in some regions; "+t.done+" of "+SRC.length+" sources answered";
   $("hf-src-could").value=String(t.could);
   $("hf-proof").value=S.proof||"";
+  $("hf-catalogue").value=CATALOGUE_VERSION;
+  $("hf-stage").value=stage;
+  $("hf-links").value=String(rowsOut().filter(r=>r.link).length);
   $("hf-return").value=plain();
-  const btn=$("sendBtn"); btn.disabled=true; btn.textContent="Sending\u2026";
-  fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},
-             body:new URLSearchParams(new FormData(auditForm)).toString()})
-    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); showSent(done,n,cs.length); })
-    .catch(()=>{
-      btn.disabled=false; btn.textContent="Send my return to Dustin \u2192";
-      err.textContent="That did not go through, so nothing has been sent. Use the email route below instead \u2014 it always works.";
-      $("fallback-block").hidden=false;
-      $("fallback-block").scrollIntoView({behavior:"smooth",block:"start"});
-    });
-});
+  $("hf-csv").value=csv();
+}
+function postReturn(){
+  return fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},
+                    body:new URLSearchParams(new FormData(auditForm)).toString()})
+    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r; });
+}
+
+/* ── PART-WAY SEND ──────────────────────────────────────────────────────────
+   Forty lines answered and then a meeting is the commonest way a return is lost,
+   and until now that produced nothing at all. This posts what exists so far and
+   leaves the person exactly where they were. It is a button, never an autosave:
+   the page promises that nothing leaves the browser unless they send it, and a
+   silent post would break that promise rather than keep it. */
+function sendPartial(btnId,statusId,stepLabel){
+  const btn=$(btnId), st=$(statusId); if(!btn) return;
+  btn.onclick=()=>{
+    const nm=(S.me.name||"").trim(), em=(S.me.email||"").trim();
+    if(!nm||!okMail(em)){
+      st.textContent="We need your name and a working email first \u2014 they are what the return is signed with.";
+      goStep(1); return;
+    }
+    const out=rowsOut(), n=total(), cs=contacts();
+    const done=out.filter(r=>r.status).length;
+    if(!done){ st.textContent="Nothing is answered yet, so there is nothing to send. Answer a line or two first."; return; }
+    btn.disabled=true; const was=btn.textContent; btn.textContent="Sending\u2026";
+    fillHidden(nm,em,done,n,cs,"partial \u2014 sent from "+stepLabel);
+    postReturn()
+      .then(()=>{
+        btn.textContent="Sent \u2014 send again any time";
+        btn.disabled=false;
+        st.textContent="Sent. "+done+" line"+(done===1?"":"s")+" are with Dustin. Carry on where you were \u2014 "+
+          "you can send again as you go, and the last one we receive is the one that counts.";
+      })
+      .catch(()=>{
+        btn.disabled=false; btn.textContent=was;
+        st.textContent="That did not go through, so nothing has been sent. Your answers are still saved here \u2014 try again, or finish and use the email route on step six.";
+      });
+  };
+}
 
 /* fallback 2 \u2014 short fixed email, never carries the return */
 $("email-dx").onclick=()=>{
@@ -1967,6 +2058,10 @@ function boot(){
   if(n>f) n=f;
   const done=Object.keys(S.ans).filter(k=>S.ans[k]&&S.ans[k].status).length+S.extra.filter(x=>x.status).length;
   if(done&&n>1){ $("resume-n").textContent=String(done); $("resume-w").textContent=done===1?"answer":"answers"; $("resume").hidden=false; }
+  sendPartial("s4-send","s4-send-status","the document list");
+  sendPartial("s5-send","s5-send-status","the sources step");
+  wireDownload("s4-copy","s4-send-status");
+  wireDownload("s5-copy","s5-send-status");
   show(n);
   stick();
 }
