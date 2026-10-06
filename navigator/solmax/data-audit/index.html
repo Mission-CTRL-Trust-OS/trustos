@@ -194,6 +194,18 @@ textarea{resize:vertical;min-height:62px;line-height:1.6}
 .qnote b{font-weight:700}
 .qnote.none{color:var(--warn);opacity:1}
 button.btn.tiny{font-size:0.72rem;padding:9px 15px;border-width:1px;white-space:nowrap}
+/* Step four: the two things people did not realise they could do, said up front. */
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:22px 0 6px}
+.howto-step{border:1px solid var(--hair);border-left:3px solid var(--trust-cool);border-radius:8px;padding:14px 16px;background:var(--white);display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.howto-step b{font-size:0.92rem;font-weight:700;color:var(--trust-slate)}
+.howto-step span{font-size:0.84rem;line-height:1.65;color:var(--trust-slate);opacity:.8}
+.howto-step .btn{margin-top:6px}
+.addmore{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px;padding:14px 16px;border:1px dashed var(--trust-cool);border-radius:8px;font-size:0.86rem;color:var(--trust-slate)}
+/* Which groups an added item relates to. Pre-ticked from step two; "All groups" ties the six together. */
+.xrels{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center}
+.xrels-q{flex:1 1 100%;font-size:0.74rem;font-weight:700;letter-spacing:0.04em;color:var(--trust-slate);opacity:.75}
+.chip.sm{padding:6px 10px;font-size:0.76rem;gap:6px;border-radius:5px}
+.chip.sm.all{font-weight:600}
 
 /* ── ROWS ── */
 .group{margin-top:34px}
@@ -580,7 +592,18 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
     <div class="section-inner">
       <div class="section-label">Step four of six</div>
       <h2 class="section-title">What exists</h2>
-      <p class="lede">Three things per line at most, and only the lines you can speak to. If a line belongs to someone else, name them and we will ask them ourselves.</p>
+      <p class="lede">Answer only the lines you can speak to. If a line belongs to someone else, name them and we will ask them ourselves.</p>
+      <div class="howto">
+        <div class="howto-step">
+          <b>Search everything</b>
+          <span>The search box reaches all sixty-six lines, across every group &mdash; not only the ones you picked. Try the name you would use yourself: &ldquo;TDS&rdquo;, &ldquo;exit interviews&rdquo;, &ldquo;rebates&rdquo;.</span>
+        </div>
+        <div class="howto-step">
+          <b>Not on the list? Add it</b>
+          <span>If you hold something we have not listed, add it and tick the groups it relates to. A document we missed is worth as much as anything here &mdash; often more.</span>
+          <button type="button" class="btn ghost tiny j-addother">+ Add something we missed</button>
+        </div>
+      </div>
       <p class="lede" id="s4-time" style="font-size:0.9rem;margin-top:10px">&mdash;</p>
 
       <div class="lenses">
@@ -590,7 +613,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
       </div>
 
       <div class="filters">
-        <div class="field" style="flex:2 1 250px"><label for="f-q">Search for what you hold</label>
+        <div class="field" style="flex:2 1 250px"><label for="f-q">Search all sixty-six lines</label>
           <span class="searchwrap">
             <input type="text" id="f-q" placeholder="e.g. TDS, engagement survey, permit, rebates" autocomplete="off" spellcheck="false" aria-describedby="q-note">
             <button type="button" class="clearq" id="f-q-clear" aria-label="Clear the search" hidden>&times;</button>
@@ -606,11 +629,16 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
         <div class="count" id="tally">&mdash;</div>
         <p class="qnote" id="q-note" role="status" aria-live="polite">
           <span class="grow" id="q-count">Search the whole catalogue above &mdash; and if what you hold is not in it, add it yourself.</span>
-          <button type="button" class="btn quiet tiny" id="add-other">+ Add something we missed</button>
+          <button type="button" class="btn ghost tiny" id="add-other">+ Add something we missed</button>
         </p>
       </div>
 
       <div id="rows"></div>
+
+      <div class="addmore">
+        <span>Hold something that is not on this list?</span>
+        <button type="button" class="btn ghost tiny j-addother">+ Add it</button>
+      </div>
 
       <div class="actions">
         <button class="btn" id="go5">Next &mdash; where it comes from</button>
@@ -1088,12 +1116,21 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 /* ===== things the respondent adds themselves ===== */
 function xNew(label){
   let n=1; while(S.extra.some(x=>x.ref==="X"+String(n).padStart(2,"0"))) n++;
-  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",hname:"",hmail:"",link:"",note:null};
+  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",hname:"",hmail:"",link:"",note:null,
+           rels:S.rels.slice()};
   S.extra.push(x); save(); return x;
 }
 const xById=ref=>S.extra.find(x=>x.ref===ref);
+/* The groups an added item relates to, as one label. All six ticked reads as the catalogue's
+   own "Across all six", so an added item and a catalogue line can be analysed together. */
+function relLabel(rs){
+  rs=Array.isArray(rs)?rs:[];
+  if(!rs.length) return "Groups not specified";
+  if(REL.every(([n])=>rs.includes(n))) return A;
+  return REL.map(([n])=>n).filter(n=>rs.includes(n)).join("; ");
+}
 function extraRows(){
-  return S.extra.map(x=>({ref:x.ref,rel:"Things you added",lens:"Added",ask:x.label||"(unnamed item)",
+  return S.extra.map(x=>({ref:x.ref,rel:relLabel(x.rels),lens:"Added",ask:x.label||"(unnamed item)",
     status:x.status||"",hname:x.hname||"",hmail:x.hmail||"",link:x.link||"",note:x.note||""}));
 }
 const okMail=m=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(m||"").trim());
@@ -1297,6 +1334,14 @@ function countUp(){
   const mins=Math.max(5,Math.ceil(n/3/5)*5);
   $("s4-time").innerHTML=`Your list is <strong>${n}</strong> line${n===1?"":"s"} long &mdash; roughly ${mins} minutes at a steady pace, and less wherever &ldquo;not my area&rdquo; is the honest answer. Stop whenever you like; everything is saved as you go.`;
 }
+function xrelsHTML(x){
+  const rs=Array.isArray(x.rels)?x.rels:[], all=REL.every(([n])=>rs.includes(n));
+  return `<div class="xrels" role="group" aria-label="Which groups ${esc(x.label||"this item")} relates to">
+      <span class="xrels-q">Which groups does it relate to?</span>
+      <label class="chip sm all"><input type="checkbox" class="j-xall"${all?" checked":""}> All groups</label>
+      ${REL.map(([n])=>`<label class="chip sm"><input type="checkbox" class="j-xrel" value="${esc(n)}"${rs.includes(n)?" checked":""}> ${esc(n)}</label>`).join("")}
+    </div>`;
+}
 function noteHTML(a,label){
   return a.note!=null
     ? `<textarea class="j-note" aria-label="Note \u2014 ${esc(label)}" placeholder="Anything we have wrong, or worth knowing" style="margin-top:12px">${esc(a.note)}</textarea>`
@@ -1331,7 +1376,7 @@ function paint(){
     (!fR||r.rel===fR)&&(!fL||r.lens===fL)&&
     (!fT|| (fT==="todo"? !answered(r) : !!answered(r))));
   /* Added items answer to the search and to Show, but not to filters they have no value for. */
-  const xs=S.extra.filter(x=>xHit(x,ts)&&(!fT||(fT==="todo"?!x.status:!!x.status)));
+  const xs=S.extra.filter(x=>xHit(x,ts)&&(!fT||(fT==="todo"?!x.status:!!x.status))&&(!fR||(Array.isArray(x.rels)&&(x.rels.includes(fR)||(fR===A&&relLabel(x.rels)===A)))));
 
   countUp();
 
@@ -1346,6 +1391,7 @@ function paint(){
             <span class="tag added">You added this</span>
             <button class="notebtn del j-xdel" type="button">Remove</button>
           </div>
+          ${xrelsHTML(x)}
           ${noteHTML(x,x.label||"this item")}
         </div>
         ${answerHTML(x,x.label||"this item")}
@@ -1418,6 +1464,14 @@ function setAns(ref,patch){
 $("rows").addEventListener("change",e=>{
   const item=e.target.closest(".item"); if(!item) return;
   const ref=item.dataset.ref;
+  if(e.target.classList.contains("j-xrel")||e.target.classList.contains("j-xall")){
+    const x=xById(ref); if(!x) return;
+    const boxes=[...item.querySelectorAll(".j-xrel")], all=item.querySelector(".j-xall");
+    if(e.target===all) boxes.forEach(b=>{b.checked=all.checked;});
+    else all.checked=boxes.every(b=>b.checked);
+    x.rels=boxes.filter(b=>b.checked).map(b=>b.value); save();
+    return;
+  }
   if(e.target.classList.contains("j-status")){
     const v=e.target.value, needs=NEEDS_NAME.has(v), opt=OPT_NAME.has(v);
     setAns(ref,{status:v});
@@ -1468,6 +1522,7 @@ $("f-q").addEventListener("input",paint);
 $("f-q").addEventListener("keydown",e=>{ if(e.key==="Escape"){ $("f-q").value=""; paint(); } });
 $("f-q-clear").onclick=()=>{ $("f-q").value=""; paint(); $("f-q").focus(); };
 /* Never a dead end: whatever was typed becomes the start of an entry of their own. */
+document.querySelectorAll(".j-addother").forEach(b=>b.onclick=()=>$("add-other").click());
 $("add-other").onclick=()=>{
   const x=xNew($("f-q").value.trim());
   $("f-q").value=""; paint();
@@ -1885,7 +1940,7 @@ function fillHidden(nm,em,done,n,cs,stage){
   $("hf-lines-total").value=String(n);
   $("hf-people-named").value=cs.map(c=>c.name+(c.mail?" <"+c.mail+">":"")).join("; ");
   $("hf-other-count").value=String(S.extra.length);
-  $("hf-other").value=S.extra.map(x=>(x.label||"(unnamed)")+" \u2014 "+(x.status||"no status chosen")+
+  $("hf-other").value=S.extra.map(x=>(x.label||"(unnamed)")+" ["+relLabel(x.rels)+"] \u2014 "+(x.status||"no status chosen")+
     ((x.hname||x.hmail)?" ("+[x.hname,x.hmail].filter(Boolean).join(", ")+")":"")).join(" | ");
   const t=srcStats();
   $("hf-tier").value=t.tier+" data readiness \u2014 "+t.realHeld+" of "+REALITY_N+
