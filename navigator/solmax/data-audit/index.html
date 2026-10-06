@@ -110,12 +110,6 @@ nav{
   max-width:620px;margin-top:26px;padding-left:18px;border-left:2px solid var(--trust-cool);
 }
 .explain-quote em{font-style:normal;color:var(--trust-cool)}
-.drivers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px;max-width:900px}
-.driver{padding:22px 20px;background:rgba(90,138,154,0.06);border:1px solid rgba(90,138,154,0.15);border-radius:10px;transition:border-color .3s,transform .3s}
-.driver:hover{border-color:rgba(90,138,154,0.35);transform:translateY(-2px)}
-.driver b{display:block;font-size:0.8rem;font-weight:700;color:var(--trust-cool);margin-bottom:8px}
-.driver span{display:block;font-size:0.76rem;line-height:1.7;color:rgba(255,255,255,0.7)}
-@media(max-width:780px){.drivers{grid-template-columns:1fr}}
 
 .askbox{
   margin-top:34px;max-width:620px;padding:20px 24px;
@@ -226,6 +220,18 @@ button.btn.add-blue:hover{background:#185a91;border-color:#185a91;color:#fff}
 .tag{font-size:0.58rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--trust-slate);opacity:.55;border:1px solid var(--hair);padding:3px 8px;border-radius:4px}
 .tag.lens{color:var(--trust-cool);border-color:rgba(90,138,154,.45);background:rgba(90,138,154,.07);opacity:1}
 .tag.central{color:var(--warn);border-color:rgba(154,106,30,.4);background:var(--warn-soft);opacity:1}
+.tag.theme{color:var(--trust-cool);border-color:rgba(90,138,154,.45);background:rgba(90,138,154,.07);opacity:1}
+.tag.relname{opacity:.75}
+/* Browse by theme: one click runs the theme as a search. Kept out of the sticky filter bar. */
+.themebar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:14px}
+.themebar-q{font-size:0.74rem;font-weight:700;letter-spacing:0.04em;color:var(--trust-slate);opacity:.75;margin-right:4px}
+.themebar button{font-family:inherit;font-size:0.76rem;padding:6px 10px;border:1px solid var(--hair);border-radius:5px;background:var(--white);color:var(--trust-slate);cursor:pointer;transition:.18s}
+.themebar button:hover{border-color:var(--trust-cool)}
+.themebar button[aria-pressed="true"]{background:rgba(90,138,154,0.08);border-color:var(--trust-cool);color:var(--trust-cool);font-weight:600}
+/* "We have some of it" asks whether anyone else could help with the rest. */
+.helpq{display:none;flex-wrap:wrap;gap:6px;align-items:center}
+.helpq.on{display:flex}
+.helpq-q{flex:1 1 100%;font-size:0.8rem;font-weight:600;color:var(--trust-slate)}
 .answer{display:flex;flex-direction:column;gap:9px}
 .who{display:none;grid-template-columns:1fr 1fr;gap:9px}
 .who.on{display:grid}
@@ -511,11 +517,6 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
         <div class="section-label" style="margin-top:14px">What TrustOS is</div>
         <p class="hero-sub" style="max-width:660px;margin-top:6px">Solmax measures almost everything it <strong>does</strong> &mdash; and almost nothing about how it is <strong>experienced</strong>. TrustOS fixes that. It asks every group Solmax depends on the same questions, then turns the answers into <strong>a single 0&ndash;100 score</strong> you can track, so you can see where trust is strong and where it is leaking before the numbers move.</p>
         <p class="explain-quote">Reputation is what people say about what you&rsquo;ve <em>done</em>. Trust is whether they believe in what you do <em>next</em>.</p>
-        <div class="drivers">
-          <div class="driver"><b>Clarity</b><span>What&rsquo;s said &mdash; the promises, the messages, the published word.</span></div>
-          <div class="driver"><b>Connection</b><span>What stakeholders actually experience when they deal with Solmax.</span></div>
-          <div class="driver"><b>Confidence</b><span>What can be proved &mdash; the evidence behind the claims.</span></div>
-        </div>
         <p class="hero-sub" style="max-width:660px;margin-top:26px"><strong>This page is the first step.</strong> Before one round of measurement can start, we agree which stakeholder groups to measure and which data sources to read. That means cataloguing what Solmax already has. Nothing here asks you to create anything new.</p>
       </div>
 
@@ -602,7 +603,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
       <div class="howto">
         <div class="howto-step">
           <b>Search everything</b>
-          <span>The search box reaches all sixty-six lines, across every group &mdash; not only the ones you picked. Try the name you would use yourself: &ldquo;TDS&rdquo;, &ldquo;exit interviews&rdquo;, &ldquo;rebates&rdquo;.</span>
+          <span>The search box reaches all sixty-six lines, across every group &mdash; not only the ones you picked. Type it the way you would say it, or pick a theme below: &ldquo;customer research&rdquo;, &ldquo;TDS&rdquo;, &ldquo;rebates&rdquo;. The closest matches come first.</span>
         </div>
         <div class="howto-step howto-add">
           <b>Not on the list? Add it</b>
@@ -611,11 +612,12 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
         </div>
       </div>
       <p class="lede" id="s4-time" style="font-size:0.9rem;margin-top:10px">&mdash;</p>
+      <div class="themebar" id="themebar" role="group" aria-label="Browse by theme"></div>
 
       <div class="filters">
         <div class="field" style="flex:2 1 250px"><label for="f-q">Search all sixty-six lines</label>
           <span class="searchwrap">
-            <input type="text" id="f-q" placeholder="e.g. TDS, engagement survey, permit, rebates" autocomplete="off" spellcheck="false" aria-describedby="q-note">
+            <input type="text" id="f-q" placeholder="e.g. customer research, TDS, permits, rebates" autocomplete="off" spellcheck="false" aria-describedby="q-note">
             <button type="button" class="clearq" id="f-q-clear" aria-label="Clear the search" hidden>&times;</button>
           </span>
         </div>
@@ -942,6 +944,35 @@ const norm=s=>String(s==null?"":s).toLowerCase().normalize("NFD")
 const C="Customers, Specifiers & Engineers", D="Distributors & Channel Partners", I="Installers",
       E="Employees", G="Communities & Regulators", O="Owners & Owner\u2019s Engineers",
       A="Across all six";
+/* ===== themes =====
+Every line carries one or two plain-language themes. They show as tags on the line, they
+power "Browse by theme", and their vocabulary goes into the search, so a broad phrase such
+as "customer research" finds every survey, feedback and insight line, not only the ones
+that happen to use the word. Themes are for finding things; they are not the analysis frame. */
+const THEMES={
+  research:   ["Research & feedback","research insight insights survey surveys feedback study studies interview interviews voice listening opinion perception perceptions satisfaction sentiment findings understanding"],
+  strategy:   ["Strategy & plans","strategy strategic plan plans planning objectives targets direction vision priorities roadmap ambition"],
+  comms:      ["Marketing & comms","marketing communications comms content messaging collateral publications campaign campaigns brand published"],
+  commercial: ["Commercial terms","commercial contract contracts agreement agreements pricing price terms deal deals sales tender bid offer"],
+  performance:["Performance data","performance data metrics kpi kpis numbers analytics dashboard dashboards measurement reporting report reports results statistics stats tracking"],
+  compliance: ["Safety & compliance","compliance safety environment environmental regulatory regulation legal health hse ehs risk sustainability"],
+  technical:  ["Technical & training","technical engineering product products training support service field installation"]
+};
+const THEME_OF={
+L01:"strategy",L02:"strategy comms",L03:"strategy",L04:"comms",L05:"comms",L06:"comms technical",L07:"comms",
+L08:"comms commercial",L09:"comms",L10:"technical",L11:"research",L12:"research",L13:"research performance",
+L14:"performance",L15:"performance technical",L16:"research",L17:"research",L18:"strategy",L19:"strategy",
+L20:"comms",L21:"comms",L22:"comms",L23:"research",L24:"research",L25:"performance",L26:"compliance performance",
+L27:"strategy",L28:"strategy commercial",L29:"commercial comms",L30:"comms",L31:"commercial",
+L32:"research performance",L33:"performance commercial",L34:"research",L35:"research",L36:"strategy",
+L37:"strategy commercial",L38:"commercial",L39:"commercial",L40:"commercial",L41:"research",
+L42:"commercial performance",L43:"performance",L44:"performance",L45:"strategy technical",L46:"strategy technical",
+L47:"technical",L48:"technical",L49:"technical commercial",L50:"research technical",L51:"research technical",
+L52:"performance technical",L53:"performance compliance",L54:"strategy compliance",L55:"strategy compliance",
+L56:"compliance",L57:"compliance",L58:"comms compliance",L59:"compliance",L60:"research compliance",
+L61:"compliance",L62:"compliance performance",L63:"performance",L64:"performance research",
+L65:"performance research",L66:"research strategy"
+};
 const ROWS=[
 [C,"Intent","The five marketing priorities, as they landed on 16 September 2026","EXEC","marketing priorities five priorities marketing strategy strategic priorities marketing plan priority list"],
 [C,"Intent","“Let’s build infrastructure better” and the four pillars — as strategy, not as copy","EXEC","build infrastructure better four pillars brand platform positioning purpose narrative strategy pillars tagline"],
@@ -1009,8 +1040,14 @@ const ROWS=[
 [A,"Reality","Website and search behaviour","DASH","web analytics google analytics ga4 search console seo traffic sessions bounce rate website data keywords"],
 [A,"Reality","Social engagement","DASH","social media linkedin engagement followers social analytics posts reach impressions social listening"],
 [A,"Expectation","Stakeholder personas and journeys","BRAND","personas customer journey journey map buyer persona stakeholder map touchpoints segmentation"]
-].map((r,i)=>({ref:"L"+String(i+1).padStart(2,"0"),rel:r[0],lens:r[1],ask:r[2],own:r[3],alt:r[4]||"",
-   hay:norm(r[2]+" "+r[1]+" "+r[0]+" "+(r[4]||""))}));
+].map((r,i)=>{
+  const ref="L"+String(i+1).padStart(2,"0"), th=(THEME_OF[ref]||"").split(" ").filter(Boolean);
+  /* The lens is left out of the search vocabulary: it is no longer on the page. */
+  return {ref:ref,rel:r[0],lens:r[1],ask:r[2],own:r[3],alt:r[4]||"",themes:th,
+    head:" "+norm(r[2]+" "+th.map(t=>THEMES[t][0]).join(" "))+" ",
+    hay:" "+norm(r[2]+" "+r[0]+" "+(OWNERS[r[3]]||"")+" "+(r[4]||"")+" "+
+      th.map(t=>THEMES[t][0]+" "+THEMES[t][1]).join(" "))+" "};
+});
 
 const STATUS=[
   "","We have this — I can send it","We have this — someone else holds it","We have some of it",
@@ -1024,6 +1061,10 @@ const HAS_IT=new Set(["We have this — I can send it","We have this — someone
 /* "Not my area" is an honest escape hatch, so naming someone is offered there, never
    demanded — two blank boxes push people towards "I don’t know", a worse answer. */
 const OPT_NAME=new Set(["Not my area"]);
+/* "We have some of it" asks whether anyone else could help with the rest. Only a yes
+   opens the name and email boxes, so nobody is pushed into naming a colleague. */
+const SOME_IT="We have some of it";
+const wantsWho=(st,help)=>NEEDS_NAME.has(st)||(st===SOME_IT&&help==="yes");
 
 /* ===== where the signals come from (step five) =====
 The seventeen rows below are the Navigator estimator's own REALITY / INTENT / EXPECT
@@ -1108,7 +1149,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 /* ===== things the respondent adds themselves ===== */
 function xNew(label){
   let n=1; while(S.extra.some(x=>x.ref==="X"+String(n).padStart(2,"0"))) n++;
-  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",hname:"",hmail:"",link:"",note:null,
+  const x={ref:"X"+String(n).padStart(2,"0"),label:label||"",status:"",help:"",hname:"",hmail:"",link:"",note:null,
            rels:S.rels.slice()};
   S.extra.push(x); save(); return x;
 }
@@ -1123,7 +1164,7 @@ function relLabel(rs){
 }
 function extraRows(){
   return S.extra.map(x=>({ref:x.ref,rel:relLabel(x.rels),lens:"Added",ask:x.label||"(unnamed item)",
-    status:x.status||"",hname:x.hname||"",hmail:x.hmail||"",link:x.link||"",note:x.note||""}));
+    status:x.status||"",help:x.help||"",hname:x.hname||"",hmail:x.hmail||"",link:x.link||"",note:x.note||""}));
 }
 const okMail=m=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(m||"").trim());
 
@@ -1301,15 +1342,71 @@ function scope(){ const set=new Set(S.rels); return ROWS.filter(r=>inMine(r,set)
 function total(){ return scope().length+S.extra.length; }
 
 /* ===== search ===== */
-function terms(){ return norm($("f-q").value).split(" ").filter(Boolean); }
-/* Every word must land if any row can take them all ("engagement survey"); otherwise
-   any single word will do, so a half-remembered phrase still surfaces something. */
+/* Words that carry no meaning in a search here, so "results of the customer survey" is
+   searched as "results customer survey". */
+const STOP=new Set(("a an and the of for in on to or our we us with by at from is are be any all what "+
+  "which how do does did it its this that these those about have has who whom where when my your their "+
+  "there into than then as per so").split(" "));
+/* The other words people use for the same thing. Both directions where it matters. */
+const SYN={
+  customer:"client buyer",client:"customer",buyer:"customer",
+  staff:"employee people workforce",employee:"staff people workforce",people:"employee staff",worker:"employee staff",
+  partner:"distributor channel dealer reseller",dealer:"distributor partner",distributor:"partner dealer reseller",reseller:"distributor partner",
+  contractor:"installer applicator",installer:"contractor applicator",applicator:"installer",
+  research:"survey feedback insight interview study",insight:"research survey feedback",study:"survey research",
+  feedback:"survey complaint review evaluation",opinion:"survey feedback",perception:"survey feedback",
+  data:"performance analytics",number:"performance data",kpi:"performance",metric:"performance",
+  regulator:"authority regulatory",community:"neighbour resident",neighbor:"neighbour",
+  behavior:"behaviour",organization:"organisation",localized:"localised",catalog:"catalogue",
+  plan:"strategy",strategy:"plan",target:"objective goal",goal:"target objective",
+  contract:"agreement terms",agreement:"contract terms",price:"pricing rebate",cost:"price pricing",
+  hr:"people talent",talent:"people hr",comms:"communication",communication:"comms",
+  safety:"incident ltifr",health:"safety",environment:"environmental esg",green:"sustainability esg",carbon:"emission esg"
+};
+/* A light stem so "surveys", "studies" and "training" meet "survey", "study" and "train". */
+function stem(t){
+  if(t.length>4&&/ies$/.test(t)) return t.slice(0,-3)+"y";
+  if(t.length>5&&/ing$/.test(t)) return t.slice(0,-3);
+  if(t.length>3&&/s$/.test(t)&&!/ss$/.test(t)) return t.slice(0,-1);
+  return t;
+}
+function terms(){
+  const seen=new Set();
+  return norm($("f-q").value).split(" ").filter(t=>t&&!STOP.has(t)).map(t=>{
+    const st=stem(t);
+    const alts=[st].concat((SYN[st]||SYN[t]||"").split(" ").filter(Boolean));
+    return {word:st,alts:[...new Set(alts)]};
+  }).filter(t=>!seen.has(t.word)&&seen.add(t.word));
+}
+/* Matches are made at the start of a word, so "act" does not find "contract". */
+const at=(hay,w)=>hay.indexOf(" "+w)>-1;
+/* Every line that shares any word with the search is returned, scored and ranked:
+   lines that take every word come first as "Best matches", the rest follow as "Also
+   related". A word in the line's own title or theme counts double. */
 function found(ts){
   if(!ts.length) return null;
-  const all=ROWS.filter(r=>ts.every(t=>r.hay.indexOf(t)>-1));
-  return all.length?all:ROWS.filter(r=>ts.some(t=>r.hay.indexOf(t)>-1));
+  return ROWS.map((r,i)=>{
+    let got=0, score=0;
+    ts.forEach(t=>{
+      if(t.alts.some(w=>at(r.hay,w))){ got++; score+= t.alts.some(w=>at(r.head,w)) ? 2 : 1; }
+    });
+    return {r:r,i:i,got:got,score:score,best:got===ts.length};
+  }).filter(h=>h.got>0)
+    .sort((a,b)=>(b.best-a.best)||(b.score-a.score)||(a.i-b.i));
 }
-function xHit(x,ts){ return !ts.length || ts.some(t=>norm(x.label).indexOf(t)>-1); }
+function xHit(x,ts){
+  if(!ts.length) return true;
+  const hay=" "+norm(x.label)+" ";
+  return ts.some(t=>t.alts.some(w=>at(hay,w)));
+}
+function paintThemes(){
+  const q=norm($("f-q").value);
+  $("themebar").innerHTML='<span class="themebar-q">Browse by theme</span>'+
+    Object.keys(THEMES).map(k=>{
+      const lab=THEMES[k][0], on=q&&q===norm(lab);
+      return `<button type="button" class="j-theme" data-theme="${k}" aria-pressed="${on?"true":"false"}">${esc(lab)}</button>`;
+    }).join("");
+}
 
 function buildFilters(){
   const sel=$("f-rel"), cur=sel.value;
@@ -1339,15 +1436,22 @@ function noteHTML(a,label){
     ? `<textarea class="j-note" aria-label="Note \u2014 ${esc(label)}" placeholder="Anything we have wrong, or worth knowing" style="margin-top:12px">${esc(a.note)}</textarea>`
     : `<button class="notebtn j-addnote" type="button">+ add a note</button>`;
 }
-function answerHTML(a,label){
+function answerHTML(a,label,ref){
   const st=a.status||"", needs=NEEDS_NAME.has(st), opt=OPT_NAME.has(st), has=!!(a.hname||a.hmail);
+  const some=st===SOME_IT, helpYes=some&&a.help==="yes";
   return `<div class="answer">
       <select class="j-status" aria-label="Does this exist \u2014 ${esc(label)}">
         ${STATUS.map(x=>`<option value="${esc(x)}"${st===x?" selected":""}>${x?esc(x):"\u2014 choose \u2014"}</option>`).join("")}
       </select>
       <button class="notebtn j-who" type="button"${needs&&opt&&!has?"":" hidden"}>+ name who does, if you happen to know</button>
-      <div class="who${needs&&(!opt||has)?" on":""}">
+      <div class="helpq${some?" on":""}" role="radiogroup" aria-label="Could anyone else help with the rest \u2014 ${esc(label)}">
+        <span class="helpq-q">Could anyone else help with the rest?</span>
+        <label class="chip sm"><input type="radio" class="j-help" name="help-${esc(ref)}" value="yes"${a.help==="yes"?" checked":""}> Yes</label>
+        <label class="chip sm"><input type="radio" class="j-help" name="help-${esc(ref)}" value="no"${a.help==="no"?" checked":""}> No</label>
+      </div>
+      <div class="who${(needs&&(!opt||has))||helpYes?" on":""}">
         <p class="mini j-opt" style="grid-column:1/-1;margin:0"${opt?"":" hidden"}>Optional \u2014 only if you know who does own it.</p>
+        <p class="mini j-helphint" style="grid-column:1/-1;margin:0"${helpYes?"":" hidden"}>Who could help with the rest? We will ask them ourselves.</p>
         <input type="text" class="j-hname" aria-label="Name of the person who holds this \u2014 ${esc(label)}" placeholder="Their name" value="${esc(a.hname||"")}">
         <input type="email" class="j-hmail" aria-label="Email of the person who holds this \u2014 ${esc(label)}" placeholder="Their email" value="${esc(a.hmail||"")}">
       </div>
@@ -1363,7 +1467,9 @@ function paint(){
   const set=new Set(S.rels);
   /* A search reaches all sixty-six lines, not only the picked groups \u2014 people hold
      documents from groups they never ticked. */
-  const base=hit||scope();
+  const ranked=hit?hit.filter(h=>(!fR||h.r.rel===fR)&&
+      (!fT|| (fT==="todo"? !answered(h.r) : !!answered(h.r)))):null;
+  const base=hit?hit.map(h=>h.r):scope();
   const list=base.filter(r=>
     (!fR||r.rel===fR)&&(!fL||r.lens===fL)&&
     (!fT|| (fT==="todo"? !answered(r) : !!answered(r))));
@@ -1386,7 +1492,7 @@ function paint(){
           ${xrelsHTML(x)}
           ${noteHTML(x,x.label||"this item")}
         </div>
-        ${answerHTML(x,x.label||"this item")}
+        ${answerHTML(x,x.label||"this item",x.ref)}
       </div>`).join("")}
     </div>`);
 
@@ -1398,44 +1504,63 @@ function paint(){
       <button class="btn quiet tiny j-central" type="button">${S.showCentral?"Fold them away again":"Show them anyway"}</button>
     </p>`);
 
-  const groups={};
-  list.forEach(r=>{(groups[r.rel]=groups[r.rel]||[]).push(r);});
-  html.push(Object.entries(groups).map(([rel,rs])=>`
-    <div class="group">
-      <div class="group-head"><h3>${esc(rel)}</h3><span>${rs.length} line${rs.length===1?"":"s"}</span></div>
-      ${rs.map(r=>{
-        const a=S.ans[r.ref]||{};
-        return `<div class="item${answered(r)?" done":""}" data-ref="${r.ref}">
+  const rowHTML=(r,showRel)=>{
+    const a=S.ans[r.ref]||{};
+    return `<div class="item${answered(r)?" done":""}" data-ref="${r.ref}">
           <div>
             <div class="ask">${esc(r.ask)}</div>
             <div class="tags">
               <span class="tag ref">${esc(r.ref)}</span>
+              ${r.themes.map(t=>`<span class="tag theme">${esc(THEMES[t][0])}</span>`).join("")}
+              ${showRel?`<span class="tag relname">${esc(r.rel)}</span>`:""}
               <span class="tag">${esc(OWNERS[r.own]||r.own)}</span>
               ${isCentral(r)?'<span class="tag central">usually held centrally</span>':''}
               ${inMine(r,set)?'':'<span class="tag out">outside the groups you picked</span>'}
             </div>
             ${noteHTML(a,r.ask)}
           </div>
-          ${answerHTML(a,r.ask)}
-        </div>`;}).join("")}
-    </div>`).join(""));
+          ${answerHTML(a,r.ask,r.ref)}
+        </div>`;
+  };
+  const block=(title,rs,lead)=>`
+    <div class="group">
+      <div class="group-head"><h3>${title}</h3><span>${rs.length} line${rs.length===1?"":"s"}</span></div>
+      ${lead?`<p class="group-lead">${lead}</p>`:""}
+      ${rs.map(r=>rowHTML(r,!!ranked)).join("")}
+    </div>`;
+  if(ranked){
+    /* Searching: one ranked list, closest first, with the group shown on each line. */
+    const best=ranked.filter(h=>h.best).map(h=>h.r), rest=ranked.filter(h=>!h.best).map(h=>h.r);
+    const qq=esc($("f-q").value.trim());
+    if(best.length) html.push(block(rest.length?"Best matches for \u201c"+qq+"\u201d":"Matches for \u201c"+qq+"\u201d",best));
+    if(rest.length) html.push(block(best.length?"Also related":"Partly matches \u201c"+qq+"\u201d",rest,
+      "These share some of what you typed. Worth a scan \u2014 the thing you hold may be filed under a different name."));
+  }else{
+    const groups={};
+    list.forEach(r=>{(groups[r.rel]=groups[r.rel]||[]).push(r);});
+    html.push(Object.entries(groups).map(([rel,rs])=>block(esc(rel),rs)).join(""));
+  }
 
   $("rows").innerHTML = (list.length||xs.length) ? html.join("")
     : html.join("")+`<p class="mini" style="margin-top:30px">Nothing matches that. Clear the search, or add what you hold as something we missed.</p>`;
 
   /* ===== the search note: how many matched, and the way out when none did ===== */
+  paintThemes();
   const q=$("f-q").value.trim(), n=list.length+xs.length;
   $("f-q-clear").hidden=!q;
   $("q-note").classList.toggle("none",!!q&&n===0);
   const cnt=$("q-count"), add=$("add-other");
-  if(!q){
+  if(q&&!ts.length){
+    cnt.innerHTML="Try a more specific word than <b>"+esc(q)+"</b> \u2014 a document name, a system, or one of the themes above.";
+    add.textContent="+ Add something we missed";
+  }else if(!q){
     cnt.innerHTML="Search the whole catalogue above &mdash; and if what you hold is not in it, add it yourself.";
     add.textContent="+ Add something we missed";
   }else if(n===0){
     cnt.innerHTML="Nothing in the list matches <b>"+esc(q)+"</b>. If you hold it, add it \u2014 a document we missed is worth knowing about.";
     add.textContent="+ Add \u201c"+q+"\u201d as something we missed";
   }else{
-    cnt.innerHTML="<b>"+n+"</b> line"+(n===1?" matches":"s match")+" <b>"+esc(q)+"</b>. Not the one you hold?";
+    cnt.innerHTML="<b>"+n+"</b> line"+(n===1?" matches":"s match")+" <b>"+esc(q)+"</b>, closest first. Not the one you hold?";
     add.textContent="+ Add \u201c"+q+"\u201d as something we missed";
   }
   stick();
@@ -1443,7 +1568,13 @@ function paint(){
 /* A status that hides the holder panel must drop anything left in it, or a colleague
    stays under People named \u2014 and gets emailed \u2014 about a line the respondent owns. */
 function setAns(ref,patch){
-  if(patch.status!==undefined&&!NEEDS_NAME.has(patch.status)) patch=Object.assign({},patch,{hname:"",hmail:""});
+  /* A new status resets the "could anyone else help" answer, and the names go unless the
+     new status still asks for one. Answering "no" to help drops them too. */
+  if(patch.status!==undefined){
+    patch=Object.assign({},patch,{help:""});
+    if(!NEEDS_NAME.has(patch.status)) patch.hname=patch.hmail="";
+  }
+  if(patch.help==="no") patch=Object.assign({},patch,{hname:"",hmail:""});
   /* Same reasoning for the link: a status that says it does not exist must not keep
      a link pointing at something that does. */
   if(patch.status!==undefined&&!HAS_IT.has(patch.status)) patch=Object.assign({},patch,{link:""});
@@ -1463,9 +1594,23 @@ $("rows").addEventListener("change",e=>{
     x.rels=boxes.filter(b=>b.checked).map(b=>b.value); save();
     return;
   }
+  if(e.target.classList.contains("j-help")){
+    const v=e.target.value, yes=v==="yes";
+    setAns(ref,{help:v});
+    const who=item.querySelector(".who");
+    if(!yes){ who.querySelector(".j-hname").value=""; who.querySelector(".j-hmail").value=""; }
+    who.classList.toggle("on",yes);
+    who.querySelector(".j-opt").hidden=true;
+    who.querySelector(".j-helphint").hidden=!yes;
+    if(yes) who.querySelector(".j-hname").focus();
+    return;
+  }
   if(e.target.classList.contains("j-status")){
     const v=e.target.value, needs=NEEDS_NAME.has(v), opt=OPT_NAME.has(v);
     setAns(ref,{status:v});
+    const hq=item.querySelector(".helpq");
+    if(hq){ hq.classList.toggle("on",v===SOME_IT); hq.querySelectorAll(".j-help").forEach(b=>{b.checked=false;}); }
+    const hh=item.querySelector(".j-helphint"); if(hh) hh.hidden=true;
     const who=item.querySelector(".who"), btn=item.querySelector(".j-who");
     const nm=who.querySelector(".j-hname"), ml=who.querySelector(".j-hmail"), hint=who.querySelector(".j-opt");
     if(!needs){ nm.value=""; ml.value=""; }
@@ -1510,6 +1655,12 @@ $("rows").addEventListener("click",e=>{
 });
 ["f-rel","f-todo"].forEach(id=>$(id).addEventListener("change",paint));
 $("f-q").addEventListener("input",paint);
+$("themebar").addEventListener("click",e=>{
+  const b=e.target.closest(".j-theme"); if(!b) return;
+  const lab=THEMES[b.dataset.theme][0];
+  $("f-q").value = b.getAttribute("aria-pressed")==="true" ? "" : lab;   /* a second click clears it */
+  paint();
+});
 $("f-q").addEventListener("keydown",e=>{ if(e.key==="Escape"){ $("f-q").value=""; paint(); } });
 $("f-q-clear").onclick=()=>{ $("f-q").value=""; paint(); $("f-q").focus(); };
 /* Never a dead end: whatever was typed becomes the start of an entry of their own. */
@@ -1680,7 +1831,7 @@ function rowsOut(){
      ones outside the picked groups, which is the whole point of searching all sixty-six. */
   return extraRows().concat(scope().filter(r=>S.ans[r.ref]).map(r=>{
     const a=S.ans[r.ref];
-    return {ref:r.ref,rel:r.rel,lens:r.lens,ask:r.ask,status:a.status||"",
+    return {ref:r.ref,rel:r.rel,lens:r.lens,ask:r.ask,status:a.status||"",help:a.help||"",
             hname:a.hname||"",hmail:a.hmail||"",link:a.link||"",note:a.note||""};
   }));
 }
@@ -1724,7 +1875,7 @@ function slug(){
   return (S.me.name||"return").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 }
 function csv(){
-  const head=["Ref","Relationship","Lens","Item","Status","Holder name","Holder email","Link","Note"];
+  const head=["Ref","Relationship","Lens","Item","Status","Someone else can help","Holder name","Holder email","Link","Note"];
   const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
   const t=srcStats();
   const meta=[["Name",S.me.name],["Email",S.me.email],["Role",S.me.role],
@@ -1742,7 +1893,7 @@ function csv(){
   const srcHead=["Ref","Lens","Source","Collected today","Where it lives","Refreshed","Could be collected at"];
   return meta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
     [head.map(q).join(",")].concat(rowsOut().map(r=>
-      [r.ref,r.rel,r.lens,r.ask,r.status,r.hname,r.hmail,r.link,r.note].map(q).join(","))).join("\n")+
+      [r.ref,r.rel,r.lens,r.ask,r.status,r.help==="yes"?"Yes":r.help==="no"?"No":"",r.hname,r.hmail,r.link,r.note].map(q).join(","))).join("\n")+
     "\n\n"+srcMeta.map(m=>m.map(q).join(",")).join("\n")+"\n\n"+
     [srcHead.map(q).join(",")].concat(srcOut().map(r=>
       [r.ref,r.lens,r.name,r.got,r.sys,r.freq,r.could].map(q).join(","))).join("\n");
@@ -1757,7 +1908,7 @@ function plain(){
   let lastRel="";
   rowsOut().forEach(r=>{
     if(r.rel!==lastRel){L.push("["+r.rel.toUpperCase()+"]"); lastRel=r.rel;}
-    let line=r.ref+"  "+r.ask+"\n      -> "+r.status;
+    let line=r.ref+"  "+r.ask+"\n      -> "+r.status+(r.help==="yes"?" \u2014 someone else can help":r.help==="no"?" \u2014 no one else to ask":"");
     if(r.hname||r.hmail) line+="  ("+[r.hname,r.hmail].filter(Boolean).join(", ")+")";
     if(r.link) line+="\n      link: "+r.link;
     if(r.note) line+="\n      note: "+r.note;
