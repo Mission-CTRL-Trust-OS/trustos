@@ -606,12 +606,6 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
       </div>
       <p class="lede" id="s4-time" style="font-size:0.9rem;margin-top:10px">&mdash;</p>
 
-      <div class="lenses">
-        <div class="lens"><b>Intent</b><span>What Solmax set out to be. Strategy, priorities, objectives, targets &mdash; as decided, not as published.</span></div>
-        <div class="lens"><b>Expectation</b><span>Everything Solmax says and publishes. Website, datasheets, brand guidelines, decks, brochures, agreements, permits.</span></div>
-        <div class="lens"><b>Reality</b><span>What people actually experience. Surveys, complaints, quality and safety records, behaviour in the systems.</span></div>
-      </div>
-
       <div class="filters">
         <div class="field" style="flex:2 1 250px"><label for="f-q">Search all sixty-six lines</label>
           <span class="searchwrap">
@@ -620,9 +614,6 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
           </span>
         </div>
         <div class="field"><label for="f-rel">Filter by relationship</label><select id="f-rel"></select></div>
-        <div class="field"><label for="f-lens">Filter by lens</label><select id="f-lens">
-          <option value="">All three</option><option>Intent</option><option>Expectation</option><option>Reality</option>
-        </select></div>
         <div class="field" style="flex:0 1 190px"><label for="f-todo">Show</label><select id="f-todo">
           <option value="">Everything</option><option value="todo">Not yet answered</option><option value="done">Answered</option>
         </select></div>
@@ -678,19 +669,14 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
 
       <div class="panel">
         <h2>The seventeen sources</h2>
-        <p class="sub">The same three lenses as step four. <strong>Reality comes first</strong> &mdash; what people actually experience is what the readiness tier is calculated from, and what decides how much new survey work has to be paid for.</p>
-        <div class="lenses">
-          <div class="lens"><b>Reality</b><span>What people actually experience. Surveys, complaints, quality and safety records, behaviour in the systems.</span></div>
-          <div class="lens"><b>Intent</b><span>What Solmax set out to be. Strategy, priorities, objectives, targets &mdash; as decided, not as published.</span></div>
-          <div class="lens"><b>Expectation</b><span>Everything Solmax says and publishes. Website, datasheets, brand guidelines, decks, brochures, agreements, permits.</span></div>
-        </div>
+        <p class="sub"><strong>The first seven matter most.</strong> They are about what people actually experience &mdash; surveys, complaints, quality and safety records &mdash; and they decide the readiness tier below and how much new survey work would have to be paid for.</p>
         <div id="src-rows"></div>
       </div>
 
       <div class="panel" id="tier-panel">
         <h2>What that adds up to</h2>
-        <p class="sub">The Navigator worked out Solmax&rsquo;s <strong>data readiness</strong> from tick-boxes, before any of this was scoped or priced. This is the same calculation on real answers: the share of the <strong>seven Reality sources</strong> collected routinely, cut at the same two boundaries, so the two numbers can be put side by side.</p>
-        <div class="tier-out" id="tier-out"><b>&mdash;</b><span>Answer the Reality sources above and this fills itself in.</span></div>
+        <p class="sub">The Navigator worked out Solmax&rsquo;s <strong>data readiness</strong> from tick-boxes, before any of this was scoped or priced. This is the same calculation on real answers: the share of the <strong>seven experience sources</strong> collected routinely, cut at the same two boundaries, so the two numbers can be put side by side.</p>
+        <div class="tier-out" id="tier-out"><b>&mdash;</b><span>Answer the seven experience sources above and this fills itself in.</span></div>
         <div class="tally" id="src-tally"></div>
         <p class="mini" id="tier-note"></p>
         <p class="mini"><strong>This is a data-readiness tier. It is not a trust score, and not a trust band.</strong> It says how much of the evidence already exists &mdash; nothing at all about how much Solmax is trusted. A composite trust score is only ever published for a read that has actually been measured, and no read has been measured yet.</p>
@@ -1366,7 +1352,7 @@ function answerHTML(a,label){
 }
 function paint(){
   buildFilters();
-  const fR=$("f-rel").value, fL=$("f-lens").value, fT=$("f-todo").value;
+  const fR=$("f-rel").value, fL="", fT=$("f-todo").value;   /* the lens filter is gone from the page; the lens stays in the data */
   const ts=terms(), hit=found(ts);
   const set=new Set(S.rels);
   /* A search reaches all sixty-six lines, not only the picked groups \u2014 people hold
@@ -1418,7 +1404,6 @@ function paint(){
             <div class="ask">${esc(r.ask)}</div>
             <div class="tags">
               <span class="tag ref">${esc(r.ref)}</span>
-              <span class="tag lens">${esc(r.lens)}</span>
               <span class="tag">${esc(OWNERS[r.own]||r.own)}</span>
               ${isCentral(r)?'<span class="tag central">usually held centrally</span>':''}
               ${inMine(r,set)?'':'<span class="tag out">outside the groups you picked</span>'}
@@ -1517,7 +1502,7 @@ $("rows").addEventListener("click",e=>{
     S.extra=S.extra.filter(x=>x.ref!==item.dataset.ref); save(); paint();
   }
 });
-["f-rel","f-lens","f-todo"].forEach(id=>$(id).addEventListener("change",paint));
+["f-rel","f-todo"].forEach(id=>$(id).addEventListener("change",paint));
 $("f-q").addEventListener("input",paint);
 $("f-q").addEventListener("keydown",e=>{ if(e.key==="Escape"){ $("f-q").value=""; paint(); } });
 $("f-q-clear").onclick=()=>{ $("f-q").value=""; paint(); $("f-q").focus(); };
@@ -1576,7 +1561,7 @@ function srcRowHTML(r){
   return `<div class="item${a.got?" done":""}" data-ref="${r.ref}">
 <div>
 <div class="ask">${esc(r.name)}</div>
-<div class="tags"><span class="tag lens">${esc(r.lens)}</span>${
+<div class="tags">${
 r.lens==="Reality"?'<span class="tag central">counts towards the tier</span>':''}</div>
 </div>
 <div class="answer">
@@ -1600,14 +1585,20 @@ ${FREQ.map(x=>`<option value="${esc(x)}"${(a.freq||"")===x?" selected":""}>${x?e
 }
 function paintSrc(){
   $("own-5").hidden=!S.srcOnly;
-  $("src-rows").innerHTML=SRC_LENS.map(L=>{
-    const rs=SRC.filter(r=>r.lens===L);
-    return `<div class="group${L==="Reality"?" reality":""}">
-<div class="group-head"><h3>${esc(L)}</h3><span>${rs.length} source${rs.length===1?"":"s"}</span></div>
-${L==="Reality"?'<p class="group-lead">These seven are what people actually experience, and the only ones the readiness tier is calculated from. If you answer nothing else on this step, answer these.</p>':''}
-${rs.map(srcRowHTML).join("")}
+  /* Two plain-language groups instead of the three lens headings: the seven that drive the
+     tier, then everything else. Order is unchanged, and the lens still travels in the data. */
+  const exp=SRC.filter(r=>r.lens==="Reality"), rest=SRC.filter(r=>r.lens!=="Reality");
+  $("src-rows").innerHTML=
+`<div class="group reality">
+<div class="group-head"><h3>The seven that count</h3><span>${exp.length} sources</span></div>
+<p class="group-lead">What people actually experience, and the only sources the readiness tier is calculated from. If you answer nothing else on this step, answer these.</p>
+${exp.map(srcRowHTML).join("")}
+</div>
+<div class="group">
+<div class="group-head"><h3>The other ${rest.length}</h3><span>${rest.length} sources</span></div>
+<p class="group-lead">Strategy, and what Solmax says and publishes. Worth answering, but they do not move the tier.</p>
+${rest.map(srcRowHTML).join("")}
 </div>`;
-  }).join("");
   paintProof();
   tierUp();
 }
@@ -1618,15 +1609,15 @@ function paintProof(){
 function tierUp(){
   const t=srcStats();
   $("tier-out").innerHTML="<b>"+t.tier+" data readiness</b><span><em>"+t.realHeld+" of "+REALITY_N+
-    "</em> Reality sources are collected routinely today"+
+    "</em> experience sources are collected routinely today"+
     (t.realSome?", and <em>"+t.realSome+"</em> more sometimes or only in some regions":"")+"."+
     (t.could?" You have named somewhere <em>"+t.could+"</em> source"+(t.could===1?"":"s")+
       " could be picked up at something Solmax already runs \u2014 which is the finding this step exists for.":"")+
     "</span>";
   $("src-tally").innerHTML=
     '<div><b class="word">'+t.tier+"</b><span>Data readiness</span></div>"+
-    "<div><b>"+t.realHeld+"<i>/"+REALITY_N+"</i></b><span>Reality, routinely</span></div>"+
-    "<div><b>"+t.realSome+"</b><span>Reality, sometimes</span></div>"+
+    "<div><b>"+t.realHeld+"<i>/"+REALITY_N+"</i></b><span>Experience, routinely</span></div>"+
+    "<div><b>"+t.realSome+"</b><span>Experience, sometimes</span></div>"+
     "<div><b>"+t.could+"</b><span>Could be collected</span></div>"+
     "<div><b>"+t.done+"<i>/"+SRC.length+"</i></b><span>Sources answered</span></div>";
   $("tier-note").innerHTML="Counted the way the Navigator counts it, on the same seven and at the "+
@@ -1875,7 +1866,7 @@ function showSent(done,total,people){
     (people?" &middot; <b>"+people+"</b> "+(people===1?"person":"people")+" named":"");
   $("sent-recap").innerHTML=
     "<b>"+t.tier+" data readiness</b> &middot; "+t.realHeld+" of "+REALITY_N+
-    " Reality sources collected routinely &middot; <b>"+t.could+
+    " experience sources collected routinely &middot; <b>"+t.could+
     "</b> could be collected at something Solmax already runs"+
     (S.regions.length?"<br>"+esc(S.regions.join(", ")):"");
   /* A mailto rather than a form: it opens in their own client, from their own address,
