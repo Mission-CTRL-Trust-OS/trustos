@@ -17,3 +17,6 @@ node_modules/
 # Local dev
 .env
 .env.local
+
+# Test data and scratch output — never deploys
+Claude outputs/
