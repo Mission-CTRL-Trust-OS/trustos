@@ -540,7 +540,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
     <div class="section-inner">
       <div class="section-label">Step two of six</div>
       <h2 class="section-title">Which of these do you deal with?</h2>
-      <p class="lede">Solmax has five stakeholder relationships in this first wave, each measured on its own. Tick the ones you touch &mdash; even loosely. Everything else disappears from your list.</p>
+      <p class="lede">Solmax has six stakeholder relationships in this first wave, each measured on its own. Tick the ones you touch &mdash; even loosely. Everything else disappears from your list.</p>
       <p class="lede" style="font-size:0.9rem">Investors and lenders are not on this list on purpose: that relationship is read from financial and market evidence, gathered separately with Finance.</p>
       <div class="panel">
         <div class="ticks" id="rel-ticks"></div>
@@ -836,7 +836,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
 
     <div class="share-split">
       <h2>Or just the systems owners</h2>
-      <p class="sub">If someone owns a system rather than a shelf of documents &mdash; CRM, HR, QHSE, the channel &mdash; send them this link instead. It opens the page <strong>straight on &ldquo;where it comes from&rdquo;</strong>, tells them the fifty-seven document lines are not theirs to fill in, and still collects the name and email the return has to be signed with.</p>
+      <p class="sub">If someone owns a system rather than a shelf of documents &mdash; CRM, HR, QHSE, the channel &mdash; send them this link instead. It opens the page <strong>straight on &ldquo;where it comes from&rdquo;</strong>, tells them the sixty-six document lines are not theirs to fill in, and still collects the name and email the return has to be signed with.</p>
       <div class="share-row">
         <label class="share-input" style="flex:1 1 420px">
           <input type="text" id="src-link" readonly spellcheck="false" aria-label="The link that opens the page on the sources step" value="">
@@ -904,13 +904,15 @@ const REL = [
   ["Installers","The contractors who put the product in the ground, and the field service behind them."],
   ["Employees","Everyone on the payroll, in every region."],
   ["Communities & Regulators","Everyone near a Solmax site, and everyone able to stop one operating."],
+  ["Owners & Owner’s Engineers","The asset owner who carries the risk, and the engineering firm representing them on a project."],
 ];
 const REGIONS = ["Americas","EMEA","Asia Pacific","Global / corporate"];
 const CENTRAL = new Set(["EXEC","GLOBAL","BRAND","DASH"]);
 const OWNERS = {
   REGMKT:"Regional marketing", GLOBAL:"Global marketing & comms", BRAND:"Brand & digital",
   DASH:"Dashboards & analytics", CRM:"CRM", CEA:"CEA & technical training", CHANNEL:"Channel",
-  PEOPLE:"Talent & culture", QHSE:"QHSE", TECHSVC:"Technical service", EXEC:"Executive / board"
+  PEOPLE:"Talent & culture", QHSE:"QHSE", TECHSVC:"Technical service", EXEC:"Executive / board",
+  BIZDEV:"Bus Dev & Sales"
 };
 /* Lower-cased, accent-stripped, punctuation-flattened — what the search compares.
    The fifth element of each row below is that row's search vocabulary: the words a
@@ -918,7 +920,8 @@ const OWNERS = {
 const norm=s=>String(s==null?"":s).toLowerCase().normalize("NFD")
   .replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
 const C="Customers, Specifiers & Engineers", D="Distributors & Channel Partners", I="Installers",
-      E="Employees", G="Communities & Regulators", A="Across all five";
+      E="Employees", G="Communities & Regulators", O="Owners & Owner\u2019s Engineers",
+      A="Across all six";
 const ROWS=[
 [C,"Intent","The five marketing priorities, as they landed on 16 September 2026","EXEC","marketing priorities five priorities marketing strategy strategic priorities marketing plan priority list"],
 [C,"Intent","“Let’s build infrastructure better” and the four pillars — as strategy, not as copy","EXEC","build infrastructure better four pillars brand platform positioning purpose narrative strategy pillars tagline"],
@@ -946,6 +949,15 @@ const ROWS=[
 [E,"Reality","Exit interview records and themes","PEOPLE","exit interview leaver interview offboarding exit survey leaver feedback resignation"],
 [E,"Reality","Voluntary attrition by region, function and tenure; absence data","PEOPLE","attrition turnover retention leavers absence absenteeism sickness tenure hris headcount data"],
 [E,"Reality","Safety incidents, LTIFR and near-miss reporting","QHSE","ltifr trir safety incidents near miss accident reports injury rate lost time incident riddor ehs hse"],
+[O,"Intent","The industry propositions as signed off \u2014 the owner-facing argument, per industry","EXEC","industry proposition mining data centres oil gas value proposition positioning owner argument per industry"],
+[O,"Intent","Target owners and accounts: which we pursue, and which we have chosen not to","BIZDEV","target accounts key accounts named accounts account list owner targets pursuit list priority accounts"],
+[O,"Expectation","Tender and pre-qualification responses \u2014 the boilerplate we submit","BIZDEV","tender prequalification pqq rfp rfq bid submission boilerplate capability statement questionnaire"],
+[O,"Expectation","Project references and case studies, as given to an owner","REGMKT","case study project reference track record credentials reference list past projects proof points"],
+[O,"Expectation","Warranties, performance guarantees and the service commitments we make","TECHSVC","warranty guarantee performance warranty service commitment undertaking assurance liability"],
+[O,"Reality","Tender outcomes \u2014 won, lost, and the reason given","BIZDEV","tender outcome win loss bid result reason for loss award decision won lost analysis hit rate"],
+[O,"Reality","Pre-qualification and approved-vendor status, by owner","BIZDEV","approved vendor list avl prequalified supplier status vendor approval registered supplier framework"],
+[O,"Reality","Owner\u2019s engineer and consultant feedback on our specification support","TECHSVC","owners engineer feedback consultant feedback specification support design support engineer satisfaction"],
+[O,"Reality","Project completion and post-installation reviews \u2014 what the owner said afterwards","TECHSVC","project completion review handover post installation snagging defects close out owner feedback"],
 [D,"Intent","Channel strategy — which markets go direct, which go through partners, and why","CHANNEL","channel strategy route to market distribution strategy direct versus indirect partner strategy go to market"],
 [D,"Intent","Growth targets by channel","CHANNEL","growth targets sales targets channel targets budget quota forecast by channel volume targets"],
 [D,"Expectation","Distributor and partner agreements, and the terms inside them","CHANNEL","distributor agreement partner agreement contract terms and conditions reseller agreement distribution contract"],
@@ -1033,8 +1045,8 @@ const OWNER_NAME="Dustin Lawrence";
 const DEADLINE="Friday 13 November";
 /* Frozen at send. Returns taken under different catalogue versions are not directly
    comparable — the refs move — so every return carries the version it was answered
-   against. Bump it in one place if the fifty-seven lines or the seventeen sources change. */
-const CATALOGUE_VERSION="v1 · 2026-10-05 · 57 lines · 17 sources";
+   against. Bump it in one place if the sixty-six lines or the seventeen sources change. */
+const CATALOGUE_VERSION="v2 · 2026-10-06 · 66 lines · 17 sources";
 const PAGE_URL="https://trustos.missionctrl.agency/navigator/solmax/data-audit/";
 /* The link a systems owner is sent: it opens on step five and says so. */
 const SRC_URL=PAGE_URL+"#sources";
@@ -1045,7 +1057,7 @@ const SHARE_DOMAIN="solmax.com";
    BETWEEN THE QUOTES ON THE NEXT LINE. THAT IS THE ONLY EDIT NEEDED.
    Left empty, the page hides the button entirely and tells people that
    Dustin will email them the link instead — no dead button, no broken link. */
-const SHAREPOINT_URL = "";
+const SHAREPOINT_URL = "https://solmax.sharepoint.com/:f:/s/GlobalMarketingTrustTracker/IgDWvOK4TOJISY8dRkvYDWK8AZgUfuCjBIBlPO5wsZAqSL4?e=Vr7aHb";
 
 /* ── FURTHER READING: MISSIONCTRL ON CORPORATE EQ ──────────────────────
    TO PUT THE "FURTHER READING" LIST ON THE THANK-YOU SCREEN, PASTE ONE
@@ -1312,7 +1324,7 @@ function paint(){
   const fR=$("f-rel").value, fL=$("f-lens").value, fT=$("f-todo").value;
   const ts=terms(), hit=found(ts);
   const set=new Set(S.rels);
-  /* A search reaches all fifty-seven lines, not only the picked groups \u2014 people hold
+  /* A search reaches all sixty-six lines, not only the picked groups \u2014 people hold
      documents from groups they never ticked. */
   const base=hit||scope();
   const list=base.filter(r=>
@@ -1613,7 +1625,7 @@ $("go6").onclick=()=>{
 /* ============================ step 6 ============================ */
 function rowsOut(){
   /* Added items first, then every in-scope line with an answer on it \u2014 including the
-     ones outside the picked groups, which is the whole point of searching all fifty-seven. */
+     ones outside the picked groups, which is the whole point of searching all sixty-six. */
   return extraRows().concat(scope().filter(r=>S.ans[r.ref]).map(r=>{
     const a=S.ans[r.ref];
     return {ref:r.ref,rel:r.rel,lens:r.lens,ask:r.ask,status:a.status||"",
@@ -2039,7 +2051,7 @@ $("resume-clear").onclick=()=>{
    step one with no sign their answers had survived. Both are fixed: we return them to
    where they were, as far as what they have filled in allows, and say what is saved. */
 /* A systems owner \u2014 CRM, HR, QHSE, channel \u2014 is sent the page on its own link and
-   opens on step five, never having to wade through the fifty-seven document lines.
+   opens on step five, never having to wade through the sixty-six document lines.
    Either form works, so a hash that survives a copy-paste and a query the mail client
    cannot mangle are both honoured. */
 function srcLink(){
