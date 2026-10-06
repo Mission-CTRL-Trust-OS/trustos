@@ -200,7 +200,13 @@ button.btn.tiny{font-size:0.72rem;padding:9px 15px;border-width:1px;white-space:
 .howto-step b{font-size:0.92rem;font-weight:700;color:var(--trust-slate)}
 .howto-step span{font-size:0.84rem;line-height:1.65;color:var(--trust-slate);opacity:.8}
 .howto-step .btn{margin-top:6px}
-.addmore{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px;padding:14px 16px;border:1px dashed var(--trust-cool);border-radius:8px;font-size:0.86rem;color:var(--trust-slate)}
+.addmore{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px;padding:16px 18px;border:1px solid #b9d4ec;border-left:4px solid #1f6fb2;border-radius:8px;background:#eaf3fb;font-size:0.9rem;font-weight:600;color:#14507f}
+/* "Not on the list? Add it" stands apart from the search tip: blue panel, filled blue button. */
+.howto-step.howto-add{background:#eaf3fb;border-color:#b9d4ec;border-left:4px solid #1f6fb2}
+.howto-step.howto-add b{color:#14507f;font-size:0.98rem}
+.howto-step.howto-add span{color:#14507f;opacity:.9}
+button.btn.add-blue{background:#1f6fb2;border-color:#1f6fb2;color:#fff}
+button.btn.add-blue:hover{background:#185a91;border-color:#185a91;color:#fff}
 /* Which groups an added item relates to. Pre-ticked from step two; "All groups" ties the six together. */
 .xrels{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center}
 .xrels-q{flex:1 1 100%;font-size:0.74rem;font-weight:700;letter-spacing:0.04em;color:var(--trust-slate);opacity:.75}
@@ -598,10 +604,10 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
           <b>Search everything</b>
           <span>The search box reaches all sixty-six lines, across every group &mdash; not only the ones you picked. Try the name you would use yourself: &ldquo;TDS&rdquo;, &ldquo;exit interviews&rdquo;, &ldquo;rebates&rdquo;.</span>
         </div>
-        <div class="howto-step">
+        <div class="howto-step howto-add">
           <b>Not on the list? Add it</b>
           <span>If you hold something we have not listed, add it and tick the groups it relates to. A document we missed is worth as much as anything here &mdash; often more.</span>
-          <button type="button" class="btn ghost tiny j-addother">+ Add something we missed</button>
+          <button type="button" class="btn tiny add-blue j-addother">+ Add something we missed</button>
         </div>
       </div>
       <p class="lede" id="s4-time" style="font-size:0.9rem;margin-top:10px">&mdash;</p>
@@ -620,7 +626,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
         <div class="count" id="tally">&mdash;</div>
         <p class="qnote" id="q-note" role="status" aria-live="polite">
           <span class="grow" id="q-count">Search the whole catalogue above &mdash; and if what you hold is not in it, add it yourself.</span>
-          <button type="button" class="btn ghost tiny" id="add-other">+ Add something we missed</button>
+          <button type="button" class="btn tiny add-blue" id="add-other">+ Add something we missed</button>
         </p>
       </div>
 
@@ -628,7 +634,7 @@ button.pick[aria-checked="true"] i{color:var(--trust-cool);opacity:1}
 
       <div class="addmore">
         <span>Hold something that is not on this list?</span>
-        <button type="button" class="btn ghost tiny j-addother">+ Add it</button>
+        <button type="button" class="btn tiny add-blue j-addother">+ Add it</button>
       </div>
 
       <div class="actions">
