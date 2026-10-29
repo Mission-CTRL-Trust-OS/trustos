@@ -480,6 +480,18 @@
     .solutions-link:hover { color: #4a7a8a; }
 
     /* ── CTA ── */
+
+    /* ── Runway films (brand motion) ── */
+    .hero-film{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.5;
+      -webkit-mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);mask-image:linear-gradient(to bottom,#000 50%,transparent 100%);}
+    .hero-film video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
+    .leak-film{margin:4px 0 18px;border-radius:10px;overflow:hidden;background:#0a0f1a;aspect-ratio:16/9;border:1px solid rgba(124,196,168,0.16);}
+    .leak-film video{display:block;width:100%;height:100%;object-fit:cover;}
+    .cta-film{width:min(440px,86%);margin:-36px auto 6px;aspect-ratio:16/9;pointer-events:none;mix-blend-mode:screen;
+      -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 55%,transparent 100%);}
+    .cta-film video{display:block;width:100%;height:100%;object-fit:cover;}
+    #cta .section-inner{z-index:auto;} /* let the film's screen blend reach the slate background */
+    @media (prefers-reduced-motion:reduce){.hero-film{display:none;}}
     .cta-section {
       background: var(--trust-slate); padding: 100px 5%;
       text-align: center; position: relative; overflow: hidden;
@@ -1184,13 +1196,67 @@ window.TrustShape = (function () {
            'dominant-baseline="middle" transform="rotate('+ang.toFixed(1)+','+f(lx)+','+f(ly)+')">'+txt+'</text>';
   }
   /* inner markup only — caller owns the <svg> element */
+  function clamp(x){return x<0?0:x>1?1:x;}
+  function shrink(v,c,k){
+    function p(q){return {x:c.x+(q.x-c.x)*k, y:c.y+(q.y-c.y)*k};}
+    return {i:p(v.i), e:p(v.e), r:p(v.r)};
+  }
+  function seg(a,b,cls){
+    return '<line class="'+cls+'" x1="'+f(a.x)+'" y1="'+f(a.y)+'" x2="'+f(b.x)+'" y2="'+f(b.y)+'"/>';
+  }
+  /* alignment light: 1 when all three drivers are equal and high, 0 when uneven or low */
+  function beamLevel(cl,cn,cf){
+    var mx=Math.max(cl,cn,cf), mn=Math.min(cl,cn,cf);
+    var al=clamp(1-(mx-mn)/60), lv=clamp(((cl+cn+cf)/3-30)/70);
+    return al*al*lv;
+  }
+  /* the beam: light cast straight down from the shape's point onto the floor */
+  function beam(v,iv,I){
+    if(I<0.04) return '';
+    var r=v.r, fy=iv.r.y+3, w=8+14*I;
+    return '<g class="ts-beam" style="opacity:'+(0.3+0.7*I).toFixed(2)+'">'+
+      '<polygon class="ts-beam-cone" points="'+f(r.x-1.6)+','+f(r.y)+' '+f(r.x+1.6)+','+f(r.y)+' '+
+        f(iv.r.x+w)+','+f(fy)+' '+f(iv.r.x-w)+','+f(fy)+'"/>'+
+      '<ellipse class="ts-floor" cx="'+f(iv.r.x)+'" cy="'+f(fy)+'" rx="'+f(16+20*I)+'" ry="3"/>'+
+    '</g>';
+  }
+  /* the leak: the gap on the weak edge glows in that driver's colour and light seeps out */
+  function leak(v,iv,acen,cl,cn,cf){
+    var mx=Math.max(cl,cn,cf), mn=Math.min(cl,cn,cf), spread=mx-mn;
+    if(spread<6) return '';
+    var k=clamp(spread/35), d, a, b, A, B;
+    if(cn===mn){d='cn';a=v.e;b=v.r;A=iv.e;B=iv.r;}
+    else if(cf===mn){d='cf';a=v.r;b=v.i;A=iv.r;B=iv.i;}
+    else {d='cl';a=v.i;b=v.e;A=iv.i;B=iv.e;}
+    var q=f(A.x)+','+f(A.y)+' '+f(B.x)+','+f(B.y)+' '+f(b.x)+','+f(b.y)+' '+f(a.x)+','+f(a.y);
+    var ex=b.x-a.x, ey=b.y-a.y, L=Math.sqrt(ex*ex+ey*ey)||1, nx=-ey/L, ny=ex/L;
+    var mxp=(a.x+b.x)/2, myp=(a.y+b.y)/2;
+    if(nx*(acen.x-mxp)+ny*(acen.y-myp)>0){nx=-nx;ny=-ny;}
+    var Ex=B.x-A.x, Ey=B.y-A.y, EL=Math.sqrt(Ex*Ex+Ey*Ey)||1;
+    var s='<g class="ts-leakfx ts-lk-'+d+'" style="opacity:'+(0.4+0.6*k).toFixed(2)+'">'+
+      '<polygon class="ts-lk-glow" points="'+q+'"/>'+
+      '<polygon class="ts-lk-fill" points="'+q+'"/>';
+    [0.3,0.5,0.7].forEach(function(t,j){
+      var px=a.x+ex*t, py=a.y+ey*t;
+      var gap=Math.abs(Ex*(py-A.y)-Ey*(px-A.x))/EL, len=gap+3.5;
+      s+='<line class="ts-seep" style="animation-delay:-'+(j*1.1).toFixed(1)+'s" x1="'+f(px)+'" y1="'+f(py)+
+         '" x2="'+f(px+nx*len)+'" y2="'+f(py+ny*len)+'"/>';
+    });
+    return s+seg(a,b,'ts-lk-edge')+'</g>';
+  }
   function inner(cl,cn,cf,centreText){
     var v=verts(cl,cn,cf), iv=verts(100,100,100);
     var icen={x:(iv.i.x+iv.e.x+iv.r.x)/3, y:(iv.i.y+iv.e.y+iv.r.y)/3};
     var acen={x:(v.i.x+v.e.x+v.r.x)/3,    y:(v.i.y+v.e.y+v.r.y)/3};
+    var I=beamLevel(cl,cn,cf);
     return '<polygon class="ts-leak" points="'+pts(iv)+'"/>'+
+           beam(v,iv,I)+
+           leak(v,iv,acen,cl,cn,cf)+
            '<polygon class="ts-ideal" points="'+pts(iv)+'"/>'+
+           '<polygon class="ts-halo" style="opacity:'+(0.14+0.32*I).toFixed(2)+'" points="'+pts(v)+'"/>'+
            '<polygon class="ts-act" points="'+pts(v)+'"/>'+
+           '<polygon class="ts-bevel" points="'+pts(shrink(v,acen,0.8))+'"/>'+
+           seg(v.i,v.e,'ts-e-cl ts-eg')+seg(v.e,v.r,'ts-e-cn ts-eg')+seg(v.r,v.i,'ts-e-cf ts-eg')+
            '<line class="ts-e-cl" x1="'+f(v.i.x)+'" y1="'+f(v.i.y)+'" x2="'+f(v.e.x)+'" y2="'+f(v.e.y)+'"/>'+
            '<line class="ts-e-cn" x1="'+f(v.e.x)+'" y1="'+f(v.e.y)+'" x2="'+f(v.r.x)+'" y2="'+f(v.r.y)+'"/>'+
            '<line class="ts-e-cf" x1="'+f(v.r.x)+'" y1="'+f(v.r.y)+'" x2="'+f(v.i.x)+'" y2="'+f(v.i.y)+'"/>'+
@@ -1326,6 +1392,12 @@ window.TrustShape = (function () {
 <stop offset="0%" stop-color="rgba(178,208,222,0.62)"/><stop offset="55%" stop-color="rgba(126,172,192,0.42)"/>
 <stop offset="100%" stop-color="rgba(86,132,152,0.26)"/>
 </linearGradient>
+<linearGradient id="ts-beam" x1="0.5" y1="0" x2="0.5" y2="1">
+<stop offset="0%" stop-color="#a8cdd8" stop-opacity="0.6"/><stop offset="100%" stop-color="#6da0b8" stop-opacity="0.04"/>
+</linearGradient>
+<radialGradient id="ts-floor"><stop offset="0%" stop-color="#8fb5c0" stop-opacity="0.6"/><stop offset="100%" stop-color="#6da0b8" stop-opacity="0"/></radialGradient>
+<filter id="ts-blur" filterUnits="userSpaceOnUse" x="0" y="0" width="320" height="260"><feGaussianBlur stdDeviation="3.2"/></filter>
+<filter id="ts-blur-s" filterUnits="userSpaceOnUse" x="0" y="0" width="320" height="260"><feGaussianBlur stdDeviation="1.1"/></filter>
 </defs>
 </svg>
 
@@ -1368,6 +1440,7 @@ window.TrustShape = (function () {
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="grid-bg"></div>
+  <div class="hero-film" aria-hidden="true"><video data-film="loop" loop preload="metadata" muted playsinline poster="/assets/film/trustos-hero-atmos-poster.jpg"><source src="/assets/film/trustos-hero-atmos.webm" type="video/webm"><source src="/assets/film/trustos-hero-atmos.mp4" type="video/mp4"></video></div>
   <div class="hero-inner">
     <div class="hero-copy">
       <div class="hero-logo hero-anim hero-anim-d1" style="display:flex;margin-bottom:22px;">
@@ -1541,6 +1614,7 @@ window.TrustShape = (function () {
     <div style="max-width:860px;margin:0 auto;padding:30px 34px;background:rgba(124,196,168,0.05);border:1px solid rgba(124,196,168,0.2);border-left:3px solid #7cc4a8;border-radius:12px;">
       <p style="display:inline-flex;align-items:center;gap:9px;font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#7cc4a8;margin:0 0 12px;"><span style="width:18px;height:2px;background:#7cc4a8;display:block;"></span>The pattern across every sector</p>
       <h3 style="font-size:clamp(1.2rem,2.2vw,1.6rem);font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.18;margin:0 0 14px;">Look at the short edge. It&#8217;s nearly always <em style="color:#7cc4a8;font-style:normal;">Connection</em>.</h3>
+      <figure class="leak-film" role="img" aria-label="Film: light seeping out through the gap on the Connection edge of the trust shape"><video data-film="loop" loop preload="none" muted playsinline poster="/assets/film/trustos-leak-poster.jpg"><source src="/assets/film/trustos-leak.webm" type="video/webm"><source src="/assets/film/trustos-leak.mp4" type="video/mp4"></video></figure>
       <p style="font-size:0.9rem;color:rgba(255,255,255,0.775);line-height:1.75;margin:0 0 14px;">In eleven of the twelve sectors we&#8217;ve read, Connection is the weakest layer &#8212; consistently behind what organisations say about themselves. It&#8217;s the say-do gap <strong style="color:rgba(255,255,255,0.9);font-weight:600;">no single function owns</strong>: where trust leaks, and the first thing a TrustOS read makes visible.</p>
       <div style="margin-top:22px;padding-top:20px;border-top:1px solid rgba(124,196,168,0.18);">
         <p style="font-size:0.88rem;color:rgba(255,255,255,0.8);line-height:1.7;margin:0 0 15px;">That gap has a name. It&#8217;s the <strong style="color:rgba(255,255,255,0.925);font-weight:600;">alignment problem</strong> &#8212; the distance between what an organisation believes and says, and what its stakeholders actually experience. Measuring it is what TrustOS does. <strong style="color:rgba(255,255,255,0.925);font-weight:600;">Closing it is what MissionCTRL does.</strong></p>
@@ -1627,6 +1701,24 @@ window.TrustShape = (function () {
 .ts-svg.soon .ts-lbl{fill:rgba(255,255,255,0.25);}
 .ts-svg.soon .ts-centre{fill:rgba(255,255,255,0.3);}
 .ts-svg.soon .ts-leak{opacity:0.4;}
+/* prism + beam + leak (glass trust shape) */
+.ts-halo{fill:#6da0b8;filter:url(#ts-blur);}
+.ts-bevel{fill:none;stroke:rgba(255,255,255,0.16);stroke-width:0.5;stroke-linejoin:round;}
+.ts-eg{stroke-width:2.6;opacity:0.4;filter:url(#ts-blur-s);}
+.ts-beam-cone{fill:url(#ts-beam);}
+.ts-floor{fill:url(#ts-floor);filter:url(#ts-blur-s);}
+.ts-lk-fill{fill-opacity:0.2;}
+.ts-lk-glow{fill-opacity:0.34;filter:url(#ts-blur);animation:tsBreathe 4s ease-in-out infinite;}
+.ts-lk-edge{fill:none;stroke-width:2.4;opacity:0.75;filter:url(#ts-blur-s);}
+.ts-seep{fill:none;stroke-width:1.1;stroke-linecap:round;stroke-dasharray:1.6 5;opacity:0.85;animation:tsSeep 3.3s linear infinite;}
+.ts-lk-cl .ts-lk-fill,.ts-lk-cl .ts-lk-glow{fill:#a8cdd8;}.ts-lk-cl .ts-seep,.ts-lk-cl .ts-lk-edge{stroke:#a8cdd8;}
+.ts-lk-cn .ts-lk-fill,.ts-lk-cn .ts-lk-glow{fill:#7cc4a8;}.ts-lk-cn .ts-seep,.ts-lk-cn .ts-lk-edge{stroke:#7cc4a8;}
+.ts-lk-cf .ts-lk-fill,.ts-lk-cf .ts-lk-glow{fill:#a78bdb;}.ts-lk-cf .ts-seep,.ts-lk-cf .ts-lk-edge{stroke:#a78bdb;}
+@keyframes tsSeep{from{stroke-dashoffset:0}to{stroke-dashoffset:-13.2}}
+@keyframes tsBreathe{0%,100%{opacity:0.8}50%{opacity:1}}
+.ts-svg.soon .ts-leakfx,.ts-svg.soon .ts-beam,.ts-svg.soon .ts-halo,.ts-svg.soon .ts-eg,.ts-svg.soon .ts-bevel{display:none;}
+/* homepage hero: unlabelled shape (driver labels are for product UI only) */
+#si-tri-svg .ts-lbl{display:none;}
 .ts-legend{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.61);text-align:center;margin:4px 0 0;}
 
 .bt{width:100%;max-width:430px;margin:22px auto 0;}
@@ -1755,9 +1847,24 @@ window.TrustShape = (function () {
 </section>
 
 <!-- CTA -->
+<script>
+/* Runway films: play only while on screen; never for reduced-motion visitors */
+document.addEventListener('DOMContentLoaded',function(){
+  var rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(rm||!('IntersectionObserver' in window))return;
+  Array.prototype.forEach.call(document.querySelectorAll('video[data-film]'),function(v){
+    var once=v.getAttribute('data-film')==='once',done=false;
+    new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){if(once&&done)return;var p=v.play();if(p&&p.then)p.then(function(){done=true;}).catch(function(){});}
+      else if(!once){v.pause();}
+    });},{threshold:0.35}).observe(v);
+  });
+});
+</script>
 <section class="cta-section" id="cta">
   <div class="grid-bg"></div>
   <div class="section-inner" style="text-align:center;">
+    <div class="cta-film" aria-hidden="true"><video data-film="once" preload="none" muted playsinline poster="/assets/film/trustos-sting-poster.jpg"><source src="/assets/film/trustos-sting.webm" type="video/webm"><source src="/assets/film/trustos-sting.mp4" type="video/mp4"></video></div>
     <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:16px;">Ready to see your real trust picture?</p>
     <h2 style="font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.04em;color:#fff;line-height:1.1;margin-bottom:16px;">30 minutes.<br/>Your full trust picture, live.</h2>
     <p style="font-size:0.95rem;color:rgba(255,255,255,0.71);max-width:460px;margin:0 auto 32px;line-height:1.75;">We run a live TrustOS session using your stakeholder groups. You see the dashboard with your context. No templates. No generic demos.</p>
