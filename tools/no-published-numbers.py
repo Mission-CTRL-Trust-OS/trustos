@@ -30,6 +30,17 @@ PATS = [
     # band boundaries are internal calibration and are never published
     (r'<em>\s*\d{1,3}\s*(?:&ndash;|&mdash;|–|—|-)\s*\d{1,3}\s*</em>', 'band boundary published'),
     (r'(?:Trust position|Trust Index)\s*/\s*100', 'score-out-of-100 label'),
+    # Numbers the page only shows once JavaScript runs — invisible to a plain
+    # text scan. This is how the whole alignment article got past the audit.
+    # A bare count-up with no unit is a TrustOS score. One carrying a prefix or
+    # suffix (%, $, B) is third-party evidence, which the rule explicitly allows.
+    (r'data-target=["\'](\d{1,3})["\'](?![^>]*data-(?:suffix|prefix))(?!(?:[^<]|<[^>]*>){0,40}[%$])', 'count-up target (bare score)'),
+    (r'\+\s*s\.(?:cl|cn|cf|comp)\s*\+', 'driver value concatenated into rendered output'),
+    (r'>\s*~?\s*(\d{1,3})\s*(?:pts|points)\s*<', 'point figure rendered as a display number'),
+    (r'\b(?:thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty)\s+points\b', 'gap figure spelled out'),
+    (r'[Cc]omposite scores?\s*0\s*(?:&ndash;|&mdash;|–|—|-)\s*100', 'composite scale published'),
+    (r'~\s*(\d{1,3})\s*(?:points|pts)\b', 'approximate point figure'),
+    (r'quantified\s+at\b', 'figure announced as quantified'),
 ]
 ALLOW = [
     re.compile(r'Trust Index runs 0(?:&ndash;|&mdash;|–|—|-)100', re.I),
