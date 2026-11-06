@@ -43,7 +43,7 @@
     if (el) return el;
     var css = document.createElement('style');
     css.textContent =
-      '.mc-consent{position:fixed;left:18px;bottom:18px;z-index:2147483000;max-width:380px;' +
+      '.mc-consent{position:fixed;right:18px;bottom:18px;z-index:2147483000;max-width:380px;' +
       'background:#10151f;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:18px 20px;' +
       'box-shadow:0 12px 40px rgba(0,0,0,.5);font-family:Sora,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;' +
       'color:#fff;display:none}' +
@@ -67,9 +67,8 @@
     el.setAttribute('aria-label', 'Analytics consent');
     el.innerHTML =
       '<p class="mc-consent-t">Analytics — only with your OK</p>' +
-      '<p class="mc-consent-b">Our standard analytics are cookieless and collect no personal data. ' +
-      'With your consent we would also use Microsoft Clarity (heatmaps and session replay) to see how ' +
-      'this page is read. No ad tracking, no sale of data — and declining changes nothing. ' +
+      '<p class="mc-consent-b">Our analytics set no cookies. With your OK we&rsquo;d also use Microsoft Clarity ' +
+      'to see how this page is read. No ad tracking; declining changes nothing. ' +
       '<a href="/cookie-policy/">Cookie Policy</a></p>' +
       '<div class="mc-consent-r"><button type="button" class="mc-yes">Allow</button>' +
       '<button type="button" class="mc-no">No thanks</button></div>';

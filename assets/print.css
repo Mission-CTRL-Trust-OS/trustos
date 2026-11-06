@@ -1,0 +1,31 @@
+/* TrustOS — print / "save as PDF" for sector POVs. Loaded with media="print". */
+@page{margin:18mm 16mm;}
+html,body{background:#fff!important;color:#111!important;}
+body{font-size:11pt;line-height:1.5;}
+nav,.nav-mobile,.grid-bg,video,.leak-film,.cta-film,.hero-film,.cta-section,.related-povs,.mc-consent,footer,.article-meta .share,.breadcrumb{display:none!important;}
+.article-hero{background:#fff!important;padding:0 0 8mm!important;border:0!important;}
+.article-hero h1,.article-hero .gradient{color:#111!important;-webkit-text-fill-color:#111!important;background:none!important;}
+.article-eyebrow{color:#5a8a9a!important;}
+.article-hero-sub,.article-body,.article-body p,.article-body li,.lede p,.lede .sub,.pov-frame,.key-question,.sources,.sources *{color:#111!important;}
+.article-body{max-width:none!important;padding:0!important;}
+.article-body h2{color:#111!important;break-after:avoid;margin-top:9mm;}
+.article-body a{color:#111;text-decoration:underline;}
+.article-body a[href^="http"]::after{content:" (" attr(href) ")";font-size:8.5pt;color:#555;}
+.pov-frame{border-left-color:#5a8a9a!important;}
+.sources{border-top:1px solid #999;padding-top:6mm;margin-top:10mm;}
+.sources h2{font-size:11pt;}
+svg,.trust-shape,.ts-svg{filter:grayscale(1);}
+img,svg,table,blockquote,ol,ul{break-inside:avoid;}
+.print-only{display:block!important;}
+.print-only{font-size:9pt;color:#555;margin-top:12mm;border-top:1px solid #ccc;padding-top:4mm;}
+/* second pass: dark panels, meta row, gutters */
+.article-banner-wrap,.live-banner{background:#f1f3f5!important;box-shadow:none!important;border:1px solid #d6d9de!important;border-radius:8px;}
+.live-banner,.live-banner *{color:#111!important;}
+.lb-kicker,.ts-legend,.bt-lab,.bt-cap{color:#444!important;}
+.bt-seg{background:#cfd3d8!important;} .bt-seg.on{background:#5a8a9a!important;}
+.article-meta{display:flex!important;gap:18px;flex-wrap:wrap;font-size:9pt;color:#444!important;margin-top:4mm;}
+.article-meta-item,.article-meta-item strong,.article-meta-item a{color:#444!important;}
+.article-meta-item strong{color:#111!important;margin-right:4px;}
+strong,b,.lede p,.lede .sub,.key-question{color:#111!important;}
+.article-hero-inner,.article-banner-wrap,.article-body,.sources{max-width:none!important;padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important;}
+.pov-frame{margin-left:0!important;}

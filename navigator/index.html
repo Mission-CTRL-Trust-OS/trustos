@@ -281,6 +281,7 @@
         </div>
         <div class="nr-field">
           <label class="nr-label" for="nr-role">Your role <span class="nr-opt">(optional)</span></label>
+          <input type="hidden" id="nr-sector" name="sector"><script>(function(){try{var m=/[?&]sector=([^&]+)/.exec(location.search);if(m){document.getElementById('nr-sector').value=decodeURIComponent(m[1]);}}catch(e){}})();</script>
           <input type="text" id="nr-role" name="role" placeholder="Your role" autocomplete="organization-title" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.42);border-radius:9px;padding:13px 16px;color:#fff;font-family:inherit;font-size:0.92rem;">
         </div>
         <button type="submit" class="btn btn-primary" id="navReqBtn" style="width:100%;cursor:pointer;">Request my TrustOS Navigator &rarr;</button>
